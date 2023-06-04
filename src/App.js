@@ -1,24 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Fragment } from "react";
+import { createBrowserHistory } from "history";
+import { publicRoutes } from "./routes";
+i;
 
 function App() {
+  const history = createBrowserHistory();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router history={history}>
+      <div className="App">
+        <Routes>
+          {publicRoutes.map((route, index) => {
+            const Page = route.component;
+            let childArr;
+
+            let Layout = null;
+            if (route.child !== undefined) {
+              childArr = route.child;
+            }
+            if (route.layout) {
+              Layout = route.layout;
+            } else {
+              Layout = Fragment;
+            }
+            return (
+              <Route
+                key={index}
+                path={route.path}
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                }
+              >
+                {childArr !== undefined &&
+                  childArr.map((item, index) => {
+                    const Child = item.component;
+                    return (
+                      <Route key={index} path={item.path} element={<Child />} />
+                    );
+                  })}
+              </Route>
+            );
+          })}
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

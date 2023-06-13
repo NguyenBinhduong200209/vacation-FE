@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Fragment } from "react";
 import { createBrowserHistory } from "history";
 import { publicRoutes } from "./routes";
-i;
 
 function App() {
   const history = createBrowserHistory();

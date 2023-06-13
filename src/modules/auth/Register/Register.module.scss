@@ -1,0 +1,25 @@
+.wrapper {
+  font-size: 1.6rem;
+  font-family: var(--font-1);
+}
+.title {
+  color: white;
+  font-weight: 700;
+  text-align: center;
+  font-size: 2.5em;
+  font-family: var(--font-1);
+  letter-spacing: 1.5px;
+  margin-bottom: 10%;
+}
+.direct {
+  font-size: 0.9em;
+  color: white;
+  text-align: center;
+  letter-spacing: 1px;
+
+  span {
+    color: #738ff5;
+    font-style: italic;
+    cursor: pointer;
+  }
+}

@@ -1,4 +1,6 @@
-//Reset css
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap");
+
+/* Reset CSS */
 
 * {
   margin: 0;
@@ -19,6 +21,20 @@ body {
   overflow: overlay;
 }
 
+//Root
+
+:root {
+  --font-1: "Inter", sans-serif;
+}
+#root,
+html,
+body {
+  height: 100%;
+}
+.App {
+  min-height: 100vh;
+}
+
 button,
 input,
 [tabindex] {
@@ -32,7 +48,7 @@ a[href] {
   appearance: none;
 }
 
-//Scroll-bar css
+/* Scroll-bar css */
 html *::-webkit-scrollbar {
   border-radius: 0;
   width: 8px;

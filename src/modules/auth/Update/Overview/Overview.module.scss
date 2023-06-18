@@ -1,0 +1,73 @@
+.wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.userName-container {
+  display: flex;
+  justify-content: flex-start;
+  background: var(--background-300);
+
+  &,
+  & + .des-container {
+    border-radius: 30px;
+  }
+}
+.avatar {
+  display: flex;
+  padding: 30px 20px 30px 60px;
+  margin: auto 0;
+}
+
+.userName {
+  margin: auto 0;
+  .sub-name {
+    font-size: 1.7rem;
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+  .name {
+    font-size: 2.2rem;
+  }
+}
+// css des-input
+.des-container {
+  flex: 1;
+  padding: 25px 50px;
+  background: var(--background-300);
+}
+// css btn
+
+.btn-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 30px;
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    width: 30%;
+    height: 50px;
+    border-radius: 15px;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+
+  .btn-cancel {
+    background: rgba(231, 95, 87, 0.7);
+  }
+  .btn-save {
+    background: rgba(154, 172, 101, 0.7);
+  }
+}

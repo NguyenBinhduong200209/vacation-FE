@@ -36,8 +36,17 @@ function App() {
                 {childArr !== undefined &&
                   childArr.map((item, index) => {
                     const Child = item.component;
+                    const ChildLayout = item.layout ? item.layout : Fragment;
                     return (
-                      <Route key={index} path={item.path} element={<Child />} />
+                      <Route
+                        key={index}
+                        path={item.path}
+                        element={
+                          <ChildLayout>
+                            <Child />
+                          </ChildLayout>
+                        }
+                      />
                     );
                   })}
               </Route>

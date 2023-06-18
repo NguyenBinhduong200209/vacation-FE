@@ -1,30 +1,90 @@
-import styles from "./Login.module.scss";
+import { useEffect, useState } from "react";
 import classNames from "classnames/bind";
-import InputForm from "../InputForm/InputForm";
-import { LoginData } from "../config";
+import styles from "./Login.module.scss";
+
+import InputForm from "../components/InputForm/InputForm";
 import facebookImg from "~/images/facebook.png";
 import googleImg from "~/images/google.png";
 import twitterImg from "~/images/twitter.png";
+import Retrieval from "./Retrieval/Retrieval";
+import { useNavigate } from "react-router-dom";
+import { LOGIN } from "~/utils/constants";
+import { useDispatch, useSelector } from "react-redux";
+import { changeRenderList } from "~/store/slices/authSlice";
 
 const cx = classNames.bind(styles);
 const Login = () => {
+  const dispatch = useDispatch();
+  // State save the value of Login/forgot and reset password
+  const { renderList, isLogin } = useSelector((state) => state.auth);
+  // Get the last item of "renderList"
+  const current = renderList[renderList.length - 1].list;
+  const [isFirstLevel, setLevel] = useState(true);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isLogin) {
+      navigate("/");
+    }
+  }, [isLogin]);
+  // Go to next page
+  const handleRoute = () => {
+    dispatch(
+      changeRenderList({ type: "ADD", data: { list: current.children } })
+    );
+    setLevel(false);
+  };
+
+  // Back to previous page
+  const handleBack = () => {
+    dispatch(
+      changeRenderList({ type: "BACK", data: { list: current.children } })
+    );
+    if (renderList.length === 2) setLevel(true);
+  };
+
+  const handleNavigate = () => {
+    navigate("/register");
+  };
+
   return (
-    <div>
-      <div className={cx("title")}>Login</div>
-      <InputForm data={LoginData} type="login" />
+    <div className={cx("wrapper")}>
+      {isFirstLevel ? (
+        <>
+          <div className={cx("title")}>Login</div>
+          <InputForm list={current} type={LOGIN} />
 
-      <div className={cx("other-methods")}>
-        <div>or sign in with</div>
-        <div className={cx("login-icon")}>
-          <img src={facebookImg} alt="This is Facebook" />
-          <img src={googleImg} alt="This is Google" />
-          <img src={twitterImg} alt="This is Twitter" />
-        </div>
-      </div>
+          <div className={cx("sub-ft")}>
+            <div className={cx("checkbox")}>
+              <input type="checkbox" id="squaredcheck" />
+              <label htmlFor="squaredcheck">Remember me</label>
+            </div>
+            <div className={cx("re-pass")} onClick={handleRoute}>
+              Forgot password
+            </div>
+          </div>
 
-      <div className={cx("direct")}>
-        If you don't have an account, please change to <span>register</span>
-      </div>
+          <div className={cx("other-methods")}>
+            <div>or sign in with</div>
+            <div className={cx("login-icon")}>
+              <img src={facebookImg} alt="This is Facebook" />
+              <img src={googleImg} alt="This is Google" />
+              <img src={twitterImg} alt="This is Twitter" />
+            </div>
+          </div>
+
+          <div className={cx("direct")}>
+            If you don't have an account, please change to{" "}
+            <span onClick={handleNavigate}>register</span>
+          </div>
+        </>
+      ) : (
+        <Retrieval
+          list={current}
+          handleRoute={handleRoute}
+          length={renderList.length}
+          handleBack={handleBack}
+        />
+      )}
     </div>
   );
 };

@@ -59,7 +59,6 @@ const Login = () => {
         <>
           <div className={cx("title")}>Login</div>
           <InputForm list={current} type={LOGIN} url="/" />
-
           <div className={cx("sub-ft")}>
             <div className={cx("checkbox")}>
               <input type="checkbox" id="squaredcheck" />
@@ -69,7 +68,6 @@ const Login = () => {
               Forgot password
             </div>
           </div>
-
           <div className={cx("other-methods")}>
             <div>or sign in with</div>
             <div className={cx("login-icon")}>

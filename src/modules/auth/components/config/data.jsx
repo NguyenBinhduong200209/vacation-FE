@@ -57,7 +57,7 @@ export const UpdateUserData = {
         id: "gender",
         label: "Gender",
         type: "select",
-        data: [{ title: "Male" }, { title: "Female" }, { title: "Others" }],
+        data: [{ title: "Male" }, { title: "Female" }, { title: "Non-binary" }],
       },
       { id: "nationality", label: "Nationality", type: "select" },
     ],

@@ -7,7 +7,7 @@ const Notification = (props) => {
   const { status, messageResult, isLoading } = useSelector(
     (state) => state.auth
   );
-  const { url, type } = props;
+  const { url, type, handleRoute } = props;
   console.log(messageResult);
   const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
@@ -41,6 +41,12 @@ const Notification = (props) => {
       ) {
         navigate(url);
         window.location.reload();
+      } else if (
+        type === FORGOT &&
+        status &&
+        status.toString().startsWith("2")
+      ) {
+        handleRoute();
       }
     }, 2000);
 

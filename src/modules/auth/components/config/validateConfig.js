@@ -50,7 +50,7 @@ export const Validate = {
     lastname: Yup.string().required("This field is required"),
     dateOfBirth: Yup.string(),
     phoneNumber: Yup.string().matches(
-      /^[0-9]{10,11}$/,
+      /^[+0-9-]{10,11}$/,
       "Please enter the correct phone number"
     ),
     gender: Yup.string(),

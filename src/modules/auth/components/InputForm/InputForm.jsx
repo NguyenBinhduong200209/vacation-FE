@@ -23,7 +23,7 @@ const InputForm = (props) => {
   const dispatch = useDispatch();
   const [noti, setNoti] = useState(false);
   const [isChanged, setIsChanged] = useState(false);
-  const { list, type, className, url } = props;
+  const { list, type, className, url, handleRoute } = props;
   let length = useRef(0);
   // Get state
   const { isLoading, status, info } = useSelector((state) => state.auth);
@@ -59,6 +59,7 @@ const InputForm = (props) => {
           dispatch(handleAuth({ type, data: values }));
         }
         break;
+
       case UPDATE_PERSONAL:
         dispatch(handleAuth({ type: "updateUser", data: values }));
         break;
@@ -155,7 +156,8 @@ const InputForm = (props) => {
           );
         }}
       </Formik>
-      {noti && <Notification url={url} type={type} />}
+
+      {noti && <Notification url={url} type={type} handleRoute={handleRoute} />}
     </>
   );
 };

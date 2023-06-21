@@ -11,8 +11,11 @@ import {
 const cx = classNames.bind(styles);
 const UpdateUser = () => {
   const navigate = useNavigate();
+
+  // Get Url path name
   const [activeTag, setActiveTags] = useState(window.location.pathname);
 
+  // When component mounts, set init state of pathname
   useEffect(() => {
     function GetPathURL() {
       setActiveTags(document.location.pathname);
@@ -22,12 +25,13 @@ const UpdateUser = () => {
     return () => window.removeEventListener("popstate", GetPathURL);
   }, []);
 
+  // Handle Route
   const handleRoute = (url) => {
     navigate(url);
     setActiveTags(url);
   };
   return (
-    <>
+    <div className={cx("wrapper")}>
       <div className={cx("title")}>Account Setting</div>
       <div className={cx("content")}>
         <div className={cx("sidebar")}>
@@ -54,7 +58,7 @@ const UpdateUser = () => {
           <Outlet />{" "}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

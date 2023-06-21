@@ -1,10 +1,17 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { createBrowserHistory } from "history";
 import { publicRoutes } from "./routes";
+import { useDispatch, useSelector } from "react-redux";
+import { getInfoUser } from "./store/slices/authSlice";
 
 function App() {
   const history = createBrowserHistory();
+  const dispatch = useDispatch();
+  const { info, isLogin } = useSelector((state) => state.auth);
+  useEffect(() => {
+    if (isLogin) dispatch(getInfoUser());
+  }, []);
 
   return (
     <Router history={history}>

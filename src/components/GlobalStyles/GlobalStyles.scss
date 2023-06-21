@@ -3,7 +3,10 @@
 
 :root {
   --font-1: "Inter", sans-serif;
+
+  // Color
   --light-grey: #c9c9c9;
+  --username-color: rgba(255, 255, 255, 0.7);
 
   --background-100: linear-gradient(
     180deg,
@@ -28,6 +31,12 @@
 
 html {
   font-size: 62.5%;
+}
+html,
+body,
+#root,
+.App {
+  height: 100%;
 }
 
 body {

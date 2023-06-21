@@ -1,13 +1,15 @@
-import Error from "~/components/Error/Error";
+import NotFound from "~/components/NotFound/NotFound";
 import AuthenLayout from "~/layouts/Auth/AuthenLayout";
 import DefaultLayout from "~/layouts/DefaultLayout/DefaultLayout";
-import UpdateLayout from "~/layouts/DefaultLayout/DefaultLayout";
 import Login from "~/modules/auth/Login/Login";
 import Register from "~/modules/auth/Register/Register";
 import Overview from "~/modules/auth/Update/Overview/Overview";
 import Personal from "~/modules/auth/Update/Personal/Personal";
 import Security from "~/modules/auth/Update/Security/Security";
 import UpdateUser from "~/modules/auth/Update/UpdateUser";
+import Album from "~/modules/vacation/Album/Album";
+import Posts from "~/modules/vacation/Posts/Posts";
+import Vacation from "~/modules/vacation/Vacation";
 
 import {
   LOGIN_ROUTE,
@@ -16,6 +18,9 @@ import {
   REGISTER_ROUTE,
   SECURITY_ROUTE,
   SETTING_ROUTE,
+  VACATION_ALBUM_ROUTE,
+  VACATION_POSTS_ROUTE,
+  VACATION_ROUTE,
 } from "~/utils/constants";
 
 export const publicRoutes = [
@@ -48,5 +53,24 @@ export const publicRoutes = [
       },
     ],
   },
-  { path: "*", component: Error },
+  {
+    path: VACATION_ROUTE,
+    component: Vacation,
+    layout: DefaultLayout,
+    child: [
+      {
+        path: "",
+        component: Posts,
+      },
+      {
+        path: VACATION_POSTS_ROUTE,
+        component: Posts,
+      },
+      {
+        path: VACATION_ALBUM_ROUTE,
+        component: Album,
+      },
+    ],
+  },
+  { path: "*", component: NotFound },
 ];

@@ -8,7 +8,6 @@ import { FORGOT, RESET } from "~/utils/constants";
 const cx = classNames.bind(styles);
 const Retrieval = (props) => {
   const { list, handleRoute, length, handleBack } = props;
-  // console.log(list);
 
   return (
     <div className={cx("wrapper")}>

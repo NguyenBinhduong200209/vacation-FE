@@ -9,13 +9,15 @@ const cx = classNames.bind(styles);
 
 const Register = () => {
   const navigate = useNavigate();
+
+  // Handle Route
   const handleNavigate = () => {
     navigate("/login");
   };
   return (
     <div className={cx("wrapper")}>
       <div className={cx("title")}>Register</div>
-      <InputForm list={RegisterData} type={REGISTER} />
+      <InputForm list={RegisterData} type={REGISTER} url="/login" />
       <div className={cx("direct")}>
         If you have an account, please change to{" "}
         <span onClick={handleNavigate}>login</span>

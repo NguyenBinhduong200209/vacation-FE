@@ -37,7 +37,7 @@ export const Validate = {
     newPassword: Yup.string()
       .matches(
         STRONG_PASSWORD,
-        "Please must be 8 - 16 characters, includes uppercase letter, lowercase letter, number and special character"
+        "Password must be 8 - 16 characters, includes uppercase letter, lowercase letter, number and special character"
       )
       .required("This field is required"),
     confirmPassword: Yup.string()
@@ -48,15 +48,28 @@ export const Validate = {
   updatePersonal: {
     firstname: Yup.string().required("This field is required"),
     lastname: Yup.string().required("This field is required"),
-    dateOfBirth: Yup.string().required("This field is required"),
-    phoneNumber: Yup.string().required("This field is required"),
-    gender: Yup.string().required("This field is required"),
-    nationality: Yup.string().required("This field is required"),
+    dateOfBirth: Yup.string(),
+    phoneNumber: Yup.string().matches(
+      /^[0-9]{10,11}$/,
+      "Please enter the correct phone number"
+    ),
+    gender: Yup.string(),
+    nationality: Yup.string(),
   },
   updateSecurity: {
-    password: Yup.string().required("This field is required"),
-    newPassword: Yup.string().required("This field is required"),
-    confirmPassword: Yup.string().required("This field is required"),
+    password: Yup.string()
+      .matches(STRONG_PASSWORD, "Uncorrect Password Form")
+      .required("This field is required"),
+
+    newPassword: Yup.string()
+      .matches(
+        STRONG_PASSWORD,
+        "Password must be 8 - 16 characters, includes uppercase letter, lowercase letter, number and special character"
+      )
+      .required("This field is required"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("newPassword")], "Password not match")
+      .required("This field is required"),
   },
 };
 
@@ -83,14 +96,6 @@ export const initValues = {
     confirmPassword: "",
   },
 
-  updatePersonal: {
-    firstname: "",
-    lastname: "",
-    dateOfBirth: "",
-    phoneNumber: "",
-    gender: "",
-    nationality: "",
-  },
   updateSecurity: {
     password: "",
     newPassword: "",

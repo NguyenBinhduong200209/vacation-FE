@@ -6,6 +6,8 @@ import axios from "axios";
 // import Preloader from "../Preloader/Preloader";
 
 const NewFeed = () => {
+  let formatter = Intl.NumberFormat("en", { notation: "compact" });
+
   const [locations, setLocations] = useState([]);
   const [vacations, setVacation] = useState([]);
 
@@ -40,32 +42,46 @@ const NewFeed = () => {
   return (
     <div className={cx("container")}>
       {/* <Preloader /> */}
-      <div className={cx("user-info")}>1</div>
-      <div className={cx("feed")}>
-        <ul>
-          {vacations.map((vacation) => (
-            <li key={vacation._id}>
-              {/* <div>{vacation.authorInfo._id}</div> */}
-              <img src={vacation.authorInfo.avatar} alt="?" />
-              <div>{vacation.authorInfo.username}</div>
-              <div>
-                {vacation.startingTime} - {vacation.endingTime}
-              </div>
-              <img src={vacation.cover} alt="???" />
-              <div>{vacation.views}</div>
-              <div>{vacation.likes}</div>
-              <div>{vacation.comments}</div>
-              <div>{vacation.title}</div>
-            </li>
-          ))}
-        </ul>
+      <div>
+        <div className={cx("user-info")}>1</div>
+        <div className={cx("feed")}>
+          <ul>
+            {vacations.map((vacation) => (
+              <li key={vacation._id}>
+                {/* <div>{vacation.authorInfo._id}</div> */}
+                <div>
+                  <img src={vacation.authorInfo.avatar} alt="?" />
+                  <div>{vacation.authorInfo.username}</div>
+                  <div>
+                    {vacation.startingTime} - {vacation.endingTime}
+                  </div>
+                </div>
+                <div className={cx("feed-cover")}>
+                  <img src={vacation.cover} alt="???" />
+                  <div className={cx("feed-cover-rad")}></div>
+                  <div className={`${cx("cover-item")} ${cx("views")}`}>
+                    {formatter.format(vacation.views)}
+                  </div>
+                  <div className={`${cx("cover-item")} ${cx("likes")}`}>
+                    {formatter.format(vacation.likes)}
+                  </div>
+                  <div className={`${cx("cover-item")} ${cx("cmts")}`}>
+                    {formatter.format(vacation.comments)}
+                  </div>
+                </div>
+                <div>{vacation.title}</div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
       <div className={cx("trending")}>
+        <h2 className={cx("trending-title")}>Trending Place Today</h2>
         <ul>
           {locations.map((location) => (
             <li key={location._id}># {location.title}</li>
           ))}
-          <div>...</div>
+          <div className={cx("trending-more")}>...</div>
         </ul>
       </div>
     </div>

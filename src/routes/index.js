@@ -8,6 +8,8 @@ import Overview from "~/modules/auth/Update/Overview/Overview";
 import Personal from "~/modules/auth/Update/Personal/Personal";
 import Security from "~/modules/auth/Update/Security/Security";
 import UpdateUser from "~/modules/auth/Update/UpdateUser";
+import HeaderLayout from "~/layouts/components/Header/Header";
+import NewFeed from "~/modules/newFeed/NewFeed";
 
 import {
   LOGIN_ROUTE,
@@ -48,5 +50,6 @@ export const publicRoutes = [
       },
     ],
   },
+  { path: "/home", component: NewFeed, layout: HeaderLayout },
   { path: "*", component: Error },
 ];

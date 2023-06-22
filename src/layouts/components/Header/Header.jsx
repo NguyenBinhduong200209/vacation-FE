@@ -21,10 +21,10 @@ const Header = ({ children }) => {
       const res = await axios.get(
         `https://vacation-backend.onrender.com/vacation?page=1&type=newFeed`,
         {
-          headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRrdWJhc2kiLCJpYXQiOjE2ODcyNDMzMDksImV4cCI6MTY4NzMyOTcwOX0.0kU_9uMmJqeA1d_BWvEnYdAb_WSuWlpeM-gMN_oiBRE",
-          },
+          // headers: {
+          //   Authorization:
+          //     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRrdWJhc2kiLCJpYXQiOjE2ODcyNDMzMDksImV4cCI6MTY4NzMyOTcwOX0.0kU_9uMmJqeA1d_BWvEnYdAb_WSuWlpeM-gMN_oiBRE",
+          // },
         }
       );
       setSuggestions(res.data.data || []);

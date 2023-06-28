@@ -10,6 +10,7 @@ const Profile = () => {
 
   const [vacations, setVacations] = useState([]);
   const [user, setUser] = useState({});
+  const [album, setAlbum] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [showVacations, setShowVacations] = useState(true);
   const [showAlbums, setShowAlbums] = useState(false);
@@ -30,6 +31,12 @@ const Profile = () => {
           `https://vacation-backend.onrender.com/auth/info`
         );
         setUser(fetchUser.data.data);
+
+        const fetchAlbum = await axiosClient.get(
+          `https://vacation-backend.onrender.com/album`
+        );
+        setAlbum(fetchAlbum.data.data);
+        console.log(fetchAlbum);
       } catch (error) {
         console.log(error);
       }

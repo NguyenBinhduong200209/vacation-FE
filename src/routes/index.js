@@ -7,6 +7,8 @@ import Overview from "~/modules/auth/Update/Overview/Overview";
 import Personal from "~/modules/auth/Update/Personal/Personal";
 import Security from "~/modules/auth/Update/Security/Security";
 import UpdateUser from "~/modules/auth/Update/UpdateUser";
+import HeaderLayout from "~/layouts/components/Header/Header";
+import NewFeed from "~/modules/newFeed/NewFeed";
 import Album from "~/modules/vacation/Album/Album";
 import Posts from "~/modules/vacation/Posts/Posts";
 import Vacation from "~/modules/vacation/Vacation";

@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames/bind";
 import styles from "./HeaderDropdown.module.scss";
 import { CaretDownOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 
@@ -11,6 +12,7 @@ const HeaderDropdown = () => {
   const [user, setUser] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -24,7 +26,8 @@ const HeaderDropdown = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    setUser({});
+    // setUser({});
+    navigate("/login");
   };
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);

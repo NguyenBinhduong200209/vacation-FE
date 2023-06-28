@@ -68,9 +68,9 @@ const Header = ({ children }) => {
                   {!hideSuggestions && (
                     <div>
                       <ul>
-                        {suggestions.map((suggestion) => (
+                        {suggestions.map((suggestion, index) => (
                           <li
-                            key={suggestion.id}
+                            key={index}
                             onClick={() => {
                               setValue(suggestion);
                               setHideSuggestions(true);
@@ -92,13 +92,7 @@ const Header = ({ children }) => {
               <BellOutlined />
             </div>
             <div className={cx("nav-user")}>
-              {/* <img src={user?.avatar} className={cx("user-ava")} alt="" />
-              <div className={cx("user-fullname")}>
-                <li>{user?.lastname}</li>
-                <li>{user?.firstname}</li>
-              </div>
-              <CaretDownOutlined /> */}
-              <HeaderDropdown></HeaderDropdown>
+              <HeaderDropdown />
             </div>
           </div>
         </div>

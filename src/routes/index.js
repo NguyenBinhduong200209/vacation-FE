@@ -26,6 +26,7 @@ import {
 import Profile from "~/modules/profile/Profile";
 
 export const publicRoutes = [
+  { path: "/", component: NewFeed, layout: DefaultLayout },
   {
     path: LOGIN_ROUTE,
     component: Login,
@@ -56,9 +57,7 @@ export const publicRoutes = [
     ],
   },
 
-  { path: "/home", component: NewFeed, layout: HeaderLayout },
-  { path: "/profile", component: Profile, layout: HeaderLayout },
-  { path: "*", component: Error },
+  { path: "/profile", component: Profile, layout: DefaultLayout },
 
   {
     path: VACATION_ROUTE,
@@ -79,7 +78,6 @@ export const publicRoutes = [
       },
     ],
   },
-  { path: "/", component: NewFeed, layout: DefaultLayout },
 
   { path: "*", component: NotFound },
 ];

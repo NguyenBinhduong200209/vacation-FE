@@ -67,18 +67,14 @@ const Vacation = () => {
             <div className={cx("sidebar-content")}>
               <div className={cx("user-info")}>
                 <div className={cx("user-index")}>
-                  <div className={cx("index")}>
-                    {authorInfo && authorInfo.friends}
-                  </div>
+                  <div className={cx("index")}>{authorInfo?.friends}</div>
                   <div className={cx("index-title")}>friends</div>
                 </div>
                 <div className={cx("user-avatar")}>
                   {/* <img src="" alt="" /> */}
                   <div className={cx("avatar")}></div>
                   <div className={cx("fullname")}>Ng Công Sơn</div>
-                  <div className={cx("username")}>
-                    {authorInfo && authorInfo.username}
-                  </div>
+                  <div className={cx("username")}>{authorInfo?.username}</div>
                 </div>
                 <div className={cx("user-index")}>
                   <div className={cx("index")}>{totalPost}</div>
@@ -99,7 +95,6 @@ const Vacation = () => {
                     <Tooltip
                       title={title}
                       color="grey"
-                      // overlayStyle={{ padding: "20px" }}
                       overlayInnerStyle={{
                         textAlign: "center",
                       }}

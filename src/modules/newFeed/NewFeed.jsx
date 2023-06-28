@@ -3,7 +3,6 @@ import classNames from "classnames/bind";
 import styles from "./NewFeed.module.scss";
 import { useState, useEffect } from "react";
 import axios from "axios";
-<<<<<<< HEAD
 import axiosClient from "~/api/axiosClient";
 // import { object } from "prop-types";
 import {
@@ -14,9 +13,7 @@ import {
   PictureOutlined,
   FolderOpenOutlined,
 } from "@ant-design/icons";
-=======
 import Image from "~/components/Image/Image";
->>>>>>> dd3ed9c (add createPost component)
 // import Preloader from "../Preloader/Preloader";
 
 const NewFeed = () => {
@@ -140,11 +137,10 @@ const NewFeed = () => {
         </div>
         <ul>
           {vacations.map((vacation) => (
-<<<<<<< HEAD
             <li key={vacation._id} className={cx("feed-post")}>
               <div className={cx("feed-head")}>
-                <img
-                  src={vacation.authorInfo.avatar}
+                <Image
+                  path={vacation.authorInfo.avatar}
                   alt="?"
                   className={cx("feed-ava")}
                 />
@@ -177,20 +173,6 @@ const NewFeed = () => {
               <div className={cx("feed-title-center")}>
                 <div className={cx("feed-title")}>{vacation.title}</div>
               </div>
-=======
-            <li key={vacation._id}>
-              {/* <div>{vacation.authorInfo._id}</div> */}
-              <Image src={vacation.authorInfo.avatar} alt="?" />
-              <div>{vacation.authorInfo.username}</div>
-              <div>
-                {vacation.startingTime} - {vacation.endingTime}
-              </div>
-              <Image src={vacation.cover} alt="???" />
-              <div>{vacation.views}</div>
-              <div>{vacation.likes}</div>
-              <div>{vacation.comments}</div>
-              <div>{vacation.title}</div>
->>>>>>> dd3ed9c (add createPost component)
             </li>
           ))}
         </ul>

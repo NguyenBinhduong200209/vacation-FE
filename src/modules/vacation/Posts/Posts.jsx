@@ -27,7 +27,10 @@ const Posts = () => {
     <div className={cx("wrapper")}>
       <div className={cx("container")}>
         <div className={cx("create-post")}>
-          <Image path={detail.authorInfo.avatar} className={cx("avatar")} />
+          <Image
+            path={detail.authorInfo && detail.authorInfo.avatar}
+            className={cx("avatar")}
+          />
           <div onClick={handleOpenModal}>Every step is a milestone...</div>
         </div>
 

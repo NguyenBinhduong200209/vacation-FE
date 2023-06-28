@@ -1,52 +1,52 @@
 @import url("https://fonts.googleapis.com/css2?family=Holtwood+One+SC&display=swap");
 
 .container {
+  --margin-top: 10vh;
   background-color: #1a1a1a;
   color: white;
   width: 100%;
-  height: 100%;
   min-height: 90vh;
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
-  padding: 2rem 4rem;
+  padding: 0 4rem;
+  margin-top: calc(var(--margin-top) - 26px);
 }
 
-// Trending places //
-.trending {
-  right: 2%;
+.trending,
+.user-info {
   position: fixed;
-  width: 20%;
-  // border: 2px solid;
-  border-radius: 25px;
+  top: var(--margin-top);
   display: flex;
   flex-direction: column;
-  // align-items: center;
-  background-color: #282828;
   height: 65vh;
+  border-radius: 25px;
+  background-color: #282828;
+}
+// Trending places //
+.trending {
+  width: 20%;
+  right: 6.6rem;
 }
 
 .trending ul {
   font-style: italic;
 }
 
-.trending-title {
-  margin: 3rem 0.5rem 2rem;
-  // font-style: italic;
-  font-family: "Holtwood One SC", serif;
-  font-size: 2.2rem;
-  text-align: center;
-}
-
 ul {
   margin: 0rem 3rem;
   font-size: 1.7rem;
-  // font-style: italic;
 }
 
 li {
   margin: 1.5rem 0rem;
   list-style: none;
+}
+
+.trending-title {
+  margin: 3rem 0.5rem 2rem;
+  font-family: "Holtwood One SC", serif;
+  font-size: 2.2rem;
+  text-align: center;
 }
 
 .trending-more {
@@ -150,10 +150,6 @@ li {
 //User info//
 .user-info {
   width: 23%;
-  position: fixed;
-  // border: 1px solid white;
-  border-radius: 30px;
-  height: 67vh;
 }
 
 .user-info-head {
@@ -262,14 +258,11 @@ li {
 //Create post//
 .create {
   height: 20vh;
-  // border: 1px solid white;
   margin: 0rem 3rem 4rem;
-  padding: 1rem 0rem 1.5rem;
   border-radius: 15px;
   font-size: 1.7rem;
   background-color: #282828;
   display: flex;
-  flex-direction: row;
   padding: 2rem 1.5rem 1rem;
 }
 

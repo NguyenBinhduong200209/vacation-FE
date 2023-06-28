@@ -1,6 +1,9 @@
 import { useState, forwardRef } from "react";
 import images from "~/images";
+import classNames from "classnames/bind";
+import styles from "./Image.module.scss";
 
+const cx = classNames.bind(styles);
 const Image = forwardRef(
   (
     {
@@ -19,12 +22,9 @@ const Image = forwardRef(
       setFallback(customFallback);
     };
 
-    // console.log(
-    //   `https://vacation-backend.onrender.com/static/resource/${path}`
-    // );
     return (
       <img
-        className={className}
+        className={cx(className)}
         ref={ref}
         src={
           fallback

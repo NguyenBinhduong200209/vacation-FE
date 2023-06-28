@@ -54,13 +54,43 @@
 }
 
 .nav-tools > * {
-  font-size: 2.5rem;
+  font-size: 2.85rem;
   color: white;
 }
 
 .nav-user {
-  border-radius: 30px;
-  background-color: #222222;
-  width: 20rem;
-  aspect-ratio: 7.5/1.2;
+  margin-right: 1rem;
+}
+
+/* Header.module.scss */
+
+.bar {
+  color: white;
+  position: relative;
+  /* Add any other styles you need for the bar element */
+
+  .suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #000000;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    /* Add any other styles you need for the suggestions element */
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        padding: 10px;
+        cursor: pointer;
+
+        &:hover {
+          color: beige;
+        }
+      }
+    }
+  }
 }

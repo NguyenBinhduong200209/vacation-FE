@@ -19,6 +19,7 @@ import {
   SECURITY_ROUTE,
   SETTING_ROUTE,
 } from "~/utils/constants";
+import Profile from "~/modules/profile/Profile";
 
 export const publicRoutes = [
   {
@@ -51,5 +52,6 @@ export const publicRoutes = [
     ],
   },
   { path: "/home", component: NewFeed, layout: HeaderLayout },
+  { path: "/profile", component: Profile, layout: HeaderLayout },
   { path: "*", component: Error },
 ];

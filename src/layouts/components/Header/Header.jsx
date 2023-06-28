@@ -1,14 +1,15 @@
 import styles from "./Header.module.scss";
 import classNames from "classnames/bind";
 import logoImg from "~/images/Vector.png";
-import axios from "axios";
 import { useEffect, useState } from "react";
+import HeaderDropdown from "./Dropdown/HeaderDropdown";
 import {
   HomeOutlined,
   PictureOutlined,
   FolderOpenOutlined,
   BellOutlined,
 } from "@ant-design/icons";
+import axiosClient from "~/api/axiosClient";
 
 const cx = classNames.bind(styles);
 const Header = ({ children }) => {
@@ -16,23 +17,19 @@ const Header = ({ children }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [hideSuggestions, setHideSuggestions] = useState(true);
 
-  const fetchData = async () => {
-    try {
-      const res = await axios.get(
-        `https://vacation-backend.onrender.com/vacation?page=1&type=newFeed`,
-        {
-          // headers: {
-          //   Authorization:
-          //     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRrdWJhc2kiLCJpYXQiOjE2ODcyNDMzMDksImV4cCI6MTY4NzMyOTcwOX0.0kU_9uMmJqeA1d_BWvEnYdAb_WSuWlpeM-gMN_oiBRE",
-          // },
-        }
-      );
-      setSuggestions(res.data.data || []);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await axiosClient.get(
+          `https://vacation-backend.onrender.com/search/user?value=${value}&page=1`
+        );
+        setSuggestions(res.data.data || []);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [value]);
+  console.log(value);
   console.log(suggestions);
 
   return (
@@ -50,7 +47,6 @@ const Header = ({ children }) => {
                 placeholder="# Explore..."
                 value={value}
                 onChange={(e) => {
-                  fetchData();
                   setValue(e.target.value);
                   setHideSuggestions(false);
                 }}
@@ -60,24 +56,26 @@ const Header = ({ children }) => {
                   }, 100);
                 }}
               />
-              <div className="bar">
-                {!hideSuggestions && (
-                  <div>
-                    <ul>
-                      {suggestions.map((suggestion) => (
-                        <li
-                          key={suggestion.id}
-                          onClick={() => {
-                            setValue(suggestion.title);
-                            setHideSuggestions(true);
-                          }}
-                        >
-                          {suggestion.title}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+              <div className={cx("bar")}>
+                <div className={cx("suggestions")}>
+                  {!hideSuggestions && (
+                    <div>
+                      <ul>
+                        {suggestions.map((suggestion) => (
+                          <li
+                            key={suggestion.id}
+                            onClick={() => {
+                              setValue(suggestion);
+                              setHideSuggestions(true);
+                            }}
+                          >
+                            {suggestion.title}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
             <div className={cx("nav-tools")}>
@@ -87,8 +85,13 @@ const Header = ({ children }) => {
               <BellOutlined />
             </div>
             <div className={cx("nav-user")}>
-              <div className={cx("nav-user-ava")}></div>
-              <div className={cx("nav-user-name")}></div>
+              {/* <img src={user?.avatar} className={cx("user-ava")} alt="" />
+              <div className={cx("user-fullname")}>
+                <li>{user?.lastname}</li>
+                <li>{user?.firstname}</li>
+              </div>
+              <CaretDownOutlined /> */}
+              <HeaderDropdown></HeaderDropdown>
             </div>
           </div>
         </div>

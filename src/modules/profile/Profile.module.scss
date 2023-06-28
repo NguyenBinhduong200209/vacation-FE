@@ -6,53 +6,7 @@
   width: 100%;
   height: 100%;
   min-height: 90vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   padding: 2rem 4rem;
-}
-
-// Trending places //
-.trending {
-  right: 2%;
-  position: fixed;
-  width: 20%;
-  // border: 2px solid;
-  border-radius: 25px;
-  display: flex;
-  flex-direction: column;
-  // align-items: center;
-  background-color: #282828;
-  height: 65vh;
-}
-
-.trending ul {
-  font-style: italic;
-}
-
-.trending-title {
-  margin: 3rem 0.5rem 2rem;
-  // font-style: italic;
-  font-family: "Holtwood One SC", serif;
-  font-size: 2.2rem;
-  text-align: center;
-}
-
-ul {
-  margin: 0rem 3rem;
-  font-size: 1.7rem;
-  // font-style: italic;
-}
-
-li {
-  margin: 1.5rem 0rem;
-  list-style: none;
-}
-
-.trending-more {
-  text-align: center;
-  margin: auto;
-  letter-spacing: 5px;
 }
 
 //Main Feed//
@@ -149,11 +103,7 @@ li {
 
 //User info//
 .user-info {
-  width: 23%;
-  position: fixed;
-  // border: 1px solid white;
   border-radius: 30px;
-  height: 67vh;
 }
 
 .user-info-head {

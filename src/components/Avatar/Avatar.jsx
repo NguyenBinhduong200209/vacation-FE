@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Upload, message } from "antd";
 import Loading from "../Loading/Loading";
 import authAPI from "~/api/authAPI";
@@ -23,24 +23,13 @@ const beforeUpload = (file) => {
   return isJpgOrPng && isLt2M;
 };
 
-const Avatar = () => {
-  const [loading, setLoading] = useState(false);
+const Avatar = ({ avatar }) => {
+  const [loading, setLoading] = useState(true);
   const [imageUrl, setImageUrl] = useState();
 
-  const uploadButton = (
-    <div>
-      {loading && <Loading />}
-      <div
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Upload
-      </div>
-    </div>
-  );
-  //   console.log(imageUrl);
+  const uploadButton = <div>{loading && <Loading />}</div>;
 
+  console.log(imageUrl);
   const handleAPI = (info) => {
     setLoading(true);
     const fetchAPI = async () => {

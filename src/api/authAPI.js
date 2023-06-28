@@ -11,8 +11,16 @@ const authAPI = {
   },
 
   updateUser: (info) => {
-    console.log(info);
     return axiosClient.put(URL.UPDATE_USER_URL, info);
+  },
+  getInfoUser: (id) => {
+    let url;
+    if (id) {
+      url = `${URL.GET_INFO_URL}/${id}`;
+    } else {
+      url = URL.GET_INFO_URL;
+    }
+    return axiosClient.get(url);
   },
 
   register: (info) => {
@@ -23,7 +31,11 @@ const authAPI = {
     return axiosClient.post(url);
   },
   resetPassword: (data) => {
-    return axiosClient.put(URL.RESET_URL, data);
+    const newData = {
+      password: data.newPassword,
+      passwordToken: data.passwordToken,
+    };
+    return axiosClient.put(URL.RESET_URL, newData);
   },
 };
 export default authAPI;

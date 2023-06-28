@@ -11,18 +11,25 @@ import { useNavigate } from "react-router-dom";
 import { LOGIN } from "~/utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { changeRenderList } from "~/store/slices/authSlice";
+import Notification from "~/components/Notifications/Notification";
 
 const cx = classNames.bind(styles);
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   // State save the value of Login/forgot and reset password
-  const { renderList, isLogin } = useSelector((state) => state.auth);
+  const { renderList, isLogin, status, message } = useSelector(
+    (state) => state.auth
+  );
   // Get the last item of "renderList"
   const current = renderList[renderList.length - 1].list;
+
+  // Check then RenderList is first item or not
   const [isFirstLevel, setLevel] = useState(true);
-  const navigate = useNavigate();
+
+  // When component mounts, user logged in before => direct to new feed
   useEffect(() => {
-    if (isLogin) {
+    if (isLogin && !status) {
       navigate("/");
     }
   }, [isLogin]);
@@ -51,8 +58,7 @@ const Login = () => {
       {isFirstLevel ? (
         <>
           <div className={cx("title")}>Login</div>
-          <InputForm list={current} type={LOGIN} />
-
+          <InputForm list={current} type={LOGIN} url="/" />
           <div className={cx("sub-ft")}>
             <div className={cx("checkbox")}>
               <input type="checkbox" id="squaredcheck" />
@@ -62,7 +68,6 @@ const Login = () => {
               Forgot password
             </div>
           </div>
-
           <div className={cx("other-methods")}>
             <div>or sign in with</div>
             <div className={cx("login-icon")}>

@@ -1,4 +1,4 @@
-// API URL
+// API Auth URL
 export const LOGIN_URL = "auth/login";
 export const LOGOUT_URL = "auth/logout";
 export const UPDATE_USER_URL = "auth/update";
@@ -6,11 +6,14 @@ export const REGISTER_URL = "auth/register";
 export const GET_INFO_URL = "auth/info";
 export const FORGOT_URL = "auth/forgot";
 export const RESET_URL = "auth/reset";
-// URL VACATION
+// API VACATION URL
 export const VACATION_URL = "vacation";
 export const POST_URL = "post";
 export const REACT_URL = "like";
 export const COMMENT_URL = "comment";
+
+//API Location URL
+export const LOCATION_URL = "location";
 
 // Auth constants
 
@@ -34,5 +37,5 @@ export const OVERVIEW_ROUTE = "/setting/overview";
 export const PERSONAL_ROUTE = "/setting/personal";
 export const SECURITY_ROUTE = "/setting/security";
 export const VACATION_ROUTE = "/vacation";
-export const VACATION_POSTS_ROUTE = "/vacation/posts";
+export const VACATION_POSTS_ROUTE = "/vacation/post";
 export const VACATION_ALBUM_ROUTE = "/vacation/album";

@@ -19,21 +19,23 @@ const error = (title, message) => {
   });
 };
 const Notification = (props) => {
-  const { status, messageResult, isLoading } = useSelector(
-    (state) => state.auth
-  );
+  const { status, messageResult } = useSelector((state) => state.auth);
   const { url, type, handleRoute } = props;
-  // console.log(messageResult);
-
   const navigate = useNavigate();
 
   useEffect(() => {
     function handleSucces() {
-      if (type === FORGOT) {
-        handleRoute();
-      } else if (type !== FORGOT && type !== RESET) {
-        navigate(url);
-        window.location.reload();
+      switch (type) {
+        case FORGOT:
+          handleRoute();
+          break;
+        case RESET:
+          window.location.reload();
+          break;
+        default:
+          navigate(url);
+          window.location.reload();
+          break;
       }
     }
 
@@ -44,7 +46,7 @@ const Notification = (props) => {
         error("error", messageResult);
       }
     }
-  }, [isLoading]);
+  }, []);
 
   return <></>;
 };

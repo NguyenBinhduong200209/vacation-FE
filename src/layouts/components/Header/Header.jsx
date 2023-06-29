@@ -32,20 +32,18 @@ const Header = ({ children }) => {
       }
     })();
   }, [value]);
-  console.log(value);
-  console.log(suggestions);
 
   return (
     <>
       <div className={cx("wrapper")}>
         <div className={cx("nav")}>
-          <div className={cx("nav-logo")}>
+          <a className={cx("nav-logo")} href="/">
             <Image
               src={images.Vector}
               className={cx("nav-logo-img")}
               alt="????"
             />
-          </div>
+          </a>
           <div className={cx("nav-left")}>
             <div className={cx("nav-search")}>
               <input
@@ -86,10 +84,18 @@ const Header = ({ children }) => {
               </div>
             </div>
             <div className={cx("nav-tools")}>
-              <HomeOutlined />
-              <PictureOutlined />
-              <FolderOpenOutlined />
-              <BellOutlined />
+              <a href="/">
+                <HomeOutlined />
+              </a>
+              <a href="/profile">
+                <PictureOutlined />
+              </a>
+              <a>
+                <FolderOpenOutlined />
+              </a>
+              <a>
+                <BellOutlined />
+              </a>
             </div>
             <div className={cx("nav-user")}>
               <HeaderDropdown />

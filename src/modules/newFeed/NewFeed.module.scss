@@ -37,9 +37,12 @@ ul {
   font-size: 1.7rem;
 }
 
+a,
 li {
+  display: block;
   margin: 1.5rem 0rem;
   list-style: none;
+  color: white;
 }
 
 .trending-title {

@@ -5,12 +5,13 @@ import classNames from "classnames/bind";
 import styles from "./HeaderDropdown.module.scss";
 import { CaretDownOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const cx = classNames.bind(styles);
 
 const HeaderDropdown = () => {
-  const [user, setUser] = useState({});
   const [isOpen, setIsOpen] = useState(false);
+  const { info } = useSelector((state) => state.auth);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
@@ -37,26 +38,13 @@ const HeaderDropdown = () => {
     };
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const fetchUser = await axiosClient.get(
-          `https://vacation-backend.onrender.com/auth/info`
-        );
-        setUser(fetchUser.data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
-
   return (
     <div ref={dropdownRef} className={cx("dropdown-container")}>
       <div className={cx("nav-user")} onClick={toggleDropdown}>
-        <img src={user?.avatar} className={cx("user-ava")} alt="" />
+        <img src={info?.avatar} className={cx("user-ava")} alt="" />
         <div className={cx("user-fullname")}>
-          <li>{user?.lastname}</li>
-          <li>{user?.firstname}</li>
+          <li>{info?.lastname}</li>
+          <li>{info?.firstname}</li>
         </div>
         <CaretDownOutlined className={cx("dropdown-icon")} />
       </div>

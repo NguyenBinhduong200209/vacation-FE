@@ -33,6 +33,9 @@ const Header = ({ children }) => {
     })();
   }, [value]);
 
+  console.log(suggestions);
+
+
   return (
     <>
       <div className={cx("wrapper")}>
@@ -74,7 +77,7 @@ const Header = ({ children }) => {
                               setHideSuggestions(true);
                             }}
                           >
-                            {suggestion.title}
+                            {suggestion.username}
                           </li>
                         ))}
                       </ul>

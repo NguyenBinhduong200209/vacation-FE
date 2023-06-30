@@ -24,6 +24,8 @@ import {
   VACATION_POSTS_ROUTE,
   VACATION_ROUTE,
 } from "~/utils/constants";
+import Profile from "~/modules/profile/Profile";
+
 
 export const publicRoutes = [
   { path: "/", component: NewFeed, layout: DefaultLayout },

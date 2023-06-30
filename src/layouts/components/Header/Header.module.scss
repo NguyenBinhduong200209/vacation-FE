@@ -4,6 +4,11 @@
   top: 0;
   height: 10vh;
   z-index: 99;
+
+  a {
+    display: block;
+    cursor: pointer;
+  }
 }
 
 .nav {

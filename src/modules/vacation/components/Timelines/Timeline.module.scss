@@ -6,11 +6,11 @@
   flex-direction: column;
   align-items: center;
   position: fixed;
-  top: calc(10vh + 2.6rem);
+  top: var(--position-top);
   right: 8rem;
   width: 20%;
   min-width: 250px;
-  min-height: 70vh;
+  min-height: 75vh;
   padding: var(--header-padding);
   background-color: #282828;
   border-radius: 15px;

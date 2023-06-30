@@ -24,7 +24,7 @@ const Image = forwardRef(
 
     return (
       <img
-        className={cx(className)}
+        className={cx(className, "image")}
         ref={ref}
         src={
           fallback

@@ -1,6 +1,25 @@
 import vacationAPI from "~/api/vacationAPI";
 
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
+export const getListVacation = createAsyncThunk(
+  "vacation/getListVacation",
+  async (arg, thunkAPI) => {
+    try {
+      const res = await vacationAPI.getListVacation(arg);
+      console.log(res);
+      return {
+        data: res.data?.data,
+        meta: res.data?.meta,
+      };
+    } catch (error) {
+      console.log("error:", error);
+      return {
+        status: error.response.status,
+        message: error.response.data.message,
+      };
+    }
+  }
+);
 
 export const getDetailVacation = createAsyncThunk(
   "vacation/getDetailVacation",
@@ -22,7 +41,6 @@ export const getDetailVacation = createAsyncThunk(
 export const getManyPosts = createAsyncThunk(
   "vacation/getManyPosts",
   async (arg, thunkAPI) => {
-    console.log(arg);
     try {
       const res = await vacationAPI.getManyPosts(arg);
       console.log(res);
@@ -40,6 +58,10 @@ export const getManyPosts = createAsyncThunk(
 const vacationSlice = createSlice({
   name: "vacation",
   initialState: {
+    listVacation: {
+      list: [],
+      meta: {},
+    },
     detail: {},
     posts: {
       totalPost: null,
@@ -61,10 +83,26 @@ const vacationSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getManyPosts.fulfilled, (state, action) => {
-        state.posts = {
-          totalPost: action.payload.meta.total,
-          postList: action.payload.data,
-        };
+        if (action.payload) {
+          state.posts = {
+            totalPost: action.payload.meta.total,
+            postList: action.payload.data,
+          };
+        }
+
+        state.isLoading = false;
+      })
+      .addCase(getListVacation.pending, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(getListVacation.fulfilled, (state, action) => {
+        console.log(action.payload);
+        if (action.payload) {
+          const newList = [...state.listVacation.list, ...action.payload.data];
+          state.listVacation.list = newList;
+          state.listVacation.meta = action.payload.meta;
+        }
+
         state.isLoading = false;
       });
   },

@@ -2,12 +2,17 @@ import axiosClient from "./axiosClient";
 import * as URL from "../utils/constants";
 
 const vacationAPI = {
+  getListVacation: (data) => {
+    const url = `${URL.VACATION_URL}?type=${data.type}&page=${data.page}`;
+    return axiosClient.get(url);
+  },
   getDetailVacation: (id) => {
     const url = `${URL.VACATION_URL}/${id}`;
     return axiosClient.get(url);
   },
   getManyPosts: (data) => {
     const url = `${URL.POST_URL}?type=${data.type}&id=${data.id}&page=${data.page}`;
+    console.log(url);
     return axiosClient.get(url);
   },
   getLikedList: (data) => {

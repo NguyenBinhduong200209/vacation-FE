@@ -32,7 +32,6 @@ const Header = ({ children }) => {
       }
     })();
   }, [value]);
-  console.log(value);
   console.log(suggestions);
 
   return (
@@ -76,7 +75,7 @@ const Header = ({ children }) => {
                               setHideSuggestions(true);
                             }}
                           >
-                            {suggestion.title}
+                            {suggestion.username}
                           </li>
                         ))}
                       </ul>

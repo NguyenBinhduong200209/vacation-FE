@@ -11,7 +11,7 @@ import Album from "~/modules/vacation/Album/Album";
 import Posts from "~/modules/vacation/Posts/Posts";
 import Vacation from "~/modules/vacation/Vacation";
 import Profile from "~/modules/profile/Profile";
-import NewFeed from "~/modules/newfeed/NewFeed";
+import NewFeed from "~/modules/newFeed/NewFeed";
 
 import {
   LOGIN_ROUTE,
@@ -24,8 +24,6 @@ import {
   VACATION_POSTS_ROUTE,
   VACATION_ROUTE,
 } from "~/utils/constants";
-import Profile from "~/modules/profile/Profile";
-
 
 export const publicRoutes = [
   { path: "/", component: NewFeed, layout: DefaultLayout },

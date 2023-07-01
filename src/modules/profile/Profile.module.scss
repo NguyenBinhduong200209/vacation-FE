@@ -4,16 +4,15 @@
   background-color: #1a1a1a;
   color: white;
   width: 100%;
-  min-height: 90vh;
-  padding: 2rem 4rem;
+  // min-height: 90vh;
+  padding: 2rem 0rem;
+  margin-top: 10rem;
 }
 
 //Main Feed//
 
 .feed {
   margin: auto;
-  width: 48%;
-  padding-left: 3rem;
 }
 
 .feed-post {
@@ -103,6 +102,13 @@
 //User info//
 .user-info {
   border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  width: 30%;
+  left: 8rem;
+  top: 25rem;
+  z-index: 20;
 }
 
 .user-info-head {
@@ -118,7 +124,9 @@
 
 .user-info-header {
   width: 100%;
+  flex-direction: column;
   display: flex;
+  align-items: center;
 }
 
 .user-info-header > * {
@@ -150,9 +158,18 @@
   pointer-events: none;
 }
 
-.user-info-bgimg {
+.user-info-background {
+  display: flex;
+  justify-content: center;
+  top: 10vh;
+  position: fixed;
   width: 100%;
-  height: 14rem;
+  z-index: 10;
+}
+
+.user-info-bgimg {
+  width: 90%;
+  height: 18rem;
   object-fit: cover;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
@@ -208,63 +225,26 @@
   font-weight: lighter;
 }
 
-//Create post//
-.create {
-  height: 20vh;
-  // border: 1px solid white;
-  margin: 0rem 3rem 4rem;
-  padding: 1rem 0rem 1.5rem;
-  border-radius: 15px;
-  font-size: 1.7rem;
-  background-color: #282828;
+.content {
+  --top: 25rem;
+  position: relative;
+  left: 35%;
+  width: 60%;
+  // top: 25rem;
+  z-index: 1;
+  top: var(--top);
+  // height: calc(100% - var(--top));
+}
+
+.navigation {
+  left: 36%;
+  position: fixed;
+  top: 34%;
+  font-size: 2rem;
   display: flex;
-  flex-direction: row;
-  padding: 2rem 1.5rem 1rem;
-}
-
-.user-ava {
-  width: 5rem;
-  height: 5rem;
-  border: 1px solid white;
-  border-radius: 40px;
-  object-fit: cover;
-}
-
-.create-posts {
-  width: 80%;
-  margin: 0 3rem;
-}
-
-.create-line {
-  font-size: 1.5rem;
-  text-align: start;
-  width: 100%;
-  height: 5rem;
-  border-radius: 10px;
-  background-color: #222222;
-  color: white;
-  padding: 2rem;
-  letter-spacing: 1px;
-}
-
-.create-details {
-  display: flex;
-  justify-content: space-between;
-}
-
-.create-sthg {
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  margin-top: 2rem;
-  width: 30%;
-  height: 4rem;
-  border-radius: 10px;
-  color: white;
-  background-color: #222222;
-}
-
-.create-sthg-details {
-  margin: 0.5rem;
+  // border: 2px solid;
+  width: 60%;
+  height: 6rem;
+  z-index: 10;
+  background-color: #1a1a1a;
 }

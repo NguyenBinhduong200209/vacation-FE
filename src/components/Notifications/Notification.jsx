@@ -41,7 +41,7 @@ const Notification = (props) => {
 
     if (status && messageResult) {
       if (status.toString().startsWith("2")) {
-        success("success", messageResult, handleSucces);
+        success("success",messageResult, handleSucces);
       } else {
         error("error", messageResult);
       }

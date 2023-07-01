@@ -6,18 +6,20 @@ import moment from "moment/moment";
 
 import Interaction from "../../components/Interact/Interaction";
 import Image from "~/components/Image/Image";
+import { useEffect } from "react";
 
 const cx = classNames.bind(styles);
 
 const PostItem = (props) => {
   const { postDetail } = props;
-  // console.log("postDetail", postDetail);
+  console.log("postDetail", postDetail);
 
   const { authorInfo, content, resource, comments, likes, lastUpdateAt, _id } =
     postDetail;
 
   return (
     <div className={cx("wrapper")}>
+
       <header>
         <div className={cx("user-info")}>
           <Image path={authorInfo.avatar} alt="" className={cx("avatar")} />
@@ -43,7 +45,9 @@ const PostItem = (props) => {
           ))}
         </div>
       </main>
+
       <Interaction likes={likes} comments={comments} postID={_id} />
+
     </div>
   );
 };

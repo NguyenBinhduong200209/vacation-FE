@@ -10,10 +10,11 @@ import { useSelector } from "react-redux";
 const cx = classNames.bind(styles);
 
 const HeaderDropdown = () => {
+  const navigate = useNavigate()
+  const [user, setUser] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const { info } = useSelector((state) => state.auth);
   const dropdownRef = useRef(null);
-  const navigate = useNavigate();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -27,7 +28,7 @@ const HeaderDropdown = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    // setUser({});
+    setUser({});
     navigate("/login");
   };
   useEffect(() => {

@@ -8,12 +8,38 @@ import TextArea from "antd/es/input/TextArea";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
+import axios from "axios";
+
 const cx = classNames.bind(styles);
 Modal.setAppElement("#root");
 const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
   const { detail } = useSelector((state) => state.vacation);
   const { authorInfo } = detail;
-  const [value, setValue] = useState("");
+  const [content, setContent] = useState("");
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    const response = await fetch('https://vacation-backend.onrender.com/post', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token
+    },
+    body: JSON.stringify({
+      authorInfo,
+      content,
+      resource: [], 
+      comments: [],
+      likes: [], 
+      lastUpdateAt: new Date(),
+      locationId: "6486f0b8bf997eadb3cfed20",
+      vacationId: "6486bcc25782c2081f86fe9d"
+    })
+  });
+  const data = await response.json();
+  console.log(data);
+  } 
 
   return (
     <Modal
@@ -48,6 +74,8 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
               minRows: 6,
               maxRows: 12,
             }}
+            value={content}
+            onChange={e => setContent(e.target.value)}
           />
           <div className={cx("post-extension")}>
             <div> Add on</div>
@@ -60,7 +88,7 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
               </div>
             </div>
           </div>
-          <button className={cx("btn-submit")}>Sending Post</button>
+          <button onClick={handleClick} className={cx("btn-submit")}>Sending Post</button>
         </div>
       </div>
     </Modal>

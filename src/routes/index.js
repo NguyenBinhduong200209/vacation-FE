@@ -25,6 +25,7 @@ import {
   VACATION_ROUTE,
 } from "~/utils/constants";
 
+
 export const publicRoutes = [
   { path: "/", component: NewFeed, layout: DefaultLayout },
   {

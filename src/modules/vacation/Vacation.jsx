@@ -133,7 +133,7 @@ const Vacation = () => {
                   <div>
                     <FontAwesomeIcon icon={faCalendar} className={cx("icon")} />
                     <span>
-                      {startDate} - {endDate}
+                      From {startDate} to {endDate}
                     </span>
                   </div>
                 </div>

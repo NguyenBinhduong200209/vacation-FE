@@ -14,6 +14,7 @@ const cx = classNames.bind(styles);
 const Posts = () => {
   const [showModal, setShowModal] = useState(false);
   const { posts, detail } = useSelector((state) => state.vacation);
+  
   const { postList } = posts;
   // console.log(posts);
   const handleCloseModal = () => {

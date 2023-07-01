@@ -81,42 +81,48 @@ const Profile = () => {
 
   return (
     <div className={cx("container")}>
-      <div className={cx("user-info-background")}>
+      {/* <div className={cx("user-info-background")}>
         <img
           src="https://images.unsplash.com/photo-1553095066-5014bc7b7f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2FsbCUyMGJhY2tncm91bmR8ZW58MHx8MHx8fDA%3D&w=1000&q=80"
           alt="?"
           className={cx("user-info-bgimg")}
         />
-      </div>
-      <div className={cx("user-info")}>
-        <div className={cx("user-info-head")}>
-          <div className={cx("user-info-header")}>
-            <img src={user?.avatar} className={cx("user-info-bgava")} alt="" />
-            <div className={cx("user-info-fullname")}>
-              <li>{user?.lastname}</li>
-              <li>{user?.firstname}</li>
+      </div> */}
+      <div className={cx("display")}>
+        <div className={cx("user-info")}>
+          <div className={cx("user-info-head")}>
+            <div className={cx("user-info-header")}>
+              <img
+                src={user?.avatar}
+                className={cx("user-info-bgava")}
+                alt=""
+              />
+              <div className={cx("user-info-fullname")}>
+                <li>{user?.lastname}</li>
+                <li>{user?.firstname}</li>
+              </div>
+              <li className={cx("user-info-username")}>@{user?.username}</li>
+              <li className={cx("user-info-des")}>{user?.description}</li>
+              <li>{user?.totalFriends}</li>
+              <li>{user?.totalPosts}</li>
+              <li>{user?.totalVacations}</li>
+              <li>{user?.totalLikes}</li>
             </div>
-            <li className={cx("user-info-username")}>@{user?.username}</li>
-            <li className={cx("user-info-des")}>{user?.description}</li>
-            <li>{user?.totalFriends}</li>
-            <li>{user?.totalPosts}</li>
-            <li>{user?.totalVacations}</li>
-            <li>{user?.totalLikes}</li>
           </div>
         </div>
-      </div>
-      <div className={cx("navigation")}>
-        <div
-          className={cx("nav-item", { active: showVacations })}
-          onClick={handleShowVacations}
-        >
-          Vacations
-        </div>
-        <div
-          className={cx("nav-item", { active: showAlbums })}
-          onClick={handleShowAlbums}
-        >
-          Albums
+        <div className={cx("navigation")}>
+          <div
+            className={cx("nav-item", { active: showVacations })}
+            onClick={handleShowVacations}
+          >
+            Vacations
+          </div>
+          <div
+            className={cx("nav-item", { active: showAlbums })}
+            onClick={handleShowAlbums}
+          >
+            Albums
+          </div>
         </div>
       </div>
       <div className={cx("content")}>
@@ -165,7 +171,13 @@ const Profile = () => {
             </ul>
           </div>
         )}
-        {showAlbums && <div className={cx("albums")}>Album nè</div>}
+        {showAlbums && (
+          <div className={cx("albums")}>
+            {album.map((album) => (
+              <div>{album.title}</div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

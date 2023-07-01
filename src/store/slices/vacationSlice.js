@@ -96,9 +96,12 @@ const vacationSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(getListVacation.fulfilled, (state, action) => {
-        console.log(action.payload);
+        // console.log(action.payload);
         if (action.payload) {
-          const newList = [...state.listVacation.list, ...action.payload.data];
+          let newList = [];
+          if (action.payload.data?.length > 0) {
+            newList = [...state.listVacation.list, ...action.payload.data];
+          }
           state.listVacation.list = newList;
           state.listVacation.meta = action.payload.meta;
         }

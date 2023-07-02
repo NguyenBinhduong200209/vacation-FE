@@ -4,7 +4,7 @@ import classNames from "classnames/bind";
 const cx = classNames.bind(styles);
 
 const Album = () => {
-  return <div>Album</div>;
+  return <div></div>;
 };
 
 export default Album;

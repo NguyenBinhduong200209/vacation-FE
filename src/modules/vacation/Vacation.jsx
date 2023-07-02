@@ -23,49 +23,75 @@ import Loading from "~/components/Loading/Loading";
 import { getDate } from "~/helpers/function";
 import { Modal, Tooltip } from "antd";
 import Image from "~/components/Image/Image";
-import axiosClient from "~/api/axiosClient";
+
+import Header from "~/layouts/components/Header/Header";
 
 const cx = classNames.bind(styles);
-const Vacation = () => {
+const Vacation = ({ children }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  let [searchParams] = useSearchParams();
+  let vacationID = searchParams.get("vacationID");
   const [modal2Open, setModal2Open] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const { detail, isLoading, posts } = useSelector((state) => state.vacation);
   const { authorInfo, cover, members, title, startingTime, endingTime } =
     detail;
-  const { totalPost } = posts;
+
+  // console.log("detail", detail);
   const startDate = getDate(startingTime);
   const endDate = getDate(endingTime);
-  let [searchParams] = useSearchParams();
-  let vacationID = searchParams.get("vacationID");
-  console.log(posts);
+
   const handleRoute = (url) => {
     navigate(`${url}?vacationID=${vacationID}`);
   };
-
+  // Get vacation detail
   useEffect(() => {
-    const fetch = async () => {
-      const res = await axiosClient.get(
-        "https://vacation-backend.onrender.com/vacation?page=1&type=userProfile"
-      );
-      console.log(res);
+    dispatch(getDetailVacation(vacationID));
+  }, []);
+
+  const loadMorePosts = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+  // scroll event
+  useEffect(() => {
+    const handleScroll = () => {
+      const { scrollTop, clientHeight, scrollHeight } =
+        document.documentElement;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight;
+
+      if (isAtBottom) {
+        loadMorePosts();
+      }
     };
 
-    fetch();
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
+  // get posts of vacation
   useEffect(() => {
-    Promise.all([
-      dispatch(getDetailVacation(vacationID)),
-      dispatch(getManyPosts({ type: "vacation", id: vacationID, page: 1 })),
-    ]);
-  }, []);
+    if (currentPage <= posts.meta?.pages || currentPage === 1) {
+      dispatch(
+        getManyPosts({
+          type: "vacation",
+          id: vacationID,
+          page: currentPage,
+        })
+      );
+    }
+  }, [currentPage]);
+
   return (
     <>
       {isLoading ? (
         <Loading />
       ) : (
         <div className={cx("wrapper")}>
+          <Header />
           <div className={cx("sidebar")}>
             <Image src={cover} alt="This is BG" className={cx("img-BG")} />
             <div className={cx("sidebar-content")}>
@@ -83,7 +109,7 @@ const Vacation = () => {
                   <div className={cx("username")}>{authorInfo?.username}</div>
                 </div>
                 <div className={cx("user-index")}>
-                  <div className={cx("index")}>{totalPost || 0}</div>
+                  <div className={cx("index")}>{posts.meta?.total || 0}</div>
                   <div className={cx("index-title")}>Posts</div>
                 </div>
               </div>
@@ -152,7 +178,8 @@ const Vacation = () => {
             </div>
           </div>
           <div className={cx("content")}>
-            <Outlet />
+            {/* <Outlet /> */}
+            {children}
           </div>
         </div>
       )}

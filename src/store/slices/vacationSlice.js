@@ -6,11 +6,8 @@ export const getListVacation = createAsyncThunk(
   async (arg, thunkAPI) => {
     try {
       const res = await vacationAPI.getListVacation(arg);
-      console.log(res);
-      return {
-        data: res.data?.data,
-        meta: res.data?.meta,
-      };
+      // console.log(res);
+      return res.data;
     } catch (error) {
       console.log("error:", error);
       return {
@@ -26,7 +23,7 @@ export const getDetailVacation = createAsyncThunk(
   async (arg, thunkAPI) => {
     try {
       const res = await vacationAPI.getDetailVacation(arg);
-      console.log(res);
+      // console.log(res);
       return res.data.data;
     } catch (error) {
       console.log("error:", error);
@@ -43,10 +40,11 @@ export const getManyPosts = createAsyncThunk(
   async (arg, thunkAPI) => {
     try {
       const res = await vacationAPI.getManyPosts(arg);
-      console.log(res);
+
       return res.data;
     } catch (error) {
       console.log("error:", error);
+
       return {
         status: error.response.status,
         message: error.response.data.message,
@@ -64,12 +62,17 @@ const vacationSlice = createSlice({
     },
     detail: {},
     posts: {
-      totalPost: null,
       postList: [],
+      meta: {},
     },
+    activeTimeline: "1990-01-01",
     isLoading: false,
   },
-  reducers: {},
+  reducers: {
+    setTimeline: (state, action) => {
+      state.activeTimeline = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getDetailVacation.pending, (state) => {
@@ -83,11 +86,15 @@ const vacationSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getManyPosts.fulfilled, (state, action) => {
+        console.log(action.payload);
         if (action.payload) {
-          state.posts = {
-            totalPost: action.payload.meta.total,
-            postList: action.payload.data,
-          };
+          let newList = [];
+          if (action.payload.data?.length > 0) {
+            newList = state.posts.postList.concat(action.payload.data);
+          }
+
+          state.posts.postList = newList;
+          state.posts.meta = action.payload.meta;
         }
 
         state.isLoading = false;
@@ -97,13 +104,14 @@ const vacationSlice = createSlice({
       })
       .addCase(getListVacation.fulfilled, (state, action) => {
         // console.log(action.payload);
+
         if (action.payload) {
           let newList = [];
           if (action.payload.data?.length > 0) {
-            newList = [...state.listVacation.list, ...action.payload.data];
+            newList = state.listVacation.list.concat(action.payload.data);
           }
           state.listVacation.list = newList;
-          state.listVacation.meta = action.payload.meta;
+          state.listVacation.meta = action.payload?.meta;
         }
 
         state.isLoading = false;
@@ -111,5 +119,5 @@ const vacationSlice = createSlice({
   },
 });
 const { reducer, actions } = vacationSlice;
-export const {} = actions;
+export const { setTimeline } = actions;
 export default reducer;

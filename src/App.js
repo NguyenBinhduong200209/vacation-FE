@@ -1,9 +1,11 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Fragment, useEffect } from "react";
+import React, { Fragment, Suspense, useEffect } from "react";
 import { createBrowserHistory } from "history";
 import { publicRoutes } from "./routes";
 import { useDispatch, useSelector } from "react-redux";
 import { getInfoUser } from "./store/slices/authSlice";
+import Loading from "./components/Loading/Loading";
+import Preloader from "./modules/Preloader/Preloader";
 
 function App() {
   const history = createBrowserHistory();
@@ -12,7 +14,7 @@ function App() {
   useEffect(() => {
     if (isLogin) dispatch(getInfoUser());
   }, []);
-
+  <Loading className="loading-app" />;
   return (
     <Router history={history}>
       <div className="App">
@@ -35,9 +37,11 @@ function App() {
                 key={index}
                 path={route.path}
                 element={
-                  <Layout>
-                    <Page />
-                  </Layout>
+                  <Suspense fallback={<Preloader />}>
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  </Suspense>
                 }
               >
                 {childArr !== undefined &&

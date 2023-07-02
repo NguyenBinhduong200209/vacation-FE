@@ -33,7 +33,8 @@ const Image = forwardRef(
             ? src
             : path === undefined
             ? fallback
-            : `https://vacation-backend.onrender.com/static/resource/${path}`
+            : // : `https://vacation-backend.onrender.com/static/resource/${path}`
+              ""
         }
         alt={alt}
         {...props}

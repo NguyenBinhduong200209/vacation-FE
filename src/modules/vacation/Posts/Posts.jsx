@@ -5,7 +5,7 @@ import Timeline from "../components/Timelines/Timeline";
 import PostItem from "./PostItem/PostItem";
 import { useSelector } from "react-redux";
 import ReactModal from "react-modal";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CreatePost from "./CreatePost/CreatePost";
 import Image from "~/components/Image/Image";
 
@@ -36,7 +36,7 @@ const Posts = () => {
         </div>
 
         <CreatePost handleCloseModal={handleCloseModal} showModal={showModal} />
-        {postList.map((item, index) => (
+        {postList?.map((item, index) => (
           <PostItem postDetail={item} key={index} />
         ))}
       </div>

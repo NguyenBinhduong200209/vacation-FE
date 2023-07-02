@@ -6,20 +6,52 @@ import moment from "moment/moment";
 
 import Interaction from "../../components/Interact/Interaction";
 import Image from "~/components/Image/Image";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { setTimeline } from "~/store/slices/vacationSlice";
+import { getDate } from "~/helpers/function";
+import { useDispatch } from "react-redux";
 
 const cx = classNames.bind(styles);
 
-const PostItem = (props) => {
-  const { postDetail } = props;
-  console.log("postDetail", postDetail);
+const PostItem = ({ postDetail }) => {
+  const {
+    authorInfo,
+    content,
+    resource,
+    comments,
+    likes,
+    lastUpdateAt,
+    _id,
+    createdAt,
+  } = postDetail;
+  console.log(postDetail);
+  const postItemRef = useRef(null);
+  const dispatch = useDispatch();
 
-  const { authorInfo, content, resource, comments, likes, lastUpdateAt, _id } =
-    postDetail;
+  useEffect(() => {
+    const handleScrollPost = () => {
+      const element = postItemRef.current;
+      const distanceFromTop = element.getBoundingClientRect().top;
+
+      if (
+        distanceFromTop <= window.innerHeight * 0.2 &&
+        distanceFromTop >= window.innerHeight * 0.1
+      ) {
+        dispatch(setTimeline(postItemRef.current.getAttribute("timeline")));
+      }
+    };
+
+    window.addEventListener("scroll", handleScrollPost);
+
+    return () => window.removeEventListener("scroll", handleScrollPost);
+  }, []);
 
   return (
-    <div className={cx("wrapper")}>
-
+    <div
+      className={cx("wrapper")}
+      ref={postItemRef}
+      timeline={getDate(createdAt)}
+    >
       <header>
         <div className={cx("user-info")}>
           <Image path={authorInfo.avatar} alt="" className={cx("avatar")} />
@@ -47,7 +79,6 @@ const PostItem = (props) => {
       </main>
 
       <Interaction likes={likes} comments={comments} postID={_id} />
-
     </div>
   );
 };

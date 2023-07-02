@@ -1,9 +1,16 @@
 .page {
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
+.loading-app {
+  background-color: black;
+  .ring {
+    width: 60px;
+    height: 60px;
+  }
+}
 .container {
   display: flex;
   justify-content: center;

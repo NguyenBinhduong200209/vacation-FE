@@ -1,34 +1,57 @@
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./Timeline.module.scss";
 import classNames from "classnames/bind";
+import { useEffect } from "react";
+import { setTimeline } from "~/store/slices/vacationSlice";
+import Loading from "~/components/Loading/Loading";
 
 const cx = classNames.bind(styles);
 
 const Timeline = () => {
-  return (
-    <div className={cx("wrapper")}>
-      <div className={cx("container")}>
-        <header># Timeline</header>
-        <main>
-          <div className={cx("timeline-item", "item-active")}>
-            <span className={cx("index")}>1.</span>
-            <span className={cx("value")}>21 - 06 - 2023</span>
-          </div>
-          <div className={cx("timeline-item")}>
-            <span className={cx("index")}>2.</span>
-            <span className={cx("value")}>21 - 06 - 2023</span>
-          </div>
-          <div className={cx("timeline-item")}>
-            <span className={cx("index")}>3.</span>
-            <span className={cx("value")}>21 - 06 - 2023</span>
-          </div>
-        </main>
-      </div>
+  const dispatch = useDispatch();
+  const { isLoading, posts, activeTimeline } = useSelector(
+    (state) => state.vacation
+  );
 
-      <div className={cx("active")}>
-        <span>Date</span>
-        <span className={cx("date")}>21 - 06 - 2023</span>
-      </div>
-    </div>
+  useEffect(() => {
+    if (posts.meta.timeline) {
+      dispatch(setTimeline(posts.meta.timeline[0]));
+    }
+  }, []);
+
+  return (
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className={cx("wrapper")}>
+          <div className={cx("container")}>
+            <header># Timeline</header>
+            <main>
+              {posts.meta.timeline?.map((item, index) => {
+                return (
+                  <div
+                    className={cx(
+                      "timeline-item",
+                      activeTimeline === item && "item-active"
+                    )}
+                    key={index}
+                  >
+                    <span className={cx("index")}>{index + 1}.</span>
+                    <span className={cx("value")}>{item}</span>
+                  </div>
+                );
+              })}
+            </main>
+          </div>
+
+          <div className={cx("active")}>
+            <span>Date</span>
+            <span className={cx("date")}>{activeTimeline}</span>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

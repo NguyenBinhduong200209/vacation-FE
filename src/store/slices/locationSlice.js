@@ -6,7 +6,7 @@ export const getTrendingPlace = createAsyncThunk(
   async (arg, thunkAPI) => {
     try {
       const res = await locationAPI.getTrendingPlace(arg);
-      console.log(res);
+      // console.log(res);
       return res.data.data;
     } catch (error) {
       console.log("error:", error);

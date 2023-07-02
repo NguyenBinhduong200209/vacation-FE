@@ -21,56 +21,58 @@ const Interaction = (props) => {
   const [likedList, setLikedList] = useState([]);
   const [value, setValue] = useState("");
   const [isLiked, setIsLiked] = useState(false);
-  const [isComment, setisComment] = useState(false);
+  const [isComment, setisComment] = useState(true);
   const { comments, postID } = props;
-  const { info } = useSelector((state) => state.auth);
 
   // get comment list
+  // useEffect(() => {
+  //   try {
+  //     const fetchAPI = async () => {
+  //       const res = await vacationAPI.getLikedList({
+  //         id: postID,
+  //         type: "post",
+  //         page: 1,
+  //       });
+  //       const items = res.data.data?.map((item) => {
+  //         return {
+  //           key: item.authorInfo._id,
+  //           label: (
+  //             <div className={cx("react-list-item")}>
+  //               <Image path={item.authorInfo.avatar} alt="" />
+  //               <span>{item.authorInfo.username}</span>
+  //             </div>
+  //           ),
+  //         };
+  //       });
+
+  //       setLikedList(items);
+
+  //       if (items?.some((item) => item.key === info.id)) {
+  //         setIsLiked(true);
+  //       } else setIsLiked(false);
+  //     };
+  //     fetchAPI();
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // }, [isLiked]);
+
+  // Get comment list
   useEffect(() => {
-    try {
-      const fetchAPI = async () => {
-        const res = await vacationAPI.getLikedList({
+    if (open && isComment) {
+      console.log("Get API");
+      const fetchApi = async () => {
+        const res = await vacationAPI.getCommentList({
           id: postID,
           type: "post",
           page: 1,
         });
-
-        const items = res.data.data.map((item) => {
-          return {
-            key: item.authorInfo._id,
-            label: (
-              <div className={cx("react-list-item")}>
-                <Image path={item.authorInfo.avatar} alt="" />
-                <span>{item.authorInfo.username}</span>
-              </div>
-            ),
-          };
-        });
-
-        setLikedList(items);
-
-        if (items.some((item) => item.key === info.id)) {
-          setIsLiked(true);
-        } else setIsLiked(false);
+        setCommentList(res.data.data);
       };
-      fetchAPI();
-    } catch (error) {
-      console.log(error.message);
+      fetchApi();
+      setisComment(false);
     }
-  }, [isLiked]);
-  // Get comment list
-  useEffect(() => {
-    const fetchApi = async () => {
-      const res = await vacationAPI.getCommentList({
-        id: postID,
-        type: "post",
-        page: 1,
-      });
-      setCommentList(res.data.data);
-    };
-    fetchApi();
-    setisComment(false);
-  }, [isComment]);
+  }, [isComment, open]);
 
   // set input value of comment
   const handleChangeValue = (e) => {
@@ -110,14 +112,13 @@ const Interaction = (props) => {
     }
   };
 
-  // console.log(isLiked);
   return (
     <div className={cx("wrapper")}>
       <div className={cx("container")}>
         <div className={cx("react")} onClick={handleLike}>
           <Dropdown
             menu={{
-              items: likedList,
+              items: likedList || [],
             }}
             overlayClassName={cx("dropdown")}
           >
@@ -126,7 +127,7 @@ const Interaction = (props) => {
                 icon={faHeart}
                 style={{ color: isLiked && "#E66C6C" }}
               />
-              <span>{likedList.length}</span>
+              <span>{likedList?.length}</span>
             </Space>
           </Dropdown>
         </div>
@@ -152,7 +153,7 @@ const Interaction = (props) => {
             <FontAwesomeIcon icon={faPaperPlane} onClick={handleClick} />
           </div>
           <div className={cx("cmt-list")}>
-            {commentList.map((item) => {
+            {commentList?.map((item) => {
               return (
                 <div key={item._id} className={cx("cmt-item")}>
                   <Image path={item.authorInfo.avatar} alt="" />

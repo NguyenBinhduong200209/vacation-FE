@@ -16,6 +16,7 @@ import { getTrendingPlace } from "~/store/slices/locationSlice";
 import { getDate } from "~/helpers/function";
 import Image from "~/components/Image/Image";
 import { useNavigate } from "react-router-dom";
+import CreateVacation from "./CreateVacation/CreateVacation";
 // import Preloader from "../Preloader/Preloader";
 const cx = classNames.bind(styles);
 const NewFeed = () => {
@@ -23,6 +24,7 @@ const NewFeed = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1); // State variable for current page number
+  const [open, setOpen] = useState(false);
   const { info } = useSelector((state) => state.auth);
   const { listVacation } = useSelector((state) => state.vacation);
   const { trendingList } = useSelector((state) => state.location);
@@ -74,6 +76,13 @@ const NewFeed = () => {
     };
   }, []);
 
+  const handleOpenModal = () => {
+    setOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpen(false);
+  };
   return (
     <div className={cx("container")}>
       {/* <Preloader /> */}
@@ -127,8 +136,17 @@ const NewFeed = () => {
               </button>
               <button className={cx("create-sthg")}>
                 <FolderOpenOutlined />
-                <div className={cx("create-sthg-details")}>Add Vacation</div>
+                <div
+                  className={cx("create-sthg-details")}
+                  onClick={handleOpenModal}
+                >
+                  Add Vacation
+                </div>
               </button>
+              <CreateVacation
+                handleCloseModal={handleCloseModal}
+                showModal={open}
+              />
             </div>
           </div>
         </div>

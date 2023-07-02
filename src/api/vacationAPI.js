@@ -11,12 +11,11 @@ const vacationAPI = {
     return axiosClient.get(url);
   },
   getManyPosts: (data) => {
-    const url = `${URL.POST_URL}?type=${data.type}&id=${data.id}&page=${data.page}`;
-    console.log(url);
+    const url = `${URL.POST_URL}/${data.type}/${data.id}?page=${data.page}`;
     return axiosClient.get(url);
   },
   getLikedList: (data) => {
-    const url = `${URL.REACT_URL}/${data.id}?type=${data.type}&&page=${data.page}`;
+    const url = `${URL.REACT_URL}/${data.id}?type=${data.type}&page=${data.page}`;
     return axiosClient.get(url);
   },
   updateLike: (data) => {

@@ -16,7 +16,7 @@ import {
   VACATION_POSTS_ROUTE,
   VACATION_ROUTE,
 } from "~/utils/constants";
-const NewFeed = React.lazy(() => import("~/modules/newfeed/NewFeed"));
+const NewFeed = React.lazy(() => import("~/modules/newFeed/NewFeed"));
 const Profile = React.lazy(() => import("~/modules/profile/Profile"));
 const Vacation = React.lazy(() => import("~/modules/vacation/Vacation"));
 const Posts = React.lazy(() => import("~/modules/vacation/Posts/Posts"));

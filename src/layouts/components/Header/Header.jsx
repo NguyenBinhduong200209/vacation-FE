@@ -20,21 +20,20 @@ const Header = ({ children }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [hideSuggestions, setHideSuggestions] = useState(true);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await axiosClient.get(
-          `https://vacation-backend.onrender.com/search/user?value=${value}&page=1`
-        );
-        setSuggestions(res.data.data || []);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [value]);
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const res = await axiosClient.get(
+  //         `https://vacation-backend.onrender.com/search/user?value=${value}&page=1`
+  //       );
+  //       setSuggestions(res.data.data || []);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   })();
+  // }, [value]);
 
-  console.log(suggestions);
-
+  // console.log(suggestions);
 
   return (
     <>

@@ -33,10 +33,10 @@ const Vacation = ({ children }) => {
   let [searchParams] = useSearchParams();
   let vacationID = searchParams.get("vacationID");
   const [modal2Open, setModal2Open] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
   const { detail, isLoading, posts } = useSelector((state) => state.vacation);
   const { authorInfo, cover, members, title, startingTime, endingTime } =
     detail;
+  const [currentPage, setCurrentPage] = useState(0);
 
   // console.log("detail", detail);
   const startDate = getDate(startingTime);
@@ -49,42 +49,36 @@ const Vacation = ({ children }) => {
   useEffect(() => {
     dispatch(getDetailVacation(vacationID));
   }, []);
-
   const loadMorePosts = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
+    if (isLoading) return;
+    if (currentPage != 0 && posts.meta.pages && currentPage >= posts.meta.pages)
+      return;
+
+    setCurrentPage((prev) => prev + 1);
+    dispatch(
+      getManyPosts({
+        type: "vacation",
+        id: vacationID,
+        page: currentPage,
+      })
+    );
   };
-  // scroll event
+
   useEffect(() => {
+    loadMorePosts();
     const handleScroll = () => {
       const { scrollTop, clientHeight, scrollHeight } =
         document.documentElement;
       const isAtBottom = scrollTop + clientHeight >= scrollHeight;
-
       if (isAtBottom) {
         loadMorePosts();
       }
     };
-
     window.addEventListener("scroll", handleScroll);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  // get posts of vacation
-  useEffect(() => {
-    if (currentPage <= posts.meta?.pages || currentPage === 1) {
-      dispatch(
-        getManyPosts({
-          type: "vacation",
-          id: vacationID,
-          page: currentPage,
-        })
-      );
-    }
-  }, [currentPage]);
-
   return (
     <>
       {isLoading ? (

@@ -24,7 +24,7 @@ const PostItem = ({ postDetail }) => {
     _id,
     createdAt,
   } = postDetail;
-  console.log(postDetail);
+  // console.log(postDetail);
   const postItemRef = useRef(null);
   const dispatch = useDispatch();
 
@@ -35,7 +35,7 @@ const PostItem = ({ postDetail }) => {
 
       if (
         distanceFromTop <= window.innerHeight * 0.2 &&
-        distanceFromTop >= window.innerHeight * 0.1
+        distanceFromTop >= window.innerHeight * 0.15
       ) {
         dispatch(setTimeline(postItemRef.current.getAttribute("timeline")));
       }

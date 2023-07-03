@@ -19,9 +19,9 @@ const Interaction = (props) => {
   const [open, setOpen] = useState(false);
   const [commentList, setCommentList] = useState([]);
   const [likedList, setLikedList] = useState([]);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(""); // state for input value
   const [isLiked, setIsLiked] = useState(false);
-  const [isComment, setisComment] = useState(true);
+  const [isComment, setisComment] = useState(true); // state for user comment action
   const { comments, postID } = props;
 
   // get comment list
@@ -60,7 +60,6 @@ const Interaction = (props) => {
   // Get comment list
   useEffect(() => {
     if (open && isComment) {
-      console.log("Get API");
       const fetchApi = async () => {
         const res = await vacationAPI.getCommentList({
           id: postID,

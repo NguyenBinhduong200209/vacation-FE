@@ -140,8 +140,8 @@ const NewFeed = () => {
               href={`/vacation/post?vacationID=${vacation._id}`}
             >
               <div className={cx("feed-head")}>
-                <Image
-                  path={vacation.authorInfo.avatar}
+                <img
+                  src={vacation.authorInfo.avatar?.path}
                   alt="?"
                   className={cx("feed-ava")}
                 />
@@ -156,7 +156,7 @@ const NewFeed = () => {
                 </div>
               </div>
               <div className={cx("feed-cover")}>
-                <img src={vacation.cover} alt="???" />
+                <img src={vacation.cover?.path} alt="???" />
                 <div className={cx("feed-cover-rad")}></div>
                 <div className={`${cx("cover-item")} ${cx("views")}`}>
                   <EyeOutlined />

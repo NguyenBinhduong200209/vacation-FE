@@ -6,7 +6,7 @@
   width: 100%;
   // min-height: 90vh;
   padding: 2rem 0rem;
-  margin-top: 10rem;
+  margin-top: 35rem;
 }
 
 //Main Feed//
@@ -15,13 +15,32 @@
   margin: auto;
 }
 
+.feed ul {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 4rem;
+}
+
+.feed ul li {
+  width: 100%;
+}
+
 .feed-post {
   margin-bottom: 4rem;
   background-color: #282828;
-  padding: 1rem 0rem 1.5rem;
+  padding: 0rem 0rem 1.5rem;
   border-radius: 15px;
   font-size: 1.7rem;
 }
+
+.feed-post:hover {
+  cursor: pointer;
+  .feed-title {
+    color: #d2ae68;
+    font-style: italic;
+  }
+}
+
 .feed-head {
   display: flex;
   margin: 0.5rem 1.5rem 1rem;
@@ -35,6 +54,7 @@
 }
 
 .feed-cover {
+  border-radius: 15px;
   position: relative;
   width: 100%;
   height: 40vh;
@@ -56,6 +76,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
 }
 
 .feed-cover-rad {
@@ -66,6 +88,7 @@
   height: 100%;
   background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
   pointer-events: none;
+  border-radius: 15px;
 }
 
 .cover-item {
@@ -130,7 +153,7 @@
 }
 
 .user-info-header > * {
-  width: 30%;
+  width: 70%;
 }
 
 .user-info-header-details li {
@@ -169,7 +192,7 @@
 
 .user-info-bgimg {
   width: 90%;
-  height: 18rem;
+  height: 20rem;
   object-fit: cover;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
@@ -177,8 +200,8 @@
 
 .user-info-bgava {
   margin: auto;
-  width: 30%;
-  height: 10rem;
+  width: 25%;
+  aspect-ratio: 1/1;
   object-fit: cover;
   border-radius: 30px;
   border: solid 2px;
@@ -189,6 +212,7 @@
   letter-spacing: 1.5px;
   display: flex;
   margin-top: 2rem;
+  justify-content: center;
   margin-bottom: 0;
 }
 
@@ -203,6 +227,45 @@
 
 .user-info-des {
   margin: 1rem 2.5rem;
+}
+
+.user-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto auto;
+  margin-top: 2rem;
+}
+
+.grid-item {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 1rem;
+}
+
+.one {
+  border-right: #3c2d2d 0.5px solid;
+  border-bottom: #3c2d2d 0.5px solid;
+}
+
+.two {
+  border-left: #3c2d2d 0.5px solid;
+  border-bottom: #3c2d2d 0.5px solid;
+}
+
+.three {
+  border-right: #3c2d2d 0.5px solid;
+  border-top: #3c2d2d 0.5px solid;
+}
+
+.four {
+  border-left: #3c2d2d 0.5px solid;
+  border-top: #3c2d2d 0.5px solid;
+}
+
+.grid-item > * {
+  font-style: italic;
+  font-size: 1.5rem;
 }
 
 .user-info-line {
@@ -226,7 +289,7 @@
 }
 
 .content {
-  --top: 25rem;
+  // --top: 25rem;
   position: relative;
   left: 35%;
   width: 60%;
@@ -239,12 +302,48 @@
 .navigation {
   left: 36%;
   position: fixed;
-  top: 34%;
+  top: 36vh;
   font-size: 2rem;
   display: flex;
-  // border: 2px solid;
   width: 60%;
-  height: 6rem;
-  z-index: 10;
+  height: 7rem;
+  z-index: 9;
   background-color: #1a1a1a;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+.nav-item {
+  margin-right: 4rem;
+  cursor: pointer;
+  width: fit-content;
+  font-size: 2.4rem;
+  font-style: italic;
+}
+
+.nav-item.active {
+  color: #d2ae68;
+  border-bottom: #d2ae68 solid 2px;
+  // text-decoration: underline;
+  font-weight: 700;
+  width: fit-content;
+}
+
+.albums {
+  margin: 0rem 3rem;
+  font-size: 1.7rem;
+}
+
+.album-background {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 4rem;
+}
+
+.album-background-content {
+  width: 100%;
+}
+
+.album-background-content > * {
+  width: 100%;
 }

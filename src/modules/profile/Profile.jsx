@@ -211,17 +211,19 @@ const Profile = () => {
           )}
           {showAlbums && (
             <div className={cx("albums")}>
-              {album.map((album) => (
-                <div key={album.id} className={cx("album-background")}>
-                  <div className={cx("album-background-content")}>
-                    <img
-                      src="https://media.cntraveller.com/photos/611be8514e09f53b43732776/16:9/w_2560%2Cc_limit/hanoi-vietnam-condnenastraveller-18sep13-getty_b.jpg"
-                      alt="???"
-                    />
-                    <div>{album.title}</div>
+              <div className={cx("album-grid")}>
+                {album.map((album) => (
+                  <div key={album.id} className={cx("album-background")}>
+                    <div className={cx("album-background-content")}>
+                      <img
+                        src="https://media.cntraveller.com/photos/611be8514e09f53b43732776/16:9/w_2560%2Cc_limit/hanoi-vietnam-condnenastraveller-18sep13-getty_b.jpg"
+                        alt="???"
+                      />
+                      <div>{album.title}</div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           )}
         </div>

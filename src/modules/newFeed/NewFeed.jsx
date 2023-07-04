@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames/bind";
 import styles from "./NewFeed.module.scss";
+import GlowingButton from "./glowing/GlowingButton";
 
 import {
   HeartFilled,
@@ -83,6 +84,9 @@ const NewFeed = () => {
   const handleCloseModal = () => {
     setOpen(false);
   };
+
+  console.log(info);
+
   return (
     <div className={cx("container")}>
       {/* <Preloader /> */}
@@ -101,7 +105,11 @@ const NewFeed = () => {
               <li>{info?.totalFriends}</li>
               <div className={cx("user-info-header-line")}>friends</div>
             </div>
-            <img src={info?.avatar} className={cx("user-info-bgava")} alt="" />
+            <img
+              src={info?.avatar?.path}
+              className={cx("user-info-bgava")}
+              alt=""
+            />
             <div className={cx("user-info-header-details")}>
               <li>{info?.totalPosts}</li>
               <div className={cx("user-info-header-line")}>Posts</div>
@@ -197,10 +205,14 @@ const NewFeed = () => {
         </ul>
       </div>
       <div className={cx("trending")}>
-        <h2 className={cx("trending-title")}>Trending Place Today</h2>
+        <h2 className={cx("trending-title")}>
+          <GlowingButton />
+        </h2>
         <ul>
           {trendingList.map((location) => (
-            <li key={location._id}># {location.title}</li>
+            <li key={location._id} className={cx("underline")}>
+              # {location.title}
+            </li>
           ))}
           <div className={cx("trending-more")}>...</div>
         </ul>

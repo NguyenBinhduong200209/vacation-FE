@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Holtwood+One+SC&display=swap");
 
+li {
+  list-style-type: none;
+}
+
 .container {
   background-color: #1a1a1a;
   color: white;
@@ -292,7 +296,8 @@
   // --top: 25rem;
   position: relative;
   left: 35%;
-  width: 60%;
+  margin: 0rem 3rem;
+  width: 55%;
   // top: 25rem;
   z-index: 1;
   top: var(--top);
@@ -330,14 +335,23 @@
 }
 
 .albums {
-  margin: 0rem 3rem;
+  margin: auto;
   font-size: 1.7rem;
 }
 
 .album-background {
+  // display: grid;
+  // grid-template-columns: repeat(2, 1fr);
+  // grid-gap: 4rem;
+  width: 100%;
+}
+
+.album-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 4rem;
+  width: 100%;
+  height: fit-content;
 }
 
 .album-background-content {

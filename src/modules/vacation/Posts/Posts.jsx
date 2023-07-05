@@ -9,6 +9,7 @@ import CreatePost from "./CreatePost/CreatePost";
 import Image from "~/components/Image/Image";
 import { getManyPosts } from "~/store/slices/vacationSlice";
 import { useSearchParams } from "react-router-dom";
+import Loading from "~/components/Loading/Loading";
 
 const cx = classNames.bind(styles);
 
@@ -31,59 +32,31 @@ const Posts = () => {
     setShowModal(true);
   };
 
-  // scroll event
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-  //     const isAtBottom = scrollTop + clientHeight >= scrollHeight;
-
-  //     if (isAtBottom) {
-  //       loadMorePosts();
-  //     }
-  //   };
-
-  //   window.addEventListener("scroll", handleScroll);
-
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, []);
-
-  // get posts of vacation
-
-  // useEffect(() => {
-  //   if (currentPage <= posts.meta?.pages || currentPage === 1) {
-  //     // dispatch(
-  //     //   getManyPosts({
-  //     //     type: "vacation",
-  //     //     id: vacationID,
-  //     //     page: currentPage,
-  //     //   })
-  //     // );
-  //     // console.log(currentPage);
-  //   }
-  // }, [currentPage]);
-
-  // console.log(currentPage);
-
   return (
-    <div className={cx("wrapper")}>
-      <div className={cx("container")}>
-        <div className={cx("create-post")}>
-          <Image
-            path={detail.authorInfo && detail.authorInfo.avatar}
-            className={cx("avatar")}
-          />
-          <div onClick={handleOpenModal}>Every step is a milestone...</div>
-        </div>
+    <>
+      <div className={cx("wrapper")}>
+        <div className={cx("container")}>
+          <div className={cx("create-post")}>
+            <Image
+              path={detail?.authorInfo?.avatar.path}
+              className={cx("avatar")}
+            />
+            <div onClick={handleOpenModal}>Every step is a milestone...</div>
+          </div>
 
-        <CreatePost handleCloseModal={handleCloseModal} showModal={showModal} />
-        {postList?.map((item, index) => (
-          <PostItem postDetail={item} key={index} />
-        ))}
+          <CreatePost
+            handleCloseModal={handleCloseModal}
+            showModal={showModal}
+          />
+          {postList?.map((item, index) => (
+            <PostItem postDetail={item} key={index} />
+          ))}
+
+          <>{isLoading && <Loading />}</>
+        </div>
+        <Timeline />
       </div>
-      <Timeline />
-    </div>
+    </>
   );
 };
 

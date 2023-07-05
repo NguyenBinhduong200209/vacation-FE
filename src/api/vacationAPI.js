@@ -14,21 +14,8 @@ const vacationAPI = {
     const url = `${URL.POST_URL}/${data.type}/${data.id}?page=${data.page}`;
     return axiosClient.get(url);
   },
-  getLikedList: (data) => {
-    const url = `${URL.REACT_URL}/${data.id}?type=${data.type}&page=${data.page}`;
-    return axiosClient.get(url);
-  },
-  updateLike: (data) => {
-    const url = `${URL.REACT_URL}/${data.id}?type=${data.type}`;
-    return axiosClient.put(url);
-  },
-  getCommentList: (data) => {
-    const url = `${URL.COMMENT_URL}/${data.id}?type=${data.type}&page=${data.page}`;
-    return axiosClient.get(url);
-  },
-  addComment: (data) => {
-    const url = `${URL.COMMENT_URL}/${data.id}?type=${data.type}`;
-    return axiosClient.post(url, { content: data.content });
+  createPost: (data) => {
+    return axiosClient.post(URL.POST_URL, data);
   },
 };
 

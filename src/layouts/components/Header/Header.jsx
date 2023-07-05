@@ -41,7 +41,7 @@ const Header = ({ children }) => {
         <div className={cx("nav")}>
           <a className={cx("nav-logo")} href="/">
             <Image
-              src={images.Vector}
+              path={images.Vector}
               className={cx("nav-logo-img")}
               alt="????"
             />

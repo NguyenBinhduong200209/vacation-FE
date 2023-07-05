@@ -23,6 +23,7 @@ const PostItem = ({ postDetail }) => {
     lastUpdateAt,
     _id,
     createdAt,
+    isLiked,
   } = postDetail;
   // console.log(postDetail);
   const postItemRef = useRef(null);
@@ -54,7 +55,11 @@ const PostItem = ({ postDetail }) => {
     >
       <header>
         <div className={cx("user-info")}>
-          <Image path={authorInfo.avatar} alt="" className={cx("avatar")} />
+          <Image
+            path={authorInfo.avatar.path}
+            alt=""
+            className={cx("avatar")}
+          />
 
           <div className={cx("username-container")}>
             {/* <div className={cx("fullname")}>Trung Hiếu</div> */}
@@ -70,15 +75,20 @@ const PostItem = ({ postDetail }) => {
         <div className={cx("description")}>{content}</div>
         <div className={cx("img-container")}>
           {resource.map((item, index) => (
-            <Image src={item} alt="" key={index} />
+            <Image path={item.path} alt="" key={index} />
           ))}
           {resource.map((item, index) => (
-            <Image src={item} alt="" key={index} />
+            <Image path={item.path} alt="" key={index} />
           ))}
         </div>
       </main>
 
-      <Interaction likes={likes} comments={comments} postID={_id} />
+      <Interaction
+        likes={likes}
+        comments={comments}
+        postID={_id}
+        isLikedStatus={isLiked}
+      />
     </div>
   );
 };

@@ -84,9 +84,6 @@ const NewFeed = () => {
   const handleCloseModal = () => {
     setOpen(false);
   };
-
-  console.log(info);
-
   return (
     <div className={cx("container")}>
       {/* <Preloader /> */}

@@ -50,11 +50,13 @@ body {
 
 button,
 input,
-[tabindex] {
+[tabindex],
+textarea {
   outline: none;
   border: none;
   -webkit-user-select: none;
   user-select: none;
+  resize: none;
 }
 
 a[href] {
@@ -70,7 +72,7 @@ html *::-webkit-scrollbar {
 
 html *::-webkit-scrollbar-thumb {
   border-radius: 4px;
-  background-color: rgba(0, 0, 0, 0.15);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 html *::-webkit-scrollbar-track {

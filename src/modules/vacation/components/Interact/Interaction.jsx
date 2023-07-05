@@ -1,93 +1,84 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faEllipsisVertical,
   faHeart,
   faMessage,
   faPaperPlane,
+  faRectangleXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { Dropdown, Space } from "antd";
+import { Dropdown, Popover, Space } from "antd";
 import { useSelector } from "react-redux";
 import styles from "./Interaction.module.scss";
 import classNames from "classnames/bind";
 
-import vacationAPI from "~/api/vacationAPI";
+import interactionAPI from "~/api/interactionAPI";
 import Image from "~/components/Image/Image";
 
 const cx = classNames.bind(styles);
 
 const Interaction = (props) => {
-  const [open, setOpen] = useState(false);
+  const { comments, postID, isLikedStatus, likes } = props;
+  const { info } = useSelector((state) => state.auth);
+  const [open, setOpen] = useState(false); // state for open the modal of list of users has like
   const [commentList, setCommentList] = useState([]);
-  const [likedList, setLikedList] = useState([]);
+  const [isCommentChange, setisComment] = useState(true); // state for user comment action
   const [value, setValue] = useState(""); // state for input value
-  const [isLiked, setIsLiked] = useState(false);
-  const [isComment, setisComment] = useState(true); // state for user comment action
-  const { comments, postID } = props;
+  const [totalCmt, setTotalCmt] = useState(comments);
+  // state for react fnc
+  const [likedList, setLikedList] = useState([]);
+  const [isLiked, setIsLiked] = useState(isLikedStatus);
+  const [totalLike, setTotalLike] = useState(likes);
+  const [isLikeAction, setAction] = useState(false);
+  // state for edit cmt
+  const [editCmtId, setEditCmtId] = useState(null);
+  const [editCmtValue, setEditCmtValue] = useState(""); // state for input value
 
-  // get comment list
-  // useEffect(() => {
-  //   try {
-  //     const fetchAPI = async () => {
-  //       const res = await vacationAPI.getLikedList({
-  //         id: postID,
-  //         type: "post",
-  //         page: 1,
-  //       });
-  //       const items = res.data.data?.map((item) => {
-  //         return {
-  //           key: item.authorInfo._id,
-  //           label: (
-  //             <div className={cx("react-list-item")}>
-  //               <Image path={item.authorInfo.avatar} alt="" />
-  //               <span>{item.authorInfo.username}</span>
-  //             </div>
-  //           ),
-  //         };
-  //       });
+  const cmtContentRef = useRef();
 
-  //       setLikedList(items);
-
-  //       if (items?.some((item) => item.key === info.id)) {
-  //         setIsLiked(true);
-  //       } else setIsLiked(false);
-  //     };
-  //     fetchAPI();
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // }, [isLiked]);
+  // console.log(info);
 
   // Get comment list
   useEffect(() => {
-    if (open && isComment) {
+    if (open && isCommentChange) {
       const fetchApi = async () => {
-        const res = await vacationAPI.getCommentList({
+        const res = await interactionAPI.getCommentList({
           id: postID,
-          type: "post",
+          type: "posts",
           page: 1,
         });
-        setCommentList(res.data.data);
+        setCommentList(res?.data.data);
+        setTotalCmt(res?.data.data?.length || 0);
       };
       fetchApi();
       setisComment(false);
     }
-  }, [isComment, open]);
+  }, [isCommentChange, open]);
 
   // set input value of comment
-  const handleChangeValue = (e) => {
-    setValue(e.target.value);
+  const handleChangeValue = (e, type) => {
+    e.preventDefault();
+    if (type === "newCmt") setValue(e.target.value);
+    setEditCmtValue(e.target.value);
   };
 
   // send update comment's request
-  const handleClick = async () => {
+  const handleCmt = async (type, cmtId) => {
     try {
-      await vacationAPI.addComment({
-        id: postID,
-        type: "post",
-        content: value,
-      });
-
-      setisComment(true);
+      if (type === "newCmt" && value !== "") {
+        await interactionAPI.addComment({
+          id: postID,
+          type: "posts",
+          content: value,
+        });
+        setisComment(true);
+      } else if (type === "editCmt" && editCmtValue !== "") {
+        await interactionAPI.updateComment({
+          id: cmtId,
+          content: editCmtValue,
+        });
+        setisComment(true);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -98,23 +89,84 @@ const Interaction = (props) => {
   const handleLike = () => {
     try {
       const fetchApi = async () => {
-        await vacationAPI.updateLike({
+        const res = await interactionAPI.updateLike({
           id: postID,
-          type: "post",
-          page: 1,
+          type: "posts",
         });
-        setIsLiked((prev) => !prev);
+        // console.log(res);
+        setIsLiked((prev) => !prev); // set Like status
+        setAction(true); // set like action
+
+        // update total like
+        if (res?.status === 200) {
+          setTotalLike((prev) => prev - 1);
+        } else if (res?.status === 201) {
+          setTotalLike((prev) => prev + 1);
+        }
       };
+
       fetchApi();
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
+  };
+
+  // Handle when mouse enter the total like's area
+  const handleMouseEnter = async () => {
+    if (likedList?.length === 0 || isLikeAction) {
+      //when user mouse enter first time or after user click heart icon
+      try {
+        const res = await interactionAPI.getLikedList({
+          id: postID,
+          type: "posts",
+          page: 1,
+        });
+        // console.log(res);
+        const items = res.data.data?.map((item) => {
+          return {
+            key: item.authorInfo._id,
+            label: (
+              <div className={cx("react-list-item")}>
+                <Image path={item.authorInfo.avatar} alt="" />
+                <span>{item.authorInfo.username}</span>
+              </div>
+            ),
+          };
+        });
+        setLikedList(items); // update info list of user who liked
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+  };
+
+  // Handle Mouse leave
+  const handleMouseLeave = () => {
+    setAction(false);
+  };
+
+  // handle when user click "edit"
+  const handleEditCmt = (id, content) => {
+    setEditCmtId(id);
+    setEditCmtValue(content);
+  };
+
+  // delete comment
+
+  const handleDelCmt = async (id) => {
+    await interactionAPI.deleteComment(id);
+    setisComment(true);
   };
 
   return (
     <div className={cx("wrapper")}>
       <div className={cx("container")}>
-        <div className={cx("react")} onClick={handleLike}>
+        <div className={cx("react")}>
+          <FontAwesomeIcon
+            icon={faHeart}
+            onClick={handleLike}
+            className={cx(isLiked ? "liked" : "unlike")}
+          />
           <Dropdown
             menu={{
               items: likedList || [],
@@ -122,18 +174,19 @@ const Interaction = (props) => {
             overlayClassName={cx("dropdown")}
           >
             <Space>
-              <FontAwesomeIcon
-                icon={faHeart}
-                style={{ color: isLiked && "#E66C6C" }}
-              />
-              <span>{likedList?.length}</span>
+              <span
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                {totalLike}
+              </span>
             </Space>
           </Dropdown>
         </div>
 
         <div className={cx("comment")} onClick={() => setOpen((prev) => !prev)}>
           <FontAwesomeIcon icon={faMessage} />
-          <span>{comments}</span>
+          <span>{totalCmt}</span>
         </div>
       </div>
 
@@ -141,27 +194,76 @@ const Interaction = (props) => {
         <div className={cx("cmt-container")}>
           <div className={cx("input-container")}>
             <div className={cx("input-content")}>
+              {/* <Image path={info.avatar?.path} /> */}
               <textarea
                 value={value}
                 type="text"
                 placeholder="Write your comment here"
                 spellCheck={false}
-                onChange={handleChangeValue}
+                onChange={(e) => handleChangeValue(e, "newCmt")}
               />
             </div>
-            <FontAwesomeIcon icon={faPaperPlane} onClick={handleClick} />
+            <FontAwesomeIcon
+              icon={faPaperPlane}
+              onClick={() => handleCmt("newCmt")}
+            />
           </div>
           <div className={cx("cmt-list")}>
             {commentList?.map((item) => {
               return (
                 <div key={item._id} className={cx("cmt-item")}>
-                  <Image path={item.authorInfo.avatar} alt="" />
+                  <Image path={item.authorInfo.avatar.path} alt="" />
                   <div className={cx("item-content-container")}>
                     <div className={cx("item-username")}>
                       {item.authorInfo.username}
                     </div>
-                    <div className={cx("item-content")}>{item.content}</div>
+
+                    {editCmtId === item._id ? (
+                      <div className={cx("edit-cmt")}>
+                        <textarea
+                          type="text"
+                          value={editCmtValue}
+                          spellCheck={false}
+                          onChange={(e) => handleChangeValue(e, "editCmt")}
+                        />
+                        <div className={cx("icon-container")}>
+                          <FontAwesomeIcon
+                            icon={faPaperPlane}
+                            onClick={() => handleCmt("editCmt", item._id)}
+                          />
+                          <FontAwesomeIcon
+                            icon={faRectangleXmark}
+                            onClick={() => setEditCmtId(null)}
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className={cx("item-content")}>{item.content}</div>
+                    )}
                   </div>
+                  {item.authorInfo._id === info.id && (
+                    <Popover
+                      content={
+                        <div className={cx("pop-over")}>
+                          <p
+                            onClick={() =>
+                              handleEditCmt(item._id, item.content)
+                            }
+                          >
+                            Edit
+                          </p>
+                          <p onClick={() => handleDelCmt(item._id)}>Delete</p>
+                        </div>
+                      }
+                      trigger="click"
+                      placement="bottom"
+                    >
+                      <FontAwesomeIcon
+                        icon={faEllipsisVertical}
+                        className={cx("icon")}
+                      />
+                    </Popover>
+                  )}
                 </div>
               );
             })}

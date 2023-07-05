@@ -137,7 +137,7 @@ const NewFeed = () => {
               </button>
               <button className={cx("create-sthg")}>
                 <PictureOutlined />
-                <div className={cx("create-sthg-details")}>Add Album</div>
+                <a className={cx("create-sthg-details")}>Add Album</a>
               </button>
               <button className={cx("create-sthg")}>
                 <FolderOpenOutlined />

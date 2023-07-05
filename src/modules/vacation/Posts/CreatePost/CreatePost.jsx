@@ -19,27 +19,27 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem('token');
-    const response = await fetch('https://vacation-backend.onrender.com/post', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token
-    },
-    body: JSON.stringify({
-      authorInfo,
-      content,
-      resource: [], 
-      comments: [],
-      likes: [], 
-      lastUpdateAt: new Date(),
-      locationId: "6486f0b8bf997eadb3cfed20",
-      vacationId: "6486bcc25782c2081f86fe9d"
-    })
-  });
-  const data = await response.json();
-  console.log(data);
-  } 
+    const token = localStorage.getItem("token");
+    const response = await fetch("https://vacation-backend.onrender.com/post", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify({
+        authorInfo,
+        content,
+        resource: [],
+        comments: [],
+        likes: [],
+        lastUpdateAt: new Date(),
+        locationId: "6486f0b8bf997eadb3cfed20",
+        vacationId: "6486bcc25782c2081f86fe9d",
+      }),
+    });
+    const data = await response.json();
+    console.log(data);
+  };
 
   return (
     <Modal
@@ -75,7 +75,7 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
               maxRows: 12,
             }}
             value={content}
-            onChange={e => setContent(e.target.value)}
+            onChange={(e) => setContent(e.target.value)}
           />
           <div className={cx("post-extension")}>
             <div> Add on</div>
@@ -88,7 +88,9 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
               </div>
             </div>
           </div>
-          <button onClick={handleClick} className={cx("btn-submit")}>Sending Post</button>
+          <button onClick={handleClick} className={cx("btn-submit")}>
+            Sending Post
+          </button>
         </div>
       </div>
     </Modal>

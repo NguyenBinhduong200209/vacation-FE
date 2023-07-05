@@ -71,14 +71,14 @@ const Interaction = (props) => {
           type: "posts",
           content: value,
         });
-        setisComment(true);
       } else if (type === "editCmt" && editCmtValue !== "") {
         await interactionAPI.updateComment({
           id: cmtId,
           content: editCmtValue,
         });
-        setisComment(true);
+        setEditCmtId(null);
       }
+      setisComment(true);
     } catch (error) {
       console.log(error);
     }

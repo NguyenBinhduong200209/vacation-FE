@@ -42,7 +42,7 @@ const Vacation = ({ children }) => {
   const { detail, posts } = useSelector((state) => state.vacation);
   const { authorInfo, cover, members, title, startingTime, endingTime } =
     detail;
-  console.log(detail);
+  // console.log(detail);
   const [currentPage, setCurrentPage] = useState(1);
 
   // console.log("detail", detail);

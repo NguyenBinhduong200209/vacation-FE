@@ -9,7 +9,7 @@
   position: fixed;
   top: var(--position-top);
   right: 8rem;
-  width: 35rem;
+  width: 30rem;
   min-height: 75vh;
   padding: var(--header-padding);
   background-color: #282828;
@@ -34,7 +34,7 @@
 .active {
   position: absolute;
   top: calc(var(--header-padding) * 2 + var(--header-size) + 10rem);
-  right: 22rem;
+  right: 17rem;
   transform: rotate(90deg);
   width: 30rem;
   border-radius: 5px;

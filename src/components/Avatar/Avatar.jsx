@@ -54,7 +54,7 @@ const Avatar = ({ avatar }) => {
       beforeUpload={beforeUpload}
     >
       {imageUrl ? (
-        <Image src={imageUrl} alt="avatar" className={cx("avatar")} />
+        <Image path={imageUrl} alt="avatar" className={cx("avatar")} />
       ) : (
         uploadButton
       )}

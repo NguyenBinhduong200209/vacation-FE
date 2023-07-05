@@ -26,16 +26,7 @@ const Image = forwardRef(
       <img
         className={cx(className, "image")}
         ref={ref}
-        src={
-          fallback
-            ? fallback
-            : src
-            ? src
-            : path === undefined
-            ? fallback
-            : // : `https://vacation-backend.onrender.com/static/resource/${path}`
-              ""
-        }
+        src={fallback || path}
         alt={alt}
         {...props}
         onError={handleError}

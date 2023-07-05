@@ -65,7 +65,7 @@ const vacationSlice = createSlice({
       postList: [],
       meta: {},
     },
-    activeTimeline: "1990-01-01",
+    activeTimeline: null,
     isLoading: false,
   },
   reducers: {

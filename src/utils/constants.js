@@ -36,6 +36,6 @@ export const SETTING_ROUTE = "/setting";
 export const OVERVIEW_ROUTE = "/setting/overview";
 export const PERSONAL_ROUTE = "/setting/personal";
 export const SECURITY_ROUTE = "/setting/security";
-export const VACATION_ROUTE = "/vacation";
+// export const VACATION_ROUTE = "/vacation";
 export const VACATION_POSTS_ROUTE = "/vacation/post";
 export const VACATION_ALBUM_ROUTE = "/vacation/album";

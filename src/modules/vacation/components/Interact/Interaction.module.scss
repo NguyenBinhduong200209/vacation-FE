@@ -14,7 +14,7 @@
 .comment {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
   font-size: 1.6rem;
   cursor: pointer;
   user-select: none;
@@ -47,14 +47,11 @@
   textarea {
     width: 100%;
     height: 50px;
-    border: none;
-    outline: none;
     font-size: 1.3rem;
     font-family: var(--font-1);
     letter-spacing: 1px;
     color: white;
     background-color: transparent;
-    resize: none;
     overflow: overlay;
     scrollbar-gutter: stable;
 
@@ -89,20 +86,106 @@
 
 .item-content-container {
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 0.5rem;
   .item-username {
+    width: 100px;
     font-size: 1.5rem;
     color: rgba(233, 229, 229);
     font-weight: 600;
   }
-  .item-content {
+  .item-content,
+  .edit-cmt {
+    display: flex;
     font-size: 1.3rem;
     color: rgba(250, 249, 249, 0.8);
   }
 }
+.icon {
+  margin-left: auto;
+  padding: 0.8rem 1.5rem;
+  border-radius: 50%;
+  cursor: pointer;
 
-// React list css
+  &:hover {
+    background-color: rgb(85, 85, 85);
+  }
+}
+
+.icon-container {
+  display: flex;
+  gap: 1rem;
+
+  svg {
+    cursor: pointer;
+  }
+}
+.pop-over {
+  min-width: 10rem !important;
+  margin: -12px !important;
+  padding: 1rem 0;
+  border-radius: 8px;
+  background: rgb(184, 182, 182);
+  color: rgb(56, 56, 56);
+  font-weight: 500;
+  text-align: center;
+
+  p {
+    padding: 0.4rem 0;
+    &:hover {
+      background: rgb(167, 166, 166);
+      cursor: default;
+    }
+  }
+}
+
+// Edit cmt css
+
+.edit-cmt {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+  border: 1.5px solid rgb(185, 153, 153);
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  textarea {
+    width: 90%;
+    height: 50px;
+    font-size: 1.3rem;
+    font-family: var(--font-1);
+    letter-spacing: 1px;
+    color: white;
+    background-color: transparent;
+    overflow: overlay;
+    scrollbar-gutter: stable;
+    padding: 1rem;
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(104, 103, 103, 0.7);
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: rgba(240, 234, 234, 0);
+    }
+  }
+}
+// React css
+
+.liked {
+  color: #e66c6c;
+
+  &:hover {
+    color: white;
+  }
+}
+.unlike {
+  color: white;
+  &:hover {
+    color: #e66c6c;
+  }
+}
 .react-list-item {
   display: flex;
   align-items: center;

@@ -64,6 +64,11 @@
     height: 80px;
     background-color: rgb(219, 195, 195);
     border-radius: 20px;
+    img {
+      width: inherit;
+      height: inherit;
+      border-radius: inherit;
+    }
   }
 
   .fullname {

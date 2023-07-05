@@ -14,7 +14,7 @@ const Retrieval = (props) => {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("header")}>
-        <Image src={images.key} alt="This is icon" />
+        <Image path={images.key} alt="This is icon" />
         <div className={cx("title")}>Forgot your password?</div>
         <div>Don’t worry we will send you reset code</div>
       </div>
@@ -26,7 +26,7 @@ const Retrieval = (props) => {
       />
 
       <div className={cx("footer")}>
-        <Image src={images.back} alt="This is icon" />
+        <Image path={images.back} alt="This is icon" />
         Back to <span onClick={handleBack}>login</span>
       </div>
     </div>

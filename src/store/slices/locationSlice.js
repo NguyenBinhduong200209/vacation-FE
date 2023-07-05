@@ -18,10 +18,27 @@ export const getTrendingPlace = createAsyncThunk(
   }
 );
 
+export const getManyLocations = createAsyncThunk(
+  "location/getManyLocations",
+  async (arg, thunkAPI) => {
+    try {
+      const res = await locationAPI.getManyLocations(arg);
+      return res.data;
+    } catch (error) {
+      console.log("error:", error);
+      return {
+        status: error.response.status,
+        message: error.response.data.message,
+      };
+    }
+  }
+);
+
 const locationSlice = createSlice({
   name: "location",
   initialState: {
     trendingList: [],
+    locationList: [],
     isLoading: false,
   },
   reducers: {},
@@ -33,6 +50,9 @@ const locationSlice = createSlice({
       .addCase(getTrendingPlace.fulfilled, (state, action) => {
         state.trendingList = action.payload;
         state.isLoading = false;
+      })
+      .addCase(getManyLocations.fulfilled, (state, action) => {
+        state.locationList = action.payload;
       });
   },
 });

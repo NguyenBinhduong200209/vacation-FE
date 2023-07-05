@@ -71,9 +71,9 @@ const Login = () => {
           <div className={cx("other-methods")}>
             <div>or sign in with</div>
             <div className={cx("login-icon")}>
-              <Image src={images.facebook} alt="This is Facebook icon" />
-              <Image src={images.google} alt="This is Google icon" />
-              <Image src={images.twitter} alt="This is Twitter icon" />
+              <Image path={images.facebook} alt="This is Facebook icon" />
+              <Image path={images.google} alt="This is Google icon" />
+              <Image path={images.twitter} alt="This is Twitter icon" />
             </div>
           </div>
 

@@ -9,6 +9,10 @@ const locationAPI = {
     }
     return axiosClient.get(url);
   },
+  getManyLocations: (data) => {
+    const url = `${URL.LOCATION_URL}?type=${data.type}&number=${data.number}&parentId=${data.parentId}`;
+    return axiosClient.get(url);
+  },
 };
 
 export default locationAPI;

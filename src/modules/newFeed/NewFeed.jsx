@@ -32,7 +32,7 @@ const NewFeed = () => {
 
   // Get new list of vacation when the currentPage change
   useEffect(() => {
-    if (!listVacation.meta.pages || currentPage <= listVacation.meta.pages) {
+    if (!listVacation?.meta?.pages || currentPage <= listVacation.meta.pages) {
       dispatch(
         getListVacation({
           page: currentPage,
@@ -127,7 +127,6 @@ const NewFeed = () => {
           <img src={info?.avatar} className={cx("user-ava")} alt="" />
           <div className={cx("create-posts")}>
             <button className={cx("create-line")}>
-              {" "}
               Every step is a milestone ...{" "}
             </button>
             <div className={cx("create-details")}>

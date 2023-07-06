@@ -18,6 +18,7 @@ import { getDate } from "~/helpers/function";
 import Image from "~/components/Image/Image";
 import { useNavigate } from "react-router-dom";
 import CreateVacation from "./CreateVacation/CreateVacation";
+import CreateAlbum from "../album/CreateAlbum/CreateAlbum";
 // import Preloader from "../Preloader/Preloader";
 const cx = classNames.bind(styles);
 const NewFeed = () => {
@@ -26,6 +27,8 @@ const NewFeed = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1); // State variable for current page number
   const [open, setOpen] = useState(false);
+  const [openAlbum, setOpenAlbum] = useState(false);
+
   const { info } = useSelector((state) => state.auth);
   const { listVacation } = useSelector((state) => state.vacation);
   const { trendingList } = useSelector((state) => state.location);
@@ -84,6 +87,13 @@ const NewFeed = () => {
   const handleCloseModal = () => {
     setOpen(false);
   };
+
+  const handleOpenAlbumModal = () => {
+    setOpenAlbum(true);
+  };
+  const handleCloseAlbumModal = () => {
+    setOpenAlbum(false);
+  };
   return (
     <div className={cx("container")}>
       {/* <Preloader /> */}
@@ -136,8 +146,17 @@ const NewFeed = () => {
               </button>
               <button className={cx("create-sthg")}>
                 <PictureOutlined />
-                <a className={cx("create-sthg-details")}>Add Album</a>
+                <div
+                  className={cx("create-sthg-details")}
+                  onClick={handleOpenAlbumModal}
+                >
+                  Add Album
+                </div>
               </button>
+              <CreateAlbum
+                handleCloseAlbumModal={handleCloseAlbumModal}
+                showAlbumModal={openAlbum}
+              />
               <button className={cx("create-sthg")}>
                 <FolderOpenOutlined />
                 <div

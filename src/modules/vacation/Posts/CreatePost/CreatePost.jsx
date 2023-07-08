@@ -2,44 +2,84 @@ import Modal from "react-modal";
 import styles from "./CreatePost.module.scss";
 import classNames from "classnames/bind";
 import Image from "~/components/Image/Image";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
+import { Upload } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage, faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faImage, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import axios from "axios";
+import { useSearchParams } from "react-router-dom";
+import vacationAPI from "~/api/vacationAPI";
+import locationAPI from "~/api/locationAPI";
+import { getManyLocations } from "~/store/slices/locationSlice";
 
 const cx = classNames.bind(styles);
 Modal.setAppElement("#root");
 const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
+  const dispatch = useDispatch();
   const { detail } = useSelector((state) => state.vacation);
-  const { authorInfo } = detail;
-  const [content, setContent] = useState("");
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [locations, setLocations] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const locationsList  = useSelector((state) => state.location)
+  console.log(locationsList);
+  const maxItems = 5;
+  const displayedLocations = locationsList.locationList.data?.slice(0, maxItems);
 
+  let parentId = "6486cb0e4d45b8403f02a4d6";
+  useEffect(() => {
+    dispatch(
+      getManyLocations({
+        type: "level",
+        number: "2",
+        parentId: parentId,
+      })
+    )
+  }, []);
+  
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  const { authorInfo } = detail;
+  const [searchParams]= useSearchParams()
+  let vacationId = searchParams.get("vacationID");
+
+  const [content, setContent] = useState("");
+  const [file, setFile] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  let [locationId, setLocationID] = useState('')
+
+  
   const handleClick = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
-    const response = await fetch("https://vacation-backend.onrender.com/post", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify({
-        authorInfo,
-        content,
-        resource: [],
-        comments: [],
-        likes: [],
-        lastUpdateAt: new Date(),
-        locationId: "6486f0b8bf997eadb3cfed20",
-        vacationId: "6486bcc25782c2081f86fe9d",
-      }),
-    });
-    const data = await response.json();
-    console.log(data);
-  };
+    try {
+      setIsLoading(true);
+      const res = await vacationAPI.createPost({vacationId:vacationId, locationId:locationId, content: content, ...(file.length > 0 && {files: file})});
+      handleCloseModal()
+    } catch (error) {
+      console.log(error);
+      console.log(locationId, vacationId, content); 
+    }
+    setIsLoading(false);
+  }
+
+  const handleUpload = (info) => {
+    setFile(info.file);
+  }
+
+  const handleOnClick = (locationID, title) => {
+    setLocationID(locationID);
+
+    setSelectedLocation(title);
+    closeModal();
+  }  
 
   return (
     <Modal
@@ -78,17 +118,52 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
             onChange={(e) => setContent(e.target.value)}
           />
           <div className={cx("post-extension")}>
-            <div> Add on</div>
+            <div> Add on: {selectedLocation}</div>
             <div className={cx("extensions")}>
               <div>
-                <FontAwesomeIcon icon={faLocationDot} className={cx("icon")} />
+                <FontAwesomeIcon onClick={openModal} icon={faLocationDot} className={cx("icon")} />
+                <Modal
+                  isOpen={modalIsOpen}
+                  onRequestClose={closeModal}
+                  className={cx("location-modal")}
+                >
+                  <div className={cx("location-wrapper")}>
+                    <h2 className={cx("title")}>Choose your Location</h2>
+                    <FontAwesomeIcon
+                      icon={faCircleXmark}
+                      className={cx("close-icon")}
+                      onClick={closeModal}
+                    />
+                    <div className={cx("modal-container")}>
+                      <div className={cx("location-methods")}>
+                        <input
+                          className={cx("location-input")}
+                          type="text"
+                          placeholder="Where are you ??"
+                          value={locations}
+                          onChange={(e) => {
+                            setLocations(e.target.value);
+                          }}
+                        />
+                        <FontAwesomeIcon onClick={openModal} icon={faCirclePlus} className={cx("add-icon")} />
+                      </div>
+                      <ul className={cx("location-list")}>
+                        {Array.isArray(displayedLocations) && displayedLocations.map((data) => (
+                          <li key={data._id} onClick={() => handleOnClick(data._id, data.title)}>{data.title}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </Modal>
               </div>
               <div>
-                <FontAwesomeIcon icon={faImage} className={cx("icon")} />
+                <Upload onChange={handleUpload} beforeUpload={() => false}>
+                  <FontAwesomeIcon icon={faImage} className={cx("icon")}  />                  
+                </Upload>
               </div>
             </div>
           </div>
-          <button onClick={handleClick} className={cx("btn-submit")}>
+          <button onClick={handleClick} disabled={isLoading} className={cx("btn-submit")}>
             Sending Post
           </button>
         </div>

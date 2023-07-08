@@ -156,7 +156,7 @@ const NewFeed = () => {
           </div>
         </div>
         <ul>
-          {listVacation?.list.map((vacation) => (
+          {listVacation.list?.map((vacation) => (
             <a
               key={vacation._id}
               className={cx("feed-post")}
@@ -206,7 +206,7 @@ const NewFeed = () => {
           <GlowingButton />
         </h2>
         <ul>
-          {trendingList.map((location) => (
+          {trendingList?.map((location) => (
             <li key={location._id} className={cx("underline")}>
               # {location.title}
             </li>

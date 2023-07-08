@@ -92,7 +92,6 @@ const vacationSlice = createSlice({
           if (action.payload.data?.length > 0) {
             newList = state.posts.postList.concat(action.payload.data);
           }
-
           state.posts.postList = newList;
           state.posts.meta = action.payload.meta;
         }

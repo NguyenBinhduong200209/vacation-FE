@@ -48,8 +48,11 @@ const locationSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getTrendingPlace.fulfilled, (state, action) => {
-        state.trendingList = action.payload;
+        state.trendingList = action.payload.data;
         state.isLoading = false;
+      })
+      .addCase(getManyLocations.pending, (state) => {
+        state.isLoading = true;
       })
       .addCase(getManyLocations.fulfilled, (state, action) => {
         state.locationList = action.payload;
@@ -57,5 +60,5 @@ const locationSlice = createSlice({
   },
 });
 const { reducer, actions } = locationSlice;
-export const {} = actions;
+export const { } = actions;
 export default reducer;

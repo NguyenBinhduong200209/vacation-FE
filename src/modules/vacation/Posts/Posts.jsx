@@ -32,6 +32,7 @@ const Posts = () => {
     setShowModal(true);
   };
 
+
   return (
     <>
       <div className={cx("wrapper")}>

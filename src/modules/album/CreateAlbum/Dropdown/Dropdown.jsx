@@ -30,7 +30,9 @@ const Dropdown = ({ selected, setSelected, setVacationId }) => {
           page: currentPage,
         });
         // console.log(res);
-        setOption((prev) => [...prev, ...res.data.data]);
+        if (res.data !== "") {
+          setOption((prev) => [...prev, ...res.data.data]);
+        }
         if (totalPage.current === 0) totalPage.current = res.data.meta.pages;
       };
 

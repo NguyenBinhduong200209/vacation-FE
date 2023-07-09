@@ -40,7 +40,7 @@ export const getManyPosts = createAsyncThunk(
   async (arg, thunkAPI) => {
     try {
       const res = await vacationAPI.getManyPosts(arg);
-
+      console.log(res);
       return res.data;
     } catch (error) {
       console.log("error:", error);

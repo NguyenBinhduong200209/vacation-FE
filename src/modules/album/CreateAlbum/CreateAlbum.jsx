@@ -29,7 +29,7 @@ const CreateAlbum = ({ open, setOpen }) => {
     <Modal open={open} setOpen={setOpen} title="New Album">
       <div className={cx("wrapper")}>
         <div className={cx("user-info")}>
-          <Image path={info.avatar?.path} />
+          <Image path={info?.avatar} />
           <div className={cx("username")}>{info.username}</div>
         </div>
         <Input

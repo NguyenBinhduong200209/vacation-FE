@@ -93,6 +93,7 @@ const NewFeed = () => {
     setOpenAlbum(false);
   };
 
+
   return (
     <div className={cx("container")}>
       {/* <Preloader /> */}

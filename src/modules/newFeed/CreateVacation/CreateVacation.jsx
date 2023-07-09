@@ -1,56 +1,44 @@
-import Modal from "react-modal";
 import styles from "./CreateVacation.module.scss";
 import classNames from "classnames/bind";
-import Image from "~/components/Image/Image";
 import { useSelector } from "react-redux";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faImage,
-  faLocationDot,
-  faUserPlus,
-} from "@fortawesome/free-solid-svg-icons";
+import { faLocationDot, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import Input from "antd/es/input/Input";
 import { DatePicker } from "antd";
+import Image from "~/components/Image/Image";
+import Modal from "~/components/Modal/Modal";
+import SelectLocation from "~/modules/components/SelectLocation/SelectLocation";
+import SelectFriend from "~/modules/components/SelectFriend/SelectFriend";
 const cx = classNames.bind(styles);
 
 const { RangePicker } = DatePicker;
-Modal.setAppElement("#root");
-const CreateVacation = ({ showModal, handleCloseModal }) => {
+const CreateVacation = ({ showModal, setOpen }) => {
+  const [openLocation, setOpenLocation] = useState(false);
+  const [openFriend, setOpenFriend] = useState(false);
+
   const [date, setDate] = useState(null);
   const { info } = useSelector((state) => state.auth);
   // console.log(info);
   const [value, setValue] = useState("");
   const onChange = (e) => {
-    console.log("Change:", e.target.value);
+    // console.log("Change:", e.target.value);
   };
   const handleCalendar = (date) => {
-    console.log(date);
+    // console.log(date);
     setDate(date);
   };
   return (
-    <Modal
-      isOpen={showModal}
-      onRequestClose={handleCloseModal}
-      className={cx("modal")}
-      overlayClassName={cx("overlay")}
-    >
+    <Modal open={showModal} setOpen={setOpen} title="New Vacation">
       <div className={cx("wrapper")}>
-        <h2 className={cx("title")}>New Vacation</h2>
-
-        <FontAwesomeIcon
-          icon={faCircleXmark}
-          className={cx("close-icon")}
-          onClick={handleCloseModal}
-        />
         <div className={cx("modal-container")}>
           <div className={cx("user-info")}>
             <div className={cx("info-name")}>
               <Image path={info?.avatar} />
               <div className={cx("username")}>
-                <span>{info?.username}</span>
+                <div>{info?.username}</div>
                 <div className={cx("status")}>Public</div>
               </div>
             </div>
@@ -59,9 +47,10 @@ const CreateVacation = ({ showModal, handleCloseModal }) => {
               className={cx("select-date")}
               placeholder={["Start Time", "End Time"]}
               style={{
-                width: "220px",
+                width: "22rem",
                 background: "#a29090a6",
                 border: "none",
+                height: "50px",
               }}
               format="YYYY/MM/DD"
               onCalendarChange={(dateStrings) => handleCalendar(dateStrings)}
@@ -87,10 +76,23 @@ const CreateVacation = ({ showModal, handleCloseModal }) => {
             <div> Add on</div>
             <div className={cx("extensions")}>
               <div>
-                <FontAwesomeIcon icon={faLocationDot} className={cx("icon")} />
+                <FontAwesomeIcon
+                  icon={faLocationDot}
+                  className={cx("icon")}
+                  onClick={() => setOpenLocation(true)}
+                />
+                <SelectLocation
+                  openLocation={openLocation}
+                  setOpenLocation={setOpenLocation}
+                />
               </div>
               <div>
-                <FontAwesomeIcon icon={faUserPlus} className={cx("icon")} />
+                <FontAwesomeIcon
+                  icon={faUserPlus}
+                  className={cx("icon")}
+                  onClick={() => setOpenFriend(true)}
+                />
+                <SelectFriend open={openFriend} setOpen={setOpenFriend} />
               </div>
             </div>
           </div>

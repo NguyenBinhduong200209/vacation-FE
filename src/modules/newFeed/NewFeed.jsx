@@ -19,6 +19,7 @@ import Image from "~/components/Image/Image";
 import { useNavigate } from "react-router-dom";
 import CreateVacation from "./CreateVacation/CreateVacation";
 import CreateAlbum from "../album/CreateAlbum/CreateAlbum";
+import SelectLocation from "../components/SelectLocation/SelectLocation";
 // import Preloader from "../Preloader/Preloader";
 const cx = classNames.bind(styles);
 const NewFeed = () => {
@@ -30,6 +31,7 @@ const NewFeed = () => {
   const [openAlbum, setOpenAlbum] = useState(false);
 
   const { info } = useSelector((state) => state.auth);
+  // console.log(info);
   const { listVacation } = useSelector((state) => state.vacation);
   const { trendingList } = useSelector((state) => state.location);
 
@@ -80,22 +82,18 @@ const NewFeed = () => {
     };
   }, []);
 
-  const handleOpenModal = () => {
-    setOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpen(false);
-  };
+  // handle open add album modal
 
   const handleOpenAlbumModal = () => {
     setOpenAlbum(true);
   };
+  // handle close add album modal
+
   const handleCloseAlbumModal = () => {
     setOpenAlbum(false);
   };
 
-  console.log(trendingList);
+
   return (
     <div className={cx("container")}>
       {/* <Preloader /> */}
@@ -150,33 +148,27 @@ const NewFeed = () => {
                 <PictureOutlined />
                 <div
                   className={cx("create-sthg-details")}
-                  onClick={handleOpenAlbumModal}
+                  onClick={() => setOpenAlbum(true)}
                 >
                   Add Album
                 </div>
               </button>
-              <CreateAlbum
-                handleCloseAlbumModal={handleCloseAlbumModal}
-                showAlbumModal={openAlbum}
-              />
+              <CreateAlbum setOpen={setOpenAlbum} open={openAlbum} />
               <button className={cx("create-sthg")}>
                 <FolderOpenOutlined />
                 <div
                   className={cx("create-sthg-details")}
-                  onClick={handleOpenModal}
+                  onClick={() => setOpen(true)}
                 >
                   Add Vacation
                 </div>
               </button>
-              <CreateVacation
-                handleCloseModal={handleCloseModal}
-                showModal={open}
-              />
+              <CreateVacation setOpen={setOpen} showModal={open} />
             </div>
           </div>
         </div>
         <ul>
-          {listVacation?.list.map((vacation) => (
+          {listVacation.list?.map((vacation) => (
             <a
               key={vacation._id}
               className={cx("feed-post")}
@@ -226,7 +218,7 @@ const NewFeed = () => {
           <GlowingButton />
         </h2>
         <ul>
-          {trendingList.map((location) => (
+          {trendingList?.map((location) => (
             <li key={location._id} className={cx("underline")}>
               # {location.title}
             </li>

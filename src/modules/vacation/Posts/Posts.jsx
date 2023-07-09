@@ -55,7 +55,7 @@ const Posts = () => {
 
           <>{isLoading && <Loading />}</>
         </div>
-        <Timeline />
+        {/* <Timeline /> */}
       </div>
     </>
   );

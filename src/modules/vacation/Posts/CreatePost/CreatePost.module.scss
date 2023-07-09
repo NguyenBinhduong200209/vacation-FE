@@ -1,10 +1,12 @@
 // Css Modal
 .modal {
   --modal-width: 40%;
-  --modal-height: 50%;
+  --modal-height: 60%;
+  max-height: calc(100vh - 200px);
 
   width: var(--modal-width);
   min-height: var(--modal-height);
+  overflow-y: auto;
   position: absolute;
   top: calc((100% - var(--modal-height)) / 2);
   left: calc((100% - var(--modal-width)) / 2);
@@ -148,6 +150,14 @@
   cursor: pointer;
 }
 
+.images {
+  width: 50%;
+}
+
+.icon{
+  cursor: pointer;
+}
+
 // btn
 .btn-submit {
   width: 100%;
@@ -159,4 +169,15 @@
   letter-spacing: 1.2px;
   border-radius: 20px;
   cursor: pointer;
+}
+
+.img-uploader {
+  display: flex;
+  width: 100%;
+  img {
+    object-fit: cover;
+    width: 90px;
+    height: 90px;
+    margin: 15px 0px 0px 15px;
+  }
 }

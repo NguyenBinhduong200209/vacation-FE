@@ -52,16 +52,16 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
   let vacationId = searchParams.get("vacationID");
 
   const [content, setContent] = useState("");
-  const [file, setFile] = useState([]);
+  const [files, setFiles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   let [locationId, setLocationID] = useState('')
-
+  const uploadResourcesRef = useRef()
   
   const handleClick = async (e) => {
     e.preventDefault();
     try {
       setIsLoading(true);
-      const res = await vacationAPI.createPost({vacationId:vacationId, locationId:locationId, content: content, ...(file.length > 0 && {files: file})});
+      const res = await vacationAPI.createPost({vacationId:vacationId, locationId:locationId, content: content});
       handleCloseModal()
     } catch (error) {
       console.log(error);
@@ -70,8 +70,12 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
     setIsLoading(false);
   }
 
-  const handleUpload = (info) => {
-    setFile(info.file);
+  const handleUpload = (e) => {
+
+    if (e.target.files && e.target.files.length > 0) {
+      console.log(e.target.files);
+      setFiles([...files, ...Object.values(e.target.files)]);
+    }
   }
 
   const handleOnClick = (locationID, title) => {
@@ -117,6 +121,12 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
+          <div className={cx("img-uploader")}>
+            { files.map((file) =>  <div>
+                <img alt="" src={URL.createObjectURL(file)} />
+              </div>
+            )}
+          </div>
           <div className={cx("post-extension")}>
             <div> Add on: {selectedLocation}</div>
             <div className={cx("extensions")}>
@@ -157,9 +167,8 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
                 </Modal>
               </div>
               <div>
-                <Upload onChange={handleUpload} beforeUpload={() => false}>
-                  <FontAwesomeIcon icon={faImage} className={cx("icon")}  />                  
-                </Upload>
+                <input type="file" ref={uploadResourcesRef} onChange={handleUpload} hidden/>
+                  <FontAwesomeIcon icon={faImage} className={cx("icon")} onClick={() => {uploadResourcesRef.current.click()}} />                  
               </div>
             </div>
           </div>

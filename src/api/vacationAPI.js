@@ -16,7 +16,7 @@ const vacationAPI = {
   },
   createPost: (data) => {
     return axiosClient.post(URL.POST_URL, data);
-  },
-};
+  }
+}
 
 export default vacationAPI;

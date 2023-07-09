@@ -30,6 +30,7 @@ const Posts = () => {
     setShowModal(true);
   };
 
+
   return (
     <>
       <div className={cx("wrapper")}>
@@ -52,7 +53,7 @@ const Posts = () => {
 
           <>{isLoading && <Loading />}</>
         </div>
-        <Timeline />
+        {/* <Timeline /> */}
       </div>
     </>
   );

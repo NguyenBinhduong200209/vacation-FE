@@ -91,9 +91,11 @@ const Vacation = ({ children }) => {
         page: currentPage,
       })
     ).then((res) => {
+
       // console.log(res);
       if (res.payload !== "" && res.payload?.pages !== totalPage.current)
         totalPage.current = res.payload.meta.pages;
+
     });
   }, [currentPage]);
 

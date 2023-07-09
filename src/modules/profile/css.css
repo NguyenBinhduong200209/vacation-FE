@@ -1,0 +1,28 @@
+.handle{
+    position: relative;
+    width: inherit;
+    height: inherit;
+    /* width: 100px;
+    aspect-ratio: 1/1; */
+    text-align: center;
+    /* border: 1px solid white; */
+    cursor: all-scroll;
+    object-fit: cover;
+    border-radius: 10px;
+    background-image: url("https://nhanvietluanvan.com/wp-content/uploads/2023/05/568603cbd1860c67bf8f6776cbe7f885-612x620.jpg");
+    background-size: cover;
+}
+
+.mother{
+    position: fixed;
+    top: 15vh;
+    left: 15%;
+    width: 60%;
+    height: 80vh;
+    /* border: 1px solid yellow; */
+    /* padding: 2rem; */
+    outline-width: 2px;
+    outline-color: white;
+    outline-style: solid;
+    outline-offset: 2rem;
+}

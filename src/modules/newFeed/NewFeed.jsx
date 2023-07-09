@@ -94,6 +94,8 @@ const NewFeed = () => {
   const handleCloseAlbumModal = () => {
     setOpenAlbum(false);
   };
+
+  console.log(trendingList);
   return (
     <div className={cx("container")}>
       {/* <Preloader /> */}

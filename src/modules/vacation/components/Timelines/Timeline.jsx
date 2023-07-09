@@ -12,6 +12,7 @@ const Timeline = () => {
   const { isLoading, posts, activeTimeline } = useSelector(
     (state) => state.vacation
   );
+  console.log(posts);
 
   return (
     <>

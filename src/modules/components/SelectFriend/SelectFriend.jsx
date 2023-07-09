@@ -19,7 +19,7 @@ const SelectFriend = ({ open, setOpen }) => {
         <div className={cx("friendlist")}>
           {}
 
-          {friendList.length === 0 ? (
+          {friendList?.length === 0 ? (
             <div className={cx("empty")}>Your have 0 Friend</div>
           ) : (
             friendList?.map((item) => {

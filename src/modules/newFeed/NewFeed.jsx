@@ -31,7 +31,7 @@ const NewFeed = () => {
   const [openAlbum, setOpenAlbum] = useState(false);
 
   const { info } = useSelector((state) => state.auth);
-  // console.log(info);
+  console.log(info);
   const { listVacation } = useSelector((state) => state.vacation);
   const { trendingList } = useSelector((state) => state.location);
 
@@ -111,8 +111,8 @@ const NewFeed = () => {
               <li>{info?.totalFriends}</li>
               <div className={cx("user-info-header-line")}>friends</div>
             </div>
-            <img
-              src={info?.avatar?.path}
+            <Image
+              path={info.avatar?.path}
               className={cx("user-info-bgava")}
               alt=""
             />
@@ -133,7 +133,7 @@ const NewFeed = () => {
       </div>
       <div className={cx("feed")}>
         <div className={cx("create")}>
-          <img src={info?.avatar} className={cx("user-ava")} alt="" />
+          <Image path={info.avatar?.path} className={cx("user-ava")} alt="" />
           <div className={cx("create-posts")}>
             <button className={cx("create-line")}>
               Every step is a milestone ...{" "}
@@ -174,9 +174,9 @@ const NewFeed = () => {
               href={`/vacation/post?vacationID=${vacation._id}`}
             >
               <div className={cx("feed-head")}>
-                <img
-                  src={vacation.authorInfo.avatar?.path}
-                  alt="?"
+                <Image
+                  path={vacation.authorInfo.avatar?.path}
+                  alt=""
                   className={cx("feed-ava")}
                 />
                 <div className={cx("feed-head-info")}>

@@ -6,6 +6,8 @@ export const REGISTER_URL = "auth/register";
 export const GET_INFO_URL = "auth/info";
 export const FORGOT_URL = "auth/forgot";
 export const RESET_URL = "auth/reset";
+export const FRIEND_URL = "friend";
+
 // API VACATION URL
 export const VACATION_URL = "vacation";
 export const POST_URL = "post";

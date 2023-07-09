@@ -1,18 +1,4 @@
-.modal {
-  --modal-width: 40%;
-  --modal-height: 50%;
-
-  width: var(--modal-width);
-  min-height: var(--modal-height);
-  position: absolute;
-  top: calc((100% - var(--modal-height)) / 2);
-  left: calc((100% - var(--modal-width)) / 2);
-  background: #2c2d2f;
-  border-radius: 15px;
-  padding: 3rem 5%;
-  padding-bottom: 4rem;
-  color: white;
-
+.wrapper {
   input {
     background: rgba(165, 155, 155, 0.72);
     color: white;
@@ -29,34 +15,6 @@
       letter-spacing: 1px;
       font-weight: 600;
     }
-  }
-}
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(19, 19, 19, 0.7);
-}
-
-.title {
-  width: 70%;
-  margin: auto;
-  margin-bottom: 2.5rem;
-  padding: 1rem 0;
-  border-bottom: 1px solid white;
-  text-align: center;
-}
-
-.close-icon {
-  position: absolute;
-  top: 2rem;
-  right: 4rem;
-  font-size: 2.5rem;
-  cursor: pointer;
-  &:hover {
-    transform: scale(1.1);
   }
 }
 

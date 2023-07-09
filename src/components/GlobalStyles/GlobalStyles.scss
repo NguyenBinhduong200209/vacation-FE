@@ -63,7 +63,9 @@ a[href] {
   text-decoration: none;
   appearance: none;
 }
-
+button:disabled {
+  cursor: not-allowed;
+}
 /* Scroll-bar css */
 html *::-webkit-scrollbar {
   border-radius: 0;

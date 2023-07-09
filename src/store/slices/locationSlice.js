@@ -10,10 +10,6 @@ export const getTrendingPlace = createAsyncThunk(
       return res.data.data;
     } catch (error) {
       console.log("error:", error);
-      return {
-        status: error.response.status,
-        message: error.response.data.message,
-      };
     }
   }
 );
@@ -23,13 +19,9 @@ export const getManyLocations = createAsyncThunk(
   async (arg, thunkAPI) => {
     try {
       const res = await locationAPI.getManyLocations(arg);
-      return res.data;
+      return res.data.data;
     } catch (error) {
       console.log("error:", error);
-      return {
-        status: error.response.status,
-        message: error.response.data.message,
-      };
     }
   }
 );

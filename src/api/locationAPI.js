@@ -13,6 +13,10 @@ const locationAPI = {
     const url = `${URL.LOCATION_URL}?type=${data.type}&number=${data.number}&parentId=${data.parentId}`;
     return axiosClient.get(url);
   },
+
+  addLocation: (data) => {
+    return axiosClient.post(URL.LOCATION_URL, data);
+  },
 };
 
 export default locationAPI;

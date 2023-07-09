@@ -42,6 +42,19 @@ export const getInfoUser = createAsyncThunk(
     }
   }
 );
+
+export const getFiendList = createAsyncThunk(
+  "auth/getFiendList",
+  async (arg, thunkAPI) => {
+    try {
+      const res = await authAPI.getFiendList();
+      console.log(res.data);
+      return res.data.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -51,6 +64,7 @@ const authSlice = createSlice({
     isLoading: false,
     status: null,
     messageResult: "",
+    friendList: [],
   },
   reducers: {
     changeRenderList: (state, action) => {
@@ -88,6 +102,9 @@ const authSlice = createSlice({
       .addCase(getInfoUser.fulfilled, (state, action) => {
         state.info = action.payload;
         state.isLoading = false;
+      })
+      .addCase(getFiendList.fulfilled, (state, action) => {
+        state.friendList = action.payload;
       });
   },
 });

@@ -22,6 +22,9 @@ const authAPI = {
     }
     return axiosClient.get(url);
   },
+  getFiendList: () => {
+    return axiosClient.get(URL.FRIEND_URL);
+  },
 
   register: (info) => {
     return axiosClient.post(URL.REGISTER_URL, info);

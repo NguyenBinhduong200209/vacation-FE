@@ -71,14 +71,14 @@ const Interaction = (props) => {
           type: "posts",
           content: value,
         });
-        setisComment(true);
       } else if (type === "editCmt" && editCmtValue !== "") {
         await interactionAPI.updateComment({
           id: cmtId,
           content: editCmtValue,
         });
-        setisComment(true);
+        setEditCmtId(null);
       }
+      setisComment(true);
     } catch (error) {
       console.log(error);
     }
@@ -194,7 +194,7 @@ const Interaction = (props) => {
         <div className={cx("cmt-container")}>
           <div className={cx("input-container")}>
             <div className={cx("input-content")}>
-              {/* <Image path={info.avatar?.path} /> */}
+              {/* <Image path={info.avatar} /> */}
               <textarea
                 value={value}
                 type="text"

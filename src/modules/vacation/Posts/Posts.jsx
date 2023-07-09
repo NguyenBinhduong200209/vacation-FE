@@ -22,8 +22,6 @@ const Posts = () => {
   let vacationID = searchParams.get("vacationID");
   const { posts, detail, isLoading } = useSelector((state) => state.vacation);
   const { postList } = posts;
-
-  const [tmp, setTmp] = useState(0);
   // console.log(posts);
   const handleCloseModal = () => {
     setShowModal(false);

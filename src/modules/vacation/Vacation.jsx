@@ -42,7 +42,7 @@ const Vacation = ({ children }) => {
   const { detail, posts } = useSelector((state) => state.vacation);
   const { authorInfo, cover, members, title, startingTime, endingTime } =
     detail;
-  console.log(detail);
+  // console.log(detail);
   const [currentPage, setCurrentPage] = useState(1);
 
   // console.log("detail", detail);
@@ -91,9 +91,11 @@ const Vacation = ({ children }) => {
         page: currentPage,
       })
     ).then((res) => {
-      console.log(res);
-      // if res.payload !== "" && res.payload?.pages !== totalPage.current)
-      //   totalPage.current = res.payload.meta.pages;
+
+      // console.log(res);
+      if (res.payload !== "" && res.payload?.pages !== totalPage.current)
+        totalPage.current = res.payload.meta.pages;
+
     });
   }, [currentPage]);
 

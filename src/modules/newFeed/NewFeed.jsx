@@ -18,6 +18,8 @@ import { getDate } from "~/helpers/function";
 import Image from "~/components/Image/Image";
 import { useNavigate } from "react-router-dom";
 import CreateVacation from "./CreateVacation/CreateVacation";
+import CreateAlbum from "../album/CreateAlbum/CreateAlbum";
+import SelectLocation from "../components/SelectLocation/SelectLocation";
 // import Preloader from "../Preloader/Preloader";
 const cx = classNames.bind(styles);
 const NewFeed = () => {
@@ -26,13 +28,16 @@ const NewFeed = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1); // State variable for current page number
   const [open, setOpen] = useState(false);
+  const [openAlbum, setOpenAlbum] = useState(false);
+
   const { info } = useSelector((state) => state.auth);
+  console.log(info);
   const { listVacation } = useSelector((state) => state.vacation);
   const { trendingList } = useSelector((state) => state.location);
 
   // Get new list of vacation when the currentPage change
   useEffect(() => {
-    if (!listVacation.meta.pages || currentPage <= listVacation.meta.pages) {
+    if (!listVacation?.meta?.pages || currentPage <= listVacation.meta.pages) {
       dispatch(
         getListVacation({
           page: currentPage,
@@ -77,13 +82,18 @@ const NewFeed = () => {
     };
   }, []);
 
-  const handleOpenModal = () => {
-    setOpen(true);
+  // handle open add album modal
+
+  const handleOpenAlbumModal = () => {
+    setOpenAlbum(true);
+  };
+  // handle close add album modal
+
+  const handleCloseAlbumModal = () => {
+    setOpenAlbum(false);
   };
 
-  const handleCloseModal = () => {
-    setOpen(false);
-  };
+
   return (
     <div className={cx("container")}>
       {/* <Preloader /> */}
@@ -102,8 +112,8 @@ const NewFeed = () => {
               <li>{info?.totalFriends}</li>
               <div className={cx("user-info-header-line")}>friends</div>
             </div>
-            <img
-              src={info?.avatar?.path}
+            <Image
+              path={info.avatar?.path}
               className={cx("user-info-bgava")}
               alt=""
             />
@@ -124,10 +134,9 @@ const NewFeed = () => {
       </div>
       <div className={cx("feed")}>
         <div className={cx("create")}>
-          <img src={info?.avatar} className={cx("user-ava")} alt="" />
+          <Image path={info.avatar?.path} className={cx("user-ava")} alt="" />
           <div className={cx("create-posts")}>
             <button className={cx("create-line")}>
-              {" "}
               Every step is a milestone ...{" "}
             </button>
             <div className={cx("create-details")}>
@@ -137,21 +146,24 @@ const NewFeed = () => {
               </button>
               <button className={cx("create-sthg")}>
                 <PictureOutlined />
-                <div className={cx("create-sthg-details")}>Add Album</div>
+                <div
+                  className={cx("create-sthg-details")}
+                  onClick={() => setOpenAlbum(true)}
+                >
+                  Add Album
+                </div>
               </button>
+              <CreateAlbum setOpen={setOpenAlbum} open={openAlbum} />
               <button className={cx("create-sthg")}>
                 <FolderOpenOutlined />
                 <div
                   className={cx("create-sthg-details")}
-                  onClick={handleOpenModal}
+                  onClick={() => setOpen(true)}
                 >
                   Add Vacation
                 </div>
               </button>
-              <CreateVacation
-                handleCloseModal={handleCloseModal}
-                showModal={open}
-              />
+              <CreateVacation setOpen={setOpen} showModal={open} />
             </div>
           </div>
         </div>
@@ -163,9 +175,9 @@ const NewFeed = () => {
               href={`/vacation/post?vacationID=${vacation._id}`}
             >
               <div className={cx("feed-head")}>
-                <img
-                  src={vacation.authorInfo.avatar?.path}
-                  alt="?"
+                <Image
+                  path={vacation.authorInfo.avatar?.path}
+                  alt=""
                   className={cx("feed-ava")}
                 />
                 <div className={cx("feed-head-info")}>

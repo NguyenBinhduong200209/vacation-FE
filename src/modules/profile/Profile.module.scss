@@ -348,8 +348,8 @@ li {
 
 .album-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 4rem;
+  grid-template-columns: repeat(3, 30%);
+  grid-gap: 3rem;
   width: 100%;
   height: fit-content;
 }

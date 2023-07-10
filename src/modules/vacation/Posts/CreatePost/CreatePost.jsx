@@ -5,7 +5,6 @@ import Image from "~/components/Image/Image";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
-import { Upload } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faImage, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
@@ -14,6 +13,7 @@ import { useSearchParams } from "react-router-dom";
 import vacationAPI from "~/api/vacationAPI";
 import locationAPI from "~/api/locationAPI";
 import { getManyLocations } from "~/store/slices/locationSlice";
+import SelectLocation from "~/modules/components/SelectLocation/SelectLocation";
 
 const cx = classNames.bind(styles);
 Modal.setAppElement("#root");
@@ -21,12 +21,22 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
   const dispatch = useDispatch();
   const { detail } = useSelector((state) => state.vacation);
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [locations, setLocations] = useState([]);
+  
+  const { authorInfo } = detail;
+  const [searchParams]= useSearchParams()
+  let vacationId = searchParams.get("vacationID");
+
+  const [content, setContent] = useState("");
+  const [files, setFiles] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  let [locationId, setLocationID] = useState('')
+  const uploadResourcesRef = useRef()
+  // const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState("");
   const locationsList  = useSelector((state) => state.location)
   console.log(locationsList);
   const maxItems = 5;
-  const displayedLocations = locationsList.locationList.data?.slice(0, maxItems);
+  // const displayedLocations = locationsList.locationList.data?.slice(0, maxItems);
 
   let parentId = "6486cb0e4d45b8403f02a4d6";
   useEffect(() => {
@@ -46,16 +56,6 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
   function closeModal() {
     setIsOpen(false);
   }
-
-  const { authorInfo } = detail;
-  const [searchParams]= useSearchParams()
-  let vacationId = searchParams.get("vacationID");
-
-  const [content, setContent] = useState("");
-  const [files, setFiles] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  let [locationId, setLocationID] = useState('')
-  const uploadResourcesRef = useRef()
   
   const handleClick = async (e) => {
     e.preventDefault();
@@ -80,7 +80,6 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 
   const handleOnClick = (locationID, title) => {
     setLocationID(locationID);
-
     setSelectedLocation(title);
     closeModal();
   }  
@@ -122,7 +121,7 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
             onChange={(e) => setContent(e.target.value)}
           />
           <div className={cx("img-uploader")}>
-            { files.map((file) =>  <div>
+            {files.map((file) =>  <div>
                 <img alt="" src={URL.createObjectURL(file)} />
               </div>
             )}
@@ -132,7 +131,8 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
             <div className={cx("extensions")}>
               <div>
                 <FontAwesomeIcon onClick={openModal} icon={faLocationDot} className={cx("icon")} />
-                <Modal
+                <SelectLocation openLocation={modalIsOpen} setOpenLocation={setIsOpen}/>
+                {/* <Modal
                   isOpen={modalIsOpen}
                   onRequestClose={closeModal}
                   className={cx("location-modal")}
@@ -164,7 +164,7 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
                       </ul>
                     </div>
                   </div>
-                </Modal>
+                </Modal> */}
               </div>
               <div>
                 <input type="file" ref={uploadResourcesRef} onChange={handleUpload} hidden/>

@@ -10,6 +10,7 @@ import Image from "~/components/Image/Image";
 import { getManyPosts } from "~/store/slices/vacationSlice";
 import { useSearchParams } from "react-router-dom";
 import Loading from "~/components/Loading/Loading";
+import UpdatePost from "./UpdatePost/UpdatePost";
 
 const cx = classNames.bind(styles);
 

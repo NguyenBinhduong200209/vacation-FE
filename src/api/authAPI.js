@@ -5,6 +5,9 @@ const authAPI = {
   login: (account) => {
     return axiosClient.post(URL.LOGIN_URL, account);
   },
+  refreshToken: () => {
+    return axiosClient.post(URL.REFRESHTOKEN_URL);
+  },
 
   logout: () => {
     return axiosClient.post(URL.LOGOUT_URL);

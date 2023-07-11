@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames/bind";
 import styles from "./NewFeed.module.scss";
@@ -17,9 +17,9 @@ import { getTrendingPlace } from "~/store/slices/locationSlice";
 import { getDate } from "~/helpers/function";
 import Image from "~/components/Image/Image";
 import { useNavigate } from "react-router-dom";
-import CreateVacation from "./CreateVacation/CreateVacation";
+import CreateVacation from "../vacation/CreateVacation/CreateVacation";
 import CreateAlbum from "../album/CreateAlbum/CreateAlbum";
-import SelectLocation from "../components/SelectLocation/SelectLocation";
+
 // import Preloader from "../Preloader/Preloader";
 const cx = classNames.bind(styles);
 const NewFeed = () => {
@@ -29,23 +29,10 @@ const NewFeed = () => {
   const [currentPage, setCurrentPage] = useState(1); // State variable for current page number
   const [open, setOpen] = useState(false);
   const [openAlbum, setOpenAlbum] = useState(false);
-
   const { info } = useSelector((state) => state.auth);
-  console.log(info);
   const { listVacation } = useSelector((state) => state.vacation);
   const { trendingList } = useSelector((state) => state.location);
-
-  // Get new list of vacation when the currentPage change
-  useEffect(() => {
-    if (!listVacation?.meta?.pages || currentPage <= listVacation.meta.pages) {
-      dispatch(
-        getListVacation({
-          page: currentPage,
-          type: "newFeed",
-        })
-      );
-    }
-  }, [currentPage]);
+  const totalPage = useRef(0);
 
   // Get list of trending place
   useEffect(() => {
@@ -60,43 +47,42 @@ const NewFeed = () => {
   // increase currentPage when at bottom page
 
   const loadMorePosts = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
+    if (currentPage < totalPage.current) {
+      setCurrentPage((prev) => prev + 1);
+    }
   };
 
   // add scroll event when component mounted
   useEffect(() => {
     const handleScroll = () => {
-      const { scrollTop, clientHeight, scrollHeight } =
-        document.documentElement;
-      const isAtBottom = scrollTop + clientHeight >= scrollHeight;
-
-      if (isAtBottom) {
+      if (
+        window.innerHeight + document.documentElement.scrollTop + 1 >=
+        document.documentElement.scrollHeight
+      ) {
         loadMorePosts();
       }
     };
-
     window.addEventListener("scroll", handleScroll);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [currentPage]);
 
-  // handle open add album modal
-
-  const handleOpenAlbumModal = () => {
-    setOpenAlbum(true);
-  };
-  // handle close add album modal
-
-  const handleCloseAlbumModal = () => {
-    setOpenAlbum(false);
-  };
-
+  // Get new list of vacation when the currentPage change
+  useEffect(() => {
+    dispatch(
+      getListVacation({
+        page: currentPage,
+        type: "newFeed",
+      })
+    ).then((res) => {
+      if (res.payload !== "" && res.payload?.pages !== totalPage.current)
+        totalPage.current = res.payload?.meta?.pages;
+    });
+  }, [currentPage]);
 
   return (
     <div className={cx("container")}>
-      {/* <Preloader /> */}
       <div className={cx("user-info")}>
         <div className={cx("user-cover-linear")}></div>
         <div className={cx("user-info-background")}>

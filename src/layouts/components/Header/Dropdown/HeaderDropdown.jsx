@@ -15,7 +15,7 @@ const HeaderDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { info } = useSelector((state) => state.auth);
   const dropdownRef = useRef(null);
-  console.log(info);
+  // console.log(info);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);

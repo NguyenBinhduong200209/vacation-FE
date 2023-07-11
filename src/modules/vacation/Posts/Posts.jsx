@@ -16,11 +16,7 @@ const cx = classNames.bind(styles);
 
 const Posts = () => {
   const [showModal, setShowModal] = useState(false);
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const currentPageRef = useRef(0);
-  const dispatch = useDispatch();
-  let [searchParams] = useSearchParams();
-  let vacationID = searchParams.get("vacationID");
+
   const { posts, detail, isLoading } = useSelector((state) => state.vacation);
   const { postList } = posts;
   // console.log(posts);
@@ -30,7 +26,6 @@ const Posts = () => {
   const handleOpenModal = () => {
     setShowModal(true);
   };
-
 
   return (
     <>
@@ -54,7 +49,7 @@ const Posts = () => {
 
           <>{isLoading && <Loading />}</>
         </div>
-        {/* <Timeline /> */}
+        <Timeline />
       </div>
     </>
   );

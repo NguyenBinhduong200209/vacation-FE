@@ -4,7 +4,11 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationDot, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCaretDown,
+  faLocationDot,
+  faUserPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import Input from "antd/es/input/Input";
 import { DatePicker } from "antd";
@@ -16,9 +20,15 @@ const cx = classNames.bind(styles);
 
 const { RangePicker } = DatePicker;
 const CreateVacation = ({ showModal, setOpen }) => {
+  // state for location
   const [openLocation, setOpenLocation] = useState(false);
+  const [location, setLocation] = useState("");
+  // open friend modal
   const [openFriend, setOpenFriend] = useState(false);
-
+  // open status dropdown
+  const [openStatus, setOpenStatus] = useState(false);
+  const [status, setStatus] = useState("Public");
+  // state for date
   const [date, setDate] = useState(null);
   const { info } = useSelector((state) => state.auth);
   // console.log(info);
@@ -30,16 +40,39 @@ const CreateVacation = ({ showModal, setOpen }) => {
     // console.log(date);
     setDate(date);
   };
+
+  const handleStatus = (status) => {
+    setStatus(status);
+    setOpenStatus(false);
+  };
   return (
     <Modal open={showModal} setOpen={setOpen} title="New Vacation">
       <div className={cx("wrapper")}>
         <div className={cx("modal-container")}>
           <div className={cx("user-info")}>
             <div className={cx("info-name")}>
-              <Image path={info?.avatar} />
+              <Image path={info?.avatar?.path} />
               <div className={cx("username")}>
                 <div>{info?.username}</div>
-                <div className={cx("status")}>Public</div>
+                <div
+                  className={cx("status")}
+                  onClick={() => setOpenStatus(!openStatus)}
+                >
+                  <span>{status}</span>
+                  <FontAwesomeIcon
+                    icon={faCaretDown}
+                    style={{ marginLeft: "0.8rem", cursor: "pointer" }}
+                  />
+                  {openStatus && (
+                    <div className={cx("dropdown-status")}>
+                      <div onClick={() => handleStatus("Public")}>Public</div>
+                      <div onClick={() => handleStatus("Protected")}>
+                        Protected
+                      </div>
+                      <div onClick={() => handleStatus("Only Me")}>Only Me</div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
             <RangePicker
@@ -73,27 +106,35 @@ const CreateVacation = ({ showModal, setOpen }) => {
             spellCheck={false}
           />
           <div className={cx("post-extension")}>
-            <div> Add on</div>
-            <div className={cx("extensions")}>
-              <div>
-                <FontAwesomeIcon
-                  icon={faLocationDot}
-                  className={cx("icon")}
-                  onClick={() => setOpenLocation(true)}
-                />
-                <SelectLocation
-                  openLocation={openLocation}
-                  setOpenLocation={setOpenLocation}
-                />
+            <div className={cx("extension-container")}>
+              <div> Add on</div>
+              <div className={cx("extensions")}>
+                <div>
+                  <FontAwesomeIcon
+                    icon={faLocationDot}
+                    className={cx("icon")}
+                    onClick={() => setOpenLocation(true)}
+                  />
+                  <SelectLocation
+                    openLocation={openLocation}
+                    setOpenLocation={setOpenLocation}
+                    setLocation={setLocation}
+                  />
+                </div>
+                <div>
+                  <FontAwesomeIcon
+                    icon={faUserPlus}
+                    className={cx("icon")}
+                    onClick={() => setOpenFriend(true)}
+                  />
+                  <SelectFriend open={openFriend} setOpen={setOpenFriend} />
+                </div>
               </div>
-              <div>
-                <FontAwesomeIcon
-                  icon={faUserPlus}
-                  className={cx("icon")}
-                  onClick={() => setOpenFriend(true)}
-                />
-                <SelectFriend open={openFriend} setOpen={setOpenFriend} />
-              </div>
+            </div>
+
+            <div className={cx("result")}>
+              {/* <div className={cx("res-location")}>{location.city}</div> */}
+              <div className={cx("res-member")}></div>
             </div>
           </div>
           <button className={cx("btn-submit")}>Create Vacation</button>

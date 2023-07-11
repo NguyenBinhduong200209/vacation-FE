@@ -1,12 +1,9 @@
 .modal {
   --modal-width: 40%;
   --modal-height: 50%;
-
+  position: relative;
   width: var(--modal-width);
   min-height: var(--modal-height);
-  position: absolute;
-  top: calc((100% - var(--modal-height)) / 2);
-  left: calc((100% - var(--modal-width)) / 2);
   background: #2f2f30;
   border-radius: 15px;
   padding: 3rem 5%;
@@ -14,6 +11,9 @@
   color: white;
 }
 .overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: fixed;
   top: 0;
   left: 0;
@@ -34,9 +34,9 @@
 
 .close-icon {
   position: absolute;
-  top: 2rem;
-  right: 4rem;
-  font-size: 2.5rem;
+  top: 3rem;
+  right: 5rem;
+  font-size: 2rem;
   cursor: pointer;
   &:hover {
     transform: scale(1.1);

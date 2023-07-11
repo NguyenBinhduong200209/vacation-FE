@@ -10,10 +10,6 @@ export const getListVacation = createAsyncThunk(
       return res.data;
     } catch (error) {
       console.log("error:", error);
-      return {
-        status: error.response.status,
-        message: error.response.data.message,
-      };
     }
   }
 );
@@ -27,10 +23,6 @@ export const getDetailVacation = createAsyncThunk(
       return res.data.data;
     } catch (error) {
       console.log("error:", error);
-      return {
-        status: error.response.status,
-        message: error.response.data.message,
-      };
     }
   }
 );
@@ -44,11 +36,6 @@ export const getManyPosts = createAsyncThunk(
       return res.data;
     } catch (error) {
       console.log("error:", error);
-
-      return {
-        status: error.response.status,
-        message: error.response.data.message,
-      };
     }
   }
 );
@@ -102,8 +89,6 @@ const vacationSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(getListVacation.fulfilled, (state, action) => {
-        // console.log(action.payload);
-
         if (action.payload) {
           let newList = [];
           if (action.payload.data?.length > 0) {

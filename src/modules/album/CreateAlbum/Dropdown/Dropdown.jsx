@@ -29,8 +29,12 @@ const Dropdown = ({ selected, setSelected, setVacationId }) => {
           type: "userProfile",
           page: currentPage,
         });
-        console.log(res);
-        setOption((prev) => [...prev, ...res.data.data]);
+
+            // console.log(res);
+        if (res.data !== "") {
+          setOption((prev) => [...prev, ...res.data.data]);
+        }
+
         if (totalPage.current === 0) totalPage.current = res.data.meta.pages;
       };
 

@@ -40,7 +40,7 @@ export const getManyPosts = createAsyncThunk(
   async (arg, thunkAPI) => {
     try {
       const res = await vacationAPI.getManyPosts(arg);
-
+      console.log(res);
       return res.data;
     } catch (error) {
       console.log("error:", error);
@@ -92,7 +92,6 @@ const vacationSlice = createSlice({
           if (action.payload.data?.length > 0) {
             newList = state.posts.postList.concat(action.payload.data);
           }
-
           state.posts.postList = newList;
           state.posts.meta = action.payload.meta;
         }

@@ -1,20 +1,21 @@
 // HeaderDropdown.jsx
-import axiosClient from "~/api/axiosClient";
 import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames/bind";
 import styles from "./HeaderDropdown.module.scss";
 import { CaretDownOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Image from "~/components/Image/Image";
 
 const cx = classNames.bind(styles);
 
 const HeaderDropdown = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [user, setUser] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const { info } = useSelector((state) => state.auth);
   const dropdownRef = useRef(null);
+  console.log(info);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -42,7 +43,7 @@ const HeaderDropdown = () => {
   return (
     <div ref={dropdownRef} className={cx("dropdown-container")}>
       <div className={cx("nav-user")} onClick={toggleDropdown}>
-        <img src={info?.avatar} className={cx("user-ava")} alt="" />
+        <Image path={info?.avatar} className={cx("user-ava")} alt="" />
         <div className={cx("user-fullname")}>
           <li>{info?.lastname}</li>
           <li>{info?.firstname}</li>

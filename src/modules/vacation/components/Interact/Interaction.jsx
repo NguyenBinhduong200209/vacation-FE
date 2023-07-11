@@ -194,7 +194,7 @@ const Interaction = (props) => {
         <div className={cx("cmt-container")}>
           <div className={cx("input-container")}>
             <div className={cx("input-content")}>
-              {/* <Image path={info.avatar?.path} /> */}
+              {/* <Image path={info.avatar} /> */}
               <textarea
                 value={value}
                 type="text"

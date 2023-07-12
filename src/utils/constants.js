@@ -20,6 +20,10 @@ export const LOCATION_URL = "location";
 
 // API Search URL
 export const SEARCH_URL = "search";
+
+//API Notification URL
+export const NOTI_URL = "notification";
+
 // Auth constants
 
 export const LOGIN = "login";

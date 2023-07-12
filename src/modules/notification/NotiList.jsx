@@ -1,20 +1,15 @@
-import React, { useEffect } from "react";
+import React from "react";
 import NotiItem from "./NotiItem";
 import { Row, Col, Button, Typography } from "antd";
 import { ReadOutlined } from "@ant-design/icons";
 import classNames from "classnames/bind";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import styles from "./Noti.module.scss";
-import { getList } from "~/store/slices/notiSlice";
+
 const cx = classNames.bind(styles);
 
 const NotiList = () => {
   const { list, isVisible } = useSelector((state) => state.noti);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getList());
-  }, []);
 
   return (
     <div className={cx("notification")} id={cx(isVisible ? "show" : "hide")}>

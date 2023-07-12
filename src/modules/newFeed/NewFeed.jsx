@@ -19,9 +19,7 @@ import Image from "~/components/Image/Image";
 import { useNavigate } from "react-router-dom";
 import CreateVacation from "../vacation/CreateVacation/CreateVacation";
 import CreateAlbum from "../album/CreateAlbum/CreateAlbum";
-import SelectLocation from "../components/SelectLocation/SelectLocation";
 
-// import Preloader from "../Preloader/Preloader";
 const cx = classNames.bind(styles);
 const NewFeed = () => {
   let formatter = Intl.NumberFormat("en", { notation: "compact" });

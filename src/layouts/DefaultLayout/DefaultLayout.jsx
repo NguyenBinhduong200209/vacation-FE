@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getInfoUser } from "~/store/slices/authSlice";
-import Preloader from "~/components/Preloader/Preloader";
 
 const cx = classNames.bind(styles);
 

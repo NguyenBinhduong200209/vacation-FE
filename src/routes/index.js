@@ -14,7 +14,9 @@ import Security from "~/modules/auth/Update/Security/Security";
 import Personal from "~/modules/auth/Update/Personal/Personal";
 import Overview from "~/modules/auth/Update/Overview/Overview";
 import NewFeed from "~/modules/newFeed/NewFeed";
+
 import AlbumProfile from "~/modules/profile/Album";
+
 
 import {
   LOGIN_ROUTE,
@@ -27,7 +29,6 @@ import {
   VACATION_POSTS_ROUTE,
 } from "~/utils/constants";
 import NewAlbum from "~/modules/album/NewAlbum/NewAlbum";
-import AlbumUser from "~/modules/album/AlbumUser";
 
 export const publicRoutes = [
   { path: "/", component: NewFeed, layout: DefaultLayout },

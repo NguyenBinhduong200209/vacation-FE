@@ -45,8 +45,8 @@ const HeaderDropdown = () => {
       <div className={cx("nav-user")} onClick={toggleDropdown}>
         <Image path={info?.avatar?.path} className={cx("user-ava")} alt="" />
         <div className={cx("user-fullname")}>
-          <li>{info?.lastname}</li>
-          <li>{info?.firstname}</li>
+          <li>{info?.username}</li>
+          {/* <li>1234567890123456</li> */}
         </div>
         <CaretDownOutlined className={cx("dropdown-icon")} />
       </div>

@@ -98,88 +98,88 @@ const Profile = () => {
           alt="?"
           className={cx("user-info-bgimg")}
         />
-      </div>
-      <div className={cx("display")}>
-        <div className={cx("user-info")}>
-          <div className={cx("user-info-head")}>
-            <div className={cx("user-info-header")}>
-              <img
-                src={user?.avatar?.path}
-                className={cx("user-info-bgava")}
-                alt=""
-              />
-              <div className={cx("user-info-fullname")}>
-                <li>{user?.lastname}</li>
-                <li>{user?.firstname}</li>
-              </div>
-              <li className={cx("user-info-username")}>@{user?.username}</li>
-              <li className={cx("user-info-des")}>{user?.description}</li>
-              <div className={cx("user-info-grid")}>
-                <div className={cx("grid-item", "one")}>
-                  <div className={cx("grid-item-value")}>
-                    {user?.totalFriends}
-                  </div>
-                  <div className={cx("grid-item-label")}>
-                    {user?.totalFriends === 0
-                      ? "No friends"
-                      : user?.totalFriends === 1
-                      ? "Friend"
-                      : "Friends"}
-                  </div>
+        <div className={cx("display")}>
+          <div className={cx("user-info")}>
+            <div className={cx("user-info-head")}>
+              <div className={cx("user-info-header")}>
+                <img
+                  src={user?.avatar?.path}
+                  className={cx("user-info-bgava")}
+                  alt=""
+                />
+                <div className={cx("user-info-fullname")}>
+                  <li>{user?.lastname}</li>
+                  <li>{user?.firstname}</li>
                 </div>
-                <div className={cx("grid-item", "two")}>
-                  <div className={cx("grid-item-value")}>
-                    {user?.totalVacations}
+                <li className={cx("user-info-username")}>@{user?.username}</li>
+                <li className={cx("user-info-des")}>{user?.description}</li>
+                <div className={cx("user-info-grid")}>
+                  <div className={cx("grid-item", "one")}>
+                    <div className={cx("grid-item-value")}>
+                      {user?.totalFriends}
+                    </div>
+                    <div className={cx("grid-item-label")}>
+                      {user?.totalFriends === 0
+                        ? "No friends"
+                        : user?.totalFriends === 1
+                        ? "Friend"
+                        : "Friends"}
+                    </div>
                   </div>
-                  <div className={cx("grid-item-label")}>
-                    {user?.totalVacations === 0
-                      ? "No vacations"
-                      : user?.totalVacations === 1
-                      ? "Vacation"
-                      : "Vacations"}
+                  <div className={cx("grid-item", "two")}>
+                    <div className={cx("grid-item-value")}>
+                      {user?.totalVacations}
+                    </div>
+                    <div className={cx("grid-item-label")}>
+                      {user?.totalVacations === 0
+                        ? "No vacations"
+                        : user?.totalVacations === 1
+                        ? "Vacation"
+                        : "Vacations"}
+                    </div>
                   </div>
-                </div>
-                <div className={cx("grid-item", "three")}>
-                  <div className={cx("grid-item-value")}>
-                    {user?.totalPosts}
+                  <div className={cx("grid-item", "three")}>
+                    <div className={cx("grid-item-value")}>
+                      {user?.totalPosts}
+                    </div>
+                    <div className={cx("grid-item-label")}>
+                      {user?.totalPosts === 0
+                        ? "No posts"
+                        : user?.totalPosts === 1
+                        ? "Post"
+                        : "Posts"}
+                    </div>
                   </div>
-                  <div className={cx("grid-item-label")}>
-                    {user?.totalPosts === 0
-                      ? "No posts"
-                      : user?.totalPosts === 1
-                      ? "Post"
-                      : "Posts"}
-                  </div>
-                </div>
-                <div className={cx("grid-item", "four")}>
-                  <div className={cx("grid-item-value")}>
-                    {user?.totalLikes}
-                  </div>
-                  <div className={cx("grid-item-label")}>
-                    {user?.totalLikes === 0
-                      ? "No likes"
-                      : user?.totalLikes === 1
-                      ? "Like"
-                      : "Likes"}
+                  <div className={cx("grid-item", "four")}>
+                    <div className={cx("grid-item-value")}>
+                      {user?.totalLikes}
+                    </div>
+                    <div className={cx("grid-item-label")}>
+                      {user?.totalLikes === 0
+                        ? "No likes"
+                        : user?.totalLikes === 1
+                        ? "Like"
+                        : "Likes"}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div ref={scrollToTop} />
-        <div className={cx("navigation")}>
-          <div
-            className={cx("nav-item", { active: showVacations })}
-            onClick={handleShowVacations}
-          >
-            Vacations
-          </div>
-          <div
-            className={cx("nav-item", { active: showAlbums })}
-            onClick={handleShowAlbums}
-          >
-            Albums
+          <div ref={scrollToTop} />
+          <div className={cx("navigation")}>
+            <div
+              className={cx("nav-item", { active: showVacations })}
+              onClick={handleShowVacations}
+            >
+              Vacations
+            </div>
+            <div
+              className={cx("nav-item", { active: showAlbums })}
+              onClick={handleShowAlbums}
+            >
+              Albums
+            </div>
           </div>
         </div>
       </div>

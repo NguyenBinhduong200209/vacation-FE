@@ -18,6 +18,7 @@ axiosClient.interceptors.request.use(async (config) => {
   let date = new Date();
   if (token) {
     const decodedToken = jwtDecode(token);
+    console.log(decodedToken);
     if (decodedToken < date.getTime() / 1000) {
       const res = await authAPI.refreshToken();
       localStorage.setItem("token", `Bearer ${res.data.accessToken}`);

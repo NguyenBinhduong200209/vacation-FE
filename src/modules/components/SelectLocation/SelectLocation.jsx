@@ -19,17 +19,17 @@ const SelectLocation = ({ setOpenLocation, openLocation, setLocation }) => {
   const dispatch = useDispatch();
   const { locationList } = useSelector((state) => state.location);
   const [selectedLocation, setSelectedLocation] = useState({
-    city: "",
-    district: "",
-    detail: "",
+    city: { title: "", id: "" },
+    district: { title: "", id: "" },
+    detail: { title: "", id: "" },
   });
   const [level, setLevel] = useState(3); // set level: lv3: get city list, lv2: get district list, lv1: get detail list
   const [inputValue, setInputValue] = useState("");
   const [locationName, setLocationName] = useState("");
   const [locationDes, setLocationDes] = useState("");
   const isChangeList = useRef(false);
-  let cityId = useRef(null);
-  let districtId = useRef(null);
+  // let cityId = useRef(null);
+  // let districtId = useRef(null);
   //   console.log(locationList);
 
   // get locationList
@@ -40,9 +40,9 @@ const SelectLocation = ({ setOpenLocation, openLocation, setLocation }) => {
         number: level,
         parentId:
           level === 2
-            ? cityId.current
+            ? selectedLocation.city.id
             : level === 1
-            ? districtId.current
+            ? selectedLocation.district.id
             : null,
       })
     );
@@ -56,20 +56,18 @@ const SelectLocation = ({ setOpenLocation, openLocation, setLocation }) => {
     switch (level) {
       case 3:
         setSelectedLocation((prev) => {
-          return { ...prev, city: location };
+          return { ...prev, city: { title: location, id: id } };
         });
-        cityId.current = id;
         break;
       case 2:
         setSelectedLocation((prev) => {
-          return { ...prev, district: location };
+          return { ...prev, district: { title: location, id: id } };
         });
-        districtId.current = id;
         break;
 
       case 1:
         setSelectedLocation((prev) => {
-          return { ...prev, detail: location };
+          return { ...prev, detail: { title: location, id: id } };
         });
         break;
       default:
@@ -84,12 +82,12 @@ const SelectLocation = ({ setOpenLocation, openLocation, setLocation }) => {
     switch (level) {
       case 1:
         setSelectedLocation((prev) => {
-          return { ...prev, detail: "" };
+          return { ...prev, detail: { title: "", id: "" } };
         });
         break;
       case 2:
         setSelectedLocation((prev) => {
-          return { ...prev, district: "" };
+          return { ...prev, district: { title: "", id: "" } };
         });
         break;
       default:
@@ -108,13 +106,14 @@ const SelectLocation = ({ setOpenLocation, openLocation, setLocation }) => {
 
   // add new location
   const handleAddLocation = async () => {
-    await locationAPI.addLocation({
-      parentId: districtId.current,
+    const res = await locationAPI.addLocation({
+      parentId: selectedLocation.district.id,
       title: locationName,
       description: locationDes,
     });
+    console.log(res);
     setSelectedLocation((prev) => {
-      return { ...prev, detail: locationName };
+      return { ...prev, detail: { title: locationName, id: "" } };
     });
     setInputValue("");
     setLocationName("");
@@ -126,6 +125,7 @@ const SelectLocation = ({ setOpenLocation, openLocation, setLocation }) => {
     setLocation(selectedLocation);
     setOpenLocation(false);
   };
+
   return (
     <Modal
       open={openLocation}
@@ -217,9 +217,11 @@ const SelectLocation = ({ setOpenLocation, openLocation, setLocation }) => {
           disabled={Object.values(selectedLocation).some((item) => item === "")}
           onClick={handleSaveLocation}
         >
-          Save {selectedLocation.city && `:${selectedLocation.city}`}
-          {selectedLocation.district && `, ${selectedLocation.district}`}
-          {selectedLocation.detail && `, ${selectedLocation.detail}`}
+          Save {selectedLocation.city && `:${selectedLocation.city.title}`}
+          {selectedLocation.district.title &&
+            `, ${selectedLocation.district.title}`}
+          {selectedLocation.detail.title &&
+            `, ${selectedLocation.detail.title}`}
         </button>
       </div>
     </Modal>

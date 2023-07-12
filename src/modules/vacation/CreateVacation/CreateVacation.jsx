@@ -58,7 +58,7 @@ const CreateVacation = ({ showModal, setOpen }) => {
   };
 
   const handleCreateVacation = async () => {
-    const newList = memberList.map((item) => item._id);
+    const newList = memberList?.map((item) => item._id);
     const res = await vacationAPI.createVacation({
       title: title,
       description: des,
@@ -67,7 +67,8 @@ const CreateVacation = ({ showModal, setOpen }) => {
       startingTime: dates[0],
       endingTime: dates[1],
     });
-    console.log(res);
+
+    setOpen(false);
   };
   return (
     <Modal open={showModal} setOpen={setOpen} title="New Vacation">

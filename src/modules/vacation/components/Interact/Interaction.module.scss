@@ -63,6 +63,11 @@
       background-color: rgba(240, 234, 234, 0);
     }
   }
+  button{
+    background-color: transparent;
+    color: white;
+    cursor: pointer;
+  }
 }
 .cmt-list {
   display: flex;

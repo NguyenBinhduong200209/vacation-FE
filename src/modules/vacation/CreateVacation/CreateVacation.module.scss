@@ -31,9 +31,9 @@
   span {
     background-color: transparent !important;
     color: white !important;
-    &:hover {
-      color: black !important;
-    }
+    // &:hover {
+    //   color: black !important;
+    // }
   }
 }
 .select-date {
@@ -76,23 +76,46 @@
     }
   }
 }
+// css status
 .status {
+  position: relative;
   font-size: 1.2rem;
   font-style: normal;
   color: #b9babb;
+  cursor: pointer;
 }
-// add on
-.post-extension {
-  display: flex;
-  justify-content: space-between;
-  padding: 2rem 4rem;
-  background-color: rgba(162, 144, 144, 0.35);
-  font-size: 1.8rem;
-  font-weight: 300;
+
+.dropdown-status {
+  position: absolute;
   border-radius: 8px;
+  background-color: #b9babb;
+  z-index: 100;
+  color: black;
+  font-weight: 500;
 
   div {
-    font-style: italic;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+
+    &:hover {
+      background: rgba(59, 55, 55, 0.35);
+    }
+  }
+}
+
+// add on
+.post-extension {
+  background-color: rgba(162, 144, 144, 0.35);
+  padding: 2rem 4rem;
+  border-radius: 8px;
+  font-size: 1.6rem;
+  font-weight: 300;
+  .extension-container {
+    display: flex;
+    justify-content: space-between;
+    div {
+      font-style: italic;
+    }
   }
 }
 .extensions {

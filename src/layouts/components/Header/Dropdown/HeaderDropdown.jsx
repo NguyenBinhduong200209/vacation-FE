@@ -43,7 +43,7 @@ const HeaderDropdown = () => {
   return (
     <div ref={dropdownRef} className={cx("dropdown-container")}>
       <div className={cx("nav-user")} onClick={toggleDropdown}>
-        <Image path={info?.avatar} className={cx("user-ava")} alt="" />
+        <Image path={info?.avatar?.path} className={cx("user-ava")} alt="" />
         <div className={cx("user-fullname")}>
           <li>{info?.lastname}</li>
           <li>{info?.firstname}</li>

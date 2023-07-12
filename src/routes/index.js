@@ -5,7 +5,6 @@ import DefaultLayout from "~/layouts/DefaultLayout/DefaultLayout";
 import Login from "~/modules/auth/Login/Login";
 import Register from "~/modules/auth/Register/Register";
 
-
 import Profile from "~/modules/profile/Profile";
 import Vacation from "~/modules/vacation/Vacation";
 import Posts from "~/modules/vacation/Posts/Posts";
@@ -17,9 +16,7 @@ import Overview from "~/modules/auth/Update/Overview/Overview";
 
 import NewFeed from "~/modules/newFeed/NewFeed";
 
-
 import AlbumProfile from "~/modules/profile/Album";
-
 
 import {
   LOGIN_ROUTE,
@@ -32,6 +29,7 @@ import {
   VACATION_POSTS_ROUTE,
 } from "~/utils/constants";
 import NewAlbum from "~/modules/album/NewAlbum/NewAlbum";
+import AlbumUser from "~/modules/album/AlbumUser";
 
 export const publicRoutes = [
   { path: "/", component: NewFeed, layout: DefaultLayout },
@@ -73,6 +71,7 @@ export const publicRoutes = [
     component: Posts,
     layout: Vacation,
   },
+
   {
     path: VACATION_ALBUM_ROUTE,
     component: Album,

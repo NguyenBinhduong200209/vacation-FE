@@ -20,12 +20,13 @@ const Header = ({ children }) => {
   const { list } = useSelector((state) => state.noti);
   const dispatch = useDispatch();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    dispatch(getList());
+  }, [dispatch]);
 
   useEffect(() => {
     (async () => {
       try {
-        dispatch(getList());
         const res = await axiosClient.get(
           `https://vacation-backend.onrender.com/search/user?value=${value}&page=1`
         );
@@ -34,8 +35,7 @@ const Header = ({ children }) => {
         console.log(error);
       }
     })();
-  }, [value, dispatch]);
-  console.log(suggestions);
+  }, [value]);
 
   const handleBell = () => {
     dispatch(changeVisible());

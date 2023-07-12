@@ -2,10 +2,10 @@ import styles from "./SelectLocation.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faAnglesDown,
-  faArrowLeft,
-  faCircleXmark,
-  faMagnifyingGlass,
+	faAnglesDown,
+	faArrowLeft,
+	faCircleXmark,
+	faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";

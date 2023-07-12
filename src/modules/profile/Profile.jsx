@@ -99,7 +99,7 @@ const Profile = () => {
           <div className={cx("user-info-head")}>
             <div className={cx("user-info-header")}>
               <img
-                src={user?.avatar}
+                src={user?.avatar?.path}
                 className={cx("user-info-bgava")}
                 alt=""
               />

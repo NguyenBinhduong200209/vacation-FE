@@ -27,6 +27,7 @@ import {
   VACATION_POSTS_ROUTE,
 } from "~/utils/constants";
 import NewAlbum from "~/modules/album/NewAlbum/NewAlbum";
+import AlbumUser from "~/modules/album/AlbumUser";
 
 export const publicRoutes = [
   { path: "/", component: NewFeed, layout: DefaultLayout },
@@ -68,6 +69,7 @@ export const publicRoutes = [
     component: Posts,
     layout: Vacation,
   },
+
   {
     path: VACATION_ALBUM_ROUTE,
     component: Album,

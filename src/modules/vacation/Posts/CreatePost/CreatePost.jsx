@@ -18,121 +18,114 @@ import SelectLocation from "~/modules/components/SelectLocation/SelectLocation";
 const cx = classNames.bind(styles);
 Modal.setAppElement("#root");
 const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
-  const dispatch = useDispatch();
-  const { detail } = useSelector((state) => state.vacation);
-  const [modalIsOpen, setIsOpen] = useState(false);
-  
-  const { authorInfo } = detail;
-  const [searchParams]= useSearchParams()
-  let vacationId = searchParams.get("vacationID");
+	const dispatch = useDispatch();
+	const { detail } = useSelector((state) => state.vacation);
+	const [modalIsOpen, setIsOpen] = useState(false);
+  const [img, setImg] = useState()
+	const { authorInfo } = detail;
+	const [searchParams] = useSearchParams();
+	let vacationId = searchParams.get("vacationID");
 
-  const [content, setContent] = useState("");
-  const [files, setFiles] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  let [locationId, setLocationID] = useState('')
-  const uploadResourcesRef = useRef()
-  // const [locations, setLocations] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState("");
-  const locationsList  = useSelector((state) => state.location)
-  console.log(locationsList);
-  const maxItems = 5;
-  // const displayedLocations = locationsList.locationList.data?.slice(0, maxItems);
+	const [content, setContent] = useState("");
+	const [files, setFiles] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
+	let [locationId, setLocationID] = useState("");
+	const [location, setLocation] = useState({});
+	const uploadResourcesRef = useRef();
+	// const [locations, setLocations] = useState([]);
+	const [selectedLocation, setSelectedLocation] = useState("");
+	const locationsList = useSelector((state) => state.location);
+	console.log(locationsList);
+	const maxItems = 5;
+	console.log(location);
 
-  let parentId = "6486cb0e4d45b8403f02a4d6";
-  useEffect(() => {
-    dispatch(
-      getManyLocations({
-        type: "level",
-        number: "2",
-        parentId: parentId,
-      })
-    )
-  }, []);
-  
-  function openModal() {
-    setIsOpen(true);
-  }
 
-  function closeModal() {
-    setIsOpen(false);
-  }
-  
-  const handleClick = async (e) => {
-    e.preventDefault();
-    try {
-      setIsLoading(true);
-      const res = await vacationAPI.createPost({vacationId:vacationId, locationId:locationId, content: content});
-      handleCloseModal()
-    } catch (error) {
-      console.log(error);
-      console.log(locationId, vacationId, content); 
-    }
-    setIsLoading(false);
-  }
 
-  const handleUpload = (e) => {
+	function openModal() {
+		setIsOpen(true);
+	}
 
-    if (e.target.files && e.target.files.length > 0) {
-      console.log(e.target.files);
-      setFiles([...files, ...Object.values(e.target.files)]);
-    }
-  }
+	function closeModal() {
+		setIsOpen(false);
+	}
 
-  const handleOnClick = (locationID, title) => {
-    setLocationID(locationID);
-    setSelectedLocation(title);
-    closeModal();
-  }  
+	const handleClick = async (e) => {
+		e.preventDefault();
+		try {
+			setIsLoading(true);
+			const res = await vacationAPI.createPost({
+				vacationId: vacationId,
+				locationId: locationId,
+				content: content,
+			});
+			handleCloseModal();
+		} catch (error) {
+			console.log(error);
+			console.log(locationId, vacationId, content);
+		}
+		setIsLoading(false);
+	};
 
-  return (
-    <Modal
-      isOpen={showModal}
-      onRequestClose={handleCloseModal}
-      className={cx("modal")}
-      overlayClassName={cx("overlay")}
-    >
-      <div className={cx("wrapper")}>
-        <h2 className={cx("title")}>New Post</h2>
+	const handleUpload = (e) => {
+		if (e.target.files && e.target.files.length > 0) {
+			console.log(e.target.files);
+			setFiles([...files, ...Object.values(e.target.files)]);
+		}
+	};
+  const removeImage = (URL) => {
+    setImg((i) => i?.filter((item) => item.URL !== URL));
+  };
+	return (
+		<Modal
+			isOpen={showModal}
+			onRequestClose={handleCloseModal}
+			className={cx("modal")}
+			overlayClassName={cx("overlay")}
+		>
+			<div className={cx("wrapper")}>
+				<h2 className={cx("title")}>New Post</h2>
 
-        <FontAwesomeIcon
-          icon={faCircleXmark}
-          className={cx("close-icon")}
-          onClick={handleCloseModal}
-        />
-        <div className={cx("modal-container")}>
-          <div className={cx("user-info")}>
-            <div className={cx("info-name")}>
-              <Image path={authorInfo && authorInfo.avatar} />
-              <div className={cx("username")}>
-                {authorInfo && authorInfo.username}
-              </div>
-            </div>
-            {newfeed && (
-              <div className={cx("select-vacation")}>Choose your Vacation</div>
-            )}
-          </div>
-          <TextArea
-            placeholder="What is on your mind..."
-            autoSize={{
-              minRows: 6,
-              maxRows: 12,
-            }}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
-          <div className={cx("img-uploader")}>
-            {files.map((file) =>  <div>
-                <img alt="" src={URL.createObjectURL(file)} />
-              </div>
-            )}
-          </div>
-          <div className={cx("post-extension")}>
-            <div> Add on: {selectedLocation}</div>
-            <div className={cx("extensions")}>
-              <div>
-                <FontAwesomeIcon onClick={openModal} icon={faLocationDot} className={cx("icon")} />
-                <SelectLocation openLocation={modalIsOpen} setOpenLocation={setIsOpen}/>
-                {/* <Modal
+				<FontAwesomeIcon
+					icon={faCircleXmark}
+					className={cx("close-icon")}
+					onClick={handleCloseModal}
+				/>
+				<div className={cx("modal-container")}>
+					<div className={cx("user-info")}>
+						<div className={cx("info-name")}>
+							<Image path={authorInfo && authorInfo.avatar} />
+							<div className={cx("username")}>{authorInfo && authorInfo.username}</div>
+						</div>
+						{newfeed && <div className={cx("select-vacation")}>Choose your Vacation</div>}
+					</div>
+					<TextArea
+						placeholder="What is on your mind..."
+						autoSize={{
+							minRows: 6,
+							maxRows: 12,
+						}}
+						value={content}
+						onChange={(e) => setContent(e.target.value)}
+					/>
+					<div className={cx("img-uploader")}>
+						{files.map((file) => (
+							<div>
+								<img alt="" src={URL.createObjectURL(file)} />
+                <button className={cx("x-button")} onClick={removeImage}>X</button>
+							</div>
+						))}
+					</div>
+					<div className={cx("post-extension")}>
+						<div> Add on: {selectedLocation}</div>
+						<div className={cx("extensions")}>
+							<div>
+								<FontAwesomeIcon onClick={openModal} icon={faLocationDot} className={cx("icon")} />
+								<SelectLocation
+									openLocation={modalIsOpen}
+									setOpenLocation={setIsOpen}
+									setLocation={setLocation}
+								/>
+								{/* <Modal
                   isOpen={modalIsOpen}
                   onRequestClose={closeModal}
                   className={cx("location-modal")}
@@ -165,20 +158,26 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
                     </div>
                   </div>
                 </Modal> */}
-              </div>
-              <div>
-                <input type="file" ref={uploadResourcesRef} onChange={handleUpload} hidden/>
-                  <FontAwesomeIcon icon={faImage} className={cx("icon")} onClick={() => {uploadResourcesRef.current.click()}} />                  
-              </div>
-            </div>
-          </div>
-          <button onClick={handleClick} disabled={isLoading} className={cx("btn-submit")}>
-            Sending Post
-          </button>
-        </div>
-      </div>
-    </Modal>
-  );
+							</div>
+							<div>
+								<input type="file" ref={uploadResourcesRef} onChange={handleUpload} hidden />
+								<FontAwesomeIcon
+									icon={faImage}
+									className={cx("icon")}
+									onClick={() => {
+										uploadResourcesRef.current.click();
+									}}
+								/>
+							</div>
+						</div>
+					</div>
+					<button onClick={handleClick} disabled={isLoading} className={cx("btn-submit")}>
+						Sending Post
+					</button>
+				</div>
+			</div>
+		</Modal>
+	);
 };
 
 export default CreatePost;

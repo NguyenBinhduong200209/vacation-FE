@@ -11,8 +11,8 @@ import { useSelector, useDispatch } from "react-redux";
 import NotiList from "~/modules/notification/NotiList";
 import { Badge } from "antd";
 import { getList } from "~/store/slices/notiSlice";
-
 const cx = classNames.bind(styles);
+
 const Header = ({ children }) => {
   const [value, setValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);

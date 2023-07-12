@@ -31,7 +31,7 @@ export const getInfoUser = createAsyncThunk(
   async (arg, thunkAPI) => {
     try {
       const res = await authAPI.getInfoUser(arg);
-      // console.log(res.data.data);
+      console.log(res);
       return res.data.data;
     } catch (error) {
       // console.log(error);

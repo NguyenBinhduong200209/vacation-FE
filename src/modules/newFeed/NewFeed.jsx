@@ -130,24 +130,20 @@ const NewFeed = () => {
                 <FileTextOutlined />
                 <div className={cx("create-sthg-details")}>Add Post</div>
               </button>
-              <button className={cx("create-sthg")}>
+              <button
+                className={cx("create-sthg")}
+                onClick={() => setOpenAlbum(true)}
+              >
                 <PictureOutlined />
-                <div
-                  className={cx("create-sthg-details")}
-                  onClick={() => setOpenAlbum(true)}
-                >
-                  Add Album
-                </div>
+                <div className={cx("create-sthg-details")}>Add Album</div>
               </button>
               <CreateAlbum setOpen={setOpenAlbum} open={openAlbum} />
-              <button className={cx("create-sthg")}>
+              <button
+                className={cx("create-sthg")}
+                onClick={() => setOpen(true)}
+              >
                 <FolderOpenOutlined />
-                <div
-                  className={cx("create-sthg-details")}
-                  onClick={() => setOpen(true)}
-                >
-                  Add Vacation
-                </div>
+                <div className={cx("create-sthg-details")}>Add Vacation</div>
               </button>
               <CreateVacation setOpen={setOpen} showModal={open} />
             </div>

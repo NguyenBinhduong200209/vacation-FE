@@ -117,13 +117,22 @@ li {
 }
 
 .feed-title-center {
+  justify-content: center;
+  display: flex;
   text-align: center;
 }
 
 .feed-title {
-  margin: 1rem 0rem 0rem;
+  margin-top: 1rem;
   font-size: 2rem;
   font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* number of lines to show */
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  width: 80%;
 }
 
 //User info//
@@ -231,6 +240,14 @@ li {
 
 .user-info-des {
   margin: 1rem 2.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* number of lines to show */
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  width: 80%;
+  padding: 0 1rem 0 1rem;
 }
 
 .user-info-grid {
@@ -356,8 +373,24 @@ li {
 
 .album-background-content {
   width: 100%;
+  border-radius: 15px;
+  background-color: #292929;
 }
 
 .album-background-content > * {
   width: 100%;
+  border-radius: 15px;
+}
+
+.album-title {
+  margin: auto;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* number of lines to show */
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  width: 80%;
+  text-align: center;
 }

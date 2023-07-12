@@ -5,9 +5,29 @@ import Draggable from "react-draggable";
 import { Resizable, ResizableBox } from "react-resizable";
 import styles from "./NewAlbum.module.scss";
 import classNames from "classnames/bind";
+import { useState } from "react";
+import axiosClient from "axios";
+import "./css.css";
 const cx = classNames.bind(styles);
 
 const NewAlbum = () => {
+  const [img, setImg] = useState([]);
+  useEffect(() => {
+    const fetchImg = async () => {
+      try {
+        const fetchUser = await axiosClient.get(
+          `https://vacation-backend.onrender.com/albumpage/vacation/6486bcc25782c2081f86fe9d/images`
+        );
+        setImg();
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchImg();
+  }, []);
+  console.log(img);
+
   const [searchParam] = useSearchParams();
 
   const title = searchParam.get("title");
@@ -27,6 +47,7 @@ const NewAlbum = () => {
   }, []);
 
   const handleDrag = async (event, data) => {
+    console.log(event, data);
     const { lastX, lastY } = data;
 
     if (event.target.parentElement) {
@@ -44,14 +65,14 @@ const NewAlbum = () => {
     setWidth(size.width);
     setHeight(size.height);
   };
-  console.log(
-    containerSize.outerWidth - position.x,
-    containerSize.outerHeight - position.y
-  );
+  // console.log(
+  //   containerSize.outerWidth - position.x,
+  //   containerSize.outerHeight - position.y
+  // );
 
   return (
     <div className={cx("wrapper")}>
-      <div className="mother" ref={ref}>
+      <div className={cx("mother")} ref={ref}>
         <Draggable
           handle=".handle"
           defaultPosition={{ x: position.x, y: position.y }}
@@ -68,13 +89,21 @@ const NewAlbum = () => {
             ]}
           >
             {/* <img
-            className="handle"
-            src="https://img.freepik.com/free-photo/wide-angle-shot-single-tree-growing-clouded-sky-during-sunset-surrounded-by-grass_181624-22807.jpg"
-            alt="???"
-          /> */}
+              className="handle"
+              src="https://img.freepik.com/free-photo/wide-angle-shot-single-tree-growing-clouded-sky-during-sunset-surrounded-by-grass_181624-22807.jpg"
+              alt="???"
+            /> */}
             <div className="handle"></div>
           </ResizableBox>
         </Draggable>
+      </div>
+
+      <div>
+        <ul>
+          {img.map((img) => (
+            <li key={img._id}># {}</li>
+          ))}
+        </ul>
       </div>
     </div>
   );

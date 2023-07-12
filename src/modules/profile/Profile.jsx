@@ -24,7 +24,7 @@ const Profile = () => {
 
         fetchVacation.data &&
           setVacations((prevPosts) =>
-            prevPosts.concat(fetchVacation.data.data)
+            prevPosts.concat(fetchVacation?.data?.data)
           );
 
         const fetchUser = await axiosClient.get(
@@ -35,8 +35,9 @@ const Profile = () => {
         const fetchAlbum = await axiosClient.get(
           `https://vacation-backend.onrender.com/album?page=${currentPage}`
         );
-        setAlbum(fetchAlbum.data.data);
-        console.log(fetchAlbum);
+
+        fetchAlbum.data &&
+          setAlbum((prevPosts) => prevPosts.concat(fetchAlbum?.data?.data));
       } catch (error) {
         console.log(error);
       }
@@ -45,7 +46,7 @@ const Profile = () => {
     fetchData();
   }, [currentPage]);
 
-  console.log(album);
+  console.log(currentPage);
 
   const cx = classNames.bind(styles);
 
@@ -77,13 +78,17 @@ const Profile = () => {
     setShowVacations(true);
     setShowAlbums(false);
     scrollToTop.current.scrollIntoView({ behavior: "smooth" });
+    setCurrentPage(1);
   };
 
   const handleShowAlbums = () => {
     setShowVacations(false);
     setShowAlbums(true);
     scrollToTop.current.scrollIntoView({ behavior: "smooth" });
+    setCurrentPage(1);
   };
+
+  console.log(album);
 
   return (
     <div>
@@ -186,7 +191,7 @@ const Profile = () => {
                 {vacations.map((vacation) => (
                   <li key={vacation._id} className={cx("feed-post")}>
                     <div className={cx("feed-cover")}>
-                      <img src={vacation.cover.path} alt="???" />
+                      <img src={vacation?.cover?.path} alt="???" />
                       <div className={cx("feed-cover-rad")}></div>
                       <div className={`${cx("cover-item")} ${cx("views")}`}>
                         <EyeOutlined />
@@ -213,13 +218,14 @@ const Profile = () => {
             <div className={cx("albums")}>
               <div className={cx("album-grid")}>
                 {album.map((album) => (
-                  <div key={album.id} className={cx("album-background")}>
+                  <div key={album._id} className={cx("album-background")}>
                     <div className={cx("album-background-content")}>
                       <img
                         src="https://media.cntraveller.com/photos/611be8514e09f53b43732776/16:9/w_2560%2Cc_limit/hanoi-vietnam-condnenastraveller-18sep13-getty_b.jpg"
                         alt="???"
+                        className={cx("album-img")}
                       />
-                      <div>{album.title}</div>
+                      <div className={cx("album-title")}>{album.title}</div>
                     </div>
                   </div>
                 ))}

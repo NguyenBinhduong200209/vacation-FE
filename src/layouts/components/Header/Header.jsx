@@ -1,8 +1,6 @@
 import styles from "./Header.module.scss";
 import classNames from "classnames/bind";
-import logoImg from "~/images/Vector.png";
 import images from "~/images";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import HeaderDropdown from "./Dropdown/HeaderDropdown";
 import { HomeOutlined, PictureOutlined, FolderOpenOutlined, BellOutlined } from "@ant-design/icons";
@@ -11,13 +9,20 @@ import Image from "~/components/Image/Image";
 import { changeVisible } from "~/store/slices/notiSlice";
 import { useSelector, useDispatch } from "react-redux";
 import NotiList from "~/modules/notification/NotiList";
-
+import { Badge } from "antd";
+import { getList } from "~/store/slices/notiSlice";
 const cx = classNames.bind(styles);
+
 const Header = ({ children }) => {
   const [value, setValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [hideSuggestions, setHideSuggestions] = useState(true);
+  const { list } = useSelector((state) => state.noti);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getList());
+  }, [dispatch]);
 
   useEffect(() => {
     (async () => {
@@ -31,7 +36,6 @@ const Header = ({ children }) => {
       }
     })();
   }, [value]);
-  console.log(suggestions);
 
   const handleBell = () => {
     dispatch(changeVisible());
@@ -93,9 +97,9 @@ const Header = ({ children }) => {
               <a>
                 <FolderOpenOutlined />
               </a>
-              <a>
+              <Badge count={list.length} overflowCount={99}>
                 <BellOutlined onClick={handleBell} />
-              </a>
+              </Badge>
             </div>
             <div className={cx("nav-user")}>
               <HeaderDropdown />

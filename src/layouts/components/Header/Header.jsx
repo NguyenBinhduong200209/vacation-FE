@@ -5,20 +5,19 @@ import images from "~/images";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import HeaderDropdown from "./Dropdown/HeaderDropdown";
-import {
-  HomeOutlined,
-  PictureOutlined,
-  FolderOpenOutlined,
-  BellOutlined,
-} from "@ant-design/icons";
+import { HomeOutlined, PictureOutlined, FolderOpenOutlined, BellOutlined } from "@ant-design/icons";
 import axiosClient from "~/api/axiosClient";
 import Image from "~/components/Image/Image";
+import { changeVisible } from "~/store/slices/notiSlice";
+import { useSelector, useDispatch } from "react-redux";
+import NotiList from "~/modules/notification/NotiList";
 
 const cx = classNames.bind(styles);
 const Header = ({ children }) => {
   const [value, setValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [hideSuggestions, setHideSuggestions] = useState(true);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
@@ -32,19 +31,18 @@ const Header = ({ children }) => {
       }
     })();
   }, [value]);
-
   console.log(suggestions);
+
+  const handleBell = () => {
+    dispatch(changeVisible());
+  };
 
   return (
     <>
       <div className={cx("wrapper")}>
         <div className={cx("nav")}>
           <a className={cx("nav-logo")} href="/">
-            <Image
-              path={images.Vector}
-              className={cx("nav-logo-img")}
-              alt="????"
-            />
+            <Image path={images.Vector} className={cx("nav-logo-img")} alt="????" />
           </a>
           <div className={cx("nav-left")}>
             <div className={cx("nav-search")}>
@@ -96,7 +94,7 @@ const Header = ({ children }) => {
                 <FolderOpenOutlined />
               </a>
               <a>
-                <BellOutlined />
+                <BellOutlined onClick={handleBell} />
               </a>
             </div>
             <div className={cx("nav-user")}>
@@ -105,6 +103,7 @@ const Header = ({ children }) => {
           </div>
         </div>
       </div>
+      <NotiList />
       {children}
     </>
   );

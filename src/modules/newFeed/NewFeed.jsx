@@ -98,11 +98,7 @@ const NewFeed = () => {
               <li>{info?.totalFriends}</li>
               <div className={cx("user-info-header-line")}>friends</div>
             </div>
-            <Image
-              path={info.avatar?.path}
-              className={cx("user-info-bgava")}
-              alt=""
-            />
+            <Image path={info.avatar?.path} className={cx("user-info-bgava")} alt="" />
             <div className={cx("user-info-header-details")}>
               <li>{info?.totalPosts}</li>
               <div className={cx("user-info-header-line")}>Posts</div>
@@ -122,9 +118,7 @@ const NewFeed = () => {
         <div className={cx("create")}>
           <Image path={info.avatar?.path} className={cx("user-ava")} alt="" />
           <div className={cx("create-posts")}>
-            <button className={cx("create-line")}>
-              Every step is a milestone ...{" "}
-            </button>
+            <button className={cx("create-line")}>Every step is a milestone ... </button>
             <div className={cx("create-details")}>
               <button className={cx("create-sthg")}>
                 <FileTextOutlined />
@@ -135,7 +129,11 @@ const NewFeed = () => {
                 onClick={() => setOpenAlbum(true)}
               >
                 <PictureOutlined />
-                <div className={cx("create-sthg-details")}>Add Album</div>
+
+                <div className={cx("create-sthg-details")} onClick={() => setOpenAlbum(true)}>
+                  Add Album
+                </div>
+
               </button>
               <CreateAlbum setOpen={setOpenAlbum} open={openAlbum} />
               <button
@@ -143,7 +141,11 @@ const NewFeed = () => {
                 onClick={() => setOpen(true)}
               >
                 <FolderOpenOutlined />
-                <div className={cx("create-sthg-details")}>Add Vacation</div>
+
+                <div className={cx("create-sthg-details")} onClick={() => setOpen(true)}>
+                  Add Vacation
+                </div>
+
               </button>
               <CreateVacation setOpen={setOpen} showModal={open} />
             </div>
@@ -157,18 +159,11 @@ const NewFeed = () => {
               href={`/vacation/post?vacationID=${vacation._id}`}
             >
               <div className={cx("feed-head")}>
-                <Image
-                  path={vacation.authorInfo.avatar?.path}
-                  alt=""
-                  className={cx("feed-ava")}
-                />
+                <Image path={vacation.authorInfo.avatar?.path} alt="" className={cx("feed-ava")} />
                 <div className={cx("feed-head-info")}>
-                  <div className={cx("feed-user-name")}>
-                    @{vacation.authorInfo.username}
-                  </div>
+                  <div className={cx("feed-user-name")}>@{vacation.authorInfo.username}</div>
                   <div className={cx("feed-time")}>
-                    {getDate(vacation.startingTime)} -{" "}
-                    {getDate(vacation.endingTime)}
+                    {getDate(vacation.startingTime)} - {getDate(vacation.endingTime)}
                   </div>
                 </div>
               </div>

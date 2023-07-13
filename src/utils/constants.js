@@ -26,6 +26,12 @@ export const GET_NOTI_URL = "notification";
 export const UPDATE_ALL_NOTI_URL = "notification/all";
 export const UPDATE_ONE_NOTI_URL = "notification/one";
 
+// API Status URL
+export const STATUS_URL = "list";
+
+// API Resources URL
+export const RESOURCE_URL = "resource";
+
 // Auth constants
 
 export const LOGIN = "login";

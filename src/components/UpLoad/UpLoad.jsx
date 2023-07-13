@@ -6,16 +6,19 @@ import axios from "axios";
 const UpLoad = () => {
   const { info } = useSelector((state) => state.auth);
   const inputRef = useRef();
-  const [file, setFile] = useState(null);
+  const [files, setFiles] = useState(null);
+
+  console.log(files);
 
   useEffect(() => {
     const upLoad = async () => {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("files", files);
+
       const token = localStorage.getItem("token");
       await axios.post(
-        "https://vacation-backend.onrender.com/resource",
-        { field: "avatar", file: formData },
+        "http://localhost:3100/resource",
+        { field: "avatar", files: formData.get("files") },
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -23,15 +26,16 @@ const UpLoad = () => {
           },
         }
       );
-      setFile(null);
+      setFiles(null);
     };
-    if (file !== null) upLoad();
-  }, [file]);
+    if (files !== null) upLoad();
+  }, [files]);
+
   const handleImgClick = () => {
     inputRef.current.click();
   };
   const handleImgChange = (e) => {
-    setFile(e.target.files[0]);
+    setFiles(e.target.files[0]);
   };
 
   return (
@@ -43,7 +47,7 @@ const UpLoad = () => {
         onChange={handleImgChange}
         style={{ display: "none" }}
         id="avatar"
-        name="avatar"
+        name="files"
       />
     </div>
   );

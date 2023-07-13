@@ -6,13 +6,16 @@ import styles from "./Noti.module.scss";
 import classNames from "classnames/bind";
 import LikeComment from "./content/LikeComment";
 import AddFriend from "./content/AddFriend";
+import { updateOne } from "~/store/slices/notiSlice";
+import { useDispatch } from "react-redux";
 const cx = classNames.bind(styles);
 
 const NotiItem = ({ item }) => {
   const { _id, modelInfo, isSeen, lastUpdateAt, userInfo } = item;
+  const dispatch = useDispatch();
 
   const handleSeenStatus = () => {
-    console.log(_id);
+    dispatch(updateOne(_id));
   };
 
   return (

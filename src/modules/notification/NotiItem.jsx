@@ -22,7 +22,7 @@ const NotiItem = ({ item }) => {
           className={cx("user-avatar")}
           src={userInfo?.avatar?.path}
           icon={<UserOutlined />}
-          size="large"
+          size="middle"
         ></Avatar>
       </Col>
 

@@ -1,49 +1,74 @@
 import styles from "./CreateVacation.module.scss";
 import classNames from "classnames/bind";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCaretDown,
   faLocationDot,
   faUserPlus,
+  faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import Input from "antd/es/input/Input";
 import { DatePicker } from "antd";
 import Image from "~/components/Image/Image";
 import Modal from "~/components/Modal/Modal";
-import SelectLocation from "~/modules/components/SelectLocation/SelectLocation";
-import SelectFriend from "~/modules/components/SelectFriend/SelectFriend";
-const cx = classNames.bind(styles);
 
+import SelectFriend from "~/modules/components/SelectFriend/SelectFriend";
+import moment from "moment";
+import vacationAPI from "~/api/vacationAPI";
 const { RangePicker } = DatePicker;
+
+const cx = classNames.bind(styles);
 const CreateVacation = ({ showModal, setOpen }) => {
-  // state for location
-  const [openLocation, setOpenLocation] = useState(false);
-  const [location, setLocation] = useState("");
+  const { info } = useSelector((state) => state.auth);
   // open friend modal
   const [openFriend, setOpenFriend] = useState(false);
+  const [memberList, setMemberList] = useState([]);
   // open status dropdown
   const [openStatus, setOpenStatus] = useState(false);
   const [status, setStatus] = useState("Public");
   // state for date
-  const [date, setDate] = useState(null);
-  const { info } = useSelector((state) => state.auth);
-  // console.log(info);
-  const [value, setValue] = useState("");
-  const onChange = (e) => {
-    // console.log("Change:", e.target.value);
+  const [dates, setDates] = useState(null);
+
+  const [title, setTitle] = useState("");
+  const [des, setDes] = useState("");
+
+  const onChange = (e, type) => {
+    if (type === "title") setTitle(e.target.value);
+    else setDes(e.target.value);
   };
-  const handleCalendar = (date) => {
-    // console.log(date);
-    setDate(date);
+  const handleCalendar = (values) => {
+    setDates(
+      values?.map((item) => {
+        return item?.format("YYYY-MM-DD");
+      })
+    );
   };
 
   const handleStatus = (status) => {
     setStatus(status);
     setOpenStatus(false);
+  };
+
+  const handleClear = (id) => {
+    setMemberList((prev) => prev.filter((item) => item._id !== id));
+  };
+
+  const handleCreateVacation = async () => {
+    const newList = memberList?.map((item) => item._id);
+    const res = await vacationAPI.createVacation({
+      title: title,
+      description: des,
+      memberList: newList,
+      shareStatus: status.toLowerCase(),
+      startingTime: dates[0],
+      endingTime: dates[1],
+    });
+
+    setOpen(false);
   };
   return (
     <Modal open={showModal} setOpen={setOpen} title="New Vacation">
@@ -85,25 +110,27 @@ const CreateVacation = ({ showModal, setOpen }) => {
                 border: "none",
                 height: "50px",
               }}
-              format="YYYY/MM/DD"
-              onCalendarChange={(dateStrings) => handleCalendar(dateStrings)}
+              onChange={(values) => handleCalendar(values)}
             />
           </div>
           <Input
             maxLength={100}
-            onChange={onChange}
+            onChange={(e) => onChange(e, "title")}
             placeholder="Title"
             style={{ textAlign: "center" }}
+            value={title}
+            spellCheck={false}
           />
           <TextArea
             maxLength={500}
-            onChange={onChange}
+            onChange={(e) => onChange(e, "des")}
             placeholder="Description..."
             style={{
               textAlign: "center",
               resize: "none",
             }}
             spellCheck={false}
+            value={des}
           />
           <div className={cx("post-extension")}>
             <div className={cx("extension-container")}>
@@ -111,33 +138,51 @@ const CreateVacation = ({ showModal, setOpen }) => {
               <div className={cx("extensions")}>
                 <div>
                   <FontAwesomeIcon
-                    icon={faLocationDot}
-                    className={cx("icon")}
-                    onClick={() => setOpenLocation(true)}
-                  />
-                  <SelectLocation
-                    openLocation={openLocation}
-                    setOpenLocation={setOpenLocation}
-                    setLocation={setLocation}
-                  />
-                </div>
-                <div>
-                  <FontAwesomeIcon
                     icon={faUserPlus}
                     className={cx("icon")}
                     onClick={() => setOpenFriend(true)}
                   />
-                  <SelectFriend open={openFriend} setOpen={setOpenFriend} />
+                  <SelectFriend
+                    open={openFriend}
+                    setOpen={setOpenFriend}
+                    setMemberList={setMemberList}
+                    memberList={memberList}
+                  />
                 </div>
               </div>
             </div>
 
             <div className={cx("result")}>
-              {/* <div className={cx("res-location")}>{location.city}</div> */}
-              <div className={cx("res-member")}></div>
+              <div className={cx("result-list")}>
+                {memberList?.length > 0 && `with:`}
+                {memberList.map((member) => {
+                  return (
+                    <span key={member._id}>
+                      {member.username}
+                      <FontAwesomeIcon
+                        icon={faXmarkCircle}
+                        className={cx("close")}
+                        onClick={() => handleClear(member._id)}
+                      />
+                    </span>
+                  );
+                })}
+              </div>
             </div>
           </div>
-          <button className={cx("btn-submit")}>Create Vacation</button>
+          <button
+            className={cx("btn-submit")}
+            disabled={
+              dates === undefined ||
+              dates === null ||
+              title === "" ||
+              des === "" ||
+              memberList.length === 0
+            }
+            onClick={handleCreateVacation}
+          >
+            Create Vacation
+          </button>
         </div>
       </div>
     </Modal>

@@ -5,7 +5,6 @@ import { ReadOutlined } from "@ant-design/icons";
 import classNames from "classnames/bind";
 import { useSelector } from "react-redux";
 import styles from "./Noti.module.scss";
-
 const cx = classNames.bind(styles);
 
 const NotiList = () => {

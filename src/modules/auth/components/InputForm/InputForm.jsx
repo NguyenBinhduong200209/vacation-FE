@@ -7,12 +7,7 @@ import styles from "./InputForm.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { handleAuth } from "~/store/slices/authSlice";
 import { Validate, initValues } from "../config/validateConfig";
-import {
-  FORGOT,
-  LOGIN,
-  UPDATE_PERSONAL,
-  UPDATE_SECURITY,
-} from "~/utils/constants";
+import { LOGIN, UPDATE_PERSONAL, UPDATE_SECURITY } from "~/utils/constants";
 import Loading from "~/components/Loading/Loading";
 import Notification from "~/components/Notifications/Notification";
 import InputField from "~/components/CustomField/InputField/InputField";

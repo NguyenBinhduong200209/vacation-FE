@@ -22,7 +22,15 @@ export const LOCATION_URL = "location";
 export const SEARCH_URL = "search";
 
 //API Notification URL
-export const NOTI_URL = "notification";
+export const GET_NOTI_URL = "notification";
+export const UPDATE_ALL_NOTI_URL = "notification/all";
+export const UPDATE_ONE_NOTI_URL = "notification/one";
+
+// API Status URL
+export const STATUS_URL = "list";
+
+// API Resources URL
+export const RESOURCE_URL = "resource";
 
 // Auth constants
 

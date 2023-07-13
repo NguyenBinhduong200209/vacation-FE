@@ -11,13 +11,14 @@ import { useSelector, useDispatch } from "react-redux";
 import NotiList from "~/modules/notification/NotiList";
 import { Badge } from "antd";
 import { getList } from "~/store/slices/notiSlice";
+import { NavLink } from "react-router-dom";
 const cx = classNames.bind(styles);
 
 const Header = ({ children }) => {
   const [value, setValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [hideSuggestions, setHideSuggestions] = useState(true);
-  const { list } = useSelector((state) => state.noti);
+  const { list, quantity } = useSelector((state) => state.noti);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -39,6 +40,7 @@ const Header = ({ children }) => {
 
   const handleBell = () => {
     dispatch(changeVisible());
+    Array.isArray(list) && list.length === 0 && dispatch(getList());
   };
 
   return (
@@ -88,16 +90,16 @@ const Header = ({ children }) => {
               </div>
             </div>
             <div className={cx("nav-tools")}>
-              <a href="/">
+              <NavLink to="/" className={({ isActive }) => (isActive ? cx("active") : "")}>
                 <HomeOutlined />
-              </a>
-              <a href="/profile">
+              </NavLink>
+              <NavLink to="/profile" className={({ isActive }) => (isActive ? cx("active") : "")}>
                 <PictureOutlined />
-              </a>
-              <a>
+              </NavLink>
+              <NavLink>
                 <FolderOpenOutlined />
-              </a>
-              <Badge count={list.length} overflowCount={99}>
+              </NavLink>
+              <Badge count={quantity} overflowCount={99}>
                 <BellOutlined onClick={handleBell} />
               </Badge>
             </div>

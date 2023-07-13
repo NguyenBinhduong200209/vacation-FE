@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 
 const cx = classNames.bind(styles);
-const SelectFriend = ({ open, setOpen }) => {
+const SelectFriend = ({ open, setOpen, memberList, setMemberList }) => {
   const dispatch = useDispatch();
   const isFirstReq = useRef(true);
   const resultRef = useRef();
@@ -24,7 +24,7 @@ const SelectFriend = ({ open, setOpen }) => {
   const { result, isLoading, pages } = useSelector((state) => state.search);
   const [currentPage, setCurrentPage] = useState(1);
   const debouncedValue = useDebounce(inputValue, 500);
-  const [selectedFriend, setSelectedFriend] = useState([]);
+  const [selectedUser, setSelectedUser] = useState([]);
   // console.log(result);
 
   //  call API get friendList and search user
@@ -54,9 +54,6 @@ const SelectFriend = ({ open, setOpen }) => {
   useClickOutside(resultRef, () => {
     setOpenResult(false);
   });
-  const isEmpty = useMemo(() => {
-    // if(result.)
-  }, [result]);
 
   const handleScroll = (e) => {
     const bottom =
@@ -67,23 +64,31 @@ const SelectFriend = ({ open, setOpen }) => {
   };
 
   // handle friend selected
-  const handleSelectedFriend = (friend) => {
-    setSelectedFriend((prev) => [...prev, friend]);
+  const handleSelectedUser = (friend) => {
+    setSelectedUser((prev) => [...prev, friend]);
   };
 
   const handleClear = (id) => {
-    setSelectedFriend((prev) => prev.filter((item) => item._id !== id));
+    setSelectedUser((prev) => prev.filter((item) => item._id !== id));
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    const newList = selectedUser.filter((item) => {
+      if (memberList.some((member) => member._id === item._id)) return;
+      else return item;
+    });
+
+    setMemberList((prev) => prev.concat(newList));
+    setOpen(false);
+  };
 
   return (
     <Modal open={open} setOpen={setOpen} title="Select Your Friend">
       <div className={cx("wrapper")}>
-        <div className={cx("result")}>
+        <div className={cx("select-result")}>
           <span>Member:</span>
           <div className={cx("result-list")}>
-            {selectedFriend.map((friend) => {
+            {selectedUser.map((friend) => {
               return (
                 <span key={friend._id}>
                   {friend.username}
@@ -117,16 +122,14 @@ const SelectFriend = ({ open, setOpen }) => {
                 <div className={cx("result-empty")}>Not Found</div>
               ) : (
                 result.map((item) => {
-                  if (
-                    selectedFriend.some((friend) => friend._id === item._id)
-                  ) {
+                  if (selectedUser.some((friend) => friend._id === item._id)) {
                     return;
                   }
                   return (
                     <div
                       className={cx("result-item")}
                       key={item._id}
-                      onClick={() => handleSelectedFriend(item)}
+                      onClick={() => handleSelectedUser(item)}
                     >
                       <div className={cx("user-info")}>
                         <Image path={item.avatar} />
@@ -151,7 +154,7 @@ const SelectFriend = ({ open, setOpen }) => {
                 <div
                   className={cx("result-item")}
                   key={item._id}
-                  onClick={() => handleSelectedFriend(item)}
+                  onClick={() => handleSelectedUser(item)}
                 >
                   <div className={cx("user-info")} key={item._id}>
                     <Image path={item.avatar} />

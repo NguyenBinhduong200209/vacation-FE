@@ -9,100 +9,137 @@ import Image from "~/components/Image/Image";
 import { useEffect, useRef, useState } from "react";
 import { setTimeline } from "~/store/slices/vacationSlice";
 import { getDate } from "~/helpers/function";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Popover } from "antd";
 import UpdatePost from "../UpdatePost/UpdatePost";
+import vacationAPI from "~/api/vacationAPI";
 
 const cx = classNames.bind(styles);
 
 const PostItem = ({ postDetail }) => {
-	const { authorInfo, content, resource, comments, likes, lastUpdateAt, _id, createdAt, isLiked } =
-		postDetail;
-	// console.log(postDetail);
-	const postItemRef = useRef(null);
-	const dispatch = useDispatch();
-	const [showModal, setShowModal] = useState(false);
-	const [open, setOpen] = useState(false);
+  const {
+    authorInfo,
+    content,
+    resource,
+    comments,
+    likes,
+    lastUpdateAt,
+    _id,
+    createdAt,
+    isLiked,
+  } = postDetail;
 
-	const handleCloseModal = () => {
-		setShowModal(false);
-	};
-	const handleOpenModal = () => {
-		setShowModal(true);
-		setOpen(false);
-		console.log("Clicked");
-	};
-	const handleOpenChange = (newOpen) => {
-		setOpen(newOpen);
-	};
+  const { info } = useSelector((state) => state.auth);
 
-	useEffect(() => {
-		const handleScrollPost = () => {
-			const element = postItemRef.current;
-			const distanceFromTop = element.getBoundingClientRect().top;
+  const postItemRef = useRef(null);
+  const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState(false);
+  const [open, setOpen] = useState(false);
 
-			if (
-				distanceFromTop <= window.innerHeight * 0.2 &&
-				distanceFromTop >= window.innerHeight * 0.15
-			) {
-				dispatch(setTimeline(postItemRef.current.getAttribute("timeline")));
-			}
-		};
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+  const handleOpenModal = () => {
+    setShowModal(true);
+    setOpen(false);
+    console.log("Clicked");
+  };
+  const handleOpenChange = (newOpen) => {
+    setOpen(newOpen);
+  };
 
-		window.addEventListener("scroll", handleScrollPost);
+  useEffect(() => {
+    const handleScrollPost = () => {
+      const element = postItemRef.current;
+      const distanceFromTop = element.getBoundingClientRect().top;
 
-		return () => window.removeEventListener("scroll", handleScrollPost);
-	}, []);
+      if (
+        distanceFromTop <= window.innerHeight * 0.2 &&
+        distanceFromTop >= window.innerHeight * 0.15
+      ) {
+        dispatch(setTimeline(postItemRef.current.getAttribute("timeline")));
+      }
+    };
 
-	return (
-		<div className={cx("wrapper")} ref={postItemRef} timeline={getDate(createdAt)}>
-			<header>
-				<div className={cx("user-info")}>
-					<Image path={authorInfo.avatar.path} alt="" className={cx("avatar")} />
+    window.addEventListener("scroll", handleScrollPost);
 
-					<div className={cx("username-container")}>
-						{/* <div className={cx("fullname")}>Trung Hiếu</div> */}
-						<div className={cx("username")}>{authorInfo.username}</div>
+    return () => window.removeEventListener("scroll", handleScrollPost);
+  }, []);
 
-						<div className={cx("moment")}>{moment(lastUpdateAt).fromNow()}</div>
-					</div>
-				</div>
-				<Popover
-					content={
-						<div className={cx("pop-over")}>
-							<p className={cx("options")} onClick={handleOpenModal}>Edit</p>
-							<p className={cx("options")}>Delete</p>
-						</div>
-					}
-					open={open}
-					trigger="click"
-					onOpenChange={handleOpenChange}
-					placement="bottom"
-				>
-					<FontAwesomeIcon icon={faEllipsisVertical} className={cx("options")} />
-				</Popover>
-				<UpdatePost 
-					handleCloseModal={handleCloseModal}
-					showModal={showModal}
-					postDetail={postDetail}
-				/>
-			</header>
+  const handleDeletePost = async () => {
+    await vacationAPI.deletePost(_id);
+    setOpen(false);
+  };
+  return (
+    <div
+      className={cx("wrapper")}
+      ref={postItemRef}
+      timeline={getDate(createdAt)}
+    >
+      <header>
+        <div className={cx("user-info")}>
+          <Image
+            path={authorInfo.avatar.path}
+            alt=""
+            className={cx("avatar")}
+          />
 
-			<main>
-				<div className={cx("description")}>{content}</div>
-				<div className={cx("img-container")}>
-					{resource.map((item, index) => (
-						<Image path={item.path} alt="" key={index} />
-					))}
-					{resource.map((item, index) => (
-						<Image path={item.path} alt="" key={index} />
-					))}
-				</div>
-			</main>
+          <div className={cx("username-container")}>
+            <div className={cx("username")}>{authorInfo.username}</div>
 
-			<Interaction likes={likes} comments={comments} postID={_id} isLikedStatus={isLiked} />
-		</div>
-	);
+            <div className={cx("moment")}>{moment(lastUpdateAt).fromNow()}</div>
+          </div>
+        </div>
+        {authorInfo._id === info.id && (
+          <Popover
+            content={
+              <div className={cx("pop-over")}>
+                <p className={cx("options")} onClick={handleOpenModal}>
+                  Edit
+                </p>
+                <p className={cx("options")} onClick={handleDeletePost}>
+                  Delete
+                </p>
+              </div>
+            }
+            open={open}
+            trigger="click"
+            onOpenChange={handleOpenChange}
+            placement="bottom"
+          >
+            <FontAwesomeIcon
+              icon={faEllipsisVertical}
+              className={cx("options")}
+            />
+          </Popover>
+        )}
+        <UpdatePost
+          handleCloseModal={handleCloseModal}
+          showModal={showModal}
+          postDetail={postDetail}
+        />
+      </header>
+
+      <main>
+        <div className={cx("description")}>{content}</div>
+        <div className={cx("img-container")}>
+          {resource.map((item, index) => (
+            <Image path={item.path} alt="" key={index} />
+          ))}
+          {resource.map((item, index) => (
+            <Image path={item.path} alt="" key={index} />
+          ))}
+        </div>
+      </main>
+
+      <Interaction
+        likes={likes}
+        comments={comments}
+        postID={_id}
+        isLikedStatus={isLiked}
+      />
+    </div>
+  );
 };
 
 export default PostItem;

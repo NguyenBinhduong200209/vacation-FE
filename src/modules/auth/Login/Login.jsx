@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import { LOGIN } from "~/utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { changeRenderList } from "~/store/slices/authSlice";
-import Notification from "~/components/Notifications/Notification";
 import Image from "~/components/Image/Image";
 
 const cx = classNames.bind(styles);

@@ -1,19 +1,9 @@
-import {
-  Outlet,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import styles from "./Vacation.module.scss";
 import classNames from "classnames/bind";
 import { VACATION_ALBUM_ROUTE, VACATION_POSTS_ROUTE } from "~/utils/constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCircleInfo,
-  faFlag,
-  faPen,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCircleInfo, faPen, faUser } from "@fortawesome/free-solid-svg-icons";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,12 +13,10 @@ import {
   setTimeline,
 } from "~/store/slices/vacationSlice";
 
-import Loading from "~/components/Loading/Loading";
 import { getDate } from "~/helpers/function";
 import { Modal, Tooltip } from "antd";
 import Image from "~/components/Image/Image";
 
-import Header from "~/layouts/components/Header/Header";
 import DefaultLayout from "~/layouts/DefaultLayout/DefaultLayout";
 
 const cx = classNames.bind(styles);
@@ -36,17 +24,15 @@ const Vacation = ({ children }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let [searchParams] = useSearchParams();
-  let vacationID = searchParams.get("vacationID");
+  let vacationID = searchParams.get("vacationID"); // get vacationId of url
   const isFristReq = useRef(true);
   const totalPage = useRef(0);
   const [modal2Open, setModal2Open] = useState(false);
   const { detail, posts } = useSelector((state) => state.vacation);
   const { authorInfo, cover, members, title, startingTime, endingTime } =
     detail;
-  // console.log(detail);
   const [currentPage, setCurrentPage] = useState(1);
-
-  // console.log("detail", detail);
+  console.log("detail", detail);
   const startDate = getDate(startingTime);
   const endDate = getDate(endingTime);
 
@@ -83,6 +69,7 @@ const Vacation = ({ children }) => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [currentPage]);
+
   // get list posts of vacation
   useEffect(() => {
     dispatch(
@@ -110,7 +97,6 @@ const Vacation = ({ children }) => {
                   <div className={cx("index-title")}>friends</div>
                 </div>
                 <div className={cx("user-avatar")}>
-                  {/* <img path="" alt="" /> */}
                   <div className={cx("avatar")}>
                     <Image path={authorInfo?.avatar.path} />
                   </div>
@@ -145,11 +131,6 @@ const Vacation = ({ children }) => {
                       <span>{title}</span>
                     </Tooltip>
                   </div>
-
-                  {/* <div>
-                    <FontAwesomeIcon icon={faFlag} className={cx("icon")} />
-                    <span>Hà Nội, Việt Nam</span>
-                  </div> */}
 
                   <div onClick={() => setModal2Open(true)}>
                     <FontAwesomeIcon icon={faUser} className={cx("icon")} />

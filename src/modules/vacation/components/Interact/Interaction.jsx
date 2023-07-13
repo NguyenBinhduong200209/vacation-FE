@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEllipsisVertical,
@@ -33,8 +33,8 @@ const Interaction = (props) => {
   // state for edit cmt
   const [editCmtId, setEditCmtId] = useState(null);
   const [editCmtValue, setEditCmtValue] = useState(""); // state for input value
-
-  const cmtContentRef = useRef();
+  const [openPopOver, setOpenPopOver] = useState(true);
+  // const cmtContentRef = useRef();
 
   // console.log(info);
 
@@ -57,13 +57,13 @@ const Interaction = (props) => {
 
   // set input value of comment
   const handleChangeValue = (e, type) => {
-    e.preventDefault();
     if (type === "newCmt") setValue(e.target.value);
-    setEditCmtValue(e.target.value);
+    else setEditCmtValue(e.target.value);
   };
 
   // send update comment's request
   const handleCmt = async (type, cmtId) => {
+    setValue("");
     try {
       if (type === "newCmt" && value !== "") {
         await interactionAPI.addComment({
@@ -82,9 +82,11 @@ const Interaction = (props) => {
     } catch (error) {
       console.log(error);
     }
-    setValue("");
   };
-
+  // const isDisabled = useMemo(() => {
+  //   if (value !== "") setIsDisable(true);
+  //   else setIsDisable(false);
+  // }, [value]);
   // update like when user click icon
   const handleLike = () => {
     try {
@@ -154,6 +156,7 @@ const Interaction = (props) => {
   // delete comment
 
   const handleDelCmt = async (id) => {
+    // console.log(id);
     await interactionAPI.deleteComment(id);
     setisComment(true);
   };
@@ -203,10 +206,10 @@ const Interaction = (props) => {
                 onChange={(e) => handleChangeValue(e, "newCmt")}
               />
             </div>
-            <FontAwesomeIcon
-              icon={faPaperPlane}
-              onClick={() => handleCmt("newCmt")}
-            />
+
+            <button onClick={() => handleCmt("newCmt")}>
+              <FontAwesomeIcon icon={faPaperPlane} />
+            </button>
           </div>
           <div className={cx("cmt-list")}>
             {commentList?.map((item) => {
@@ -244,16 +247,25 @@ const Interaction = (props) => {
                   {item.authorInfo._id === info.id && (
                     <Popover
                       content={
-                        <div className={cx("pop-over")}>
-                          <p
-                            onClick={() =>
-                              handleEditCmt(item._id, item.content)
-                            }
-                          >
-                            Edit
-                          </p>
-                          <p onClick={() => handleDelCmt(item._id)}>Delete</p>
-                        </div>
+                        openPopOver && (
+                          <div className={cx("pop-over")}>
+                            <p
+                              onClick={() => {
+                                handleEditCmt(item._id, item.content);
+                              }}
+                            >
+                              Edit
+                            </p>
+                            <p
+                              onClick={() => {
+                                handleDelCmt(item._id);
+                                setOpenPopOver(false);
+                              }}
+                            >
+                              Delete
+                            </p>
+                          </div>
+                        )
                       }
                       trigger="click"
                       placement="bottom"
@@ -261,6 +273,7 @@ const Interaction = (props) => {
                       <FontAwesomeIcon
                         icon={faEllipsisVertical}
                         className={cx("icon")}
+                        onClick={() => setOpenPopOver(true)}
                       />
                     </Popover>
                   )}

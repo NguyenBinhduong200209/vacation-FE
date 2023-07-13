@@ -7,7 +7,6 @@ import authAPI from "./authAPI";
 // export const source = axios.CancelToken.source();
 const axiosClient = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
-  // cancelToken: source.token,
   headers: {
     "content-type": "application/json",
   },
@@ -15,20 +14,9 @@ const axiosClient = axios.create({
 });
 axiosClient.interceptors.request.use(async (config) => {
   const token = await localStorage.getItem("token");
-  let date = new Date();
   if (token) {
-    const decodedToken = jwtDecode(token);
-    console.log(decodedToken);
-    if (decodedToken < date.getTime() / 1000) {
-      const res = await authAPI.refreshToken();
-      localStorage.setItem("token", `Bearer ${res.data.accessToken}`);
-      config.headers.Authorization = `Bearer ${res.data.accessToken}`;
-    } else {
-      config.headers.Authorization = token;
-    }
     config.headers.Authorization = token;
   }
-
   return config;
 });
 axiosClient.interceptors.response.use(

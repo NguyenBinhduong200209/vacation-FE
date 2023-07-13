@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames/bind";
 import { handleAuth } from "~/store/slices/authSlice";
-
-import Avatar from "~/components/Avatar/Avatar";
 import styles from "./Overview.module.scss";
 import Loading from "~/components/Loading/Loading";
 import Notification from "~/components/Notifications/Notification";
+import UpLoad from "~/components/UpLoad/UpLoad";
 
 const cx = classNames.bind(styles);
 
@@ -49,7 +48,7 @@ const Overview = () => {
     <div className={cx("wrapper")}>
       <div className={cx("userName-container")}>
         <div className={cx("avatar")}>
-          <Avatar avatar={avatar} />
+          <UpLoad />
           {/* <img src="" alt="This is icon" /> */}
         </div>
         <div className={cx("userName")}>

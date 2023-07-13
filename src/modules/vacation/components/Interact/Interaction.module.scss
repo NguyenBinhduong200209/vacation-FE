@@ -63,7 +63,7 @@
       background-color: rgba(240, 234, 234, 0);
     }
   }
-  button{
+  button {
     background-color: transparent;
     color: white;
     cursor: pointer;
@@ -138,9 +138,10 @@
 
   p {
     padding: 0.4rem 0;
+    cursor: pointer;
+
     &:hover {
       background: rgb(167, 166, 166);
-      cursor: default;
     }
   }
 }

@@ -24,6 +24,12 @@ export const SEARCH_URL = "search";
 //API Notification URL
 export const NOTI_URL = "notification";
 
+// API Status URL
+export const STATUS_URL = "list";
+
+// API Resources URL
+export const RESOURCE_URL = "resource";
+
 // Auth constants
 
 export const LOGIN = "login";

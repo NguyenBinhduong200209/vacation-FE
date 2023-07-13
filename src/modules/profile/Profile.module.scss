@@ -200,6 +200,7 @@ li {
   position: fixed;
   width: 100%;
   z-index: 10;
+  border-radius: 15px;
   flex-direction: column;
   justify-content: center;
 }
@@ -324,6 +325,7 @@ li {
 }
 
 .navigation {
+  padding-bottom: 1rem;
   top: 36vh;
   font-size: 2rem;
   display: flex;
@@ -367,7 +369,7 @@ li {
 .album-grid {
   display: grid;
   grid-template-columns: repeat(3, 30%);
-  grid-gap: 3rem;
+  grid-gap: 4.6rem;
   width: 100%;
   height: fit-content;
 }

@@ -71,6 +71,7 @@ const Profile = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+  // navigate("/album")
 
   const scrollToTop = useRef(null);
 

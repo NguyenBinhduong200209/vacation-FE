@@ -4,13 +4,19 @@ import { Row, Col, Typography, Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import styles from "./Noti.module.scss";
 import classNames from "classnames/bind";
+import LikeComment from "./content/LikeComment";
+import AddFriend from "./content/AddFriend";
 const cx = classNames.bind(styles);
 
 const NotiItem = ({ item }) => {
-  const { modelInfo, action, __v, isSeen, lastUpdateAt, userInfo } = item;
-  const isFirstVersion = __v === 0;
+  const { _id, modelInfo, isSeen, lastUpdateAt, userInfo } = item;
+
+  const handleSeenStatus = () => {
+    console.log(_id);
+  };
+
   return (
-    <Row className={cx("noti-item")}>
+    <Row className={cx("noti-item")} onClick={handleSeenStatus}>
       <Col span={2} style={{ marginRight: "2px" }}>
         <Avatar
           className={cx("user-avatar")}
@@ -21,18 +27,7 @@ const NotiItem = ({ item }) => {
       </Col>
 
       <Col span={18}>
-        <Typography.Text className={cx("content")}>
-          <span className={cx("bold")}>{userInfo?.username}</span>
-          <span>
-            {(isFirstVersion ? " " : " and others ").concat(
-              action,
-              isFirstVersion ? "s" : "",
-              " your ",
-              modelInfo?.type
-            )}
-          </span>
-          <span className={cx("italic")}> "{modelInfo?.content}"</span>
-        </Typography.Text>
+        {modelInfo.type === "friends" ? <AddFriend item={item} /> : <LikeComment item={item} />}
         <Typography.Text className={cx("datetime")}>{moment(lastUpdateAt).fromNow()}</Typography.Text>
       </Col>
 

@@ -37,8 +37,8 @@ const notiSlice = createSlice({
     isLoading: true,
   },
   reducers: {
-    changeVisible: (state) => {
-      state.isVisible = !state.isVisible;
+    changeVisible: (state, action) => {
+      state.isVisible = action.payload === undefined ? !state.isVisible : action.payload;
     },
   },
   extraReducers: (builder) => {

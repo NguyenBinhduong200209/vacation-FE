@@ -1,23 +1,20 @@
-import React, { useState } from "react";
-import { HomeOutlined, PictureOutlined, FolderOpenOutlined, BellOutlined } from "@ant-design/icons";
+import React from "react";
+import {
+  HomeOutlined,
+  PictureOutlined,
+  FolderOpenOutlined,
+  BellOutlined,
+  ClockCircleOutlined,
+} from "@ant-design/icons";
 import { Badge } from "antd";
-import { useSelector, useDispatch } from "react-redux";
-import { getList, changeVisible } from "~/store/slices/notiSlice";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import styles from "../Header.module.scss";
 import classNames from "classnames/bind";
 const cx = classNames.bind(styles);
 
 const Navigation = () => {
-  const [fill, setFill] = useState(false);
-  const { list, quantity } = useSelector((state) => state.noti);
-  const dispatch = useDispatch();
-
-  const handleBell = () => {
-    dispatch(changeVisible());
-    Array.isArray(list) && list.length === 0 && dispatch(getList());
-    setFill(!fill);
-  };
+  const { isVisible, quantity } = useSelector((state) => state.noti);
 
   return (
     <div className={cx("nav-tools")}>
@@ -48,12 +45,8 @@ const Navigation = () => {
         <FolderOpenOutlined />
       </NavLink>
 
-      <NavLink
-        style={{ cursor: "pointer", padding: "0" }}
-        className={fill ? cx("active") : ""}
-        onClick={handleBell}
-      >
-        <Badge count={quantity} overflowCount={9} color="#ff6b6b">
+      <NavLink style={{ cursor: "pointer", padding: "0" }} className={isVisible ? cx("active") : ""}>
+        <Badge count={quantity} overflowCount={9} color="#b18735">
           <BellOutlined />
         </Badge>
       </NavLink>

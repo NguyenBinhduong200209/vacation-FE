@@ -13,21 +13,21 @@
 
 #hide {
   opacity: 0;
-  transform: translateX(110%);
+  transform: translateX(5%);
 }
 
 .notification {
   position: fixed;
   top: 10vh;
   height: 80vh;
-  right: 10px;
-  width: 24vw;
+  right: 3vw;
+  width: 23vw;
   min-width: 360px;
-  border-radius: 7px;
+  border-radius: 10px;
   padding: 0 5px;
   z-index: 11;
   background-color: #282828;
-  transition: all linear 400ms;
+  transition: all ease-in-out 500ms;
 }
 
 .notification * {

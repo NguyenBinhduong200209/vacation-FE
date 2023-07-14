@@ -14,9 +14,7 @@ const NewAlbum = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchImg = await axiosClient.get(
-          `vacation/6486bcc25782c2081f86fea0/images`
-        );
+        const fetchImg = await axiosClient.get(`vacation/:id/images`);
         setImg(fetchImg.data.data);
         console.log(fetchImg);
       } catch (error) {

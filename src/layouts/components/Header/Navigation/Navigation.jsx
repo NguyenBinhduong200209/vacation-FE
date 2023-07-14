@@ -1,14 +1,5 @@
 import React, { useState } from "react";
-import {
-  HomeOutlined,
-  HomeFilled,
-  PictureOutlined,
-  PictureFilled,
-  FolderOpenOutlined,
-  FolderOpenFilled,
-  BellOutlined,
-  BellFilled,
-} from "@ant-design/icons";
+import { HomeOutlined, PictureOutlined, FolderOpenOutlined, BellOutlined } from "@ant-design/icons";
 import { Badge } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { getList, changeVisible } from "~/store/slices/notiSlice";
@@ -30,27 +21,42 @@ const Navigation = () => {
 
   return (
     <div className={cx("nav-tools")}>
-      <NavLink to="/">
-        {({ isActive }) => (isActive ? <HomeFilled className={cx("active")} /> : <HomeOutlined />)}
+      <NavLink
+        to="/"
+        className={({ isActive }) => {
+          return isActive ? cx("active") : "";
+        }}
+      >
+        <HomeOutlined />
       </NavLink>
 
-      <NavLink to="/profile">
-        {({ isActive }) => (isActive ? <PictureFilled className={cx("active")} /> : <PictureOutlined />)}
+      <NavLink
+        to="/profile"
+        className={({ isActive }) => {
+          return isActive ? cx("active") : "";
+        }}
+      >
+        <PictureOutlined />
       </NavLink>
 
-      <NavLink to="/setting">
-        {({ isActive }) =>
-          isActive ? <FolderOpenFilled className={cx("active")} /> : <FolderOpenOutlined />
-        }
+      <NavLink
+        to="/setting"
+        className={({ isActive }) => {
+          return isActive ? cx("active") : "";
+        }}
+      >
+        <FolderOpenOutlined />
       </NavLink>
 
-      <div style={{ cursor: "pointer", padding: "0" }} onClick={handleBell}>
-        <NavLink>
-          <Badge count={quantity} overflowCount={9} color="#ff6b6b">
-            {fill ? <BellFilled className={cx("active")} /> : <BellOutlined />}
-          </Badge>
-        </NavLink>
-      </div>
+      <NavLink
+        style={{ cursor: "pointer", padding: "0" }}
+        className={fill ? cx("active") : ""}
+        onClick={handleBell}
+      >
+        <Badge count={quantity} overflowCount={9} color="#ff6b6b">
+          <BellOutlined />
+        </Badge>
+      </NavLink>
     </div>
   );
 };

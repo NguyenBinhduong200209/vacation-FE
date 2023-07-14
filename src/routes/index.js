@@ -16,7 +16,6 @@ import NewFeed from "~/modules/newFeed/NewFeed";
 
 // import AlbumProfile from "~/modules/profile/Album";
 
-
 import {
   LOGIN_ROUTE,
   OVERVIEW_ROUTE,
@@ -28,6 +27,7 @@ import {
   VACATION_POSTS_ROUTE,
 } from "~/utils/constants";
 import NewAlbum from "~/modules/album/NewAlbum/NewAlbum";
+import Preloader from "~/components/Preloader/Preloader";
 
 export const publicRoutes = [
   { path: "/", component: NewFeed, layout: DefaultLayout },
@@ -63,6 +63,7 @@ export const publicRoutes = [
 
   { path: "/profile", component: Profile, layout: DefaultLayout },
   { path: "/newAlbum", component: NewAlbum, layout: DefaultLayout },
+  { path: "/pre", component: Preloader, layout: DefaultLayout },
 
   {
     path: VACATION_POSTS_ROUTE,

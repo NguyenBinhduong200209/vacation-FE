@@ -1,14 +1,5 @@
 import React, { useState } from "react";
-import {
-  HomeOutlined,
-  HomeFilled,
-  PictureOutlined,
-  PictureFilled,
-  FolderOpenOutlined,
-  FolderOpenFilled,
-  BellOutlined,
-  BellFilled,
-} from "@ant-design/icons";
+import { HomeOutlined, PictureOutlined, FolderOpenOutlined, BellOutlined } from "@ant-design/icons";
 import { Badge } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { getList, changeVisible } from "~/store/slices/notiSlice";

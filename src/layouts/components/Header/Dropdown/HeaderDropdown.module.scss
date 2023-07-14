@@ -8,14 +8,6 @@
   padding: 1rem;
 }
 
-.user-ava {
-  border: 1px solid white;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 20px;
-  margin-right: 1rem;
-}
-
 .user-fullname {
   display: flex;
   margin-right: 0.5rem;
@@ -34,6 +26,7 @@
 /* HeaderDropdown.module.scss */
 
 .dropdown-container {
+  margin-right: 4rem;
   position: relative;
 }
 

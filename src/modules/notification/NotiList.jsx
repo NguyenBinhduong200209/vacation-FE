@@ -5,10 +5,17 @@ import { ReadOutlined } from "@ant-design/icons";
 import classNames from "classnames/bind";
 import { useSelector } from "react-redux";
 import styles from "./Noti.module.scss";
+import { useDispatch } from "react-redux";
+import { updateAll } from "~/store/slices/notiSlice";
 const cx = classNames.bind(styles);
 
 const NotiList = () => {
   const { list, isVisible } = useSelector((state) => state.noti);
+  const dispatch = useDispatch();
+
+  const handleUpdateAll = () => {
+    dispatch(updateAll());
+  };
 
   return (
     <div className={cx("notification")} id={cx(isVisible ? "show" : "hide")}>
@@ -21,7 +28,7 @@ const NotiList = () => {
 
         <Col offset={1} span={8}>
           <Button block={true} className={cx("button-mark")} ghost icon={<ReadOutlined />}>
-            <Typography.Text style={{ marginRight: 0 }} underline>
+            <Typography.Text style={{ marginRight: 0 }} underline onClick={handleUpdateAll}>
               Mark as Read
             </Typography.Text>
           </Button>

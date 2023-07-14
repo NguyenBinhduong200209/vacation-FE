@@ -11,10 +11,14 @@ const cx = classNames.bind(styles);
 
 const NewAlbum = () => {
   const [img, setImg] = useState([]);
+
+  const [searchParams] = useSearchParams();
+  const dataId = Object.fromEntries([...searchParams]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchImg = await axiosClient.get(`vacation/:id/images`);
+        const fetchImg = await axiosClient.get(`vacation/${dataId.id}/images`);
         setImg(fetchImg.data.data);
         console.log(fetchImg);
       } catch (error) {
@@ -72,6 +76,7 @@ const NewAlbum = () => {
     <div className={cx("wrapper")}>
       <div className={cx("mother")} ref={ref}>
         <Draggable
+          handle={`.${cx("handle")}`}
           defaultPosition={{ x: position.x, y: position.y }}
           onDrag={handleDrag}
           bounds="parent"

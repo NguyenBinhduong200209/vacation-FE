@@ -368,18 +368,17 @@ li {
 
 //Create post//
 .create {
-  height: 20vh;
+  height: fit-content;
   margin: 0rem 3rem 4rem;
   border-radius: 15px;
   font-size: 1.7rem;
   background-color: #282828;
   display: flex;
-  padding: 2rem 1.5rem 1rem;
+  justify-content: space-between;
+  padding: 3% 5% 1%;
 }
 
 .user-ava {
-  width: 5rem;
-  height: 5rem;
   border: 1px solid white;
   border-radius: 40px;
   object-fit: cover;

@@ -70,6 +70,21 @@
   color: white;
   border-radius: 10px;
   padding: 3px 5px;
+  transition: 1000ms all ease-in-out;
+}
+
+.nav-tools > *::after {
+  content: "";
+  position: relative;
+  display: block;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 7px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: 200ms all ease-in-out;
 }
 
 .nav-user {
@@ -110,5 +125,9 @@
 }
 
 .active svg {
-  fill: #34495e;
+  fill: #d2ae68;
+}
+
+.active::after {
+  background-color: #d2ae68;
 }

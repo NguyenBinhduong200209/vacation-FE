@@ -20,13 +20,13 @@ const NotiList = () => {
   return (
     <div className={cx("notification")} id={cx(isVisible ? "show" : "hide")}>
       <Row className={cx("header")}>
-        <Col span={15}>
+        <Col span={14}>
           <Typography.Title level={2} style={{ margin: 0, color: "white" }}>
             Notifications
           </Typography.Title>
         </Col>
 
-        <Col offset={1} span={8}>
+        <Col offset={4} span={6}>
           <Button block={true} className={cx("button-mark")} ghost icon={<ReadOutlined />}>
             <Typography.Text style={{ marginRight: 0 }} underline onClick={handleUpdateAll}>
               Mark as Read

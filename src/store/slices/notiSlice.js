@@ -19,6 +19,15 @@ export const updateOne = createAsyncThunk("notification/updateOne", async (id, t
   }
 });
 
+export const updateAll = createAsyncThunk("notification/updateAll", async (id, thunkAPI) => {
+  try {
+    const res = await notiAPI.updateStatusAll();
+    return res.data.data;
+  } catch (error) {
+    console.log("error:", error);
+  }
+});
+
 const notiSlice = createSlice({
   name: "notification",
   initialState: {
@@ -44,15 +53,18 @@ const notiSlice = createSlice({
           state.isLoading = false;
         }
       })
-      .addCase(getList.rejected, (state) => {
-        state.isLoading = false;
-        state.list = [];
-        state.quantity = 0;
-      })
       .addCase(updateOne.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(updateOne.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(updateAll.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateAll.fulfilled, (state, action) => {
+        state.list = state.list.map((item) => Object.assign(item, { isSeen: true }));
+        state.quantity = 0;
         state.isLoading = false;
       });
   },

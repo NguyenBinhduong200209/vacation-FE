@@ -59,12 +59,17 @@
 
   svg {
     transition: 100ms all linear;
+    width: 30px;
+    height: 30px;
+    fill: white;
   }
 }
 
 .nav-tools > * {
   font-size: 2.85rem;
   color: white;
+  border-radius: 10px;
+  padding: 3px 5px;
 }
 
 .nav-user {
@@ -105,5 +110,5 @@
 }
 
 .active svg {
-  fill: #c7ecee;
+  fill: #34495e;
 }

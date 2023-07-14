@@ -20,7 +20,7 @@ const NotiItem = ({ item }) => {
 
   return (
     <Row className={cx("noti-item")} onClick={handleSeenStatus}>
-      <Col span={2} style={{ marginRight: "2px" }}>
+      <Col span={1} style={{ margin: "0px 3px" }}>
         <Avatar
           className={cx("user-avatar")}
           src={userInfo?.avatar?.path}

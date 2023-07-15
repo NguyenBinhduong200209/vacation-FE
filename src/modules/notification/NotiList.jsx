@@ -6,11 +6,15 @@ import classNames from "classnames/bind";
 import { useSelector } from "react-redux";
 import styles from "./Noti.module.scss";
 import { useDispatch } from "react-redux";
+import { getList } from "~/store/slices/notiSlice";
 import { updateAll, changeVisible } from "~/store/slices/notiSlice";
+import { query, where, orderBy, onSnapshot, collection } from "firebase/firestore";
+import firestore from "~/utils/firestore";
 const cx = classNames.bind(styles);
 
 const NotiList = () => {
   const { list, isVisible } = useSelector((state) => state.noti);
+  const userId = useSelector((state) => state.auth?.info?.id);
   const dispatch = useDispatch();
   const notiRef = useRef(null);
 
@@ -31,6 +35,16 @@ const NotiList = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [handleClickOutside]);
+
+  useEffect(() => {
+    if (userId) {
+      const notiRef = collection(firestore, "notifications");
+      const q = query(notiRef, where("receiverId", "==", userId), orderBy("lastUpdateAt", "desc"));
+      onSnapshot(q, (query) => {
+        dispatch(getList({ page: 1 }));
+      });
+    }
+  }, [userId, dispatch]);
 
   const handleUpdateAll = () => {
     dispatch(updateAll());
@@ -56,7 +70,7 @@ const NotiList = () => {
 
       <div className={cx("noti-list")}>
         {list.map((item) => {
-          return <NotiItem key={item._id} item={item} />;
+          return <NotiItem key={item.id} item={item} />;
         })}
       </div>
     </div>

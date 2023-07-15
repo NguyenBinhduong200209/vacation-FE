@@ -13,12 +13,12 @@ import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(styles);
 
 const NotiItem = ({ item }) => {
-  const { _id, modelInfo, isSeen, lastUpdateAt, userInfo } = item;
+  const { id, modelInfo, isSeen, lastUpdateAt, userInfo } = item;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSeenStatus = async () => {
-    dispatch(updateOne(_id));
+    dispatch(updateOne(id));
 
     if (modelInfo.type === "friends") {
     } else {

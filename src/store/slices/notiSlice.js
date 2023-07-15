@@ -1,10 +1,10 @@
 import notiAPI from "~/api/notiAPI";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export const getList = createAsyncThunk("notification/getList", async (arg, thunkAPI) => {
+export const getList = createAsyncThunk("notification/getList", async ({ page }, thunkAPI) => {
   try {
-    const res = await notiAPI.getList();
-    return res.data.data;
+    const res = await notiAPI.getList(page);
+    return res.data;
   } catch (error) {
     console.log("error:", error);
   }
@@ -48,8 +48,8 @@ const notiSlice = createSlice({
       })
       .addCase(getList.fulfilled, (state, action) => {
         if (action.payload) {
-          state.list = action.payload;
-          state.quantity = action.payload.filter((item) => item.isSeen === false).length;
+          state.list = action.payload?.data;
+          state.quantity = action.payload?.meta?.totalUnseen;
           state.isLoading = false;
         }
       })

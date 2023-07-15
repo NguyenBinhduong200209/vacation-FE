@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  HomeOutlined,
-  PictureOutlined,
-  FolderOpenOutlined,
-  BellOutlined,
-  ClockCircleOutlined,
-} from "@ant-design/icons";
+import { HomeOutlined, PictureOutlined, FolderOpenOutlined, BellOutlined } from "@ant-design/icons";
 import { Badge } from "antd";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";

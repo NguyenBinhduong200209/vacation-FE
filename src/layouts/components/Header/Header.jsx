@@ -14,7 +14,7 @@ const Header = ({ children }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getList());
+    dispatch(getList({ page: 1 }));
   }, [dispatch]);
 
   return (

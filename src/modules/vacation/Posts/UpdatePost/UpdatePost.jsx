@@ -20,22 +20,20 @@ Modal.setAppElement("#root");
 const UpdatePost = ({ showModal, handleCloseModal, postDetail }) => {
 
     const [modalIsOpen, setIsOpen] = useState(false);
-    const { authorInfo, content, resource } = postDetail;
-    
+    const { authorInfo, content, resource, _id, location } = postDetail;
+    const [ updateContent, setUpdateContent ] = useState(content);
     const [searchParams]= useSearchParams()
     let vacationId = searchParams.get("vacationID");
     const { posts, detail } = useSelector((state) => state.vacation);
-    console.log(posts, detail);
+    console.log(location.detail);
   
     const [files, setFiles] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     let [locationId, setLocationID] = useState('')
     const uploadResourcesRef = useRef()
-    // const [locations, setLocations] = useState([]);
+    
     const [selectedLocation, setSelectedLocation] = useState("");
-    const locationsList  = useSelector((state) => state.location)
-    // const maxItems = 5;
-    // const displayedLocations = locationsList.locationList.data?.slice(0, maxItems);
+    
     function openModal() {
       setIsOpen(true);
     }
@@ -48,7 +46,7 @@ const UpdatePost = ({ showModal, handleCloseModal, postDetail }) => {
       e.preventDefault();
       try {
         setIsLoading(true);
-        const res = await vacationAPI.createPost({vacationId:vacationId, locationId:locationId, content: content});
+        const res = await vacationAPI.updatePost({vacationId:vacationId, locationId:locationId, content: updateContent, id: _id});
         handleCloseModal()
       } catch (error) {
         console.log(error);
@@ -56,9 +54,12 @@ const UpdatePost = ({ showModal, handleCloseModal, postDetail }) => {
       }
       setIsLoading(false);
     }
+
+    const handleUpdateContent = (e) => {
+        setUpdateContent(e.target.value);
+    }
   
     const handleUpload = (e) => {
-  
       if (e.target.files && e.target.files.length > 0) {
         console.log(e.target.files);
         setFiles([...files, ...Object.values(e.target.files)]);
@@ -104,12 +105,10 @@ const UpdatePost = ({ showModal, handleCloseModal, postDetail }) => {
                         minRows: 6,
                         maxRows: 12,
                         }}
-                        value={content}
+                        value={updateContent}
+                        onChange={handleUpdateContent}
                     />
                     <div className={cx("img-container")}>
-                        {resource.map((item, index) => (
-                            <Image path={item.path} alt="" key={index} />
-                        ))}
                         {resource.map((item, index) => (
                             <Image path={item.path} alt="" key={index} />
                         ))}
@@ -122,18 +121,29 @@ const UpdatePost = ({ showModal, handleCloseModal, postDetail }) => {
                         )}
                     </div>
                     <div className={cx("post-extension")}>
-                        <div> Add on: {selectedLocation}</div>
-                        <div className={cx("extensions")}>
-                            <div>
-                                <FontAwesomeIcon onClick={openModal} icon={faLocationDot} className={cx("icon")} />
-                                <SelectLocation openLocation={modalIsOpen} setOpenLocation={setIsOpen}/>
-                            </div>
-                            <div>
-                                <input type="file" ref={uploadResourcesRef} onChange={handleUpload} hidden/>
-                                <FontAwesomeIcon icon={faImage} className={cx("icon")} onClick={() => {uploadResourcesRef.current.click()}} />                  
-                            </div>
-                        </div>
-                    </div>
+						<div> Add on: {location.detail} </div>
+						<div className={cx("extensions")}>
+							<div>
+								<FontAwesomeIcon onClick={openModal} icon={faLocationDot} className={cx("icon")} />
+								<SelectLocation
+									openLocation={modalIsOpen}
+									setOpenLocation={setIsOpen}
+									setLocation={setLocationID}
+                  location={location}
+								/>
+							</div>
+							<div>
+								<input type="file" ref={uploadResourcesRef} onChange={handleUpload} hidden />
+								<FontAwesomeIcon
+									icon={faImage}
+									className={cx("icon")}
+									onClick={() => {
+										uploadResourcesRef.current.click();
+									}}
+								/>
+							</div>
+						</div>
+					</div>
                     <button onClick={handleClick} disabled={isLoading} className={cx("btn-submit")}>
                         Save
                     </button>

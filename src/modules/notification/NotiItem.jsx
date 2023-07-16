@@ -20,8 +20,8 @@ const NotiItem = ({ item }) => {
   const handleSeenStatus = async () => {
     dispatch(updateOne(id));
 
-    if (modelInfo.type === "friends") {
-    } else {
+    if (modelInfo.type === "friends") navigate(`/profile`);
+    else {
       const result = await vacationAPI.getOnePost(modelInfo._id);
       const { vacationId } = result.data.data;
       navigate(`/vacation/post?vacationID=${vacationId}`);

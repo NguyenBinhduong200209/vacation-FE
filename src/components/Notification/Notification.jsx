@@ -3,14 +3,7 @@ import ReactModal from "react-modal";
 import styles from "./Notification.module.scss";
 import classNames from "classnames/bind";
 import { useNavigate } from "react-router-dom";
-import {
-  FORGOT,
-  LOGIN,
-  REGISTER,
-  RESET,
-  UPDATE_PERSONAL,
-  UPDATE_SECURITY,
-} from "~/utils/constants";
+import { FORGOT, LOGIN, REGISTER, RESET } from "~/utils/constants";
 
 const cx = classNames.bind(styles);
 const Notification = (props) => {
@@ -24,6 +17,7 @@ const Notification = (props) => {
     isError,
     handleRoute,
   } = props;
+
   const navigate = useNavigate();
   function handleSucces() {
     switch (type) {

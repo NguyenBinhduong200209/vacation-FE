@@ -17,6 +17,7 @@ import vacationAPI from "~/api/vacationAPI";
 import Image from "~/components/Image/Image";
 import Modal from "~/components/Modal/Modal";
 import SelectFriend from "~/modules/components/SelectFriend/SelectFriend";
+import Notification from "~/components/Notification/Notification";
 
 const { RangePicker } = DatePicker;
 const cx = classNames.bind(styles);
@@ -32,6 +33,10 @@ const HandleVacation = ({
   const [vacationDetail, setVacationDetail] = useState(initVacationDetail);
   const { title, des, dates, status } = vacationDetail;
   const [memberList, setMemberList] = useState([]);
+  const [openNoti, setOpenNoti] = useState(false);
+  const [msg, setMsg] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   // State for the open friend modal.
   const [openFriend, setOpenFriend] = useState(false);
@@ -81,6 +86,7 @@ const HandleVacation = ({
   };
   // Function to create a new vacation.
   const handleVacation = async () => {
+    let res;
     // Create the vacation.
     const newMemberList = memberList?.map((item) => item._id);
     const params = {
@@ -91,12 +97,26 @@ const HandleVacation = ({
       startingTime: dates[0],
       endingTime: dates[1],
     };
+    try {
+      if (type === "create") {
+        // Create the vacation.
+        res = await vacationAPI.createVacation(params);
+      } else {
+        // Update the vacation.
+        res = await vacationAPI.updateVacation({
+          id: vacationId,
+          body: params,
+        });
+      }
+      setIsSuccess(true);
+      setMsg(res.data?.message);
+    } catch (error) {
+      setIsError(true);
+      setMsg(error.message);
+    }
 
-    // Create the vacation.
-    if (type === "create") await vacationAPI.createVacation(params);
-    // Update the vacation.
-    else await vacationAPI.updateVacation({ id: vacationId, body: params });
     setOpen(false);
+    setOpenNoti(true);
   };
 
   const isDisabledCreate = useMemo(
@@ -125,120 +145,132 @@ const HandleVacation = ({
   }, [title, des, dates, status, memberList]);
 
   return (
-    <Modal
-      open={showModal}
-      setOpen={setOpen}
-      title={type === "create" ? "New Vacation" : "Update Vacation"}
-    >
-      <div className={cx("wrapper")}>
-        <div className={cx("modal-container")}>
-          <div className={cx("user-info")}>
-            <div className={cx("info-name")}>
-              <Image path={info?.avatar?.path} />
-              <div className={cx("username")}>
-                <div>{info?.username}</div>
-                <div
-                  className={cx("status")}
-                  onClick={() => setOpenStatus(!openStatus)}
-                >
-                  <span>{status}</span>
-                  <FontAwesomeIcon
-                    icon={faCaretDown}
-                    style={{ marginLeft: "0.8rem", cursor: "pointer" }}
-                  />
-                  {openStatus && (
-                    <div className={cx("dropdown-status")}>
-                      <div onClick={() => handleStatus("Public")}>Public</div>
-                      <div onClick={() => handleStatus("Protected")}>
-                        Protected
+    <>
+      <Modal
+        open={showModal}
+        setOpen={setOpen}
+        title={type === "create" ? "New Vacation" : "Update Vacation"}
+      >
+        <div className={cx("wrapper")}>
+          <div className={cx("modal-container")}>
+            <div className={cx("user-info")}>
+              <div className={cx("info-name")}>
+                <Image path={info?.avatar?.path} />
+                <div className={cx("username")}>
+                  <div>{info?.username}</div>
+                  <div
+                    className={cx("status")}
+                    onClick={() => setOpenStatus(!openStatus)}
+                  >
+                    <span>{status}</span>
+                    <FontAwesomeIcon
+                      icon={faCaretDown}
+                      style={{ marginLeft: "0.8rem", cursor: "pointer" }}
+                    />
+                    {openStatus && (
+                      <div className={cx("dropdown-status")}>
+                        <div onClick={() => handleStatus("Public")}>Public</div>
+                        <div onClick={() => handleStatus("Protected")}>
+                          Protected
+                        </div>
+                        <div onClick={() => handleStatus("Only Me")}>
+                          Only Me
+                        </div>
                       </div>
-                      <div onClick={() => handleStatus("Only Me")}>Only Me</div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
+              <RangePicker
+                placement="top-left"
+                className={cx("select-date")}
+                placeholder={["Start Time", "End Time"]}
+                style={{
+                  width: "22rem",
+                  background: "#a29090a6",
+                  border: "none",
+                  height: "50px",
+                }}
+                defaultValue={[dayjs(dates[0]), dayjs(dates[1])]}
+                onChange={(values) => handleCalendar(values)}
+              />
             </div>
-            <RangePicker
-              placement="top-left"
-              className={cx("select-date")}
-              placeholder={["Start Time", "End Time"]}
-              style={{
-                width: "22rem",
-                background: "#a29090a6",
-                border: "none",
-                height: "50px",
-              }}
-              defaultValue={[dayjs(dates[0]), dayjs(dates[1])]}
-              onChange={(values) => handleCalendar(values)}
+            <Input
+              maxLength={100}
+              onChange={(e) => onChange(e, "title")}
+              placeholder="Title"
+              style={{ textAlign: "center" }}
+              value={title}
+              spellCheck={false}
             />
-          </div>
-          <Input
-            maxLength={100}
-            onChange={(e) => onChange(e, "title")}
-            placeholder="Title"
-            style={{ textAlign: "center" }}
-            value={title}
-            spellCheck={false}
-          />
-          <TextArea
-            maxLength={500}
-            onChange={(e) => onChange(e, "des")}
-            placeholder="Description..."
-            style={{
-              textAlign: "center",
-              resize: "none",
-            }}
-            spellCheck={false}
-            value={des}
-          />
-          <div className={cx("post-extension")}>
-            <div className={cx("extension-container")}>
-              <div> Add on</div>
-              <div className={cx("extensions")}>
-                <div>
-                  <FontAwesomeIcon
-                    icon={faUserPlus}
-                    className={cx("icon")}
-                    onClick={() => setOpenFriend(true)}
-                  />
-                  <SelectFriend
-                    open={openFriend}
-                    setOpen={setOpenFriend}
-                    setMemberList={setMemberList}
-                    memberList={memberList}
-                  />
+            <TextArea
+              maxLength={500}
+              onChange={(e) => onChange(e, "des")}
+              placeholder="Description..."
+              style={{
+                textAlign: "center",
+                resize: "none",
+              }}
+              spellCheck={false}
+              value={des}
+            />
+            <div className={cx("post-extension")}>
+              <div className={cx("extension-container")}>
+                <div> Add on</div>
+                <div className={cx("extensions")}>
+                  <div>
+                    <FontAwesomeIcon
+                      icon={faUserPlus}
+                      className={cx("icon")}
+                      onClick={() => setOpenFriend(true)}
+                    />
+                    <SelectFriend
+                      open={openFriend}
+                      setOpen={setOpenFriend}
+                      setMemberList={setMemberList}
+                      memberList={memberList}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className={cx("result")}>
+                <div className={cx("result-list")}>
+                  {memberList?.length > 0 && `with:`}
+                  {memberList?.map((member) => {
+                    return (
+                      <span key={member._id}>
+                        {member.username}
+                        <FontAwesomeIcon
+                          icon={faXmarkCircle}
+                          className={cx("close")}
+                          onClick={() => handleClear(member._id)}
+                        />
+                      </span>
+                    );
+                  })}
                 </div>
               </div>
             </div>
-
-            <div className={cx("result")}>
-              <div className={cx("result-list")}>
-                {memberList?.length > 0 && `with:`}
-                {memberList?.map((member) => {
-                  return (
-                    <span key={member._id}>
-                      {member.username}
-                      <FontAwesomeIcon
-                        icon={faXmarkCircle}
-                        className={cx("close")}
-                        onClick={() => handleClear(member._id)}
-                      />
-                    </span>
-                  );
-                })}
-              </div>
-            </div>
+            <button
+              className={cx("btn-submit")}
+              disabled={type === "create" ? isDisabledCreate : isDisabledUpdate}
+              onClick={handleVacation}
+            >
+              {type === "create" ? "Create Vacation" : "Update"}
+            </button>
           </div>
-          <button
-            className={cx("btn-submit")}
-            disabled={type === "create" ? isDisabledCreate : isDisabledUpdate}
-            onClick={handleVacation}
-          >
-            {type === "create" ? "Create Vacation" : "Update"}
-          </button>
         </div>
-      </div>
-    </Modal>
+      </Modal>
+      <Notification
+        openNoti={openNoti}
+        setOpenNoti={setOpenNoti}
+        msg={msg}
+        type="handleVacation"
+        isError={isError}
+        isSuccess={isSuccess}
+      />
+    </>
   );
 };
 

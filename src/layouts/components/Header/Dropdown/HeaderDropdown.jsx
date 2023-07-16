@@ -4,7 +4,7 @@ import classNames from "classnames/bind";
 import styles from "./HeaderDropdown.module.scss";
 import { CaretDownOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Avatar } from "antd";
 
 const cx = classNames.bind(styles);
@@ -13,6 +13,7 @@ const HeaderDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { info } = useSelector((state) => state.auth);
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -26,11 +27,8 @@ const HeaderDropdown = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-
-    setUser({});
     navigate("/login");
     window.location.reload();
-
   };
 
   useEffect(() => {

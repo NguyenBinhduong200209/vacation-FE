@@ -31,14 +31,15 @@ const Posts = () => {
     <>
       <div className={cx("wrapper")}>
         <div className={cx("container")}>
-          <div className={cx("create-post")}>
-            <Image
-              path={detail?.authorInfo?.avatar.path}
-              className={cx("avatar")}
-            />
-            <div onClick={handleOpenModal}>Every step is a milestone...</div>
-          </div>
-
+          {detail?.isMember && (
+            <div className={cx("create-post")}>
+              <Image
+                path={detail?.authorInfo?.avatar.path}
+                className={cx("avatar")}
+              />
+              <div onClick={handleOpenModal}>Every step is a milestone...</div>
+            </div>
+          )}
           <CreatePost
             handleCloseModal={handleCloseModal}
             showModal={showModal}

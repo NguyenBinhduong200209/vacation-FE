@@ -17,8 +17,9 @@ import { getTrendingPlace } from "~/store/slices/locationSlice";
 import { getDate } from "~/helpers/function";
 import Image from "~/components/Image/Image";
 import { useNavigate } from "react-router-dom";
-import CreateVacation from "../vacation/CreateVacation/CreateVacation";
+// import CreateVacation from "../vacation/CreateVacation/CreateVacation";
 import CreateAlbum from "../album/CreateAlbum/CreateAlbum";
+import HandleVacation from "../vacation/HandleVacation/HandleVacation";
 
 const cx = classNames.bind(styles);
 const NewFeed = () => {
@@ -31,6 +32,13 @@ const NewFeed = () => {
   const { info } = useSelector((state) => state.auth);
   const { listVacation } = useSelector((state) => state.vacation);
   const { trendingList } = useSelector((state) => state.location);
+  const initVacationDetail = {
+    title: "",
+    des: "",
+    memberList: [],
+    dates: [],
+    status: "",
+  };
   const totalPage = useRef(0);
 
   // Get list of trending place
@@ -156,7 +164,13 @@ const NewFeed = () => {
                   Add Vacation
                 </div>
               </button>
-              <CreateVacation setOpen={setOpen} showModal={open} />
+              {/* <CreateVacation setOpen={setOpen} showModal={open} /> */}
+              <HandleVacation
+                setOpen={setOpen}
+                showModal={open}
+                initVacationDetail={initVacationDetail}
+                type="create"
+              />
             </div>
           </div>
         </div>
@@ -165,7 +179,7 @@ const NewFeed = () => {
             <a
               key={vacation._id}
               className={cx("feed-post")}
-              href={`/vacation/post?vacationID=${vacation._id}`}
+              href={`/vacation?vacationID=${vacation._id}`}
             >
               <div className={cx("feed-head")}>
                 <Image
@@ -184,7 +198,10 @@ const NewFeed = () => {
                 </div>
               </div>
               <div className={cx("feed-cover")}>
-                <img src={vacation.cover?.path} alt="???" />
+                <Image
+                  path={vacation.cover?.path}
+                  alt="This is Vacation cover"
+                />
                 <div className={cx("feed-cover-rad")}></div>
                 <div className={`${cx("cover-item")} ${cx("views")}`}>
                   <EyeOutlined />

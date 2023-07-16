@@ -31,6 +31,7 @@ const HeaderDropdown = () => {
     localStorage.removeItem("token");
     setUser({});
     navigate("/login");
+    window.location.reload();
   };
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);

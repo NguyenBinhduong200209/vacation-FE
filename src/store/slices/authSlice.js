@@ -9,19 +9,18 @@ export const handleAuth = createAsyncThunk(
   async (arg, thunkAPI) => {
     try {
       let res = await authAPI[arg.type](arg.data);
-      console.log(res);
       return {
         result: res.data,
         type: arg.type,
-        status: res.status,
         message: res.data.message,
       };
     } catch (error) {
-      console.log(error);
-      return {
-        status: error.response.status,
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
+      return thunkAPI.rejectWithValue({
         message: error.response.data.message,
-      };
+      });
     }
   }
 );
@@ -31,14 +30,14 @@ export const getInfoUser = createAsyncThunk(
   async (arg, thunkAPI) => {
     try {
       const res = await authAPI.getInfoUser(arg);
-      console.log(res);
       return res.data.data;
     } catch (error) {
-      // console.log(error);
-      return {
-        status: error.response.status,
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
+      return thunkAPI.rejectWithValue({
         message: error.response.data.message,
-      };
+      });
     }
   }
 );
@@ -48,10 +47,14 @@ export const getFiendList = createAsyncThunk(
   async (arg, thunkAPI) => {
     try {
       const res = await authAPI.getFiendList();
-      console.log(res.data);
       return res.data.data;
     } catch (error) {
-      console.log(error);
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
+      return thunkAPI.rejectWithValue({
+        message: error.response.data.message,
+      });
     }
   }
 );
@@ -62,8 +65,9 @@ const authSlice = createSlice({
     renderList: [{ list: LoginData }],
     isLogin: !!localStorage.getItem("token"),
     isLoading: false,
-    status: null,
-    messageResult: "",
+    isSuccess: false,
+    isError: false,
+    msg: "",
     friendList: [],
   },
   reducers: {
@@ -86,8 +90,8 @@ const authSlice = createSlice({
       })
       .addCase(handleAuth.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.status = action.payload.status;
-        state.messageResult = action.payload.message;
+        state.isSuccess = true;
+        state.msg = action.payload?.message;
         if (action.payload && action.payload.type === LOGIN) {
           state.isLogin = true;
           localStorage.setItem(
@@ -96,12 +100,14 @@ const authSlice = createSlice({
           );
         }
       })
-      .addCase(getInfoUser.pending, (state) => {
-        state.isLoading = true;
+      .addCase(handleAuth.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.msg = action.payload?.message;
       })
+
       .addCase(getInfoUser.fulfilled, (state, action) => {
         state.info = action.payload;
-        state.isLoading = false;
       })
       .addCase(getFiendList.fulfilled, (state, action) => {
         state.friendList = action.payload;

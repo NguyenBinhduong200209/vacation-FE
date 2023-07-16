@@ -18,15 +18,11 @@ const SelectFriend = ({ open, setOpen, memberList, setMemberList }) => {
   const isFirstReq = useRef(true);
   const resultRef = useRef();
   const { friendList } = useSelector((state) => state.auth);
-  const [openSearchResult, setOpenSearchResult] = useState(false);
+  const { result, isLoading, pages } = useSelector((state) => state.search);
   const [inputValue, setInputValue] = useState("");
   const [openResult, setOpenResult] = useState(false);
-  const { result, isLoading, pages } = useSelector((state) => state.search);
   const [currentPage, setCurrentPage] = useState(1);
   const debouncedValue = useDebounce(inputValue, 500);
-  const [selectedUser, setSelectedUser] = useState([]);
-  // console.log(result);
-
   //  call API get friendList and search user
   useEffect(() => {
     if (isFirstReq.current) {
@@ -65,20 +61,14 @@ const SelectFriend = ({ open, setOpen, memberList, setMemberList }) => {
 
   // handle friend selected
   const handleSelectedUser = (friend) => {
-    setSelectedUser((prev) => [...prev, friend]);
+    setMemberList((prev) => [...prev, friend]);
   };
 
   const handleClear = (id) => {
-    setSelectedUser((prev) => prev.filter((item) => item._id !== id));
+    setMemberList((prev) => prev.filter((item) => item._id !== id));
   };
 
   const handleSubmit = () => {
-    const newList = selectedUser.filter((item) => {
-      if (memberList.some((member) => member._id === item._id)) return;
-      else return item;
-    });
-
-    setMemberList((prev) => prev.concat(newList));
     setOpen(false);
   };
 
@@ -88,7 +78,7 @@ const SelectFriend = ({ open, setOpen, memberList, setMemberList }) => {
         <div className={cx("select-result")}>
           <span>Member:</span>
           <div className={cx("result-list")}>
-            {selectedUser.map((friend) => {
+            {memberList.map((friend) => {
               return (
                 <span key={friend._id}>
                   {friend.username}
@@ -122,7 +112,7 @@ const SelectFriend = ({ open, setOpen, memberList, setMemberList }) => {
                 <div className={cx("result-empty")}>Not Found</div>
               ) : (
                 result.map((item) => {
-                  if (selectedUser.some((friend) => friend._id === item._id)) {
+                  if (memberList.some((friend) => friend._id === item._id)) {
                     return;
                   }
                   return (

@@ -7,12 +7,12 @@ import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
 const cx = classNames.bind(styles);
 ReactModal.setAppElement("#root");
-const Modal = ({ children, open, setOpen, title }) => {
+const Modal = ({ children, open, setOpen, title, className }) => {
   return (
     <ReactModal
       isOpen={open}
       onRequestClose={() => setOpen(false)}
-      className={cx("modal")}
+      className={cx("modal", className)}
       overlayClassName={cx("overlay")}
     >
       <h2 className={cx("title")}>{title}</h2>

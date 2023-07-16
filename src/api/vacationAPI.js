@@ -31,6 +31,12 @@ const vacationAPI = {
   createPost: (data) => {
     return axiosClient.post(URL.POST_URL, data);
   },
+
+  updatePost: (data) => {
+    const url = `${URL.POST_URL}/${data.id}`;
+    return axiosClient.put(url)
+  },
+
   deletePost: (id) => {
     const url = `${URL.POST_URL}/${id}`;
     return axiosClient.delete(url);

@@ -8,20 +8,22 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { NavLink, Link } from "react-router-dom";
 import images from "~/images";
 import Image from "~/components/Image/Image";
+import { useDebounce } from "~/helpers/customHook";
 const cx = classNames.bind(styles);
 
 const Search = () => {
   const [value, setValue] = useState("");
+  const debouncedValue = useDebounce(value, 500);
   const [hideSuggestions, setHideSuggestions] = useState(true);
   const dispatch = useDispatch();
   const { result: suggestions, page, pages } = useSelector((state) => state.search);
 
   useEffect(() => {
-    dispatch(searchOneModel({ model: "user", value: value, page: 1 }));
-  }, [dispatch, value]);
+    dispatch(searchOneModel({ model: "user", value: debouncedValue, page: 1 }));
+  }, [dispatch, debouncedValue]);
 
   const loadMoreData = () => {
-    dispatch(searchOneModel({ model: "user", value: value, page: page + 1 }));
+    dispatch(searchOneModel({ model: "user", value: debouncedValue, page: page + 1 }));
   };
 
   return (

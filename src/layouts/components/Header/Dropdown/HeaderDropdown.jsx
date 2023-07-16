@@ -6,6 +6,7 @@ import { CaretDownOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Avatar } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 
@@ -13,6 +14,7 @@ const HeaderDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { info } = useSelector((state) => state.auth);
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);

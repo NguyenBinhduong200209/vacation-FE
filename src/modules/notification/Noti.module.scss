@@ -45,6 +45,11 @@
   border-radius: 10px;
 }
 
+.noti-table {
+  overflow-y: auto;
+  height: 90%;
+}
+
 .noti-list {
   position: relative;
   z-index: 0;

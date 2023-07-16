@@ -6,6 +6,7 @@ import { CaretDownOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Avatar } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 
@@ -28,7 +29,9 @@ const HeaderDropdown = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
+
     window.location.reload();
+
   };
 
   useEffect(() => {

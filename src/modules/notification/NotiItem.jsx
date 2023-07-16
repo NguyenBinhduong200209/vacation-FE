@@ -24,7 +24,7 @@ const NotiItem = ({ item }) => {
     else {
       const result = await vacationAPI.getOnePost(modelInfo._id);
       const { vacationId } = result.data.data;
-      navigate(`/vacation/post?vacationID=${vacationId}`);
+      navigate(`/vacation?vacationID=${vacationId}`);
     }
   };
 

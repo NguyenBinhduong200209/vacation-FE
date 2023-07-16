@@ -52,6 +52,8 @@ const notiSlice = createSlice({
         if (action.payload) {
           state.list = action.payload?.data;
           state.totalUnseen = action.payload?.meta?.totalUnseen;
+          state.page = action.payload?.meta?.page;
+          state.pages = action.payload?.meta?.pages;
           state.isLoading = false;
         }
       })

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useCallback } from "react";
 import NotiItem from "./NotiItem";
-import { Row, Col, Button, Typography, List } from "antd";
+import { Row, Col, Button, Typography, List, Skeleton } from "antd";
 import { ReadOutlined } from "@ant-design/icons";
 import classNames from "classnames/bind";
 import { useSelector } from "react-redux";
@@ -9,11 +9,12 @@ import { useDispatch } from "react-redux";
 import { getList } from "~/store/slices/notiSlice";
 import { updateAll, changeVisible } from "~/store/slices/notiSlice";
 import { query, where, orderBy, onSnapshot, collection } from "firebase/firestore";
+import InfiniteScroll from "react-infinite-scroll-component";
 import firestore from "~/utils/firestore";
 const cx = classNames.bind(styles);
 
 const NotiList = () => {
-  const { list, isVisible } = useSelector((state) => state.noti);
+  const { list, isVisible, page, pages } = useSelector((state) => state.noti);
   const userId = useSelector((state) => state.auth?.info?.id);
   const dispatch = useDispatch();
   const notiRef = useRef(null);
@@ -50,6 +51,10 @@ const NotiList = () => {
     dispatch(updateAll());
   };
 
+  const loadMoreData = () => {
+    dispatch(getList({ page: page + 1 }));
+  };
+
   return (
     <div ref={notiRef} className={cx("notification")} id={cx(isVisible ? "show" : "hide")}>
       <Row className={cx("header")}>
@@ -68,12 +73,31 @@ const NotiList = () => {
         </Col>
       </Row>
 
-      <List
-        className={cx("noti-list")}
-        itemLayout="horizontal"
-        dataSource={list}
-        renderItem={(item, index) => <NotiItem key={item.id} item={item} />}
-      />
+      <div id="noti-table" className={cx("noti-table")}>
+        <InfiniteScroll
+          scrollThreshold="50%"
+          dataLength={list.length}
+          next={loadMoreData}
+          hasMore={page < pages}
+          loader={
+            <Skeleton
+              avatar
+              paragraph={{
+                rows: 1,
+              }}
+              active
+            />
+          }
+          scrollableTarget="noti-table"
+        >
+          <List
+            className={cx("noti-list")}
+            itemLayout="horizontal"
+            dataSource={list}
+            renderItem={(item, index) => <NotiItem key={item.id} item={item} />}
+          />
+        </InfiniteScroll>
+      </div>
     </div>
   );
 };

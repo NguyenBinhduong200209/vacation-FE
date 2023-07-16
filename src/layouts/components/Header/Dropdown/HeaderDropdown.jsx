@@ -55,7 +55,6 @@ const HeaderDropdown = () => {
         </div>
         <CaretDownOutlined className={cx("dropdown-icon")} />
       </div>
-
       {isOpen && (
         <div className={cx("dropdown-menu")}>
           {/* Dropdown menu content goes here */}

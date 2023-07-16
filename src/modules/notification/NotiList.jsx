@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useCallback } from "react";
 import NotiItem from "./NotiItem";
-import { Row, Col, Button, Typography } from "antd";
+import { Row, Col, Button, Typography, List } from "antd";
 import { ReadOutlined } from "@ant-design/icons";
 import classNames from "classnames/bind";
 import { useSelector } from "react-redux";
@@ -68,11 +68,12 @@ const NotiList = () => {
         </Col>
       </Row>
 
-      <div className={cx("noti-list")}>
-        {list.map((item) => {
-          return <NotiItem key={item.id} item={item} />;
-        })}
-      </div>
+      <List
+        className={cx("noti-list")}
+        itemLayout="horizontal"
+        dataSource={list}
+        renderItem={(item, index) => <NotiItem key={item.id} item={item} />}
+      />
     </div>
   );
 };

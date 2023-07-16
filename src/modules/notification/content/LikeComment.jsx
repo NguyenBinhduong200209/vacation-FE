@@ -5,19 +5,13 @@ import classNames from "classnames/bind";
 const cx = classNames.bind(styles);
 
 const LikeComment = ({ item }) => {
-  const { modelInfo, action, __v, userInfo } = item;
-  const isFirstVersion = __v === 0;
+  const { modelInfo, action, isFirst, userInfo } = item;
 
   return (
     <Typography.Text className={cx("content")}>
       <span className={cx("bold")}>{userInfo?.username} </span>
       <span>
-        {(isFirstVersion ? "" : "and others ").concat(
-          action,
-          isFirstVersion ? "s" : "",
-          " your ",
-          modelInfo?.type
-        )}
+        {(isFirst ? "" : "and others ").concat(action, isFirst ? "s" : "", " your ", modelInfo?.type)}
       </span>
       <span className={cx("italic")}> "{modelInfo?.content}"</span>
     </Typography.Text>

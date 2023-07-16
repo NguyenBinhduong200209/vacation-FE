@@ -1,10 +1,10 @@
 import notiAPI from "~/api/notiAPI";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export const getList = createAsyncThunk("notification/getList", async (arg, thunkAPI) => {
+export const getList = createAsyncThunk("notification/getList", async ({ page }, thunkAPI) => {
   try {
-    const res = await notiAPI.getList();
-    return res.data.data;
+    const res = await notiAPI.getList(page);
+    return res.data;
   } catch (error) {
     console.log("error:", error);
   }
@@ -19,17 +19,28 @@ export const updateOne = createAsyncThunk("notification/updateOne", async (id, t
   }
 });
 
+export const updateAll = createAsyncThunk("notification/updateAll", async (id, thunkAPI) => {
+  try {
+    const res = await notiAPI.updateStatusAll();
+    return res.data.data;
+  } catch (error) {
+    console.log("error:", error);
+  }
+});
+
 const notiSlice = createSlice({
   name: "notification",
   initialState: {
     isVisible: false,
-    quantity: 0,
+    totalUnseen: 0,
     list: [],
     isLoading: true,
+    page: 1,
+    pages: 1,
   },
   reducers: {
-    changeVisible: (state) => {
-      state.isVisible = !state.isVisible;
+    changeVisible: (state, action) => {
+      state.isVisible = action.payload === undefined ? !state.isVisible : action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -39,20 +50,24 @@ const notiSlice = createSlice({
       })
       .addCase(getList.fulfilled, (state, action) => {
         if (action.payload) {
-          state.list = action.payload;
-          state.quantity = action.payload.filter((item) => item.isSeen === false).length;
+          state.list = action.payload?.data;
+          state.totalUnseen = action.payload?.meta?.totalUnseen;
           state.isLoading = false;
         }
       })
-      .addCase(getList.rejected, (state) => {
-        state.isLoading = false;
-        state.list = [];
-        state.quantity = 0;
-      })
       .addCase(updateOne.pending, (state) => {
         state.isLoading = true;
+        state.isVisible = false;
       })
       .addCase(updateOne.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(updateAll.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateAll.fulfilled, (state, action) => {
+        state.list = state.list.map((item) => Object.assign(item, { isSeen: true }));
+        state.totalUnseen = 0;
         state.isLoading = false;
       });
   },

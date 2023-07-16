@@ -13,21 +13,21 @@
 
 #hide {
   opacity: 0;
-  transform: translateX(110%);
+  transform: translateX(2%);
 }
 
 .notification {
   position: fixed;
   top: 10vh;
   height: 80vh;
-  right: 10px;
-  width: 25vw;
+  right: 3vw;
+  width: 23vw;
   min-width: 360px;
-  border-radius: 7px;
-  padding-left: 5px;
+  border-radius: 10px;
+  padding: 0 5px;
   z-index: 11;
-  background-color: #1e272e;
-  transition: all linear 400ms;
+  background-color: #282828;
+  transition: all ease-in-out 500ms;
 }
 
 .notification * {
@@ -60,12 +60,13 @@
   padding: 7px;
   margin: 10px 0;
   border-radius: 10px;
+  min-height: 4rem;
   transition: 300ms all linear;
 }
 
 .noti-item:hover {
   background-color: rgba(47, 53, 66, 1);
-  transform: scale(1.015);
+  transform: scale(1.01);
 }
 
 .content {

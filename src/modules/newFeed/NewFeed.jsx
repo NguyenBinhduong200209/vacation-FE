@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames/bind";
 import styles from "./NewFeed.module.scss";
 import GlowingButton from "./glowing/GlowingButton";
+import { Avatar } from "antd";
 
 import {
   HeartFilled,
@@ -127,7 +128,12 @@ const NewFeed = () => {
       </div>
       <div className={cx("feed")}>
         <div className={cx("create")}>
-          <Image path={info.avatar?.path} className={cx("user-ava")} alt="" />
+          <Avatar
+            size={50}
+            src={info.avatar?.path}
+            className={cx("user-ava")}
+            alt=""
+          />
           <div className={cx("create-posts")}>
             <button className={cx("create-line")}>
               Every step is a milestone ...{" "}

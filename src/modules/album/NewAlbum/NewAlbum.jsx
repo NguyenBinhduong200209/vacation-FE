@@ -6,28 +6,30 @@ import { Resizable, ResizableBox } from "react-resizable";
 import styles from "./NewAlbum.module.scss";
 import classNames from "classnames/bind";
 import { useState } from "react";
-import axiosClient from "axios";
-import "./css.css";
+import axiosClient from "~/api/axiosClient";
 const cx = classNames.bind(styles);
 
 const NewAlbum = () => {
   const [img, setImg] = useState([]);
+
+  const [searchParams] = useSearchParams();
+  const dataId = Object.fromEntries([...searchParams]);
+
   useEffect(() => {
-    const fetchImg = async () => {
+    const fetchData = async () => {
       try {
-        const fetchUser = await axiosClient.get(
-          `https://vacation-backend.onrender.com/albumpage/vacation/6486bcc25782c2081f86fe9d/images`
-        );
-        setImg();
+        const fetchImg = await axiosClient.get(`vacation/${dataId.id}/images`);
+        setImg(fetchImg.data.data);
+        console.log(fetchImg);
       } catch (error) {
         console.log(error);
       }
     };
 
-    fetchImg();
+    fetchData();
   }, []);
-  console.log(img);
 
+  // console.log(fetchImg, img);
   const [searchParam] = useSearchParams();
 
   const title = searchParam.get("title");
@@ -47,7 +49,7 @@ const NewAlbum = () => {
   }, []);
 
   const handleDrag = async (event, data) => {
-    console.log(event, data);
+    // console.log(event, data);
     const { lastX, lastY } = data;
 
     if (event.target.parentElement) {
@@ -74,7 +76,7 @@ const NewAlbum = () => {
     <div className={cx("wrapper")}>
       <div className={cx("mother")} ref={ref}>
         <Draggable
-          handle=".handle"
+          handle={`.${cx("handle")}`}
           defaultPosition={{ x: position.x, y: position.y }}
           onDrag={handleDrag}
           bounds="parent"
@@ -93,7 +95,7 @@ const NewAlbum = () => {
               src="https://img.freepik.com/free-photo/wide-angle-shot-single-tree-growing-clouded-sky-during-sunset-surrounded-by-grass_181624-22807.jpg"
               alt="???"
             /> */}
-            <div className="handle"></div>
+            <div className={cx("handle")}></div>
           </ResizableBox>
         </Draggable>
       </div>
@@ -101,7 +103,7 @@ const NewAlbum = () => {
       <div>
         <ul>
           {img.map((img) => (
-            <li key={img._id}># {}</li>
+            <img key={img._id} src={img?.path} />
           ))}
         </ul>
       </div>

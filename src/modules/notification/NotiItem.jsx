@@ -8,28 +8,33 @@ import LikeComment from "./content/LikeComment";
 import AddFriend from "./content/AddFriend";
 import { updateOne } from "~/store/slices/notiSlice";
 import { useDispatch } from "react-redux";
+import vacationAPI from "~/api/vacationAPI";
+import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(styles);
 
 const NotiItem = ({ item }) => {
-  const { _id, modelInfo, isSeen, lastUpdateAt, userInfo } = item;
+  const { id, modelInfo, isSeen, lastUpdateAt, userInfo } = item;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSeenStatus = () => {
-    dispatch(updateOne(_id));
+  const handleSeenStatus = async () => {
+    dispatch(updateOne(id));
+
+    if (modelInfo.type === "friends") navigate(`/profile`);
+    else {
+      const result = await vacationAPI.getOnePost(modelInfo._id);
+      const { vacationId } = result.data.data;
+      navigate(`/vacation/post?vacationID=${vacationId}`);
+    }
   };
 
   return (
     <Row className={cx("noti-item")} onClick={handleSeenStatus}>
-      <Col span={2} style={{ marginRight: "2px" }}>
-        <Avatar
-          className={cx("user-avatar")}
-          src={userInfo?.avatar?.path}
-          icon={<UserOutlined />}
-          size="middle"
-        ></Avatar>
+      <Col span={1} offset={1} style={{ margin: "0px 3px" }}>
+        <Avatar src={userInfo?.avatar?.path} icon={<UserOutlined />} size="middle"></Avatar>
       </Col>
 
-      <Col span={18}>
+      <Col span={19} offset={1}>
         {modelInfo.type === "friends" ? <AddFriend item={item} /> : <LikeComment item={item} />}
         <Typography.Text className={cx("datetime")}>{moment(lastUpdateAt).fromNow()}</Typography.Text>
       </Col>

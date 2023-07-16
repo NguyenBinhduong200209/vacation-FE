@@ -27,22 +27,3 @@ export function useClickOutside(ref, handler) {
     };
   }, [ref, handler]);
 }
-
-// export function infiniteScroll(currentPage, totalPage, setCurrentPage) {
-//   useEffect(() => {
-//     const handleScroll = () => {
-//       if (
-//         window.innerHeight + document.documentElement.scrollTop + 1 >=
-//         document.documentElement.scrollHeight
-//       ) {
-//         if (currentPage < totalPage) {
-//           setCurrentPage((prev) => prev + 1);
-//         }
-//       }
-//     };
-//     window.addEventListener("scroll", handleScroll);
-//     return () => {
-//       window.removeEventListener("scroll", handleScroll);
-//     };
-//   }, [currentPage]);
-// }

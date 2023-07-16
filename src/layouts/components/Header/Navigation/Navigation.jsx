@@ -8,7 +8,7 @@ import classNames from "classnames/bind";
 const cx = classNames.bind(styles);
 
 const Navigation = () => {
-  const { isVisible, quantity } = useSelector((state) => state.noti);
+  const { isVisible, totalUnseen } = useSelector((state) => state.noti);
 
   return (
     <div className={cx("nav-tools")}>
@@ -40,7 +40,7 @@ const Navigation = () => {
       </NavLink>
 
       <NavLink style={{ cursor: "pointer", padding: "0" }} className={isVisible ? cx("active") : ""}>
-        <Badge count={quantity} overflowCount={9} color="#b18735">
+        <Badge count={totalUnseen} overflowCount={9} color="#b18735">
           <BellOutlined />
         </Badge>
       </NavLink>

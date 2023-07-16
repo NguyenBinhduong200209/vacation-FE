@@ -32,9 +32,11 @@ const notiSlice = createSlice({
   name: "notification",
   initialState: {
     isVisible: false,
-    quantity: 0,
+    totalUnseen: 0,
     list: [],
     isLoading: true,
+    page: 1,
+    pages: 1,
   },
   reducers: {
     changeVisible: (state, action) => {
@@ -49,7 +51,7 @@ const notiSlice = createSlice({
       .addCase(getList.fulfilled, (state, action) => {
         if (action.payload) {
           state.list = action.payload?.data;
-          state.quantity = action.payload?.meta?.totalUnseen;
+          state.totalUnseen = action.payload?.meta?.totalUnseen;
           state.isLoading = false;
         }
       })
@@ -64,7 +66,7 @@ const notiSlice = createSlice({
       })
       .addCase(updateAll.fulfilled, (state, action) => {
         state.list = state.list.map((item) => Object.assign(item, { isSeen: true }));
-        state.quantity = 0;
+        state.totalUnseen = 0;
         state.isLoading = false;
       });
   },

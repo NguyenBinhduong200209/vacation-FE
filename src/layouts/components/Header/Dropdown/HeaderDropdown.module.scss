@@ -7,6 +7,8 @@
   align-items: center;
   cursor: pointer;
   padding: 1rem;
+  margin-right: 0;
+  margin-left: auto;
 }
 
 .user-fullname {
@@ -27,7 +29,7 @@
 /* HeaderDropdown.module.scss */
 
 .dropdown-container {
-  margin-right: 4rem;
+  width: 25%;
   position: relative;
 }
 

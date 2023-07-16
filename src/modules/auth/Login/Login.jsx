@@ -17,9 +17,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // State save the value of Login/forgot and reset password
-  const { renderList, isLogin, status, message } = useSelector(
-    (state) => state.auth
-  );
+  const { renderList, isLogin } = useSelector((state) => state.auth);
   // Get the last item of "renderList"
   const current = renderList[renderList.length - 1].list;
 
@@ -28,7 +26,7 @@ const Login = () => {
 
   // When component mounts, user logged in before => direct to new feed
   useEffect(() => {
-    if (isLogin && !status) {
+    if (isLogin) {
       navigate("/");
     }
   }, [isLogin]);

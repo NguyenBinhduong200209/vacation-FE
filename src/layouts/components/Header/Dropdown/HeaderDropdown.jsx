@@ -26,6 +26,11 @@ const HeaderDropdown = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+
+    setUser({});
+    navigate("/login");
+    window.location.reload();
+
   };
 
   useEffect(() => {

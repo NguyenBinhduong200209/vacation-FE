@@ -1,3 +1,4 @@
+import statusAPI from "~/api/statusList";
 import vacationAPI from "~/api/vacationAPI";
 
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
@@ -6,10 +7,14 @@ export const getListVacation = createAsyncThunk(
   async (arg, thunkAPI) => {
     try {
       const res = await vacationAPI.getListVacation(arg);
-      // console.log(res);
       return res.data;
     } catch (error) {
-      console.log("error:", error);
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
+      return thunkAPI.rejectWithValue({
+        message: error.response.data.message,
+      });
     }
   }
 );
@@ -19,10 +24,14 @@ export const getDetailVacation = createAsyncThunk(
   async (arg, thunkAPI) => {
     try {
       const res = await vacationAPI.getDetailVacation(arg);
-      // console.log(res);
       return res.data.data;
     } catch (error) {
-      console.log("error:", error);
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
+      return thunkAPI.rejectWithValue({
+        message: error.response.data.message,
+      });
     }
   }
 );
@@ -32,14 +41,33 @@ export const getManyPosts = createAsyncThunk(
   async (arg, thunkAPI) => {
     try {
       const res = await vacationAPI.getManyPosts(arg);
-      console.log(res);
       return res.data;
     } catch (error) {
-      console.log("error:", error);
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
+      return thunkAPI.rejectWithValue({
+        message: error.response.data.message,
+      });
     }
   }
 );
-
+export const getMemberList = createAsyncThunk(
+  "vacation/getMemberList",
+  async (arg, thunkAPI) => {
+    try {
+      const res = await statusAPI.statusList(arg);
+      return res.data;
+    } catch (error) {
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
+      return thunkAPI.rejectWithValue({
+        message: error.response.data.message,
+      });
+    }
+  }
+);
 const vacationSlice = createSlice({
   name: "vacation",
   initialState: {
@@ -53,6 +81,7 @@ const vacationSlice = createSlice({
       meta: {},
     },
     activeTimeline: null,
+    memberList: [],
     isLoading: false,
   },
   reducers: {
@@ -99,6 +128,9 @@ const vacationSlice = createSlice({
         }
 
         state.isLoading = false;
+      })
+      .addCase(getMemberList.fulfilled, (state, action) => {
+        state.memberList = action.payload?.data;
       });
   },
 });

@@ -265,6 +265,10 @@ ul {
 .user-info-header {
   width: 100%;
   display: flex;
+
+  img {
+    object-position: 100% 0;
+  }
 }
 
 .user-info-header > * {

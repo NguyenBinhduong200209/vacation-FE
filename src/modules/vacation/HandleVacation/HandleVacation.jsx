@@ -1,77 +1,135 @@
-import styles from "./CreateVacation.module.scss";
-import classNames from "classnames/bind";
 import { useSelector } from "react-redux";
-import { useMemo, useState } from "react";
-import TextArea from "antd/es/input/TextArea";
+import { useEffect, useMemo, useState } from "react";
+import styles from "./HandleVacation.module.scss";
+import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCaretDown,
-  faLocationDot,
   faUserPlus,
   faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
+import TextArea from "antd/es/input/TextArea";
+import dayjs from "dayjs";
 import Input from "antd/es/input/Input";
 import { DatePicker } from "antd";
+
+import vacationAPI from "~/api/vacationAPI";
 import Image from "~/components/Image/Image";
 import Modal from "~/components/Modal/Modal";
-
 import SelectFriend from "~/modules/components/SelectFriend/SelectFriend";
-import moment from "moment";
-import vacationAPI from "~/api/vacationAPI";
+
 const { RangePicker } = DatePicker;
-
 const cx = classNames.bind(styles);
-const CreateVacation = ({ showModal, setOpen }) => {
+const HandleVacation = ({
+  showModal,
+  setOpen,
+  type,
+  initVacationDetail,
+  vacationId,
+}) => {
+  // Get the current user information from the state.
   const { info } = useSelector((state) => state.auth);
-  // open friend modal
-  const [openFriend, setOpenFriend] = useState(false);
+  const [vacationDetail, setVacationDetail] = useState(initVacationDetail);
+  const { title, des, dates, status } = vacationDetail;
   const [memberList, setMemberList] = useState([]);
-  // open status dropdown
+
+  // State for the open friend modal.
+  const [openFriend, setOpenFriend] = useState(false);
   const [openStatus, setOpenStatus] = useState(false);
-  const [status, setStatus] = useState("Public");
-  // state for date
-  const [dates, setDates] = useState(null);
 
-  const [title, setTitle] = useState("");
-  const [des, setDes] = useState("");
+  useEffect(() => {
+    setVacationDetail(initVacationDetail);
+    setMemberList(initVacationDetail.memberList);
+  }, [initVacationDetail]);
 
+  // Function to handle changes to the title.
   const onChange = (e, type) => {
-    if (type === "title") setTitle(e.target.value);
-    else setDes(e.target.value);
-  };
-  const handleCalendar = (values) => {
-    setDates(
-      values?.map((item) => {
-        return item?.format("YYYY-MM-DD");
-      })
-    );
+    if (type === "title")
+      setVacationDetail((prev) => {
+        return { ...prev, title: e.target.value };
+      });
+    else
+      setVacationDetail((prev) => {
+        return { ...prev, des: e.target.value };
+      });
   };
 
+  // Function to handle changes to the date range.
+  const handleCalendar = (values) => {
+    const newDate = values?.map((item) => {
+      return item?.format("YYYY-MM-DD");
+    });
+    setVacationDetail((prev) => {
+      return {
+        ...prev,
+        dates: newDate || [],
+      };
+    });
+  };
+
+  // Function to handle changes to the date range.
   const handleStatus = (status) => {
-    setStatus(status);
+    setVacationDetail((prev) => {
+      return { ...prev, status: status };
+    });
     setOpenStatus(false);
   };
 
+  // Function to handle clearing a member from the list.
   const handleClear = (id) => {
     setMemberList((prev) => prev.filter((item) => item._id !== id));
   };
-
-  const handleCreateVacation = async () => {
-    const newList = memberList?.map((item) => item._id);
-    const res = await vacationAPI.createVacation({
+  // Function to create a new vacation.
+  const handleVacation = async () => {
+    // Create the vacation.
+    const newMemberList = memberList?.map((item) => item._id);
+    const params = {
       title: title,
       description: des,
-      memberList: newList,
+      memberList: newMemberList,
       shareStatus: status.toLowerCase(),
       startingTime: dates[0],
       endingTime: dates[1],
-    });
+    };
 
+    // Create the vacation.
+    if (type === "create") await vacationAPI.createVacation(params);
+    // Update the vacation.
+    else await vacationAPI.updateVacation({ id: vacationId, body: params });
     setOpen(false);
   };
+
+  const isDisabledCreate = useMemo(
+    () =>
+      !(
+        title !== "" &&
+        des !== "" &&
+        dates?.length === 2 &&
+        memberList.length > 0
+      ),
+    [title, des, dates, memberList]
+  );
+
+  const isDisabledUpdate = useMemo(() => {
+    const newVacationDetail = {
+      title: title,
+      des: des,
+      status: status,
+      dates: dates,
+      memberList: memberList,
+    };
+
+    return (
+      JSON.stringify(newVacationDetail) === JSON.stringify(initVacationDetail)
+    );
+  }, [title, des, dates, status, memberList]);
+
   return (
-    <Modal open={showModal} setOpen={setOpen} title="New Vacation">
+    <Modal
+      open={showModal}
+      setOpen={setOpen}
+      title={type === "create" ? "New Vacation" : "Update Vacation"}
+    >
       <div className={cx("wrapper")}>
         <div className={cx("modal-container")}>
           <div className={cx("user-info")}>
@@ -110,6 +168,7 @@ const CreateVacation = ({ showModal, setOpen }) => {
                 border: "none",
                 height: "50px",
               }}
+              defaultValue={[dayjs(dates[0]), dayjs(dates[1])]}
               onChange={(values) => handleCalendar(values)}
             />
           </div>
@@ -155,7 +214,7 @@ const CreateVacation = ({ showModal, setOpen }) => {
             <div className={cx("result")}>
               <div className={cx("result-list")}>
                 {memberList?.length > 0 && `with:`}
-                {memberList.map((member) => {
+                {memberList?.map((member) => {
                   return (
                     <span key={member._id}>
                       {member.username}
@@ -172,16 +231,10 @@ const CreateVacation = ({ showModal, setOpen }) => {
           </div>
           <button
             className={cx("btn-submit")}
-            disabled={
-              dates === undefined ||
-              dates === null ||
-              title === "" ||
-              des === "" ||
-              memberList.length === 0
-            }
-            onClick={handleCreateVacation}
+            disabled={type === "create" ? isDisabledCreate : isDisabledUpdate}
+            onClick={handleVacation}
           >
-            Create Vacation
+            {type === "create" ? "Create Vacation" : "Update"}
           </button>
         </div>
       </div>
@@ -189,4 +242,4 @@ const CreateVacation = ({ showModal, setOpen }) => {
   );
 };
 
-export default CreateVacation;
+export default HandleVacation;

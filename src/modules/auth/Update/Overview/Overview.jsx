@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames/bind";
 import { handleAuth } from "~/store/slices/authSlice";
 import styles from "./Overview.module.scss";
 import Loading from "~/components/Loading/Loading";
-import Notification from "~/components/Notifications/Notification";
+
+import Notification from "~/components/Notification/Notification";
 import UpLoad from "~/components/UpLoad/UpLoad";
+import Image from "~/components/Image/Image";
 
 const cx = classNames.bind(styles);
 
@@ -15,7 +17,9 @@ const Overview = () => {
   const { avatar, username, firstname, lastname, description } = info;
   const [inputValue, setInputValue] = useState("");
   const [isChanged, setIsChanged] = useState(false);
-
+  const imgRef = useRef();
+  const [img, setImg] = useState("");
+  console.log(info);
   // Set Input Value when component mounted
   useEffect(() => {
     setInputValue(description);
@@ -44,13 +48,20 @@ const Overview = () => {
   const handleFocus = () => {
     setIsChanged(true);
   };
+
+  const handleImgClick = () => {
+    imgRef.current.click();
+    window.location.reload();
+  };
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("userName-container")}>
-        <div className={cx("avatar")}>
-          <UpLoad />
-          {/* <img src="" alt="This is icon" /> */}
+        <div className={cx("avatar")} onClick={handleImgClick}>
+          <UpLoad imgRef={imgRef} setImg={setImg} />
+          <Image path={info.avatar?.path} alt="This is icon" />
         </div>
+
         <div className={cx("userName")}>
           <div className={cx("sub-name")}>{username}</div>
           <div className={cx("name")}>{`${firstname} ${lastname}`}</div>
@@ -75,7 +86,6 @@ const Overview = () => {
           </button>
           <button className={cx("btn-cancel")} onClick={handleClear}>
             <span>Cancel</span>
-            {isLoading && <Loading />}
           </button>
         </div>
       )}

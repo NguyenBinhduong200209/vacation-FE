@@ -7,7 +7,6 @@ const cx = classNames.bind(styles);
 const Image = forwardRef(
   (
     {
-      src,
       alt,
       path,
       className,
@@ -17,7 +16,7 @@ const Image = forwardRef(
     ref
   ) => {
     const [fallback, setFallback] = useState("");
-
+    const emptyImage = images.noImage;
     const handleError = () => {
       setFallback(customFallback);
     };
@@ -26,7 +25,7 @@ const Image = forwardRef(
       <img
         className={cx(className, "image")}
         ref={ref}
-        src={fallback || path}
+        src={fallback ? fallback : path ? path : emptyImage}
         alt={alt}
         {...props}
         onError={handleError}

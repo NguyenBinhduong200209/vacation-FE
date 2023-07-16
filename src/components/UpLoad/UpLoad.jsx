@@ -1,23 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
-import Image from "../Image/Image";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const UpLoad = () => {
-  const { info } = useSelector((state) => state.auth);
-  const inputRef = useRef();
+const UpLoad = ({ imgRef, setImg }) => {
   const [files, setFiles] = useState(null);
-
-  console.log(files);
-
   useEffect(() => {
     const upLoad = async () => {
       const formData = new FormData();
       formData.append("files", files);
-
       const token = localStorage.getItem("token");
       await axios.post(
-        "http://localhost:3100/resource",
+        "https://vacation-backend.onrender.com/resource",
         { field: "avatar", files: formData.get("files") },
         {
           headers: {
@@ -31,25 +23,20 @@ const UpLoad = () => {
     if (files !== null) upLoad();
   }, [files]);
 
-  const handleImgClick = () => {
-    inputRef.current.click();
-  };
   const handleImgChange = (e) => {
     setFiles(e.target.files[0]);
+    setImg(URL.createObjectURL(e.target.files[0]));
   };
 
   return (
-    <div onClick={handleImgClick}>
-      <Image path={info.avatar?.path} alt="" />
-      <input
-        type="file"
-        ref={inputRef}
-        onChange={handleImgChange}
-        style={{ display: "none" }}
-        id="avatar"
-        name="files"
-      />
-    </div>
+    <input
+      type="file"
+      ref={imgRef}
+      onChange={handleImgChange}
+      hidden
+      id="avatar"
+      name="files"
+    />
   );
 };
 

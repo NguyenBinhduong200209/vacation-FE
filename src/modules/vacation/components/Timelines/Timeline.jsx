@@ -8,11 +8,7 @@ import Loading from "~/components/Loading/Loading";
 const cx = classNames.bind(styles);
 
 const Timeline = () => {
-  const dispatch = useDispatch();
-  const { isLoading, posts, activeTimeline } = useSelector(
-    (state) => state.vacation
-  );
-  console.log(posts);
+  const { posts, activeTimeline } = useSelector((state) => state.vacation);
 
   return (
     <>

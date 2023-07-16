@@ -1,12 +1,14 @@
 .nav-user {
   border-radius: 30px;
   background-color: #222222;
-  width: fit-content;
+  width: 33%;
   aspect-ratio: 7.5/1.2;
   display: flex;
   align-items: center;
   cursor: pointer;
   padding: 1rem;
+  margin-right: 0;
+  margin-left: auto;
 }
 
 .user-fullname {
@@ -27,8 +29,9 @@
 /* HeaderDropdown.module.scss */
 
 .dropdown-container {
-  margin-right: 4rem;
+  width: 25%;
   position: relative;
+  right: 1.5%;
 }
 
 .dropdown-menu {
@@ -37,8 +40,8 @@
   margin-top: 1rem;
   position: absolute;
   top: 100%;
-  width: 100%;
-  left: 0;
+  right: 0;
+  width: 33%;
   border-radius: 10px;
   color: white;
   background-color: #222222;
@@ -62,6 +65,10 @@
       &:hover {
         color: #d2ae68;
       }
+    }
+
+    a {
+      color: white;
     }
   }
 }

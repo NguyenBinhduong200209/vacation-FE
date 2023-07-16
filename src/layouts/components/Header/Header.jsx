@@ -7,7 +7,6 @@ import NotiList from "~/modules/notification/NotiList";
 import { getList } from "~/store/slices/notiSlice";
 import Navigation from "./Navigation/Navigation";
 import Search from "./Search/Search";
-import Logo from "./Logo/Logo";
 const cx = classNames.bind(styles);
 
 const Header = ({ children }) => {
@@ -20,13 +19,9 @@ const Header = ({ children }) => {
   return (
     <>
       <div className={cx("wrapper")}>
-        <Logo />
-
-        <div className={cx("nav-left")}>
-          <Search />
-          <Navigation />
-          <HeaderDropdown />
-        </div>
+        <Search />
+        <Navigation />
+        <HeaderDropdown />
       </div>
       <NotiList />
       {children}

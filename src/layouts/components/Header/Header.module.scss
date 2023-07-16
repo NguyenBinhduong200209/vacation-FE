@@ -8,11 +8,11 @@
   color: white;
   justify-content: space-between;
   align-items: center;
-  padding: 0rem 1.5rem 0rem 1.5rem;
+  padding: 0rem 4rem;
   z-index: 99;
 
   a {
-    display: block;
+    // display: block;
     cursor: pointer;
   }
 }
@@ -21,28 +21,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.nav-left {
-  width: 95%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  width: 15%;
 }
 
 .nav-logo-img {
   width: 60%;
-}
-
-.search-input {
-  border-radius: 30px;
-  width: 27rem;
-  height: 3.2rem;
-  font-size: 1.5rem;
-  padding-left: 1rem;
-  background-color: #222222;
-  color: white;
-  font-style: italic;
 }
 
 .nav-tools {
@@ -50,7 +33,6 @@
   width: 35%;
   justify-content: space-evenly;
   align-items: center;
-  padding-right: 5rem;
 
   svg {
     transition: 100ms all linear;
@@ -86,38 +68,67 @@
   margin-right: 4rem;
 }
 
-/* Header.module.scss */
-
-.bar {
-  color: white;
+.nav-search {
   position: relative;
-  /* Add any other styles you need for the bar element */
+  width: 24%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5%;
+
+  .search-input {
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    width: 80%;
+    height: 4.2rem;
+    font-size: 1.5rem;
+    padding: 1rem;
+    background-color: #222222;
+    color: white;
+    font-style: italic;
+  }
 
   .suggestions {
     position: absolute;
     top: 100%;
-    left: 0;
-    width: 100%;
-    background-color: #000000;
+    right: 0;
+    width: 80%;
+    background-color: #222222;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+    max-height: 500px;
+    overflow: hidden auto;
     /* Add any other styles you need for the suggestions element */
 
     ul {
       list-style-type: none;
       padding: 0;
       margin: 0;
+      overflow: hidden;
 
       li {
+        margin-top: 5px;
         padding: 10px;
+        transition: 300ms all linear;
+        border-radius: 7px;
         cursor: pointer;
+        background-color: inherit;
 
         &:hover {
           color: beige;
         }
       }
+
+      li:hover {
+        background-color: rgba(47, 53, 66, 1);
+        transform: scale(1.03);
+      }
     }
   }
 }
+
+/* Header.module.scss */
 
 .active svg {
   fill: #d2ae68;

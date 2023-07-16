@@ -57,6 +57,7 @@ const notiSlice = createSlice({
       })
       .addCase(updateOne.pending, (state) => {
         state.isLoading = true;
+        state.isVisible = false;
       })
       .addCase(updateOne.fulfilled, (state, action) => {
         state.isLoading = false;

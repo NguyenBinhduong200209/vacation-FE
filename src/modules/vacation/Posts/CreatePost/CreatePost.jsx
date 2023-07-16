@@ -11,8 +11,6 @@ import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import vacationAPI from "~/api/vacationAPI";
-import locationAPI from "~/api/locationAPI";
-import { getManyLocations } from "~/store/slices/locationSlice";
 import SelectLocation from "~/modules/components/SelectLocation/SelectLocation";
 
 const cx = classNames.bind(styles);
@@ -21,24 +19,20 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 	const dispatch = useDispatch();
 	const { detail } = useSelector((state) => state.vacation);
 	const [modalIsOpen, setIsOpen] = useState(false);
-  const [img, setImg] = useState()
+  	const [img, setImg] = useState([])
 	const { authorInfo } = detail;
 	const [searchParams] = useSearchParams();
 	let vacationId = searchParams.get("vacationID");
+	let fileList = [];
 
 	const [content, setContent] = useState("");
 	const [files, setFiles] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
-	let [locationId, setLocationID] = useState("");
+	let [locationId, setLocationId] = useState("");
 	const [location, setLocation] = useState({});
 	const uploadResourcesRef = useRef();
 	// const [locations, setLocations] = useState([]);
-	const [selectedLocation, setSelectedLocation] = useState("");
-	const locationsList = useSelector((state) => state.location);
-	console.log(locationsList);
-	const maxItems = 5;
-	console.log(location);
-
+	const [locationTitle, setLocationTitle] = useState("");
 
 
 	function openModal() {
@@ -71,10 +65,13 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 			console.log(e.target.files);
 			setFiles([...files, ...Object.values(e.target.files)]);
 		}
+		e.target.value = null;
 	};
-  const removeImage = (URL) => {
-    setImg((i) => i?.filter((item) => item.URL !== URL));
-  };
+
+	const handleDelete = (deletedFile, index) => {
+		setFiles(files.filter((file, i) => i !== index))
+	}
+
 	return (
 		<Modal
 			isOpen={showModal}
@@ -108,15 +105,18 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 						onChange={(e) => setContent(e.target.value)}
 					/>
 					<div className={cx("img-uploader")}>
-						{files.map((file) => (
-							<div>
+						{files.map((file, index) => (
+							<div className={cx("img-container")}>
 								<img alt="" src={URL.createObjectURL(file)} />
-                <button className={cx("x-button")} onClick={removeImage}>X</button>
+                				<button 
+									className={cx("x-button")}
+									onClick={() => handleDelete(file, index)}
+								>X</button>
 							</div>
 						))}
 					</div>
 					<div className={cx("post-extension")}>
-						<div> Add on: {selectedLocation}</div>
+						<div> Add on: {locationTitle}</div>
 						<div className={cx("extensions")}>
 							<div>
 								<FontAwesomeIcon onClick={openModal} icon={faLocationDot} className={cx("icon")} />
@@ -124,40 +124,9 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 									openLocation={modalIsOpen}
 									setOpenLocation={setIsOpen}
 									setLocation={setLocation}
+									setLocationTitle={setLocationTitle}
+									setLocationId={setLocationId}
 								/>
-								{/* <Modal
-                  isOpen={modalIsOpen}
-                  onRequestClose={closeModal}
-                  className={cx("location-modal")}
-                >
-                  <div className={cx("location-wrapper")}>
-                    <h2 className={cx("title")}>Choose your Location</h2>
-                    <FontAwesomeIcon
-                      icon={faCircleXmark}
-                      className={cx("close-icon")}
-                      onClick={closeModal}
-                    />
-                    <div className={cx("modal-container")}>
-                      <div className={cx("location-methods")}>
-                        <input
-                          className={cx("location-input")}
-                          type="text"
-                          placeholder="Where are you ??"
-                          value={locations}
-                          onChange={(e) => {
-                            setLocations(e.target.value);
-                          }}
-                        />
-                        <FontAwesomeIcon onClick={openModal} icon={faCirclePlus} className={cx("add-icon")} />
-                      </div>
-                      <ul className={cx("location-list")}>
-                        {Array.isArray(displayedLocations) && displayedLocations.map((data) => (
-                          <li key={data._id} onClick={() => handleOnClick(data._id, data.title)}>{data.title}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </Modal> */}
 							</div>
 							<div>
 								<input type="file" ref={uploadResourcesRef} onChange={handleUpload} hidden />

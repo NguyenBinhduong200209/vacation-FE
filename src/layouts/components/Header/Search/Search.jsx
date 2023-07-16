@@ -5,6 +5,9 @@ import { searchOneModel } from "~/store/slices/searchSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { List, Avatar, Skeleton } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { NavLink, Link } from "react-router-dom";
+import images from "~/images";
+import Image from "~/components/Image/Image";
 const cx = classNames.bind(styles);
 
 const Search = () => {
@@ -23,6 +26,10 @@ const Search = () => {
 
   return (
     <div className={cx("nav-search")}>
+      <NavLink className={cx("nav-logo")} to="/">
+        <Image path={images.Vector} className={cx("nav-logo-img")} alt="????" />
+      </NavLink>
+
       <input
         className={cx("search-input")}
         type="text"
@@ -33,52 +40,46 @@ const Search = () => {
           setHideSuggestions(false);
         }}
         onBlur={() => {
-          setTimeout(() => {
-            setHideSuggestions(true);
-          }, 100);
+          setHideSuggestions(true);
         }}
       />
-      <div className={cx("bar")}>
-        <div id="suggestion" className={cx("suggestions")}>
-          {!hideSuggestions && (
-            <InfiniteScroll
-              scrollThreshold="50%"
-              dataLength={suggestions.length}
-              next={loadMoreData}
-              hasMore={page < pages}
-              loader={
-                <Skeleton
-                  avatar
-                  paragraph={{
-                    rows: 1,
-                  }}
-                  active
-                />
-              }
-              scrollableTarget="suggestion"
-            >
-              <List
-                itemLayout="horizontal"
-                dataSource={suggestions}
-                renderItem={(item, index) => (
-                  <List.Item color="white">
+      <div id="suggestion" className={cx("suggestions")}>
+        {!hideSuggestions && (
+          <InfiniteScroll
+            scrollThreshold="50%"
+            dataLength={suggestions.length}
+            next={loadMoreData}
+            hasMore={page < pages}
+            loader={
+              <Skeleton
+                avatar
+                paragraph={{
+                  rows: 1,
+                }}
+                active
+              />
+            }
+            scrollableTarget="suggestion"
+          >
+            <List
+              itemLayout="horizontal"
+              dataSource={suggestions}
+              renderItem={(item, index) => (
+                <Link style={{ color: "white" }} to="/profile">
+                  <List.Item className={cx("item")}>
                     <List.Item.Meta
                       avatar={<Avatar size="large" src={item.avatar} />}
-                      title={
-                        <a style={{ color: "white" }} href="https://ant.design">
-                          {item.username}
-                        </a>
-                      }
+                      title={<span style={{ color: "white" }}>{item.username}</span>}
                       description={
                         <div style={{ color: "white" }}>{`${item.firstname} ${item.lastname}`}</div>
                       }
                     />
                   </List.Item>
-                )}
-              />
-            </InfiniteScroll>
-          )}
-        </div>
+                </Link>
+              )}
+            />
+          </InfiniteScroll>
+        )}
       </div>
     </div>
   );

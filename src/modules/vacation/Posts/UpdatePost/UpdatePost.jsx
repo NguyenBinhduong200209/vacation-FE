@@ -24,11 +24,12 @@ const UpdatePost = ({ showModal, handleCloseModal, postDetail }) => {
 	const [searchParams] = useSearchParams();
 	let vacationId = searchParams.get("vacationID");
 	const { posts, detail } = useSelector((state) => state.vacation);
-	console.log(location.detail);
+
+	console.log(detail);
 
 	const [files, setFiles] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
-	let [locationId, setLocationID] = useState("");
+	const [locationState, setLocationState] = useState(location);
 	const uploadResourcesRef = useRef();
 
 	const [selectedLocation, setSelectedLocation] = useState("");
@@ -47,16 +48,19 @@ const UpdatePost = ({ showModal, handleCloseModal, postDetail }) => {
 			setIsLoading(true);
 			const res = await vacationAPI.updatePost({
 				vacationId: vacationId,
-				locationId: locationId,
+				locationId: location?.detail?.id,
 				content: updateContent,
 				id: _id,
 			});
 			handleCloseModal();
 		} catch (error) {
 			console.log(error);
-			console.log(locationId, vacationId, content);
 		}
 		setIsLoading(false);
+	};
+
+	const handleDelete = (deletedFile, index) => {
+		setFiles(files.filter((file, i) => i !== index));
 	};
 
 	const handleUpdateContent = (e) => {
@@ -70,27 +74,22 @@ const UpdatePost = ({ showModal, handleCloseModal, postDetail }) => {
 		}
 	};
 
-	// const handleOnClick = (locationID, title) => {
-	// 	setLocationID(locationID);
-	// 	setSelectedLocation(title);
-	// 	closeModal();
-	// };
-
 	return (
 		<Modal isOpen={showModal} onRequestClose={handleCloseModal} className={cx("modal")}>
 			<div className={cx("wrapper")}>
-				<h2 className={cx("title")}>Post</h2>
+				<h2 className={cx("title")}>New Post</h2>
 
 				<FontAwesomeIcon
 					icon={faCircleXmark}
 					className={cx("close-icon")}
 					onClick={handleCloseModal}
 				/>
+
 				<div className={cx("modal-container")}>
 					<div className={cx("user-info")}>
 						<div className={cx("info-name")}>
-							<Image path={authorInfo.avatar.path} />
-							<div className={cx("username")}>{authorInfo.username}</div>
+							<Image path={authorInfo && authorInfo.avatar} />
+							<div className={cx("username")}>{authorInfo && authorInfo.username}</div>
 						</div>
 
 						<div className={cx("vacation-info")}>{detail.title}</div>
@@ -101,102 +100,46 @@ const UpdatePost = ({ showModal, handleCloseModal, postDetail }) => {
 							minRows: 6,
 							maxRows: 12,
 						}}
-						value={content}
+						value={updateContent}
+						onChange={handleUpdateContent}
 					/>
-					<div className={cx("img-container")}>
-						{resource.map((item, index) => (
-							<Image path={item.path} alt="" key={index} />
-						))}
-						{resource.map((item, index) => (
-							<Image path={item.path} alt="" key={index} />
-						))}
-					</div>
 					<div className={cx("img-uploader")}>
-						{files.map((file) => (
-							<div>
+						{files.map((file, index) => (
+							<div className={cx("img-container")}>
 								<img alt="" src={URL.createObjectURL(file)} />
+								<button className={cx("x-button")} onClick={() => handleDelete(file, index)}>
+									X
+								</button>
 							</div>
 						))}
 					</div>
 					<div className={cx("post-extension")}>
-						<div> Add on: {selectedLocation}</div>
+						<div> Add on: {location?.detail} </div>
+						{/* console.log(locationTitle); */}
 						<div className={cx("extensions")}>
 							<div>
 								<FontAwesomeIcon onClick={openModal} icon={faLocationDot} className={cx("icon")} />
-
-								<div className={cx("modal-container")}>
-									<div className={cx("user-info")}>
-										<div className={cx("info-name")}>
-											<Image path={authorInfo.avatar.path} />
-											<div className={cx("username")}>{authorInfo.username}</div>
-										</div>
-
-										<div className={cx("vacation-info")}>{detail.title}</div>
-									</div>
-									<TextArea
-										placeholder="What is on your mind..."
-										autoSize={{
-											minRows: 6,
-											maxRows: 12,
-										}}
-										value={updateContent}
-										onChange={handleUpdateContent}
-									/>
-									<div className={cx("img-container")}>
-										{resource.map((item, index) => (
-											<Image path={item.path} alt="" key={index} />
-										))}
-									</div>
-									<div className={cx("img-uploader")}>
-										{files.map((file) => (
-											<div>
-												<img alt="" src={URL.createObjectURL(file)} />
-											</div>
-										))}
-									</div>
-									<div className={cx("post-extension")}>
-										<div> Add on: {location.detail} </div>
-										<div className={cx("extensions")}>
-											<div>
-												<FontAwesomeIcon
-													onClick={openModal}
-													icon={faLocationDot}
-													className={cx("icon")}
-												/>
-												<SelectLocation
-													openLocation={modalIsOpen}
-													setOpenLocation={setIsOpen}
-													setLocation={setLocationID}
-													location={location}
-												/>
-											</div>
-											<div>
-												<input
-													type="file"
-													ref={uploadResourcesRef}
-													onChange={handleUpload}
-													hidden
-												/>
-												<FontAwesomeIcon
-													icon={faImage}
-													className={cx("icon")}
-													onClick={() => {
-														uploadResourcesRef.current.click();
-													}}
-												/>
-											</div>
-										</div>
-									</div>
-									<button onClick={handleClick} disabled={isLoading} className={cx("btn-submit")}>
-										Save
-									</button>
-								</div>
+								<SelectLocation
+									openLocation={modalIsOpen}
+									setOpenLocation={setIsOpen}
+									setLocation={setLocationState}
+								/>
+							</div>
+							<div>
+								<input type="file" ref={uploadResourcesRef} onChange={handleUpload} hidden />
+								<FontAwesomeIcon
+									icon={faImage}
+									className={cx("icon")}
+									onClick={() => {
+										uploadResourcesRef.current.click();
+									}}
+								/>
 							</div>
 						</div>
-						<button onClick={handleClick} disabled={isLoading} className={cx("btn-submit")}>
-							Save
-						</button>
 					</div>
+					<button onClick={handleClick} disabled={isLoading} className={cx("btn-submit")}>
+						Sending Post
+					</button>
 				</div>
 			</div>
 		</Modal>

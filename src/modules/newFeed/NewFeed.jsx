@@ -170,7 +170,6 @@ const NewFeed = () => {
                   Add Vacation
                 </div>
               </button>
-              {/* <CreateVacation setOpen={setOpen} showModal={open} /> */}
               <HandleVacation
                 setOpen={setOpen}
                 showModal={open}

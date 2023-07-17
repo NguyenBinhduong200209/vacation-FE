@@ -121,7 +121,6 @@ const Vacation = ({ children }) => {
     dates: [getDate(startingTime), getDate(endingTime)],
     memberList: memberList,
   };
-  // console.log(preload);
   return (
     <>
       {preload ? (

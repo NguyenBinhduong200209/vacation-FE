@@ -58,6 +58,7 @@ export const publicRoutes = [
   { path: "/profile", component: Profile, layout: DefaultLayout },
   { path: "/newAlbum", component: NewAlbum, layout: DefaultLayout },
 
+
   {
     path: VACATION_ROUTE,
     component: Vacation,

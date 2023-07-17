@@ -95,6 +95,8 @@ const SelectLocation = ({ setOpenLocation, openLocation, setLocation }) => {
     }
   };
 
+  console.log(selectedLocation);
+
   const isEmpty = useMemo(() => {
     if (inputValue !== "") {
       const result = locationList?.every((item) =>
@@ -217,7 +219,7 @@ const SelectLocation = ({ setOpenLocation, openLocation, setLocation }) => {
           disabled={Object.values(selectedLocation).some((item) => item === "")}
           onClick={handleSaveLocation}
         >
-          Save {selectedLocation.city && `:${selectedLocation.city.title}`}
+          Save {selectedLocation.city && `: ${selectedLocation.city.title}`}
           {selectedLocation.district.title &&
             `, ${selectedLocation.district.title}`}
           {selectedLocation.detail.title &&

@@ -42,6 +42,7 @@
   top: 100%;
   right: 0;
   width: 33%;
+  min-width: 150px;
   border-radius: 10px;
   color: white;
   background-color: #222222;
@@ -49,26 +50,30 @@
 
   ul {
     list-style-type: none;
-    padding: 0;
+    padding: 5px;
     margin: 0;
-    width: 80%;
+    width: 100%;
     text-align: center;
 
     li {
       padding: 1rem;
       border-radius: 20px;
       cursor: pointer;
-      background-color: #23262b;
       width: 100%;
       animation: dropdown-animation 0.5s ease-in-out;
 
       &:hover {
-        color: #d2ae68;
+        background-color: #23262b;
       }
     }
 
     a {
       color: white;
+      appearance: none;
+
+      &:hover {
+        color: #d2ae68;
+      }
     }
   }
 }

@@ -117,12 +117,9 @@
 
         &:hover {
           color: beige;
+          background-color: rgba(47, 53, 66, 1);
+          transform: scale(1.03);
         }
-      }
-
-      li:hover {
-        background-color: rgba(47, 53, 66, 1);
-        transform: scale(1.03);
       }
     }
   }

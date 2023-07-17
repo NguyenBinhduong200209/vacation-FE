@@ -16,7 +16,7 @@ const Posts = () => {
   const { info } = useSelector((state) => state.auth);
   const { posts, detail, isLoading } = useSelector((state) => state.vacation);
   const { postList } = posts;
-  console.log(posts);
+
   const handleCloseModal = () => {
     setShowModal(false);
   };

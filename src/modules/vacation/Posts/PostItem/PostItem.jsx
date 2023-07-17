@@ -28,6 +28,7 @@ const PostItem = ({ postDetail }) => {
     createdAt,
     isLiked,
   } = postDetail;
+  console.log(postDetail);
 
   const { info } = useSelector((state) => state.auth);
 

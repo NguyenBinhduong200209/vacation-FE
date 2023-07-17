@@ -4,6 +4,7 @@ import styles from "./Profile.module.scss";
 import { useState, useEffect } from "react";
 import axiosClient from "~/api/axiosClient";
 import { HeartFilled, CommentOutlined, EyeOutlined } from "@ant-design/icons";
+const cx = classNames.bind(styles);
 
 const Profile = () => {
   let formatter = Intl.NumberFormat("en", { notation: "compact" });
@@ -22,22 +23,16 @@ const Profile = () => {
           `https://vacation-backend.onrender.com/vacation?page=${currentPage}&type=userProfile`
         );
 
-        fetchVacation.data &&
-          setVacations((prevPosts) =>
-            prevPosts.concat(fetchVacation?.data?.data)
-          );
+        fetchVacation.data && setVacations((prevPosts) => prevPosts.concat(fetchVacation?.data?.data));
 
-        const fetchUser = await axiosClient.get(
-          `https://vacation-backend.onrender.com/auth/info`
-        );
+        const fetchUser = await axiosClient.get(`https://vacation-backend.onrender.com/auth/info`);
         setUser(fetchUser.data.data);
 
         const fetchAlbum = await axiosClient.get(
           `https://vacation-backend.onrender.com/album?page=${currentPage}`
         );
 
-        fetchAlbum.data &&
-          setAlbum((prevPosts) => prevPosts.concat(fetchAlbum?.data?.data));
+        fetchAlbum.data && setAlbum((prevPosts) => prevPosts.concat(fetchAlbum?.data?.data));
       } catch (error) {
         console.log(error);
       }
@@ -46,18 +41,13 @@ const Profile = () => {
     fetchData();
   }, [currentPage]);
 
-  console.log(currentPage);
-
-  const cx = classNames.bind(styles);
-
   const loadMorePosts = () => {
     setCurrentPage((prevPage) => prevPage + 1);
   };
 
   useEffect(() => {
     const handleScroll = () => {
-      const { scrollTop, clientHeight, scrollHeight } =
-        document.documentElement;
+      const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
       const isAtBottom = scrollTop + clientHeight >= scrollHeight;
 
       if (isAtBottom) {
@@ -89,8 +79,6 @@ const Profile = () => {
     setCurrentPage(1);
   };
 
-  console.log(album);
-
   return (
     <div>
       <div className={cx("user-info-background")}>
@@ -103,11 +91,7 @@ const Profile = () => {
           <div className={cx("user-info")}>
             <div className={cx("user-info-head")}>
               <div className={cx("user-info-header")}>
-                <img
-                  src={user?.avatar?.path}
-                  className={cx("user-info-bgava")}
-                  alt=""
-                />
+                <img src={user?.avatar?.path} className={cx("user-info-bgava")} alt="" />
                 <div className={cx("user-info-fullname")}>
                   <li>{user?.lastname}</li>
                   <li>{user?.firstname}</li>
@@ -116,9 +100,7 @@ const Profile = () => {
                 <li className={cx("user-info-des")}>{user?.description}</li>
                 <div className={cx("user-info-grid")}>
                   <div className={cx("grid-item", "one")}>
-                    <div className={cx("grid-item-value")}>
-                      {user?.totalFriends}
-                    </div>
+                    <div className={cx("grid-item-value")}>{user?.totalFriends}</div>
                     <div className={cx("grid-item-label")}>
                       {user?.totalFriends === 0
                         ? "No friends"
@@ -128,9 +110,7 @@ const Profile = () => {
                     </div>
                   </div>
                   <div className={cx("grid-item", "two")}>
-                    <div className={cx("grid-item-value")}>
-                      {user?.totalVacations}
-                    </div>
+                    <div className={cx("grid-item-value")}>{user?.totalVacations}</div>
                     <div className={cx("grid-item-label")}>
                       {user?.totalVacations === 0
                         ? "No vacations"
@@ -140,27 +120,15 @@ const Profile = () => {
                     </div>
                   </div>
                   <div className={cx("grid-item", "three")}>
-                    <div className={cx("grid-item-value")}>
-                      {user?.totalPosts}
-                    </div>
+                    <div className={cx("grid-item-value")}>{user?.totalPosts}</div>
                     <div className={cx("grid-item-label")}>
-                      {user?.totalPosts === 0
-                        ? "No posts"
-                        : user?.totalPosts === 1
-                        ? "Post"
-                        : "Posts"}
+                      {user?.totalPosts === 0 ? "No posts" : user?.totalPosts === 1 ? "Post" : "Posts"}
                     </div>
                   </div>
                   <div className={cx("grid-item", "four")}>
-                    <div className={cx("grid-item-value")}>
-                      {user?.totalLikes}
-                    </div>
+                    <div className={cx("grid-item-value")}>{user?.totalLikes}</div>
                     <div className={cx("grid-item-label")}>
-                      {user?.totalLikes === 0
-                        ? "No likes"
-                        : user?.totalLikes === 1
-                        ? "Like"
-                        : "Likes"}
+                      {user?.totalLikes === 0 ? "No likes" : user?.totalLikes === 1 ? "Like" : "Likes"}
                     </div>
                   </div>
                 </div>
@@ -169,17 +137,14 @@ const Profile = () => {
           </div>
           <div ref={scrollToTop} />
           <div className={cx("navigation")}>
-            <div
-              className={cx("nav-item", { active: showVacations })}
-              onClick={handleShowVacations}
-            >
+            <div className={cx("nav-item", { active: showVacations })} onClick={handleShowVacations}>
               Vacations
             </div>
-            <div
-              className={cx("nav-item", { active: showAlbums })}
-              onClick={handleShowAlbums}
-            >
+            <div className={cx("nav-item", { active: showAlbums })} onClick={handleShowAlbums}>
               Albums
+            </div>
+            <div className={cx("nav-item", { active: showAlbums })} onClick={handleShowAlbums}>
+              Friends
             </div>
           </div>
         </div>

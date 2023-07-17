@@ -4,7 +4,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 export const getList = createAsyncThunk("notification/getList", async ({ page }, thunkAPI) => {
   try {
     const res = await notiAPI.getList(page);
-    return res.data;
+    return { data: res.data, status: res.status };
   } catch (error) {
     console.log("error:", error);
   }
@@ -22,7 +22,7 @@ export const updateOne = createAsyncThunk("notification/updateOne", async (id, t
 export const updateAll = createAsyncThunk("notification/updateAll", async (id, thunkAPI) => {
   try {
     const res = await notiAPI.updateStatusAll();
-    return res.data.data;
+    return { data: res.data, status: res.status };
   } catch (error) {
     console.log("error:", error);
   }
@@ -40,6 +40,7 @@ const notiSlice = createSlice({
   },
   reducers: {
     changeVisible: (state, action) => {
+      console.log(action.payload);
       state.isVisible = action.payload === undefined ? !state.isVisible : action.payload;
     },
   },
@@ -49,11 +50,18 @@ const notiSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getList.fulfilled, (state, action) => {
+        const { page } = action.meta.arg;
         if (action.payload) {
-          state.list = action.payload?.data;
-          state.totalUnseen = action.payload?.meta?.totalUnseen;
-          state.page = action.payload?.meta?.page;
-          state.pages = action.payload?.meta?.pages;
+          const {
+            status,
+            data: { data, meta },
+          } = action.payload;
+
+          state.list = page === 1 ? (status === 204 ? [] : data) : status !== 204 && state.list.concat(data);
+          page === 1 && (state.totalUnseen = 0);
+          state.totalUnseen += meta?.totalUnseen;
+          state.page = meta?.page;
+          state.pages = meta?.pages;
           state.isLoading = false;
         }
       })

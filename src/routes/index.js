@@ -10,7 +10,10 @@ import Security from "~/modules/auth/Update/Security/Security";
 import Personal from "~/modules/auth/Update/Personal/Personal";
 import Overview from "~/modules/auth/Update/Overview/Overview";
 import NewFeed from "~/modules/newFeed/NewFeed";
-// import AlbumProfile from "~/modules/profile/Album";
+import Test from "~/modules/profile/Test";
+import VacationProfile from "~/modules/profile/Vacations";
+import AlbumProfile from "~/modules/profile/Albums";
+import FriendProfile from "~/modules/profile/Friends";
 import NewAlbum from "~/modules/album/NewAlbum/NewAlbum";
 
 import {
@@ -55,7 +58,16 @@ export const publicRoutes = [
     ],
   },
 
-  { path: "/profile", component: Profile, layout: DefaultLayout },
+  {
+    path: "/profile",
+    component: Test,
+    layout: DefaultLayout,
+    child: [
+      { path: "", component: VacationProfile },
+      { path: "album", component: AlbumProfile },
+      { path: "friends", component: FriendProfile },
+    ],
+  },
   { path: "/newAlbum", component: NewAlbum, layout: DefaultLayout },
 
   {

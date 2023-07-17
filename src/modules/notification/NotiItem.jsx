@@ -36,7 +36,9 @@ const NotiItem = ({ item }) => {
 
       <Col span={19} offset={1}>
         {modelInfo.type === "friends" ? <AddFriend item={item} /> : <LikeComment item={item} />}
-        <Typography.Text className={cx("datetime")}>{moment(lastUpdateAt).fromNow()}</Typography.Text>
+        <Typography.Text className={cx("datetime")}>
+          {moment(new Date(lastUpdateAt.seconds * 1000 + lastUpdateAt.nanoseconds / 100000)).fromNow()}
+        </Typography.Text>
       </Col>
 
       <Col span={1} offset={1}>

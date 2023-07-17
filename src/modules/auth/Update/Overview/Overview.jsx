@@ -13,13 +13,16 @@ const cx = classNames.bind(styles);
 
 const Overview = () => {
   const dispatch = useDispatch();
-  const { isLoading, info } = useSelector((state) => state.auth);
+  const imgRef = useRef();
+  const { isLoading, info, isSuccess, isError, msg } = useSelector(
+    (state) => state.auth
+  );
   const { avatar, username, firstname, lastname, description } = info;
   const [inputValue, setInputValue] = useState("");
   const [isChanged, setIsChanged] = useState(false);
-  const imgRef = useRef();
   const [img, setImg] = useState("");
-  console.log(info);
+  const [openNoti, setOpenNoti] = useState(false);
+
   // Set Input Value when component mounted
   useEffect(() => {
     setInputValue(description);
@@ -39,6 +42,7 @@ const Overview = () => {
         },
       })
     );
+    setOpenNoti(true);
   };
 
   const handleClear = () => {
@@ -51,7 +55,6 @@ const Overview = () => {
 
   const handleImgClick = () => {
     imgRef.current.click();
-    window.location.reload();
   };
 
   return (
@@ -59,7 +62,7 @@ const Overview = () => {
       <div className={cx("userName-container")}>
         <div className={cx("avatar")} onClick={handleImgClick}>
           <UpLoad imgRef={imgRef} setImg={setImg} />
-          <Image path={info.avatar?.path} alt="This is icon" />
+          <Image path={avatar?.path} alt="This is icon" />
         </div>
 
         <div className={cx("userName")}>
@@ -90,7 +93,13 @@ const Overview = () => {
         </div>
       )}
 
-      <Notification />
+      <Notification
+        isSuccess={isSuccess}
+        isError={isError}
+        msg={msg}
+        openNoti={openNoti}
+        setOpenNoti={setOpenNoti}
+      />
     </div>
   );
 };

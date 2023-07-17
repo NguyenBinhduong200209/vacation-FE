@@ -26,6 +26,7 @@ const InputForm = (props) => {
   );
   const { firstname, lastname, dateOfBirth, phoneNumber, gender, nationality } =
     info;
+  console.log(info);
   // Check index of time
   const timeIndex = dateOfBirth && dateOfBirth.indexOf("T");
   // InitialValues variable

@@ -17,18 +17,8 @@ import vacationAPI from "~/api/vacationAPI";
 const cx = classNames.bind(styles);
 
 const PostItem = ({ postDetail }) => {
-  const {
-    authorInfo,
-    content,
-    resource,
-    comments,
-    likes,
-    lastUpdateAt,
-    _id,
-    createdAt,
-    isLiked,
-  } = postDetail;
-  console.log(postDetail);
+  const { authorInfo, content, resource, comments, likes, lastUpdateAt, _id, createdAt, isLiked } =
+    postDetail;
 
   const { info } = useSelector((state) => state.auth);
 
@@ -54,10 +44,7 @@ const PostItem = ({ postDetail }) => {
       const element = postItemRef.current;
       const distanceFromTop = element.getBoundingClientRect().top;
 
-      if (
-        distanceFromTop <= window.innerHeight * 0.2 &&
-        distanceFromTop >= window.innerHeight * 0.15
-      ) {
+      if (distanceFromTop <= window.innerHeight * 0.2 && distanceFromTop >= window.innerHeight * 0.15) {
         dispatch(setTimeline(postItemRef.current.getAttribute("timeline")));
       }
     };
@@ -72,18 +59,10 @@ const PostItem = ({ postDetail }) => {
     setOpen(false);
   };
   return (
-    <div
-      className={cx("wrapper")}
-      ref={postItemRef}
-      timeline={getDate(createdAt)}
-    >
+    <div className={cx("wrapper")} ref={postItemRef} timeline={getDate(createdAt)}>
       <header>
         <div className={cx("user-info")}>
-          <Image
-            path={authorInfo.avatar.path}
-            alt=""
-            className={cx("avatar")}
-          />
+          <Image path={authorInfo.avatar.path} alt="" className={cx("avatar")} />
 
           <div className={cx("username-container")}>
             <div className={cx("username")}>{authorInfo.username}</div>
@@ -108,17 +87,10 @@ const PostItem = ({ postDetail }) => {
             onOpenChange={handleOpenChange}
             placement="bottom"
           >
-            <FontAwesomeIcon
-              icon={faEllipsisVertical}
-              className={cx("options")}
-            />
+            <FontAwesomeIcon icon={faEllipsisVertical} className={cx("options")} />
           </Popover>
         )}
-        <UpdatePost
-          handleCloseModal={handleCloseModal}
-          showModal={showModal}
-          postDetail={postDetail}
-        />
+        <UpdatePost handleCloseModal={handleCloseModal} showModal={showModal} postDetail={postDetail} />
       </header>
 
       <main>
@@ -133,12 +105,7 @@ const PostItem = ({ postDetail }) => {
         </div>
       </main>
 
-      <Interaction
-        likes={likes}
-        comments={comments}
-        postID={_id}
-        isLikedStatus={isLiked}
-      />
+      <Interaction likes={likes} comments={comments} postID={_id} isLikedStatus={isLiked} />
     </div>
   );
 };

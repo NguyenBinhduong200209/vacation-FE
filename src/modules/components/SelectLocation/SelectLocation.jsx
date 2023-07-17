@@ -95,8 +95,6 @@ const SelectLocation = ({ setOpenLocation, openLocation, setLocation }) => {
     }
   };
 
-  console.log(selectedLocation);
-
   const isEmpty = useMemo(() => {
     if (inputValue !== "") {
       const result = locationList?.every((item) =>

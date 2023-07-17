@@ -23,9 +23,7 @@ const UpdatePost = ({ showModal, handleCloseModal, postDetail }) => {
 	const [updateContent, setUpdateContent] = useState(content);
 	const [searchParams] = useSearchParams();
 	let vacationId = searchParams.get("vacationID");
-	const { posts, detail } = useSelector((state) => state.vacation);
-
-	console.log(detail);
+	const { posts, detail } = useSelector((state) => state.vacation)
 
 	const [files, setFiles] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);

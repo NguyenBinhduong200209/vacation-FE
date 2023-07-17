@@ -181,9 +181,23 @@
   text-align: center;
   img {
     margin: 10px 0px 0px 10px;
-    width: 200px;
-    height: 200px;
+    width: 140px;
+    height: 140px;
     object-fit: cover;
   }
 }
 
+.img-container {
+  display: flex;
+  align-items: flex-start;
+}
+
+.img-btn{
+  color: rgb(203, 197, 197);
+  margin: 0 0 -1.5rem -1rem;
+}
+
+.img-btn:hover{
+  color: white;
+  cursor: pointer;
+}

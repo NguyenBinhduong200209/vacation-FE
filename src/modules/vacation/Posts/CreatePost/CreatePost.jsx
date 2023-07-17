@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faImage, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import axios from "axios";
+import { CloseCircleOutlined } from "@ant-design/icons";
 import { useSearchParams } from "react-router-dom";
 import vacationAPI from "~/api/vacationAPI";
 import SelectLocation from "~/modules/components/SelectLocation/SelectLocation";
@@ -23,8 +24,6 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 	const { authorInfo } = detail;
 	const [searchParams] = useSearchParams();
 	let vacationId = searchParams.get("vacationID");
-	let fileList = [];
-
 	const [content, setContent] = useState("");
 	const [files, setFiles] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -32,8 +31,7 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 	const uploadResourcesRef = useRef();
 	// const [locations, setLocations] = useState([]);
 	const [locationTitle, setLocationTitle] = useState("");
-
-	console.log(location?.city?.title);
+	
 
 	function openModal() {
 		setIsOpen(true);
@@ -44,26 +42,64 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 	}
 
 	const handleClick = async (e) => {
+		let fileList = []
 		e.preventDefault();
+		const idList = await uploadFiles();
+		console.log(idList);
 		try {
 			setIsLoading(true);
 			const res = await vacationAPI.createPost({
 				vacationId: vacationId,
 				locationId: location.detail.id,
 				content: content,
+				resources: idList,
 			});
+			
 			handleCloseModal();
 		} catch (error) {
 			console.log(error);
 		}
 		setIsLoading(false);
+		fileList.splice(0, fileList.length)
 	};
+
+	const uploadFiles = async () => {
+		const formData = new FormData();
+		files.forEach((file) => {
+		  formData.append('files', file);
+		});
+		formData.append('field', "post");
+		formData.append('vacationId', vacationId);
+		try {
+			const response = await axios.post(
+				'https://vacation-backend.onrender.com/resource/',
+				formData,
+				{
+					headers: {
+						'Authorization': localStorage.getItem("token"),
+					},
+				}
+			);
+			const data = response.data.data;
+			const ids = data.map(item => item._id);
+			console.log(ids);
+			return ids;
+		} catch (error) {
+			
+		}
+	};
+
+	useEffect(() => {
+		uploadFiles();
+	}, [])
+	
 
 	const handleUpload = (e) => {
 		if (e.target.files && e.target.files.length > 0) {
 			console.log(e.target.files);
 			setFiles([...files, ...Object.values(e.target.files)]);
 		}
+		uploadFiles();
 		e.target.value = null;
 	};
 
@@ -107,9 +143,7 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 						{files.map((file, index) => (
 							<div className={cx("img-container")}>
 								<img alt="" src={URL.createObjectURL(file)} />
-								<button className={cx("x-button")} onClick={() => handleDelete(file, index)}>
-									X
-								</button>
+								<CloseCircleOutlined onClick={() => handleDelete(file, index)} className={cx("img-btn")}/>
 							</div>
 						))}
 					</div>

@@ -19,7 +19,7 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 	const dispatch = useDispatch();
 	const { detail } = useSelector((state) => state.vacation);
 	const [modalIsOpen, setIsOpen] = useState(false);
-  	const [img, setImg] = useState([])
+	const [img, setImg] = useState([]);
 	const { authorInfo } = detail;
 	const [searchParams] = useSearchParams();
 	let vacationId = searchParams.get("vacationID");
@@ -28,12 +28,12 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 	const [content, setContent] = useState("");
 	const [files, setFiles] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
-	let [locationId, setLocationId] = useState("");
 	const [location, setLocation] = useState({});
 	const uploadResourcesRef = useRef();
 	// const [locations, setLocations] = useState([]);
 	const [locationTitle, setLocationTitle] = useState("");
 
+	console.log(location?.city?.title);
 
 	function openModal() {
 		setIsOpen(true);
@@ -49,13 +49,12 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 			setIsLoading(true);
 			const res = await vacationAPI.createPost({
 				vacationId: vacationId,
-				locationId: locationId,
+				locationId: location.detail.id,
 				content: content,
 			});
 			handleCloseModal();
 		} catch (error) {
 			console.log(error);
-			console.log(locationId, vacationId, content);
 		}
 		setIsLoading(false);
 	};
@@ -69,8 +68,8 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 	};
 
 	const handleDelete = (deletedFile, index) => {
-		setFiles(files.filter((file, i) => i !== index))
-	}
+		setFiles(files.filter((file, i) => i !== index));
+	};
 
 	return (
 		<Modal
@@ -108,15 +107,15 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 						{files.map((file, index) => (
 							<div className={cx("img-container")}>
 								<img alt="" src={URL.createObjectURL(file)} />
-                				<button 
-									className={cx("x-button")}
-									onClick={() => handleDelete(file, index)}
-								>X</button>
+								<button className={cx("x-button")} onClick={() => handleDelete(file, index)}>
+									X
+								</button>
 							</div>
 						))}
 					</div>
 					<div className={cx("post-extension")}>
-						<div> Add on: {locationTitle}</div>
+						<div> Add on: {location?.detail?.title} </div>
+						{/* console.log(locationTitle); */}
 						<div className={cx("extensions")}>
 							<div>
 								<FontAwesomeIcon onClick={openModal} icon={faLocationDot} className={cx("icon")} />
@@ -124,8 +123,6 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 									openLocation={modalIsOpen}
 									setOpenLocation={setIsOpen}
 									setLocation={setLocation}
-									setLocationTitle={setLocationTitle}
-									setLocationId={setLocationId}
 								/>
 							</div>
 							<div>

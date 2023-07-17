@@ -7,6 +7,7 @@ import styles from "./NewAlbum.module.scss";
 import classNames from "classnames/bind";
 import { useState } from "react";
 import axiosClient from "~/api/axiosClient";
+import { Carousel } from "antd";
 const cx = classNames.bind(styles);
 
 const NewAlbum = () => {
@@ -101,11 +102,11 @@ const NewAlbum = () => {
       </div>
 
       <div>
-        <ul>
+        <Carousel>
           {img.map((img) => (
             <img key={img._id} src={img?.path} />
           ))}
-        </ul>
+        </Carousel>
       </div>
     </div>
   );

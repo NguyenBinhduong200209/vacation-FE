@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import classNames from "classnames/bind";
-import styles from "./ProfileLayout.module.scss";
+import styles from "./Header.module.scss";
 import axiosClient from "~/api/axiosClient";
 import { Avatar, Col, Row, Typography } from "antd";
 import { UserOutlined } from "@ant-design/icons";
@@ -27,7 +27,7 @@ const UserInfo = () => {
       <div className={cx("user-info-header")}>
         <Avatar
           src={user?.avatar?.path}
-          size={120}
+          size={140}
           shape="square"
           icon={<UserOutlined />}
           style={{ border: "solid 2px", borderRadius: "20px" }}

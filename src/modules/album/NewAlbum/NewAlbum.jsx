@@ -8,33 +8,35 @@ import classNames from "classnames/bind";
 import { useState } from "react";
 import axiosClient from "~/api/axiosClient";
 import { Carousel } from "antd";
+import Slider from "./Slider/Slider";
+
 const cx = classNames.bind(styles);
 
 const NewAlbum = () => {
-  const [img, setImg] = useState([]);
+  // const [img, setImg] = useState([]);
 
-  const [searchParams] = useSearchParams();
-  const dataId = Object.fromEntries([...searchParams]);
+  // const [searchParams] = useSearchParams();
+  // const dataId = Object.fromEntries([...searchParams]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const fetchImg = await axiosClient.get(`vacation/${dataId.id}/images`);
-        setImg(fetchImg.data.data);
-        console.log(fetchImg);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const fetchImg = await axiosClient.get(`vacation/${dataId.id}/images`);
+  //       setImg(fetchImg.data.data);
+  //       console.log(fetchImg);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
-  // console.log(fetchImg, img);
-  const [searchParam] = useSearchParams();
+  // // console.log(fetchImg, img);
+  // const [searchParam] = useSearchParams();
 
-  const title = searchParam.get("title");
-  const vacationId = searchParam.get("id");
+  // const title = searchParam.get("title");
+  // const vacationId = searchParam.get("id");
   const [position, setPosition] = React.useState({ x: 0, y: 0 });
   const [containerSize, setContainerSize] = React.useState({
     outerWidth: 100,
@@ -101,13 +103,14 @@ const NewAlbum = () => {
         </Draggable>
       </div>
 
-      <div>
-        <Carousel>
+      <Slider></Slider>
+      {/* <div>
+        <Carousel className={cx("carou")}>
           {img.map((img) => (
             <img key={img._id} src={img?.path} />
           ))}
         </Carousel>
-      </div>
+      </div> */}
     </div>
   );
 };

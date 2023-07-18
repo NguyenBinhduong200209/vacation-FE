@@ -70,7 +70,6 @@ export const publicRoutes = [
   },
   { path: "/newAlbum", component: NewAlbum, layout: DefaultLayout },
 
-
   {
     path: VACATION_ROUTE,
     component: Vacation,

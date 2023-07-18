@@ -1,13 +1,13 @@
-import React, { useEffect, useLayoutEffect, useRef } from "react";
-import { useSearchParams } from "react-router-dom";
+import React, { useLayoutEffect, useRef } from "react";
+// import { useSearchParams } from "react-router-dom";
 import "react-resizable/css/styles.css";
 import Draggable from "react-draggable";
-import { Resizable, ResizableBox } from "react-resizable";
+import { ResizableBox } from "react-resizable";
 import styles from "./NewAlbum.module.scss";
 import classNames from "classnames/bind";
-import { useState } from "react";
-import axiosClient from "~/api/axiosClient";
-import { Carousel } from "antd";
+// import { useState } from "react";
+// import axiosClient from "~/api/axiosClient";
+// import { Carousel } from "antd";
 import Slider from "./Slider/Slider";
 
 const cx = classNames.bind(styles);

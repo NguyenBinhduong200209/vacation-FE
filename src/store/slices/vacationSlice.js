@@ -2,73 +2,60 @@ import statusAPI from "~/api/statusList";
 import vacationAPI from "~/api/vacationAPI";
 
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
-export const getListVacation = createAsyncThunk(
-  "vacation/getListVacation",
-  async (arg, thunkAPI) => {
-    try {
-      const res = await vacationAPI.getListVacation(arg);
-      return res.data;
-    } catch (error) {
-      if (!error.response) {
-        return thunkAPI.rejectWithValue({ message: error.message });
-      }
-      return thunkAPI.rejectWithValue({
-        message: error.response.data.message,
-      });
+export const getListVacation = createAsyncThunk("vacation/getListVacation", async (arg, thunkAPI) => {
+  try {
+    const res = await vacationAPI.getListVacation(arg);
+    return res.data;
+  } catch (error) {
+    if (!error.response) {
+      return thunkAPI.rejectWithValue({ message: error.message });
     }
+    return thunkAPI.rejectWithValue({
+      message: error.response.data.message,
+    });
   }
-);
+});
 
-export const getDetailVacation = createAsyncThunk(
-  "vacation/getDetailVacation",
-  async (arg, thunkAPI) => {
-    try {
-      const res = await vacationAPI.getDetailVacation(arg);
-      return res.data.data;
-    } catch (error) {
-      if (!error.response) {
-        return thunkAPI.rejectWithValue({ message: error.message });
-      }
-      return thunkAPI.rejectWithValue({
-        message: error.response.data.message,
-      });
+export const getDetailVacation = createAsyncThunk("vacation/getDetailVacation", async (arg, thunkAPI) => {
+  try {
+    const res = await vacationAPI.getDetailVacation(arg);
+    return res.data.data;
+  } catch (error) {
+    if (!error.response) {
+      return thunkAPI.rejectWithValue({ message: error.message });
     }
+    return thunkAPI.rejectWithValue({
+      message: error.response.data.message,
+    });
   }
-);
+});
 
-export const getManyPosts = createAsyncThunk(
-  "vacation/getManyPosts",
-  async (arg, thunkAPI) => {
-    try {
-      const res = await vacationAPI.getManyPosts(arg);
-      console.log(res)
-      return res.data;
-    } catch (error) {
-      if (!error.response) {
-        return thunkAPI.rejectWithValue({ message: error.message });
-      }
-      return thunkAPI.rejectWithValue({
-        message: error.response.data.message,
-      });
+export const getManyPosts = createAsyncThunk("vacation/getManyPosts", async (arg, thunkAPI) => {
+  try {
+    const res = await vacationAPI.getManyPosts(arg);
+    return res.data;
+  } catch (error) {
+    if (!error.response) {
+      return thunkAPI.rejectWithValue({ message: error.message });
     }
+    return thunkAPI.rejectWithValue({
+      message: error.response.data.message,
+    });
   }
-);
-export const getMemberList = createAsyncThunk(
-  "vacation/getMemberList",
-  async (arg, thunkAPI) => {
-    try {
-      const res = await statusAPI.statusList(arg);
-      return res.data;
-    } catch (error) {
-      if (!error.response) {
-        return thunkAPI.rejectWithValue({ message: error.message });
-      }
-      return thunkAPI.rejectWithValue({
-        message: error.response.data.message,
-      });
+});
+export const getMemberList = createAsyncThunk("vacation/getMemberList", async (arg, thunkAPI) => {
+  try {
+    const res = await statusAPI.statusList(arg);
+    return res.data;
+  } catch (error) {
+    if (!error.response) {
+      return thunkAPI.rejectWithValue({ message: error.message });
     }
+    return thunkAPI.rejectWithValue({
+      message: error.response.data.message,
+    });
   }
-);
+});
 const vacationSlice = createSlice({
   name: "vacation",
   initialState: {
@@ -103,7 +90,6 @@ const vacationSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getManyPosts.fulfilled, (state, action) => {
-        console.log(action.payload);
         if (action.payload) {
           let newList = [];
           if (action.payload.data?.length > 0) {
@@ -122,7 +108,10 @@ const vacationSlice = createSlice({
         if (action.payload) {
           let newList = [];
           if (action.payload.data?.length > 0) {
-            newList = state.listVacation.list.concat(action.payload.data);
+            newList =
+              action.meta?.arg?.page === 1
+                ? action.payload.data
+                : state.listVacation.list.concat(action.payload.data);
           }
           state.listVacation.list = newList;
           state.listVacation.meta = action.payload?.meta;

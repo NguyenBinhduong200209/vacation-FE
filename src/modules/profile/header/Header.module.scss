@@ -1,0 +1,124 @@
+@import url("https://fonts.googleapis.com/css2?family=Holtwood+One+SC&display=swap");
+
+//User info/
+.user-info-bgimg {
+  position: sticky;
+  top: 10%;
+  width: 90%;
+  margin: 0 5%;
+  height: 20vh !important;
+  z-index: 10;
+
+  img {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    object-fit: cover;
+    vertical-align: top !important;
+    height: 100% !important;
+  }
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  width: 89%;
+  margin: 0 auto;
+}
+
+.user-info {
+  position: sticky;
+  top: 20%;
+  width: 30%;
+  z-index: 20;
+  height: fit-content;
+
+  .user-info-header {
+    text-align: center;
+    font-size: 1.8rem;
+    color: white;
+
+    & > * {
+      width: 80%;
+    }
+
+    * {
+      text-align: center;
+      margin: auto;
+      color: white;
+    }
+  }
+
+  .user-info-fullname {
+    letter-spacing: 1px;
+    margin-top: 1rem;
+    margin-bottom: 0 !important;
+    color: white !important;
+  }
+
+  .user-info-des {
+    margin-top: 2rem !important;
+    margin-bottom: 4rem !important;
+    padding: 0 1rem 0 1rem;
+    font-size: 1.7rem;
+  }
+
+  .para {
+    margin: 0 !important;
+    font-size: 1.5rem;
+    font-style: italic;
+  }
+
+  .cell {
+    padding: 0.7rem 0;
+  }
+
+  #one {
+    border-right: #3c2d2d 0.5px solid;
+    border-bottom: #3c2d2d 0.5px solid;
+  }
+
+  #two {
+    border-left: #3c2d2d 0.5px solid;
+    border-bottom: #3c2d2d 0.5px solid;
+  }
+
+  #three {
+    border-right: #3c2d2d 0.5px solid;
+    border-top: #3c2d2d 0.5px solid;
+  }
+
+  #four {
+    border-left: #3c2d2d 0.5px solid;
+    border-top: #3c2d2d 0.5px solid;
+  }
+}
+
+.navigation {
+  position: sticky;
+  top: 30vh;
+  font-size: 2rem;
+  display: flex;
+  background-color: #1a1a1a;
+  align-items: flex-end;
+  padding: 1rem 0;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  z-index: 10;
+
+  & > * {
+    margin-right: 4rem;
+    cursor: pointer;
+    width: fit-content;
+    font-size: 2.4rem;
+    font-style: italic;
+    color: white;
+    transition: 100ms font-weight linear;
+    text-align: center;
+  }
+
+  .active {
+    color: #d2ae68;
+    border-bottom: #d2ae68 solid 2px;
+    font-weight: 700;
+  }
+}

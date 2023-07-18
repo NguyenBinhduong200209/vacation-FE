@@ -1,10 +1,36 @@
-.item {
-  display: flex;
-  align-items: center;
+.list {
+  overflow-x: hidden;
+  width: 96%;
+  margin: auto;
+
+  .nav {
+    border-radius: 7px;
+    display: block;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    padding: 5px;
+    transition: 300ms all linear;
+
+    &:hover {
+      color: beige;
+      background-color: rgba(47, 53, 66, 1);
+      transform: scale(1.01);
+    }
+  }
+
+  .item {
+    margin-block-end: 0 !important;
+    margin: 0 5px;
+    border-radius: 7px;
+  }
 }
 
 .title {
   margin-bottom: 0 !important;
   margin-left: 10px;
   color: white;
+}
+
+.avatar {
+  border: solid 1px white;
 }

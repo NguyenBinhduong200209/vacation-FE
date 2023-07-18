@@ -37,7 +37,7 @@ const albumSlice = createSlice({
             meta: { Page, Pages, totalAlbums },
           } = action.payload;
           state.isLoading = false;
-          state.list = data?.length > 0 && state.list.concat(data);
+          state.list = Page === 1 ? data : data?.length > 0 && state.list.concat(data);
           state.meta.page = Page;
           state.meta.pages = Pages;
           state.meta.total = totalAlbums;

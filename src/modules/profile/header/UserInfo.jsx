@@ -37,13 +37,12 @@ const UserInfo = () => {
           {user?.lastname} {user?.firstname}
         </Typography.Title>
 
-        <Typography.Text style={{ fontStyle: "italic" }}>@{user?.username}</Typography.Text>
+        <span style={{ fontStyle: "italic" }}>
+          <Typography.Text>@</Typography.Text>
+          <Typography.Text copyable={true}>{user?.username}</Typography.Text>
+        </span>
 
-        <Typography.Paragraph
-          ellipsis={{ expandable: false, rows: 2 }}
-          className={cx("user-info-des")}
-          copyable={true}
-        >
+        <Typography.Paragraph ellipsis={{ expandable: false, rows: 2 }} className={cx("user-info-des")}>
           {user?.description}
         </Typography.Paragraph>
 

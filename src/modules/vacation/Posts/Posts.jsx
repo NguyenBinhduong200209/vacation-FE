@@ -34,6 +34,7 @@ const Posts = () => {
               <div onClick={handleOpenModal}>Every step is a milestone...</div>
             </div>
           )}
+          <br></br>
           <CreatePost
             handleCloseModal={handleCloseModal}
             showModal={showModal}

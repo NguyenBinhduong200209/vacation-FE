@@ -17,8 +17,10 @@ import vacationAPI from "~/api/vacationAPI";
 const cx = classNames.bind(styles);
 
 const PostItem = ({ postDetail }) => {
+
   const { authorInfo, content, resource, comments, likes, lastUpdateAt, _id, createdAt, isLiked } =
     postDetail;
+
 
   const { info } = useSelector((state) => state.auth);
 
@@ -96,9 +98,6 @@ const PostItem = ({ postDetail }) => {
       <main>
         <div className={cx("description")}>{content}</div>
         <div className={cx("img-container")}>
-          {resource.map((item, index) => (
-            <Image path={item.path} alt="" key={index} />
-          ))}
           {resource.map((item, index) => (
             <Image path={item.path} alt="" key={index} />
           ))}

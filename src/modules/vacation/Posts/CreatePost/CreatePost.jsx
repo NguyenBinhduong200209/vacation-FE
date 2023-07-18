@@ -34,9 +34,27 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
     setIsOpen(true);
   }
 
-  function closeModal() {
-    setIsOpen(false);
-  }
+
+	const handleClick = async (e) => {
+		let fileList = []
+		e.preventDefault();
+		const idList = await uploadFiles();
+		console.log(idList);
+		try {
+			setIsLoading(true);
+			const res = await vacationAPI.createPost({
+				vacationId: vacationId,
+				locationId: location.detail.id,
+				content: content,
+				resources: idList,
+			});
+		} catch (error) {
+			console.log(error);
+		}
+		setIsLoading(false);
+		handleCloseModal();
+		fileList.splice(0, fileList.length)
+	};
 
   const handleClick = async (e) => {
     let fileList = [];

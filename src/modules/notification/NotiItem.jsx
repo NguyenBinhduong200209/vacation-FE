@@ -14,6 +14,7 @@ const cx = classNames.bind(styles);
 
 const NotiItem = ({ item }) => {
   const { id, modelInfo, isSeen, lastUpdateAt, userInfo } = item;
+  console.log(modelInfo);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

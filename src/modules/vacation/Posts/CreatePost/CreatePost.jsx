@@ -54,12 +54,11 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 				content: content,
 				resources: idList,
 			});
-			
-			handleCloseModal();
 		} catch (error) {
 			console.log(error);
 		}
 		setIsLoading(false);
+		handleCloseModal();
 		fileList.splice(0, fileList.length)
 	};
 

@@ -28,7 +28,6 @@ const PostItem = ({ postDetail }) => {
     createdAt,
     isLiked,
   } = postDetail;
-  console.log(postDetail);
 
   const { info } = useSelector((state) => state.auth);
 
@@ -124,9 +123,6 @@ const PostItem = ({ postDetail }) => {
       <main>
         <div className={cx("description")}>{content}</div>
         <div className={cx("img-container")}>
-          {resource.map((item, index) => (
-            <Image path={item.path} alt="" key={index} />
-          ))}
           {resource.map((item, index) => (
             <Image path={item.path} alt="" key={index} />
           ))}

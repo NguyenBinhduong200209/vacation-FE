@@ -12,16 +12,10 @@ const cx = classNames.bind(styles);
 const Vacations = () => {
   let formatter = Intl.NumberFormat("en", { notation: "compact" });
   const dispatch = useDispatch();
-  const {
-    list,
-    meta: { page, pages },
-  } = useSelector((state) => state.vacation.listVacation);
+  const { list, page, pages } = useSelector((state) => state.vacation.listVacation);
 
   useEffect(() => {
     dispatch(resetList());
-  }, []);
-
-  useEffect(() => {
     dispatch(getListVacation({ type: "userProfile", page: 1 }));
   }, [dispatch]);
 

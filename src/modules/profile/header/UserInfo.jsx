@@ -38,24 +38,24 @@ const UserInfo = () => {
           <Row justify="space-evenly">
             <Col span={12} className={cx("cell")} id={cx("one")}>
               <NavLink to="friends">
-                <Typography.Paragraph className={cx("para")}>{info?.totalFriends}</Typography.Paragraph>
+                <Typography.Paragraph className={cx("para")}>{info?.friends}</Typography.Paragraph>
                 <Typography.Paragraph className={cx("para")}>Friends</Typography.Paragraph>
               </NavLink>
             </Col>
             <Col span={12} className={cx("cell")} id={cx("two")}>
               <NavLink to="">
-                <Typography.Paragraph className={cx("para")}>{info?.totalVacations}</Typography.Paragraph>
+                <Typography.Paragraph className={cx("para")}>{info?.vacations}</Typography.Paragraph>
                 <Typography.Paragraph className={cx("para")}>Vacations</Typography.Paragraph>
               </NavLink>
             </Col>
           </Row>
           <Row justify="space-evenly">
             <Col span={12} className={cx("cell")} id={cx("three")}>
-              <Typography.Paragraph className={cx("para")}>{info?.totalPosts}</Typography.Paragraph>
+              <Typography.Paragraph className={cx("para")}>{info?.posts}</Typography.Paragraph>
               <Typography.Paragraph className={cx("para")}>Posts</Typography.Paragraph>
             </Col>
             <Col span={12} className={cx("cell")} id={cx("four")}>
-              <Typography.Paragraph className={cx("para")}>{info?.totalLikes}</Typography.Paragraph>
+              <Typography.Paragraph className={cx("para")}>{info?.likesPost}</Typography.Paragraph>
               <Typography.Paragraph className={cx("para")}>Likes</Typography.Paragraph>
             </Col>
           </Row>

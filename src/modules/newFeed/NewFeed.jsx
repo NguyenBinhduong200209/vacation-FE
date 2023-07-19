@@ -17,7 +17,7 @@ import { getListVacation } from "~/store/slices/vacationSlice";
 import { getTrendingPlace } from "~/store/slices/locationSlice";
 import { getDate } from "~/helpers/function";
 import Image from "~/components/Image/Image";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 // import CreateVacation from "../vacation/CreateVacation/CreateVacation";
 import CreateAlbum from "../album/CreateAlbum/CreateAlbum";
 import HandleVacation from "../vacation/HandleVacation/HandleVacation";
@@ -27,12 +27,14 @@ const NewFeed = () => {
   let formatter = Intl.NumberFormat("en", { notation: "compact" });
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1); // State variable for current page number
-  const [open, setOpen] = useState(false);
-  const [openAlbum, setOpenAlbum] = useState(false);
+  const { isLogin } = useSelector((state) => state.auth);
   const { info } = useSelector((state) => state.auth);
   const { listVacation } = useSelector((state) => state.vacation);
   const { trendingList } = useSelector((state) => state.location);
+  const [preLoader, setPreLoader] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [openAlbum, setOpenAlbum] = useState(false);
+  const currentPage = useRef(1);
   const initVacationDetail = {
     title: "",
     des: "",
@@ -40,23 +42,39 @@ const NewFeed = () => {
     dates: [],
     status: "",
   };
-  const totalPage = useRef(0);
 
   // Get list of trending place
   useEffect(() => {
-    dispatch(
-      getTrendingPlace({
-        type: "trending",
-        number: 7,
-      })
-    );
+    Promise.all([
+      dispatch(
+        getTrendingPlace({
+          type: "trending",
+          number: 7,
+        })
+      ),
+      dispatch(
+        getListVacation({
+          page: 1,
+          type: "newFeed",
+        })
+      ),
+    ]);
   }, []);
 
   // increase currentPage when at bottom page
 
   const loadMorePosts = () => {
-    if (currentPage < totalPage.current) {
-      setCurrentPage((prev) => prev + 1);
+    if (
+      listVacation.page < listVacation.pages &&
+      listVacation.page === currentPage.current
+    ) {
+      dispatch(
+        getListVacation({
+          page: listVacation.page + 1,
+          type: "newFeed",
+        })
+      );
+      currentPage.current += 1;
     }
   };
 
@@ -74,20 +92,7 @@ const NewFeed = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [currentPage]);
-
-  // Get new list of vacation when the currentPage change
-  useEffect(() => {
-    dispatch(
-      getListVacation({
-        page: currentPage,
-        type: "newFeed",
-      })
-    ).then((res) => {
-      if (res.payload !== "" && res.payload?.pages !== totalPage.current)
-        totalPage.current = res.payload?.meta?.pages;
-    });
-  }, [currentPage]);
+  }, [dispatch, listVacation.page]);
 
   return (
     <div className={cx("container")}>
@@ -103,12 +108,12 @@ const NewFeed = () => {
         <div className={cx("user-info-head")}>
           <div className={cx("user-info-header")}>
             <div className={cx("user-info-header-details")}>
-              <li>{info?.totalFriends}</li>
+              <NavLink to="profile/friends">{info?.totalFriends}</NavLink>
               <div className={cx("user-info-header-line")}>friends</div>
             </div>
             <Image path={info.avatar?.path} className={cx("user-info-bgava")} alt="" />
             <div className={cx("user-info-header-details")}>
-              <li>{info?.totalPosts}</li>
+              <NavLink to="profile">{info?.totalPosts}</NavLink>
               <div className={cx("user-info-header-line")}>Posts</div>
             </div>
           </div>

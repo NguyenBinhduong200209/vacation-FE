@@ -1,10 +1,9 @@
 // api/axiosClient.js
 import axios from "axios";
-import jwtDecode from "jwt-decode";
 import authAPI from "./authAPI";
+import { REFRESHTOKEN_URL } from "~/utils/constants";
 
 // Set up default config for http requests here
-// export const source = axios.CancelToken.source();
 const axiosClient = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   headers: {
@@ -19,12 +18,39 @@ axiosClient.interceptors.request.use(async (config) => {
   }
   return config;
 });
+
 axiosClient.interceptors.response.use(
   (response) => {
     return response;
   },
-  function (error) {
-    return Promise.reject(error);
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response?.status === 403 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const rfToken = localStorage.getItem("rfToken");
+      try {
+        const res = await axios.post(
+          "https://vacation-backend.onrender.com/auth/refresh",
+          {},
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: rfToken,
+            },
+          }
+        );
+        axios.defaults.headers.common["Authorization"] =
+          "Bearer " + res.data.data.accessToken;
+        localStorage.setItem("token", "Bearer " + res.data.data.accessToken);
+        return axiosClient(originalRequest);
+      } catch (error) {
+        localStorage.removeItem("rfToken");
+        localStorage.removeItem("token");
+        window.location.reload();
+      }
+    } else {
+      return Promise.reject(error);
+    }
   }
 );
 export default axiosClient;

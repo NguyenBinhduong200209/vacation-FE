@@ -34,6 +34,7 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 	const [location, setLocation] = useState({});
 	const uploadResourcesRef = useRef();
 
+
 	function openModal() {
 		setIsOpen(true);
 	}
@@ -63,6 +64,7 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 			setFiles([e.target.files[0]]);
 		}
 	};
+
 
 	console.log(files);
 

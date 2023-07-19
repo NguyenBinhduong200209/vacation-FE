@@ -7,7 +7,7 @@ import styles from "./NewAlbum.module.scss";
 import classNames from "classnames/bind";
 // import { useState } from "react";
 // import axiosClient from "~/api/axiosClient";
-// import { Carousel } from "antd";
+import { Carousel } from "antd";
 import Slider from "./Slider/Slider";
 
 const cx = classNames.bind(styles);
@@ -70,10 +70,6 @@ const NewAlbum = () => {
     setWidth(size.width);
     setHeight(size.height);
   };
-  // console.log(
-  //   containerSize.outerWidth - position.x,
-  //   containerSize.outerHeight - position.y
-  // );
 
   return (
     <div className={cx("wrapper")}>
@@ -93,24 +89,12 @@ const NewAlbum = () => {
               containerSize.outerHeight - position.y,
             ]}
           >
-            {/* <img
-              className="handle"
-              src="https://img.freepik.com/free-photo/wide-angle-shot-single-tree-growing-clouded-sky-during-sunset-surrounded-by-grass_181624-22807.jpg"
-              alt="???"
-            /> */}
             <div className={cx("handle")}></div>
           </ResizableBox>
         </Draggable>
       </div>
 
       <Slider></Slider>
-      {/* <div>
-        <Carousel className={cx("carou")}>
-          {img.map((img) => (
-            <img key={img._id} src={img?.path} />
-          ))}
-        </Carousel>
-      </div> */}
     </div>
   );
 };

@@ -1,0 +1,55 @@
+.friend-nav {
+  color: white;
+}
+
+.list {
+  overflow-x: hidden;
+  width: 98%;
+  margin: auto;
+
+  .nav {
+    border-radius: 7px;
+    display: block;
+    margin-bottom: 2rem;
+    padding: 7px 5px;
+    transition: 300ms all linear;
+    width: 100%;
+
+    &:hover {
+      background-color: #2c3a47;
+      transform: scale(1.01);
+    }
+  }
+
+  .item {
+    position: relative;
+    border-radius: 7px;
+
+    .item-meta {
+      width: 100%;
+      height: inherit;
+      align-items: center;
+    }
+
+    .button-container {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+
+      & > * {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.title {
+  margin-bottom: 0 !important;
+  margin-left: 10px;
+  color: white;
+}
+
+.avatar {
+  border: solid 1px white;
+}

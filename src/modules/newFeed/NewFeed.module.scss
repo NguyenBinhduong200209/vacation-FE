@@ -275,8 +275,11 @@ ul {
   width: 30%;
 }
 
-.user-info-header-details li {
-  margin: 1.3rem 0rem 0rem;
+.user-info-header-details {
+  a,
+  li {
+    margin: 1.3rem 0rem 0rem;
+  }
 }
 
 .user-info-header-line {

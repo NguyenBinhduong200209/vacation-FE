@@ -40,7 +40,6 @@ const notiSlice = createSlice({
   },
   reducers: {
     changeVisible: (state, action) => {
-      console.log(action.payload);
       state.isVisible = action.payload === undefined ? !state.isVisible : action.payload;
     },
   },

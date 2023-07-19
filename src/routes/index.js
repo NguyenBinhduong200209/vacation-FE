@@ -14,7 +14,6 @@ import VacationProfile from "~/modules/profile/vacation/Vacations";
 import AlbumProfile from "~/modules/profile/album/Albums";
 import FriendProfile from "~/modules/profile/friend/Friends";
 import NewAlbum from "~/modules/album/NewAlbum/NewAlbum";
-
 import {
   LOGIN_ROUTE,
   OVERVIEW_ROUTE,

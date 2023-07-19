@@ -143,7 +143,11 @@ const InputForm = (props) => {
                       </button>
                     </>
                   ) : (
-                    <button type="submit" className={cx("btn-submit")}>
+                    <button
+                      type="submit"
+                      className={cx("btn-submit")}
+                      disabled={isLoading}
+                    >
                       <span>Submit</span>
                       {isLoading && <Loading />}
                     </button>

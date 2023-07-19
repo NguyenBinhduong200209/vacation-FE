@@ -10,17 +10,18 @@ import { updateOne } from "~/store/slices/notiSlice";
 import { useDispatch } from "react-redux";
 import vacationAPI from "~/api/vacationAPI";
 import { useNavigate } from "react-router-dom";
+import Post from "./content/Post";
 const cx = classNames.bind(styles);
 
 const NotiItem = ({ item }) => {
   const { id, modelInfo, isSeen, lastUpdateAt, userInfo } = item;
-  console.log(modelInfo);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSeenStatus = async () => {
     dispatch(updateOne(id));
 
+    console.log(modelInfo.type);
     if (modelInfo.type === "friends") navigate(`/profile`);
     else {
       const result = await vacationAPI.getOnePost(modelInfo._id);
@@ -36,7 +37,7 @@ const NotiItem = ({ item }) => {
       </Col>
 
       <Col span={19} offset={1}>
-        {modelInfo.type === "friends" ? <AddFriend item={item} /> : <LikeComment item={item} />}
+      {modelInfo.type === "friends" ? <AddFriend item={item} /> : modelInfo.type === "posts" ? <Post item={item} /> : <LikeComment item={item} />}
         <Typography.Text className={cx("datetime")}>
           {moment(new Date(lastUpdateAt.seconds * 1000 + lastUpdateAt.nanoseconds / 100000)).fromNow()}
         </Typography.Text>

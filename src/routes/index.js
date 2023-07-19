@@ -3,19 +3,17 @@ import AuthenLayout from "~/layouts/Auth/AuthenLayout";
 import DefaultLayout from "~/layouts/DefaultLayout/DefaultLayout";
 import Login from "~/modules/auth/Login/Login";
 import Register from "~/modules/auth/Register/Register";
-import Profile from "~/modules/profile/Profile";
 import Vacation from "~/modules/vacation/Vacation";
 import UpdateUser from "~/modules/auth/Update/UpdateUser";
 import Security from "~/modules/auth/Update/Security/Security";
 import Personal from "~/modules/auth/Update/Personal/Personal";
 import Overview from "~/modules/auth/Update/Overview/Overview";
-import NewFeed from "~/modules/newfeed/NewFeed";
-import Test from "~/modules/profile/Test";
-import VacationProfile from "~/modules/profile/Vacations";
-import AlbumProfile from "~/modules/profile/Albums";
-import FriendProfile from "~/modules/profile/Friends";
+import NewFeed from "~/modules/newFeed/NewFeed";
+import Profile from "~/modules/profile/Profile";
+import VacationProfile from "~/modules/profile/vacation/Vacations";
+import AlbumProfile from "~/modules/profile/album/Albums";
+import FriendProfile from "~/modules/profile/friend/Friends";
 import NewAlbum from "~/modules/album/NewAlbum/NewAlbum";
-
 import {
   LOGIN_ROUTE,
   OVERVIEW_ROUTE,

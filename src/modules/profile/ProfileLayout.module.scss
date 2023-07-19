@@ -1,0 +1,32 @@
+@import url("https://fonts.googleapis.com/css2?family=Holtwood+One+SC&display=swap");
+
+//User info/
+.user-info-bgimg {
+  position: sticky;
+  top: 10%;
+  width: 90%;
+  margin: 0 5%;
+  height: 20vh !important;
+  z-index: 10;
+
+  img {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    object-fit: cover;
+    vertical-align: top !important;
+    height: 100% !important;
+  }
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  width: 89%;
+  margin: 0 auto;
+}
+
+.container {
+  width: 70%;
+  position: relative;
+  margin-top: 10vh;
+}

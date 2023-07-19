@@ -17,7 +17,7 @@ import { getListVacation } from "~/store/slices/vacationSlice";
 import { getTrendingPlace } from "~/store/slices/locationSlice";
 import { getDate } from "~/helpers/function";
 import Image from "~/components/Image/Image";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 // import CreateVacation from "../vacation/CreateVacation/CreateVacation";
 import CreateAlbum from "../album/CreateAlbum/CreateAlbum";
 import HandleVacation from "../vacation/HandleVacation/HandleVacation";
@@ -108,16 +108,12 @@ const NewFeed = () => {
         <div className={cx("user-info-head")}>
           <div className={cx("user-info-header")}>
             <div className={cx("user-info-header-details")}>
-              <li>{info?.totalFriends}</li>
+              <NavLink to="profile/friends">{info?.totalFriends}</NavLink>
               <div className={cx("user-info-header-line")}>friends</div>
             </div>
-            <Image
-              path={info.avatar?.path}
-              className={cx("user-info-bgava")}
-              alt=""
-            />
+            <Image path={info.avatar?.path} className={cx("user-info-bgava")} alt="" />
             <div className={cx("user-info-header-details")}>
-              <li>{info?.totalPosts}</li>
+              <NavLink to="profile">{info?.totalPosts}</NavLink>
               <div className={cx("user-info-header-line")}>Posts</div>
             </div>
           </div>
@@ -133,45 +129,26 @@ const NewFeed = () => {
       </div>
       <div className={cx("feed")}>
         <div className={cx("create")}>
-          <Avatar
-            size={50}
-            src={info.avatar?.path}
-            className={cx("user-ava")}
-            alt=""
-          />
+          <Avatar size={50} src={info.avatar?.path} className={cx("user-ava")} alt="" />
           <div className={cx("create-posts")}>
-            <button className={cx("create-line")}>
-              Every step is a milestone ...{" "}
-            </button>
+            <button className={cx("create-line")}>Every step is a milestone ... </button>
             <div className={cx("create-details")}>
               <button className={cx("create-sthg")}>
                 <FileTextOutlined />
                 <div className={cx("create-sthg-details")}>Add Post</div>
               </button>
-              <button
-                className={cx("create-sthg")}
-                onClick={() => setOpenAlbum(true)}
-              >
+              <button className={cx("create-sthg")} onClick={() => setOpenAlbum(true)}>
                 <PictureOutlined />
 
-                <div
-                  className={cx("create-sthg-details")}
-                  onClick={() => setOpenAlbum(true)}
-                >
+                <div className={cx("create-sthg-details")} onClick={() => setOpenAlbum(true)}>
                   Add Album
                 </div>
               </button>
               <CreateAlbum setOpen={setOpenAlbum} open={openAlbum} />
-              <button
-                className={cx("create-sthg")}
-                onClick={() => setOpen(true)}
-              >
+              <button className={cx("create-sthg")} onClick={() => setOpen(true)}>
                 <FolderOpenOutlined />
 
-                <div
-                  className={cx("create-sthg-details")}
-                  onClick={() => setOpen(true)}
-                >
+                <div className={cx("create-sthg-details")} onClick={() => setOpen(true)}>
                   Add Vacation
                 </div>
               </button>
@@ -186,32 +163,18 @@ const NewFeed = () => {
         </div>
         <ul>
           {listVacation.list?.map((vacation) => (
-            <a
-              key={vacation._id}
-              className={cx("feed-post")}
-              href={`/vacation?vacationID=${vacation._id}`}
-            >
+            <a key={vacation._id} className={cx("feed-post")} href={`/vacation?vacationID=${vacation._id}`}>
               <div className={cx("feed-head")}>
-                <Image
-                  path={vacation.authorInfo.avatar?.path}
-                  alt=""
-                  className={cx("feed-ava")}
-                />
+                <Image path={vacation.authorInfo?.avatar?.path} alt="" className={cx("feed-ava")} />
                 <div className={cx("feed-head-info")}>
-                  <div className={cx("feed-user-name")}>
-                    @{vacation.authorInfo.username}
-                  </div>
+                  <div className={cx("feed-user-name")}>@{vacation.authorInfo?.username}</div>
                   <div className={cx("feed-time")}>
-                    {getDate(vacation.startingTime)} -{" "}
-                    {getDate(vacation.endingTime)}
+                    {getDate(vacation.startingTime)} - {getDate(vacation.endingTime)}
                   </div>
                 </div>
               </div>
               <div className={cx("feed-cover")}>
-                <Image
-                  path={vacation.cover?.path}
-                  alt="This is Vacation cover"
-                />
+                <Image path={vacation.cover?.path} alt="This is Vacation cover" />
                 <div className={cx("feed-cover-rad")}></div>
                 <div className={`${cx("cover-item")} ${cx("views")}`}>
                   <EyeOutlined />

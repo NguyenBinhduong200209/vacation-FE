@@ -4,6 +4,8 @@ import vacationReducer from "./slices/vacationSlice";
 import locationReducer from "./slices/locationSlice";
 import searchReducer from "./slices/searchSlice";
 import notiReducer from "./slices/notiSlice";
+import albumReducer from "./slices/albumSlice";
+import friendReducer from "./slices/friendSlice";
 
 const rootReducer = {
   auth: authReducer,
@@ -11,6 +13,8 @@ const rootReducer = {
   location: locationReducer,
   search: searchReducer,
   noti: notiReducer,
+  album: albumReducer,
+  friend: friendReducer,
 };
 const store = configureStore({
   reducer: rootReducer,

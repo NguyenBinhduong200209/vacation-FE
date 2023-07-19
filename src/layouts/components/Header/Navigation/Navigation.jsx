@@ -44,11 +44,11 @@ const Navigation = () => {
         <FolderOpenOutlined />
       </NavLink>
 
-      <div
-        style={{ cursor: "pointer", padding: "0" }}
-        className={isVisible ? cx("active") : ""}
-      >
-        <Badge count={totalUnseen} overflowCount={9} color="#b18735">
+
+
+      <NavLink style={{ cursor: "pointer", padding: "0" }} className={isVisible ? cx("active") : ""}>
+        <Badge count={totalUnseen || 0} overflowCount={9} color="#b18735">
+
           <BellOutlined />
         </Badge>
       </div>

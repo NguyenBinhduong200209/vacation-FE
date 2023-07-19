@@ -2,8 +2,6 @@ import styles from "./Retrieval.module.scss";
 import classNames from "classnames/bind";
 import InputForm from "../../components/InputForm/InputForm";
 import images from "~/images";
-// import keyImg from "~/images/key.png";
-// import backImg from "~/images/back.png";
 import { FORGOT, RESET } from "~/utils/constants";
 import Image from "~/components/Image/Image";
 

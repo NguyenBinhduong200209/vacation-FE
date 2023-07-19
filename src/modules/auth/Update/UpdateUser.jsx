@@ -11,7 +11,6 @@ import {
 const cx = classNames.bind(styles);
 const UpdateUser = () => {
   const navigate = useNavigate();
-
   // Get Url path name
   const [activeTag, setActiveTags] = useState(window.location.pathname);
 

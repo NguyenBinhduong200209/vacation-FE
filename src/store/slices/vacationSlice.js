@@ -76,6 +76,10 @@ const vacationSlice = createSlice({
     setTimeline: (state, action) => {
       state.activeTimeline = action.payload;
     },
+    resetList: (state, action) => {
+      state.listVacation.list = [];
+      state.listVacation.meta = {};
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -125,5 +129,5 @@ const vacationSlice = createSlice({
   },
 });
 const { reducer, actions } = vacationSlice;
-export const { setTimeline } = actions;
+export const { setTimeline, resetList } = actions;
 export default reducer;

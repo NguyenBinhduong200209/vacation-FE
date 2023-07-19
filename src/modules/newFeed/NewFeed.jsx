@@ -13,7 +13,7 @@ import {
   PictureOutlined,
   FolderOpenOutlined,
 } from "@ant-design/icons";
-import { getListVacation } from "~/store/slices/vacationSlice";
+import { getListVacation, resetList } from "~/store/slices/vacationSlice";
 import { getTrendingPlace } from "~/store/slices/locationSlice";
 import { getDate } from "~/helpers/function";
 import Image from "~/components/Image/Image";
@@ -50,6 +50,7 @@ const NewFeed = () => {
         number: 7,
       })
     );
+    dispatch(resetList());
   }, []);
 
   // increase currentPage when at bottom page

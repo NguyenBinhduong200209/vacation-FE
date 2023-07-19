@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import classNames from "classnames/bind";
 import styles from "./Vacation.module.scss";
 import { HeartFilled, CommentOutlined, EyeOutlined } from "@ant-design/icons";
-import { getListVacation } from "~/store/slices/vacationSlice";
+import { getListVacation, resetList } from "~/store/slices/vacationSlice";
 import { Card, List, Typography, Skeleton } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +16,10 @@ const Vacations = () => {
     list,
     meta: { page, pages },
   } = useSelector((state) => state.vacation.listVacation);
+
+  useEffect(() => {
+    dispatch(resetList());
+  }, []);
 
   useEffect(() => {
     dispatch(getListVacation({ type: "userProfile", page: 1 }));

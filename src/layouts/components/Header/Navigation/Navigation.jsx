@@ -1,5 +1,5 @@
 import React from "react";
-import { HomeOutlined, PictureOutlined, FolderOpenOutlined, BellOutlined } from "@ant-design/icons";
+import { HomeOutlined, TeamOutlined, FolderOpenOutlined, BellOutlined } from "@ant-design/icons";
 import { Badge } from "antd";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
@@ -22,16 +22,16 @@ const Navigation = () => {
       </NavLink>
 
       <NavLink
-        to="/profile"
+        to="/profile/friends"
         className={({ isActive }) => {
           return isActive ? cx("active") : "";
         }}
       >
-        <PictureOutlined />
+        <TeamOutlined />
       </NavLink>
 
       <NavLink
-        to="/setting"
+        to="/profile/"
         className={({ isActive }) => {
           return isActive ? cx("active") : "";
         }}

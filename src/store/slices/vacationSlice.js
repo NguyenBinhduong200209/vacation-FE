@@ -7,7 +7,7 @@ export const getListVacation = createAsyncThunk(
   async (arg, thunkAPI) => {
     try {
       const res = await vacationAPI.getListVacation(arg);
-      return res.data;
+      return { result: res.data, currentPage: arg.page };
     } catch (error) {
       if (!error.response) {
         return thunkAPI.rejectWithValue({ message: error.message });
@@ -41,7 +41,7 @@ export const getManyPosts = createAsyncThunk(
   async (arg, thunkAPI) => {
     try {
       const res = await vacationAPI.getManyPosts(arg);
-      console.log(res)
+      console.log(res);
       return res.data;
     } catch (error) {
       if (!error.response) {
@@ -74,7 +74,8 @@ const vacationSlice = createSlice({
   initialState: {
     listVacation: {
       list: [],
-      meta: {},
+      page: 0,
+      pages: 0,
     },
     detail: {},
     posts: {
@@ -103,7 +104,6 @@ const vacationSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getManyPosts.fulfilled, (state, action) => {
-        console.log(action.payload);
         if (action.payload) {
           let newList = [];
           if (action.payload.data?.length > 0) {
@@ -119,13 +119,15 @@ const vacationSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(getListVacation.fulfilled, (state, action) => {
-        if (action.payload) {
-          let newList = [];
-          if (action.payload.data?.length > 0) {
-            newList = state.listVacation.list.concat(action.payload.data);
-          }
-          state.listVacation.list = newList;
-          state.listVacation.meta = action.payload?.meta;
+        if (action.payload.data !== "") {
+          const { page } = action.meta.arg;
+          const { result } = action.payload;
+          state.listVacation.list =
+            page === 1
+              ? result.data
+              : state.listVacation.list.concat(result.data);
+          state.listVacation.page = result.meta.page;
+          state.listVacation.pages = result.meta.pages;
         }
 
         state.isLoading = false;

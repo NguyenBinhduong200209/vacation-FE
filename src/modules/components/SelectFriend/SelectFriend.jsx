@@ -33,9 +33,12 @@ const SelectFriend = ({ open, setOpen, memberList, setMemberList }) => {
     if (debouncedValue !== "") {
       dispatch(
         searchOneModel({
-          model: "user",
-          value: debouncedValue,
-          page: currentPage,
+          body: {
+            model: "user",
+            value: debouncedValue,
+            page: currentPage,
+          },
+          type: "suggestions",
         })
       );
       setOpenResult(true);
@@ -44,7 +47,7 @@ const SelectFriend = ({ open, setOpen, memberList, setMemberList }) => {
 
   useEffect(() => {
     setCurrentPage(1);
-    dispatch(resetResult());
+    dispatch(resetResult({ type: "suggestions" }));
   }, [inputValue]);
 
   useClickOutside(resultRef, () => {
@@ -108,10 +111,10 @@ const SelectFriend = ({ open, setOpen, memberList, setMemberList }) => {
               className={cx("search-result")}
               onScroll={handleScroll}
             >
-              {result.length === 0 && !isLoading ? (
+              {result.suggestions.data.length === 0 && !isLoading ? (
                 <div className={cx("result-empty")}>Not Found</div>
               ) : (
-                result.map((item) => {
+                result.suggestions.data.map((item) => {
                   if (memberList.some((friend) => friend._id === item._id)) {
                     return;
                   }

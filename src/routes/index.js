@@ -9,7 +9,7 @@ import UpdateUser from "~/modules/auth/Update/UpdateUser";
 import Security from "~/modules/auth/Update/Security/Security";
 import Personal from "~/modules/auth/Update/Personal/Personal";
 import Overview from "~/modules/auth/Update/Overview/Overview";
-import NewFeed from "~/modules/newFeed/NewFeed";
+import NewFeed from "~/modules/newfeed/NewFeed";
 import Test from "~/modules/profile/Test";
 import VacationProfile from "~/modules/profile/Vacations";
 import AlbumProfile from "~/modules/profile/Albums";
@@ -21,10 +21,20 @@ import {
   OVERVIEW_ROUTE,
   PERSONAL_ROUTE,
   REGISTER_ROUTE,
+  SEARCH_ALBUM_ROUTE,
+  SEARCH_LOCATION_ROUTE,
+  SEARCH_ROUTE,
+  SEARCH_USER_ROUTE,
+  SEARCH_VACATION_ROUTE,
   SECURITY_ROUTE,
   SETTING_ROUTE,
   VACATION_ROUTE,
 } from "~/utils/constants";
+import Search from "~/modules/search/Search";
+import SearchUser from "~/modules/search/SearchUser/SearchUser";
+import SearchLocation from "~/modules/search/SearchLocation/SearchLocation";
+import SearchVacation from "~/modules/search/SearchVacation/SearchVacation";
+import SearchAlbum from "~/modules/search/SearchAlbum/SearchAlbum";
 
 export const publicRoutes = [
   { path: "/", component: NewFeed, layout: DefaultLayout },
@@ -75,6 +85,15 @@ export const publicRoutes = [
     component: Vacation,
     layout: DefaultLayout,
   },
+
+  { path: SEARCH_USER_ROUTE, component: SearchUser, layout: Search },
+  {
+    path: SEARCH_LOCATION_ROUTE,
+    component: SearchLocation,
+    layout: Search,
+  },
+  { path: SEARCH_VACATION_ROUTE, component: SearchVacation, layout: Search },
+  { path: SEARCH_ALBUM_ROUTE, component: SearchAlbum, layout: Search },
 
   { path: "*", component: NotFound },
 ];

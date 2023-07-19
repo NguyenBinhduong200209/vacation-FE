@@ -6,7 +6,8 @@ const authAPI = {
     return axiosClient.post(URL.LOGIN_URL, account);
   },
   refreshToken: () => {
-    return axiosClient.post(URL.REFRESHTOKEN_URL);
+    const refreshTk = localStorage.get("rfToken");
+    return axiosClient.post(URL.REFRESHTOKEN_URL, { refreshToken: refreshTk });
   },
 
   logout: () => {

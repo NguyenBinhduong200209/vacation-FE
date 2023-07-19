@@ -1,6 +1,6 @@
 // API Auth URL
 export const LOGIN_URL = "auth/login";
-export const REFRESHTOKEN_URL = "authrefresh";
+export const REFRESHTOKEN_URL = "auth/refresh";
 export const LOGOUT_URL = "auth/logout";
 export const UPDATE_USER_URL = "auth/update";
 export const REGISTER_URL = "auth/register";
@@ -55,3 +55,8 @@ export const PERSONAL_ROUTE = "/setting/personal";
 export const SECURITY_ROUTE = "/setting/security";
 export const VACATION_ROUTE = "/vacation";
 export const POST_BY_VACATION = "/post/vacation";
+export const SEARCH_ROUTE = "/search";
+export const SEARCH_USER_ROUTE = "/search/user";
+export const SEARCH_LOCATION_ROUTE = "/search/location";
+export const SEARCH_VACATION_ROUTE = "/search/vacation";
+export const SEARCH_ALBUM_ROUTE = "/search/album";

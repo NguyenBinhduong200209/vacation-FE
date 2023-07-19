@@ -28,6 +28,7 @@ const Slider = () => {
 
     fetchData();
   }, [dataId.id]);
+  console.log(img);
 
   const prevSlide = () => {
     setActive((active - 1 + cardCount) % cardCount);

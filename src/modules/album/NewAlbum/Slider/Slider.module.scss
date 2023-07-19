@@ -42,8 +42,10 @@
 }
 
 .card img {
-  width: 200px;
-  height: 200px;
+  border: 1px solid rgb(82, 72, 72);
+  border-radius: 20px;
+  width: 100%;
+  height: 80%;
 }
 
 // .card h4 {
@@ -65,27 +67,33 @@
 // }
 
 .nav-left {
-  color: white;
   font-size: 3rem;
   position: absolute;
-  top: calc(50% - 1.5rem);
+  top: calc(40% - 1.5rem);
   z-index: 2;
   cursor: pointer;
   user-select: none;
   background: none;
   border: none;
-  left: 1rem;
+  left: -15%;
+  color: wheat;
+  :hover {
+    color: rgb(50, 45, 45);
+  }
 }
 
 .nav-right {
-  color: white;
+  color: wheat;
   font-size: 3rem;
   position: absolute;
-  top: calc(50% - 1.5rem);
+  top: calc(40% - 1.5rem);
   z-index: 2;
   cursor: pointer;
   user-select: none;
   background: none;
   border: none;
-  right: 1rem;
+  right: -15%;
+  :hover {
+    color: rgb(50, 45, 45);
+  }
 }

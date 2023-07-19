@@ -17,7 +17,7 @@ import { getListVacation } from "~/store/slices/vacationSlice";
 import { getTrendingPlace } from "~/store/slices/locationSlice";
 import { getDate } from "~/helpers/function";
 import Image from "~/components/Image/Image";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 // import CreateVacation from "../vacation/CreateVacation/CreateVacation";
 import CreateAlbum from "../album/CreateAlbum/CreateAlbum";
 import HandleVacation from "../vacation/HandleVacation/HandleVacation";
@@ -103,12 +103,12 @@ const NewFeed = () => {
         <div className={cx("user-info-head")}>
           <div className={cx("user-info-header")}>
             <div className={cx("user-info-header-details")}>
-              <li>{info?.totalFriends}</li>
+              <NavLink to="profile/friends">{info?.totalFriends}</NavLink>
               <div className={cx("user-info-header-line")}>friends</div>
             </div>
             <Image path={info.avatar?.path} className={cx("user-info-bgava")} alt="" />
             <div className={cx("user-info-header-details")}>
-              <li>{info?.totalPosts}</li>
+              <NavLink to="profile">{info?.totalPosts}</NavLink>
               <div className={cx("user-info-header-line")}>Posts</div>
             </div>
           </div>

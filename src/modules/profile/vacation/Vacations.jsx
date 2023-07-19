@@ -35,7 +35,7 @@ const Vacations = () => {
       >
         <List
           className={cx("feed")}
-          grid={{ gutter: 30, column: 3 }}
+          grid={{ gutter: 35, column: 3 }}
           dataSource={list}
           renderItem={(item) => (
             <List.Item className={cx("feed-item")}>

@@ -4,6 +4,7 @@ import "./Slider.css";
 import { useSearchParams } from "react-router-dom";
 import styles from "./Slider.module.scss";
 import classNames from "classnames/bind";
+import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 
 const cx = classNames.bind(styles);
 
@@ -27,12 +28,6 @@ const Slider = () => {
 
     fetchData();
   }, [dataId.id]);
-
-  // console.log(fetchImg, img);
-  //   const [searchParam] = useSearchParams();
-
-  //   const title = searchParam.get("title");
-  //   const vacationId = searchParam.get("id");
 
   const prevSlide = () => {
     setActive((active - 1 + cardCount) % cardCount);
@@ -62,46 +57,60 @@ const Slider = () => {
     });
   }, [active, cardCount]);
 
-  // const updateCarousel = () => {
-  //   const cardContainers = document.querySelectorAll(
-  //     `.${cx("card-container")}`
-  //   );
-
-  //   cardContainers.forEach((container, i) => {
-  //     const offset = ((active - i) % cardCount) / 3;
-  //     const direction = Math.sign(active - i);
-  //     const absOffset = Math.abs(active - i) / 3;
-  //     const isActive = i === active ? 1 : 0;
-  //     const opacity = Math.abs(active - i) <= 1 ? 1 : 0;
-
-  //     container.style.setProperty("--offset", offset);
-  //     container.style.setProperty("--direction", direction);
-  //     container.style.setProperty("--abs-offset", absOffset);
-  //     container.style.setProperty("--active", isActive);
-  //     container.style.setProperty("--opacity", opacity);
-  //   });
-  // };
   console.log(active, img);
 
   return (
-    <div className={cx("carousel-container")}>
-      <div className={cx("carousel")}>
-        {img.map((item, index) => (
-          <div className={cx("card-container")}>
-            <div className={cx("card")}>
-              <img key={item._id} src={item?.path} alt="?" />
-            </div>
-            <button>chọn cái này nhé bạn ơi</button>
-          </div>
-        ))}
+    // <div className={cx("carousel-container")}>
+    //   <div className={cx("carousel")}>
+    //     {/* {img.map((item, index) => (
+    //       <div className={cx("card-container")}>
+    //         <div className={cx("card")}>
+    //           <img key={item._id} src={item?.path} alt="?" />
+    //         </div>
+    //         <button>chọn cái này nhé bạn ơi</button>
+    //       </div>
+    //     ))} */}
 
-        <button className={cx("nav-left")} onClick={prevSlide}>
-          <div className={cx("bi bi-chevron-left")}>trai</div>
-        </button>
-        <button className={cx("nav-right")} onClick={nextSlide}>
-          <div className={cx("bi bi-chevron-right")}>phai</div>
-        </button>
-      </div>
+    //     {img.map((item, index) => (
+    //       <div className={cx("card-container")} key={index}>
+    //         <div className={cx("card")}>
+    //           <img src={item?.path} alt="?" />
+    //         </div>
+    //         <button>chọn cái này nhé bạn ơi</button>
+    //       </div>
+    //     ))}
+
+    //     <button className={cx("nav-left")} onClick={prevSlide}>
+    //       <div className={cx("bi bi-chevron-left")}>trai</div>
+    //     </button>
+    //     <button className={cx("nav-right")} onClick={nextSlide}>
+    //       <div className={cx("bi bi-chevron-right")}>phai</div>
+    //     </button>
+    //   </div>
+    // </div>
+
+    <div className={cx("carousel-container")}>
+      {img.length === 0 ? (
+        <div className={cx("no-picture")}>No pictures available.</div>
+      ) : (
+        <div className={cx("carousel")}>
+          {img.map((item, index) => (
+            <div className={cx("card-container")} key={index}>
+              <div className={cx("card")}>
+                <img src={item?.path} alt="?" />
+              </div>
+            </div>
+          ))}
+
+          <button className={cx("nav-left")} onClick={prevSlide}>
+            <LeftCircleOutlined />
+          </button>
+          <button className={cx("nav-right")} onClick={nextSlide}>
+            <RightCircleOutlined />
+          </button>
+        </div>
+      )}
+      <button>chọn cái này nhé bạn ơi</button>
     </div>
   );
 };

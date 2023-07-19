@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  HomeOutlined,
-  PictureOutlined,
-  FolderOpenOutlined,
-  BellOutlined,
-} from "@ant-design/icons";
+import { HomeOutlined, PictureOutlined, FolderOpenOutlined, BellOutlined } from "@ant-design/icons";
 import { Badge } from "antd";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
@@ -44,14 +39,11 @@ const Navigation = () => {
         <FolderOpenOutlined />
       </NavLink>
 
-
-
       <NavLink style={{ cursor: "pointer", padding: "0" }} className={isVisible ? cx("active") : ""}>
         <Badge count={totalUnseen || 0} overflowCount={9} color="#b18735">
-
           <BellOutlined />
         </Badge>
-      </div>
+      </NavLink>
     </div>
   );
 };

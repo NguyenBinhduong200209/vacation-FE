@@ -33,7 +33,6 @@ export const getDetailVacation = createAsyncThunk("vacation/getDetailVacation", 
 export const getManyPosts = createAsyncThunk("vacation/getManyPosts", async (arg, thunkAPI) => {
   try {
     const res = await vacationAPI.getManyPosts(arg);
-    console.log(res);
     return res.data;
   } catch (error) {
     if (!error.response) {
@@ -111,6 +110,7 @@ const vacationSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(getListVacation.fulfilled, (state, action) => {
+        console.log(action);
         if (action.payload.data !== "") {
           const { page } = action.meta.arg;
           const { result } = action.payload;

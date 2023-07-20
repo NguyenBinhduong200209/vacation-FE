@@ -54,6 +54,7 @@ export const getFiendList = createAsyncThunk("auth/getFiendList", async (arg, th
     });
   }
 });
+
 export const refreshToken = createAsyncThunk("auth/refreshToken", async (arg, thunkAPI) => {
   try {
     const refreshToken = localStorage.getItem("rfToken");
@@ -74,10 +75,12 @@ export const refreshToken = createAsyncThunk("auth/refreshToken", async (arg, th
     });
   }
 });
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     info: [],
+    otherUserInfo: [],
     renderList: [{ list: LoginData }],
     isLogin: !!localStorage.getItem("token"),
     isLoading: false,
@@ -120,7 +123,8 @@ const authSlice = createSlice({
         state.msg = action.payload?.message;
       })
       .addCase(getInfoUser.fulfilled, (state, action) => {
-        state.info = action.payload;
+        if (action.meta.arg) state.otherUserInfo = action.payload;
+        else state.info = action.payload;
       })
       .addCase(refreshToken.fulfilled, (state, action) => {
         console.log(action.payload);
@@ -130,6 +134,7 @@ const authSlice = createSlice({
       });
   },
 });
+
 const { reducer, actions } = authSlice;
 export const { changeRenderList } = actions;
 export default reducer;

@@ -4,12 +4,9 @@ import styles from "./Header.module.scss";
 import { Avatar, Col, Row, Typography } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
 const cx = classNames.bind(styles);
 
-const UserInfo = () => {
-  const { info } = useSelector((state) => state.auth);
-
+const UserInfo = ({ info }) => {
   return (
     <div className={cx("user-info")}>
       <div className={cx("user-info-header")}>

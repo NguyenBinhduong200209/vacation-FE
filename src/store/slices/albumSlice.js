@@ -3,7 +3,7 @@ const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
 export const getList = createAsyncThunk("album/getList", async (arg, thunkAPI) => {
   try {
-    const res = await albumAPI.getList(arg?.page || 1);
+    const res = await albumAPI.getList({ userId: arg?.userId, page: arg?.page || 1 });
     return res.data;
   } catch (error) {
     if (!error.response) {
@@ -24,7 +24,12 @@ const albumSlice = createSlice({
     isError: false,
     msg: "",
   },
-  reducers: {},
+  reducers: {
+    resetList: (state, action) => {
+      state.list = [];
+      state.meta = { page: 1, pages: 1, total: 1 };
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getList.pending, (state) => {
@@ -51,5 +56,5 @@ const albumSlice = createSlice({
   },
 });
 const { reducer, actions } = albumSlice;
-export const { changeRenderList } = actions;
+export const { changeRenderList, resetList } = actions;
 export default reducer;

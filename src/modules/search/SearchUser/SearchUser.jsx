@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import styles from "./SearchUser.module.scss";
 import classNames from "classnames/bind";
 import { searchOneModel } from "~/store/slices/searchSlice";
@@ -66,7 +66,11 @@ const SearchUser = () => {
       <div id="result" className={cx("result")}>
         {users.data?.map((item) => {
           return (
-            <div className={cx("item")} key={item._id}>
+            <Link
+              className={cx("item")}
+              key={item._id}
+              to={`/profile?id=${item._id}`}
+            >
               <Avatar size={64} src={item.avatar} />
               <div className={cx("user-info")}>
                 <div className={cx("username")} style={{ color: "white" }}>
@@ -76,12 +80,12 @@ const SearchUser = () => {
                   {`${item.firstname} ${item.lastname}`}
                 </div>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>
-      {users.data?.length === 0 && !isLoading && <EmptyRes />}
       {isLoading && <Loading className="searching" />}
+      {users.data?.length === 0 && !isLoading && <EmptyRes />}
     </>
   );
 };

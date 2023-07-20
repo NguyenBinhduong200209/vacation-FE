@@ -41,8 +41,8 @@ const SearchLocation = () => {
           );
         })}
       </div>
-      {locations.data?.length === 0 && !isLoading && <EmptyRes />}
       {isLoading && <Loading className="searching" />}
+      {locations.data?.length === 0 && !isLoading && <EmptyRes />}
     </>
   );
 };

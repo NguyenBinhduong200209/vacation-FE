@@ -21,18 +21,18 @@ const InputField = (props) => {
   // wrapper's classes
   const classes = cx("wrapper", {
     [className]: className,
-    ["userName"]: isName && "userName",
+    userName: isName && "userName",
   });
 
   // input's classes
   const inputClasses = cx("input", {
-    ["userName-input"]: isName && "userName-input",
-    ["empty"]: value === "" && "empty",
+    "userName-input": isName && "userName-input",
+    empty: value === "" && "empty",
   });
 
   const labelClasses = cx("label", {
-    ["active"]: value !== "" && "active",
-    ["required"]: required && "required",
+    active: value !== "" && "active",
+    required: required && "required",
   });
 
   const handleHide = () => {

@@ -14,7 +14,7 @@ const cx = classNames.bind(styles);
 
 const NotiList = () => {
   const { list, isVisible, page, pages } = useSelector((state) => state.noti);
-  const userId = useSelector((state) => state.auth?.info?.id);
+  const userId = useSelector((state) => state.auth?.info?._id);
   const dispatch = useDispatch();
   const notiRef = useRef(null);
 
@@ -51,8 +51,6 @@ const NotiList = () => {
   const loadMoreData = () => {
     dispatch(getList({ page: page + 1 }));
   };
-
-  // console.log(isVisible);
 
   return (
     <div ref={notiRef} id={cx(isVisible ? "show" : "hide")} className={cx("notification")}>

@@ -11,8 +11,8 @@ const Friends = () => {
   const [type, setType] = useState("friend");
   const dispatch = useDispatch();
   const onTabChange = (key) => {
-    setType(Number(key) === 1 ? "friend" : "request");
     dispatch(resetList());
+    setType(Number(key) === 1 ? "friend" : "request");
   };
 
   return (

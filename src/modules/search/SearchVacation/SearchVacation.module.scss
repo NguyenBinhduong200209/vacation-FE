@@ -1,0 +1,45 @@
+.title {
+  width: 100%;
+  text-align: left;
+  font-size: 2rem;
+  font-weight: 600;
+  padding: 0 3rem;
+}
+.result {
+  width: 100%;
+  padding: 2rem 0;
+}
+.item {
+  width: 100%;
+  height: 30rem;
+  & > div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .user-info {
+    display: flex;
+    padding: 1rem 0;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .item-name {
+    width: 100%;
+    padding: 1rem 0;
+    display: flex;
+    font-size: 1.6rem;
+    font-weight: 600;
+    span {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+  }
+  img {
+    // display: flex;
+    width: 100%;
+    height: 15rem;
+  }
+}

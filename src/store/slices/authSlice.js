@@ -1,8 +1,7 @@
 import axios from "axios";
 import authAPI from "~/api/authAPI";
-import axiosClient from "~/api/axiosClient";
 import { LoginData } from "~/modules/auth/components/config/data";
-import { LOGIN, REFRESHTOKEN_URL } from "~/utils/constants";
+import { LOGIN } from "~/utils/constants";
 
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 

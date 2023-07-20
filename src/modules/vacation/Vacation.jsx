@@ -15,7 +15,7 @@ import {
 } from "~/store/slices/vacationSlice";
 
 import { getDate } from "~/helpers/function";
-import { Modal, Tooltip } from "antd";
+import { Tooltip } from "antd";
 import Image from "~/components/Image/Image";
 import Posts from "./Posts/Posts";
 import Album from "./Album/Album";
@@ -24,13 +24,13 @@ import HandleVacation from "./HandleVacation/HandleVacation";
 import Preloader from "~/components/Preloader/Preloader";
 
 const cx = classNames.bind(styles);
-const Vacation = ({ children }) => {
+const Vacation = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let [searchParams] = useSearchParams();
   let vacationID = searchParams.get("vacationID"); // get vacationId of url
   const urlType = searchParams.get("type"); // get type  of url (post || album)
-  const isFristReq = useRef(true);
+  // const isFristReq = useRef(true);
   const totalPage = useRef(0);
   const { detail, posts, memberList } = useSelector((state) => state.vacation);
   const { info } = useSelector((state) => state.auth);

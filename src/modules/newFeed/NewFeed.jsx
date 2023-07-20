@@ -65,10 +65,7 @@ const NewFeed = () => {
   // increase currentPage when at bottom page
 
   const loadMorePosts = () => {
-    if (
-      listVacation.page < listVacation.pages &&
-      listVacation.page === currentPage.current
-    ) {
+    if (listVacation.page < listVacation.pages && listVacation.page === currentPage.current) {
       dispatch(
         getListVacation({
           page: listVacation.page + 1,
@@ -109,12 +106,12 @@ const NewFeed = () => {
         <div className={cx("user-info-head")}>
           <div className={cx("user-info-header")}>
             <div className={cx("user-info-header-details")}>
-              <NavLink to="profile/friends">{info?.totalFriends}</NavLink>
+              <NavLink to="profile/friends">{info?.friends}</NavLink>
               <div className={cx("user-info-header-line")}>friends</div>
             </div>
             <Image path={info.avatar?.path} className={cx("user-info-bgava")} alt="" />
             <div className={cx("user-info-header-details")}>
-              <NavLink to="profile">{info?.totalPosts}</NavLink>
+              <NavLink to="profile">{info?.posts}</NavLink>
               <div className={cx("user-info-header-line")}>Posts</div>
             </div>
           </div>

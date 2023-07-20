@@ -2,10 +2,10 @@
 
 //User info/
 .user-info-bgimg {
-  position: sticky;
+  position: relative;
   top: 10%;
-  width: 90%;
-  margin: 0 5%;
+  width: 95%;
+  margin: 0 auto;
   height: 20vh !important;
   z-index: 10;
 
@@ -21,8 +21,10 @@
 .info {
   display: flex;
   justify-content: space-between;
-  width: 89%;
-  margin: 0 auto;
+  width: 97.5%;
+  margin-right: 2.5%;
+  position: relative;
+  top: -10vh;
 }
 
 .container {

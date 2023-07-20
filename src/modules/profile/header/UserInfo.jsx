@@ -14,11 +14,11 @@ const UserInfo = () => {
     <div className={cx("user-info")}>
       <div className={cx("user-info-header")}>
         <Avatar
+          className={cx("avatar")}
           src={info?.avatar?.path}
           size={140}
           shape="square"
           icon={<UserOutlined />}
-          style={{ border: "solid 2px", borderRadius: "20px" }}
         />
 
         <Typography.Title level={4} className={cx("user-info-fullname")}>

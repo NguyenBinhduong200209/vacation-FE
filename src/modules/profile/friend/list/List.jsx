@@ -43,7 +43,7 @@ const FriendList = ({ type }) => {
             const { _id, userInfo, lastUpdateAt } = item;
             return (
               <List.Item className={cx("item")}>
-                <NavLink className={cx("nav")}>
+                <NavLink className={cx("nav")} to={`/profile/${userInfo?._id}`}>
                   <List.Item.Meta
                     className={cx("item-meta")}
                     avatar={

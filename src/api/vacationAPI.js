@@ -3,7 +3,10 @@ import * as URL from "../utils/constants";
 
 const vacationAPI = {
   getListVacation: (data) => {
-    const url = `${URL.VACATION_URL}?type=${data.type}&page=${data.page}`;
+    const url = ["type", "page", "userId"].reduce(
+      (str, item) => (data[item] ? str.concat(`${item}=${data[item]}&`) : str),
+      `${URL.VACATION_URL}?`
+    );
     return axiosClient.get(url);
   },
   getDetailVacation: (id) => {
@@ -34,7 +37,7 @@ const vacationAPI = {
 
   updatePost: (data) => {
     const url = `${URL.POST_URL}/${data.id}`;
-    return axiosClient.put(url)
+    return axiosClient.put(url);
   },
 
   deletePost: (id) => {

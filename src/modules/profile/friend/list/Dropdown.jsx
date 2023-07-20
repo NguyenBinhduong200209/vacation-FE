@@ -17,6 +17,7 @@ const DropdownMore = ({ id }) => {
   return (
     <Menu
       className={cx("drop")}
+      triggerSubMenuAction="click"
       mode="horizontal"
       theme="dark"
       items={[

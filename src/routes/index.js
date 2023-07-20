@@ -67,7 +67,7 @@ export const publicRoutes = [
   },
 
   {
-    path: "/profile",
+    path: "/profile/:id?",
     component: Profile,
     layout: DefaultLayout,
     child: [

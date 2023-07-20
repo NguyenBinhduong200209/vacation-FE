@@ -1,13 +1,22 @@
 import { Image } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "~/modules/profile/header/Navbar";
 import UserInfo from "./header/UserInfo";
 import classNames from "classnames/bind";
 import styles from "./ProfileLayout.module.scss";
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { getInfoUser } from "~/store/slices/authSlice";
 const cx = classNames.bind(styles);
 
-const Test = () => {
+const Profile = () => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getInfoUser(id));
+  });
+
   return (
     <>
       <Image
@@ -26,4 +35,4 @@ const Test = () => {
   );
 };
 
-export default Test;
+export default Profile;

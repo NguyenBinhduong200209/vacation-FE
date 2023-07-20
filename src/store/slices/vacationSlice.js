@@ -115,8 +115,8 @@ const vacationSlice = createSlice({
           const { page } = action.meta.arg;
           const { result } = action.payload;
           state.listVacation.list = page === 1 ? result.data : state.listVacation.list.concat(result.data);
-          state.listVacation.page = result.meta.page;
-          state.listVacation.pages = result.meta.pages;
+          state.listVacation.page = result.meta?.page;
+          state.listVacation.pages = result.meta?.pages;
         }
 
         state.isLoading = false;

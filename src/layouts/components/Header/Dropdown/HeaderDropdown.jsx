@@ -40,8 +40,8 @@ const HeaderDropdown = () => {
   }, []);
 
   return (
-    <div ref={dropdownRef} className={cx("dropdown-container")}>
-      <div className={cx("nav-user")} onClick={toggleDropdown}>
+    <div className={cx("dropdown-container")}>
+      <div ref={dropdownRef} className={cx("nav-user")} onClick={toggleDropdown}>
         <Avatar
           src={info?.avatar?.path}
           size="small"

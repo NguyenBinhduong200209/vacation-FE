@@ -1,31 +1,61 @@
-import React from "react";
+import React, { useEffect } from "react";
 import classNames from "classnames/bind";
-import styles from "./Header.module.scss";
-import { Avatar, Col, Row, Typography } from "antd";
+import styles from "./UserInfo.module.scss";
+import { Image, Col, Row, Typography } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getAvatar } from "~/store/slices/resourceSlice";
 const cx = classNames.bind(styles);
 
 const UserInfo = ({ info }) => {
+  const dispatch = useDispatch();
+  const { list, meta } = useSelector((state) => state.resource);
+  const loginUserId = useSelector((state) => state.auth.info?._id);
+  const otherUserId = info?._id;
+  const isLoginUser = otherUserId === loginUserId;
+
+  useEffect(() => {
+    dispatch(getAvatar(Object.assign({ page: 1 }, isLoginUser ? {} : { userId: otherUserId })));
+  }, [dispatch, isLoginUser, otherUserId]);
+
+  console.log(list);
+
   return (
     <div className={cx("user-info")}>
       <div className={cx("user-info-header")}>
-        <Avatar
-          className={cx("avatar")}
-          src={info?.avatar?.path}
-          size={140}
-          shape="square"
-          icon={<UserOutlined />}
-        />
+        <Image.PreviewGroup
+          items={list.map((item) => item.path)}
+          preview={{
+            onChange: (current) => {
+              list.length - current < 2 &&
+                dispatch(
+                  getAvatar(
+                    Object.assign({ page: meta.page + 1 }, isLoginUser ? {} : { userId: otherUserId })
+                  )
+                );
+            },
+          }}
+        >
+          <Image
+            className={cx("avatar")}
+            draggable={false}
+            height={140}
+            width={140}
+            preview={{ maskClassName: cx("avatar") }}
+            src={info?.avatar?.path}
+            icon={<UserOutlined />}
+          />
+        </Image.PreviewGroup>
 
         <Typography.Title level={4} className={cx("user-info-fullname")}>
           {info?.lastname} {info?.firstname}
         </Typography.Title>
 
-        <span style={{ fontStyle: "italic" }}>
+        <i>
           <Typography.Text>@</Typography.Text>
           <Typography.Text copyable={true}>{info?.username}</Typography.Text>
-        </span>
+        </i>
 
         <Typography.Paragraph ellipsis={{ expandable: false, rows: 2 }} className={cx("user-info-des")}>
           {info?.description}

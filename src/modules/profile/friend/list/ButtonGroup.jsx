@@ -4,7 +4,7 @@ import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import { acceptFriend, removeFriend } from "~/store/slices/friendSlice";
 
-const ButtonGroup = ({ userId, id }) => {
+const ButtonGroup = ({ id }) => {
   const dispatch = useDispatch();
 
   const handleAccept = () => {
@@ -12,7 +12,7 @@ const ButtonGroup = ({ userId, id }) => {
   };
 
   const handleRemove = () => {
-    dispatch(removeFriend({ id: userId }));
+    dispatch(removeFriend({ id: id }));
   };
 
   return (

@@ -1,11 +1,16 @@
+.wrapper {
+  width: 100%;
+  height: 100%;
+}
+
 .mother {
-  position: fixed;
+  // position: fixed;
   top: 18vh;
   left: 30%;
-  width: 40%;
-  height: 70vh;
+  width: 100%;
+  height: 100%;
   /* border: 1px solid yellow; */
-  /* padding: 2rem; */
+  // padding: 1rem;
   outline-width: 2px;
   outline-color: white;
   outline-style: solid;

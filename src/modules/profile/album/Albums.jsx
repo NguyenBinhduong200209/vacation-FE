@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import classNames from "classnames/bind";
 import styles from "./Album.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { getList } from "~/store/slices/albumSlice";
+import { getList, resetList } from "~/store/slices/albumSlice";
 import { Card, List, Typography, Skeleton } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { NavLink } from "react-router-dom";
+import { NavLink, useOutletContext } from "react-router-dom";
 const cx = classNames.bind(styles);
 
 const Albums = () => {
@@ -15,12 +15,15 @@ const Albums = () => {
     meta: { page, pages },
   } = useSelector((state) => state.album);
 
+  const { userId } = useOutletContext();
+
   useEffect(() => {
-    dispatch(getList({ page: 1 }));
-  }, [dispatch]);
+    dispatch(resetList());
+    dispatch(getList({ userId, page: 1 }));
+  }, [dispatch, userId]);
 
   const loadMoreData = () => {
-    dispatch(getList({ page: page + 1 }));
+    dispatch(getList({ userId, page: page + 1 }));
   };
 
   return (

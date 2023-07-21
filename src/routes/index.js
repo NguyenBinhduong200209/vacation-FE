@@ -21,7 +21,6 @@ import {
   REGISTER_ROUTE,
   SEARCH_ALBUM_ROUTE,
   SEARCH_LOCATION_ROUTE,
-  SEARCH_ROUTE,
   SEARCH_USER_ROUTE,
   SEARCH_VACATION_ROUTE,
   SECURITY_ROUTE,
@@ -68,7 +67,7 @@ export const publicRoutes = [
   },
 
   {
-    path: "/profile",
+    path: "/profile/:id?",
     component: Profile,
     layout: DefaultLayout,
     child: [

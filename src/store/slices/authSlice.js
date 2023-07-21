@@ -31,6 +31,7 @@ export const getInfoUser = createAsyncThunk(
   async (arg, thunkAPI) => {
     try {
       const res = await authAPI.getInfoUser(arg);
+      console.log(res);
       return res.data.data;
     } catch (error) {
       console.log(error);
@@ -46,59 +47,17 @@ export const getInfoUser = createAsyncThunk(
   }
 );
 
-export const getFiendList = createAsyncThunk(
-  "auth/getFiendList",
-  async (arg, thunkAPI) => {
-    try {
-      const res = await authAPI.getFiendList();
-      return res.data.data;
-    } catch (error) {
-      if (!error.response) {
-        return thunkAPI.rejectWithValue({ message: error.message });
-      }
-      return thunkAPI.rejectWithValue({
-        message: error.response.data.message,
-      });
-    }
-  }
-);
-export const refreshToken = createAsyncThunk(
-  "auth/refreshToken",
-  async (arg, thunkAPI) => {
-    try {
-      const refreshToken = localStorage.getItem("rfToken");
-      const res = await axios.post(
-        "https://vacation-backend.onrender.com/auth/refresh",
-        {
-          headers: {
-            "content-type": "application/json",
-            Authorization: refreshToken,
-          },
-        }
-      );
-      console.log(res);
-      return res.data;
-    } catch (error) {
-      if (!error.response) {
-        return thunkAPI.rejectWithValue({ message: error.message });
-      }
-      return thunkAPI.rejectWithValue({
-        message: error.response.data.message,
-      });
-    }
-  }
-);
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     info: [],
+    otherUserInfo: [],
     renderList: [{ list: LoginData }],
     isLogin: !!localStorage.getItem("token"),
     isLoading: false,
     isSuccess: false,
     isError: false,
     msg: "",
-    friendList: [],
   },
   reducers: {
     changeRenderList: (state, action) => {
@@ -140,16 +99,12 @@ const authSlice = createSlice({
         state.msg = action.payload?.message;
       })
       .addCase(getInfoUser.fulfilled, (state, action) => {
-        state.info = action.payload;
-      })
-      .addCase(refreshToken.fulfilled, (state, action) => {
-        console.log(action.payload);
-      })
-      .addCase(getFiendList.fulfilled, (state, action) => {
-        state.friendList = action.payload;
+        if (action.meta.arg) state.otherUserInfo = action.payload;
+        else state.info = action.payload;
       });
   },
 });
+
 const { reducer, actions } = authSlice;
 export const { changeRenderList } = actions;
 export default reducer;

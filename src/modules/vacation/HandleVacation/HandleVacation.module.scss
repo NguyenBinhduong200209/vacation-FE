@@ -46,7 +46,6 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 0 1.5rem;
 
   input {
     font-size: 1.2rem !important;
@@ -127,17 +126,19 @@
     cursor: pointer;
   }
 }
-
-.result-list {
+.result-list,
+.resources {
   display: flex;
   align-items: center;
   gap: 1rem;
   flex-wrap: wrap;
+}
+
+.result-list {
   margin-top: 0.5rem;
 
   span {
     position: relative;
-
     border: 1px solid rgb(122, 121, 121);
     border-radius: 4px;
     padding: 0.5rem;
@@ -151,6 +152,16 @@
     cursor: pointer;
   }
 }
+
+.resources {
+  margin-top: 1rem;
+
+  .resource {
+    width: 8rem;
+    height: 8rem;
+    object-fit: cover;
+  }
+}
 // btn
 .btn-submit {
   width: 100%;
@@ -162,4 +173,8 @@
   letter-spacing: 1.2px;
   border-radius: 20px;
   cursor: pointer;
+
+  &:disabled {
+    opacity: 0.2;
+  }
 }

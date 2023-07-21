@@ -21,7 +21,7 @@ const Modal = ({ children, open, setOpen, title, className }) => {
         className={cx("close-icon")}
         onClick={() => setOpen(false)}
       />
-      {children}
+      <div className={cx("wrapper")}>{children}</div>
     </ReactModal>
   );
 };

@@ -1,14 +1,14 @@
 .wrapper {
-  position: fixed;
+  position: sticky;
   top: 0;
-  width: 100%;
+  width: 95%;
+  margin: auto;
   height: 10vh;
   display: flex;
   background-color: #1a1a1a;
   color: white;
   justify-content: space-between;
   align-items: center;
-  padding: 0rem 4rem;
   z-index: 99;
 
   a {

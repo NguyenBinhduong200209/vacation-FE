@@ -1,54 +1,48 @@
-import Modal from "~/components/Modal/Modal";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useClickOutside, useDebounce } from "~/helpers/customHook";
+import { Avatar } from "antd";
 import styles from "./SelectFriend.module.scss";
 import classNames from "classnames/bind";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getFiendList } from "~/store/slices/authSlice";
-
-import { resetResult, searchOneModel } from "~/store/slices/searchSlice";
-import Image from "~/components/Image/Image";
-import { useClickOutside, useDebounce } from "~/helpers/customHook";
-import Loading from "~/components/Loading/Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
+import { faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
+import { resetResult, searchOneModel } from "~/store/slices/searchSlice";
+import { getFriendList } from "~/store/slices/friendSlice";
+import Loading from "~/components/Loading/Loading";
+import Modal from "~/components/Modal/Modal";
 
 const cx = classNames.bind(styles);
 const SelectFriend = ({ open, setOpen, memberList, setMemberList }) => {
   const dispatch = useDispatch();
   const isFirstReq = useRef(true);
   const resultRef = useRef();
-  const { friendList } = useSelector((state) => state.auth);
-  const { result, isLoading, pages } = useSelector((state) => state.search);
+  const { list } = useSelector((state) => state.friend);
+  const { result } = useSelector((state) => state.search);
+  const { suggestions } = result;
+  const { isLoading, page, pages, data } = suggestions;
   const [inputValue, setInputValue] = useState("");
   const [openResult, setOpenResult] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
   const debouncedValue = useDebounce(inputValue, 500);
   //  call API get friendList and search user
   useEffect(() => {
     if (isFirstReq.current) {
-      dispatch(getFiendList());
+      dispatch(getFriendList());
       isFirstReq.current = false;
     }
-
+    dispatch(resetResult({ type: "suggestions" }));
     if (debouncedValue !== "") {
       dispatch(
         searchOneModel({
           body: {
             model: "user",
             value: debouncedValue,
-            page: currentPage,
+            page: 1,
           },
           type: "suggestions",
         })
       );
-      setOpenResult(true);
     }
-  }, [debouncedValue, currentPage]);
-
-  useEffect(() => {
-    setCurrentPage(1);
-    dispatch(resetResult({ type: "suggestions" }));
-  }, [inputValue]);
+  }, [debouncedValue]);
 
   useClickOutside(resultRef, () => {
     setOpenResult(false);
@@ -57,8 +51,20 @@ const SelectFriend = ({ open, setOpen, memberList, setMemberList }) => {
   const handleScroll = (e) => {
     const bottom =
       e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
-    if (bottom && currentPage < pages) {
-      setCurrentPage((prev) => prev + 1);
+    if (bottom && page < pages) {
+      if (debouncedValue !== "") {
+        dispatch(
+          searchOneModel({
+            body: {
+              model: "user",
+              value: debouncedValue,
+              page: page + 1,
+            },
+            type: "suggestions",
+          })
+        );
+        setOpenResult(true);
+      }
     }
   };
 
@@ -111,10 +117,10 @@ const SelectFriend = ({ open, setOpen, memberList, setMemberList }) => {
               className={cx("search-result")}
               onScroll={handleScroll}
             >
-              {result.suggestions.data.length === 0 && !isLoading ? (
+              {data?.length === 0 && !isLoading ? (
                 <div className={cx("result-empty")}>Not Found</div>
               ) : (
-                result.suggestions.data.map((item) => {
+                data?.map((item) => {
                   if (memberList.some((friend) => friend._id === item._id)) {
                     return;
                   }
@@ -125,7 +131,7 @@ const SelectFriend = ({ open, setOpen, memberList, setMemberList }) => {
                       onClick={() => handleSelectedUser(item)}
                     >
                       <div className={cx("user-info")}>
-                        <Image path={item.avatar} />
+                        <Avatar src={item.avatar} />
                         <span>{item.username}</span>
                       </div>
                       {/* <button>Add</button> */}
@@ -139,10 +145,10 @@ const SelectFriend = ({ open, setOpen, memberList, setMemberList }) => {
         </div>
         <div className={cx("friendlist")}>
           {" "}
-          {friendList?.length === 0 ? (
+          {list?.length === 0 ? (
             <div className={cx("empty")}>You have 0 Friend</div>
           ) : (
-            friendList?.map((item) => {
+            list?.map((item) => {
               return (
                 <div
                   className={cx("result-item")}
@@ -150,7 +156,7 @@ const SelectFriend = ({ open, setOpen, memberList, setMemberList }) => {
                   onClick={() => handleSelectedUser(item)}
                 >
                   <div className={cx("user-info")} key={item._id}>
-                    <Image path={item.avatar} />
+                    <Avatar src={item.avatar} />
                     <span>{item.username}</span>
                   </div>
                 </div>
@@ -160,7 +166,7 @@ const SelectFriend = ({ open, setOpen, memberList, setMemberList }) => {
         </div>
 
         <button onClick={handleSubmit} className={cx("submit")}>
-          Save
+          Close
         </button>
       </div>
     </Modal>

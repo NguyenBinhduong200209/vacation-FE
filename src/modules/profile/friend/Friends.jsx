@@ -5,6 +5,7 @@ import { Tabs } from "antd";
 import FriendList from "./list/List";
 import { resetList } from "~/store/slices/friendSlice";
 import { useDispatch } from "react-redux";
+import { useOutletContext } from "react-router-dom";
 const cx = classNames.bind(styles);
 
 const Friends = () => {
@@ -14,24 +15,27 @@ const Friends = () => {
     dispatch(resetList());
     setType(Number(key) === 1 ? "friend" : "request");
   };
+  const { userId } = useOutletContext();
 
   return (
     <Tabs
       className={cx("friend-nav")}
-      type="line"
       defaultActiveKey="1"
-      size="large"
+      type="line"
+      size="middle"
       items={[
         {
           key: "1",
           label: "Friend List",
-          children: <FriendList type={type} />,
+          children: <FriendList type={type} userId={userId} />,
         },
-        {
-          key: "2",
-          label: "Request List",
-          children: <FriendList type={type} />,
-        },
+        userId
+          ? {}
+          : {
+              key: "2",
+              label: "Request List",
+              children: <FriendList type={type} />,
+            },
       ]}
       onChange={onTabChange}
     />

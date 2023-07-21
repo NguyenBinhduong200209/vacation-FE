@@ -2,61 +2,74 @@ import statusAPI from "~/api/statusList";
 import vacationAPI from "~/api/vacationAPI";
 
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
-export const getListVacation = createAsyncThunk("vacation/getListVacation", async (arg, thunkAPI) => {
-  try {
-    const res = await vacationAPI.getListVacation(arg);
-    return { result: res.data, currentPage: arg.page };
-  } catch (error) {
-    if (!error.response) {
-      return thunkAPI.rejectWithValue({ message: error.message });
+export const getListVacation = createAsyncThunk(
+  "vacation/getListVacation",
+  async (arg, thunkAPI) => {
+    try {
+      const res = await vacationAPI.getListVacation(arg);
+      return { result: res.data, currentPage: arg.page };
+    } catch (error) {
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
+      return thunkAPI.rejectWithValue({
+        message: error.response.data.message,
+      });
     }
-    return thunkAPI.rejectWithValue({
-      message: error.response.data.message,
-    });
   }
-});
+);
 
-export const getDetailVacation = createAsyncThunk("vacation/getDetailVacation", async (arg, thunkAPI) => {
-  try {
-    const res = await vacationAPI.getDetailVacation(arg);
-    return res.data.data;
-  } catch (error) {
-    if (!error.response) {
-      return thunkAPI.rejectWithValue({ message: error.message });
+export const getDetailVacation = createAsyncThunk(
+  "vacation/getDetailVacation",
+  async (arg, thunkAPI) => {
+    try {
+      const res = await vacationAPI.getDetailVacation(arg);
+      return res.data.data;
+    } catch (error) {
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
+      return thunkAPI.rejectWithValue({
+        message: error.response.data.message,
+      });
     }
-    return thunkAPI.rejectWithValue({
-      message: error.response.data.message,
-    });
   }
-});
+);
 
-export const getManyPosts = createAsyncThunk("vacation/getManyPosts", async (arg, thunkAPI) => {
-  try {
-    const res = await vacationAPI.getManyPosts(arg);
-    console.log(res);
-    return res.data;
-  } catch (error) {
-    if (!error.response) {
-      return thunkAPI.rejectWithValue({ message: error.message });
+
+export const getManyPosts = createAsyncThunk(
+  "vacation/getManyPosts",
+  async (arg, thunkAPI) => {
+    try {
+      const res = await vacationAPI.getManyPosts(arg);
+      // console.log(res);
+      return res.data;
+    } catch (error) {
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
+      return thunkAPI.rejectWithValue({
+        message: error.response.data.message,
+      });
     }
-    return thunkAPI.rejectWithValue({
-      message: error.response.data.message,
-    });
   }
-});
-export const getMemberList = createAsyncThunk("vacation/getMemberList", async (arg, thunkAPI) => {
-  try {
-    const res = await statusAPI.statusList(arg);
-    return res.data;
-  } catch (error) {
-    if (!error.response) {
-      return thunkAPI.rejectWithValue({ message: error.message });
+);
+export const getMemberList = createAsyncThunk(
+  "vacation/getMemberList",
+  async (arg, thunkAPI) => {
+    try {
+      const res = await statusAPI.statusList(arg);
+      return res.data;
+    } catch (error) {
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
+      return thunkAPI.rejectWithValue({
+        message: error.response.data.message,
+      });
     }
-    return thunkAPI.rejectWithValue({
-      message: error.response.data.message,
-    });
   }
-});
+);
 const vacationSlice = createSlice({
   name: "vacation",
   initialState: {
@@ -108,17 +121,21 @@ const vacationSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(getListVacation.pending, (state) => {
-        state.isLoading = false;
+        state.isLoading = true;
       })
       .addCase(getListVacation.fulfilled, (state, action) => {
-        if (action.payload.data !== "") {
+        const { data, meta } = action.payload.result;
+
+        if (data && Array.isArray(data)) {
           const { page } = action.meta.arg;
-          const { result } = action.payload;
-          state.listVacation.list = page === 1 ? result.data : state.listVacation.list.concat(result.data);
-          state.listVacation.page = result.meta.page;
-          state.listVacation.pages = result.meta.pages;
+          state.listVacation.list = page === 1 ? data : state.listVacation.list.concat(data);
+          state.listVacation.page = meta?.page;
+          state.listVacation.pages = meta?.pages;
         }
 
+        state.isLoading = false;
+      })
+      .addCase(getListVacation.rejected, (state, action) => {
         state.isLoading = false;
       })
       .addCase(getMemberList.fulfilled, (state, action) => {

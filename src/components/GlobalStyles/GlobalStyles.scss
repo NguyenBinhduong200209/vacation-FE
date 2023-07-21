@@ -81,7 +81,6 @@ html *::-webkit-scrollbar-track {
   background-color: rgba(0, 0, 0, 0);
 }
 
-
 // config antd
 .ant-list-empty-text {
   display: none;
@@ -92,6 +91,7 @@ html *::-webkit-scrollbar-track {
 }
 .ant-image {
   height: 100%;
+}
 
 .ant-menu-submenu-popup {
   background-color: #1a1a1a !important;
@@ -100,5 +100,4 @@ html *::-webkit-scrollbar-track {
   ul {
     background-color: #1a1a1a !important;
   }
-
 }

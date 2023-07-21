@@ -7,7 +7,6 @@ import { List, Avatar, Skeleton } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { NavLink, Link, useNavigate, useSearchParams } from "react-router-dom";
 import images from "~/images";
-import Image from "~/components/Image/Image";
 import { useDebounce } from "~/helpers/customHook";
 const cx = classNames.bind(styles);
 
@@ -54,9 +53,8 @@ const Search = () => {
   return (
     <div className={cx("nav-search")}>
       <NavLink className={cx("nav-logo")} to="/">
-        <Image path={images.Vector} className={cx("nav-logo-img")} alt="????" />
+        <img src={images.Vector} className={cx("nav-logo-img")} />
       </NavLink>
-
       <input
         className={cx("search-input")}
         type="text"

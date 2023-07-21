@@ -16,9 +16,12 @@ const SearchUser = () => {
   const [searchParams] = useSearchParams();
   const searchVal = searchParams.get("f");
   const dispatch = useDispatch();
-  const { result, isLoading } = useSelector((state) => state.search);
+  const { result } = useSelector((state) => state.search);
   const { users } = result;
+  const { isLoading } = users;
   const currentPage = useRef(1);
+
+  // console.log(users, isLoading);
 
   useEffect(() => {
     dispatch(
@@ -41,7 +44,6 @@ const SearchUser = () => {
           type: "users",
         })
       );
-
       currentPage.current += 1;
     }
   };
@@ -85,7 +87,7 @@ const SearchUser = () => {
         })}
       </div>
       {isLoading && <Loading className="searching" />}
-      {users.data?.length === 0 && !isLoading && <EmptyRes />}
+      {!isLoading && users.data?.length === 0 && <EmptyRes />}
     </>
   );
 };

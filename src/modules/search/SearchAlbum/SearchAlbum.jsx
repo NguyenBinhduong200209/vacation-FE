@@ -4,6 +4,10 @@ import { searchOneModel } from "~/store/slices/searchSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useRef } from "react";
+import { Avatar, Card, List } from "antd";
+import EmptyRes from "../Empty/EmptyRes";
+import Loading from "~/components/Loading/Loading";
+import ImageField from "~/components/ImageField/ImageField";
 
 const cx = classNames.bind(styles);
 
@@ -13,6 +17,7 @@ const SearchAlbum = () => {
   const dispatch = useDispatch();
   const { result } = useSelector((state) => state.search);
   const { albums } = result;
+  const { isLoading, page, pages, data } = albums;
   const currentPage = useRef(1);
   console.log(albums);
 
@@ -26,13 +31,13 @@ const SearchAlbum = () => {
   }, [dispatch, searchVal]);
 
   const loadMoreData = () => {
-    if (albums.page < albums.pages && currentPage.current === albums.page) {
+    if (page < pages && currentPage.current === page) {
       dispatch(
         searchOneModel({
           body: {
             model: "user",
             value: searchVal,
-            page: albums.page + 1,
+            page: page + 1,
           },
           type: "albums",
         })
@@ -55,8 +60,41 @@ const SearchAlbum = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [dispatch, albums.page]);
-  return <div>SearchAlbum</div>;
+  }, [dispatch, page]);
+  return (
+    <>
+      <div className={cx("title")}>Album</div>
+      <div id="result" className={cx("result")}>
+        <List
+          grid={{
+            gutter: 16,
+            column: 3,
+          }}
+          dataSource={data}
+          renderItem={(item) => (
+            <List.Item>
+              <Card className={cx("item")}>
+                <div className={cx("user-info")}>
+                  <Avatar src={item.authorInfo?.avatar.path} />
+                  <div>{item.authorInfo?.username}</div>
+                </div>
+                <ImageField
+                  src={item.cover?.path}
+                  preview={true}
+                  rootClassName={cx("cover")}
+                />
+                <div className={cx("item-name")}>
+                  <span>{item.title}</span>
+                </div>
+              </Card>
+            </List.Item>
+          )}
+        />
+      </div>
+      {isLoading && <Loading className="searching" />}
+      {data?.length === 0 && !isLoading && <EmptyRes />}
+    </>
+  );
 };
 
 export default SearchAlbum;

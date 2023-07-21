@@ -7,39 +7,48 @@
 }
 .result {
   width: 100%;
-  padding: 2rem 0;
+  padding: 2rem 3rem;
 }
 .item {
   width: 100%;
   height: 30rem;
-  & > div {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+  padding: 1rem;
+  background-color: rgb(231, 229, 229);
+  box-shadow: 3pt 3pt rgb(155, 153, 153);
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.03);
+    transition: all 0.5s ease;
   }
   .user-info {
     display: flex;
-    padding: 1rem 0;
+    padding: 0 1rem 1rem;
     align-items: center;
     gap: 0.5rem;
   }
 
   .item-name {
     width: 100%;
-    padding: 1rem 0;
+    padding: 1rem 1rem 0;
     display: flex;
     font-size: 1.6rem;
     font-weight: 600;
+
     span {
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
     }
   }
-  img {
-    // display: flex;
+  .cover {
     width: 100%;
-    height: 15rem;
+    height: 20rem;
+
+    img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+    }
   }
 }

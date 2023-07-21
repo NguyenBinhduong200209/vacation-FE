@@ -1,23 +1,25 @@
 import { useSelector } from "react-redux";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./HandleVacation.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCaretDown,
+  faImage,
   faUserPlus,
   faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import TextArea from "antd/es/input/TextArea";
 import dayjs from "dayjs";
 import Input from "antd/es/input/Input";
-import { DatePicker } from "antd";
+import { Avatar, DatePicker } from "antd";
 
 import vacationAPI from "~/api/vacationAPI";
-import Image from "~/components/Image/Image";
 import Modal from "~/components/Modal/Modal";
 import SelectFriend from "~/modules/components/SelectFriend/SelectFriend";
 import Notification from "~/components/Notification/Notification";
+import UpLoad from "~/components/UpLoad/UpLoad";
+import ImageField from "~/components/ImageField/ImageField";
 
 const { RangePicker } = DatePicker;
 const cx = classNames.bind(styles);
@@ -30,6 +32,7 @@ const HandleVacation = ({
 }) => {
   // Get the current user information from the state.
   const { info } = useSelector((state) => state.auth);
+  const { resources } = useSelector((state) => state.resource);
   const [vacationDetail, setVacationDetail] = useState(initVacationDetail);
   const { title, des, dates, status } = vacationDetail;
   const [memberList, setMemberList] = useState([]);
@@ -37,6 +40,7 @@ const HandleVacation = ({
   const [msg, setMsg] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
+  const imgRef = useRef();
 
   // State for the open friend modal.
   const [openFriend, setOpenFriend] = useState(false);
@@ -89,6 +93,7 @@ const HandleVacation = ({
     let res;
     // Create the vacation.
     const newMemberList = memberList?.map((item) => item._id);
+    // const resourceList = resources?.map((item) => item._id);
     const params = {
       title: title,
       description: des,
@@ -118,7 +123,6 @@ const HandleVacation = ({
     setOpen(false);
     setOpenNoti(true);
   };
-
   const isDisabledCreate = useMemo(
     () =>
       !(
@@ -138,12 +142,14 @@ const HandleVacation = ({
       dates: dates,
       memberList: memberList,
     };
-
     return (
       JSON.stringify(newVacationDetail) === JSON.stringify(initVacationDetail)
     );
   }, [title, des, dates, status, memberList]);
 
+  const handleImgClick = () => {
+    imgRef.current.click();
+  };
   return (
     <>
       <Modal
@@ -155,7 +161,7 @@ const HandleVacation = ({
           <div className={cx("modal-container")}>
             <div className={cx("user-info")}>
               <div className={cx("info-name")}>
-                <Image path={info?.avatar?.path} />
+                <Avatar src={info?.avatar?.path} />
                 <div className={cx("username")}>
                   <div>{info?.username}</div>
                   <div
@@ -231,6 +237,15 @@ const HandleVacation = ({
                       memberList={memberList}
                     />
                   </div>
+                  {type === "update" && (
+                    <div className={cx("upload")} onClick={handleImgClick}>
+                      <UpLoad
+                        imgRef={imgRef}
+                        body={{ field: "cover", vacationId: vacationId }}
+                      />
+                      <FontAwesomeIcon icon={faImage} className={cx("icon")} />
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -247,6 +262,17 @@ const HandleVacation = ({
                           onClick={() => handleClear(member._id)}
                         />
                       </span>
+                    );
+                  })}
+                </div>
+                <div className={cx("resources")}>
+                  {type === "update" && resources.length > 0 && "Cover:"}
+                  {resources.map((resource) => {
+                    return (
+                      <ImageField
+                        src={resource.path}
+                        className={cx("resource")}
+                      />
                     );
                   })}
                 </div>

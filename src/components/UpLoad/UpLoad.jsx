@@ -1,31 +1,21 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { uploadResource } from "~/store/slices/resourceSlice";
 
-const UpLoad = ({ imgRef, setImg }) => {
+const UpLoad = ({ imgRef, body }) => {
   const [files, setFiles] = useState(null);
+  const dispatch = useDispatch();
   useEffect(() => {
-    const upLoad = async () => {
+    if (files !== null) {
       const formData = new FormData();
       formData.append("files", files);
-      const token = localStorage.getItem("token");
-      await axios.post(
-        "https://vacation-backend.onrender.com/resource",
-        { field: "avatar", files: formData.get("files") },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: token,
-          },
-        }
-      );
+      dispatch(uploadResource({ files: formData.get("files"), ...body }));
       setFiles(null);
-    };
-    if (files !== null) upLoad();
+    }
   }, [files]);
 
   const handleImgChange = (e) => {
     setFiles(e.target.files[0]);
-    setImg(URL.createObjectURL(e.target.files[0]));
   };
 
   return (

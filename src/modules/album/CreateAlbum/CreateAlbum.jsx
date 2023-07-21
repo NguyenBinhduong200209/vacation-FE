@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import ReactModal from "react-modal";
 import { useSelector } from "react-redux";
 import styles from "./CreateAlbum.module.scss";
 import classNames from "classnames/bind";
 import Input from "antd/es/input/Input";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleXmark, faL } from "@fortawesome/free-solid-svg-icons";
-import Image from "~/components/Image/Image";
 import Dropdown from "./Dropdown/Dropdown";
 import { useNavigate } from "react-router-dom";
 import Modal from "~/components/Modal/Modal";
+import { Avatar } from "antd";
 const cx = classNames.bind(styles);
 const CreateAlbum = ({ open, setOpen }) => {
   const { info } = useSelector((state) => state.auth);
@@ -17,7 +14,6 @@ const CreateAlbum = ({ open, setOpen }) => {
   const [vacationId, setVacationId] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const navigate = useNavigate();
-
   const handleInputValue = (e) => {
     setInputValue(e.target.value);
   };
@@ -29,7 +25,7 @@ const CreateAlbum = ({ open, setOpen }) => {
     <Modal open={open} setOpen={setOpen} title="New Album">
       <div className={cx("wrapper")}>
         <div className={cx("user-info")}>
-          <Image path={info?.avatar} />
+          <Avatar src={info.avatar?.path} />
           <div className={cx("username")}>{info.username}</div>
         </div>
         <Input

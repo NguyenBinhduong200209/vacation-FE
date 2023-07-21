@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEllipsisVertical,
@@ -7,13 +7,11 @@ import {
   faPaperPlane,
   faRectangleXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { Dropdown, Popover, Space } from "antd";
+import { Avatar, Dropdown, Popover, Space } from "antd";
 import { useSelector } from "react-redux";
 import styles from "./Interaction.module.scss";
 import classNames from "classnames/bind";
-
 import interactionAPI from "~/api/interactionAPI";
-import Image from "~/components/Image/Image";
 
 const cx = classNames.bind(styles);
 
@@ -36,7 +34,7 @@ const Interaction = (props) => {
   const [openPopOver, setOpenPopOver] = useState(true);
   // const cmtContentRef = useRef();
 
-  // console.log(info);
+  // console.log(isLikedStatus);
 
   // Get comment list
   useEffect(() => {
@@ -83,10 +81,7 @@ const Interaction = (props) => {
       console.log(error);
     }
   };
-  // const isDisabled = useMemo(() => {
-  //   if (value !== "") setIsDisable(true);
-  //   else setIsDisable(false);
-  // }, [value]);
+
   // update like when user click icon
   const handleLike = () => {
     try {
@@ -123,13 +118,13 @@ const Interaction = (props) => {
           type: "posts",
           page: 1,
         });
-        // console.log(res);
+        console.log(res.data.data);
         const items = res.data.data?.map((item) => {
           return {
             key: item.authorInfo._id,
             label: (
               <div className={cx("react-list-item")}>
-                <Image path={item.authorInfo.avatar} alt="" />
+                <Avatar src={item.authorInfo?.avatar.path} />
                 <span>{item.authorInfo.username}</span>
               </div>
             ),
@@ -156,7 +151,6 @@ const Interaction = (props) => {
   // delete comment
 
   const handleDelCmt = async (id) => {
-    // console.log(id);
     await interactionAPI.deleteComment(id);
     setisComment(true);
   };
@@ -197,7 +191,6 @@ const Interaction = (props) => {
         <div className={cx("cmt-container")}>
           <div className={cx("input-container")}>
             <div className={cx("input-content")}>
-              {/* <Image path={info.avatar} /> */}
               <textarea
                 value={value}
                 type="text"
@@ -215,7 +208,7 @@ const Interaction = (props) => {
             {commentList?.map((item) => {
               return (
                 <div key={item._id} className={cx("cmt-item")}>
-                  <Image path={item.authorInfo.avatar.path} alt="" />
+                  <Avatar src={item.authorInfo.avatar?.path} size={45} />
                   <div className={cx("item-content-container")}>
                     <div className={cx("item-username")}>
                       {item.authorInfo.username}
@@ -244,7 +237,7 @@ const Interaction = (props) => {
                       <div className={cx("item-content")}>{item.content}</div>
                     )}
                   </div>
-                  {item.authorInfo._id === info.id && (
+                  {item.authorInfo._id === info._id && (
                     <Popover
                       content={
                         openPopOver && (

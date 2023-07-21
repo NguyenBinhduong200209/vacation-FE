@@ -58,6 +58,7 @@ $font: "Lato", sans-serif;
     font-weight: 100;
     color: darken($dark, 10%);
     letter-spacing: 1px;
+    text-transform: capitalize;
   }
 
   .green {

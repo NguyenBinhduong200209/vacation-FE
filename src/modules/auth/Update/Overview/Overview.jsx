@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Avatar } from "antd";
 import classNames from "classnames/bind";
-import { handleAuth } from "~/store/slices/authSlice";
 import styles from "./Overview.module.scss";
-import Loading from "~/components/Loading/Loading";
 
+import { handleAuth } from "~/store/slices/authSlice";
+import Loading from "~/components/Loading/Loading";
 import Notification from "~/components/Notification/Notification";
 import UpLoad from "~/components/UpLoad/UpLoad";
-import Image from "~/components/Image/Image";
+import { resetResources } from "~/store/slices/resourceSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCamera } from "@fortawesome/free-solid-svg-icons";
 
 const cx = classNames.bind(styles);
 
@@ -17,12 +20,17 @@ const Overview = () => {
   const { isLoading, info, isSuccess, isError, msg } = useSelector(
     (state) => state.auth
   );
+  const { isLoading: uploadLoading } = useSelector((state) => state.resource);
   const { avatar, username, firstname, lastname, description } = info;
   const [inputValue, setInputValue] = useState("");
   const [isChanged, setIsChanged] = useState(false);
-  const [img, setImg] = useState("");
   const [openNoti, setOpenNoti] = useState(false);
 
+  useEffect(() => {
+    if (!uploadLoading) {
+      dispatch(resetResources());
+    }
+  }, [uploadLoading, dispatch]);
   // Set Input Value when component mounted
   useEffect(() => {
     setInputValue(description);
@@ -61,8 +69,9 @@ const Overview = () => {
     <div className={cx("wrapper")}>
       <div className={cx("userName-container")}>
         <div className={cx("avatar")} onClick={handleImgClick}>
-          <UpLoad imgRef={imgRef} setImg={setImg} />
-          <Image path={avatar?.path} alt="This is icon" />
+          <UpLoad imgRef={imgRef} body={{ field: "avatar" }} />
+          <Avatar src={avatar?.path} size={70} />
+          <FontAwesomeIcon icon={faCamera} className={cx("ava-icon")} />
         </div>
 
         <div className={cx("userName")}>

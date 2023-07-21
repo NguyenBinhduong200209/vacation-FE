@@ -15,30 +15,33 @@ const searchSlice = createSlice({
         data: [],
         page: 0,
         pages: 0,
+        isLoading: false,
       },
       users: {
         data: [],
         page: 0,
         pages: 0,
+        isLoading: false,
       },
       locations: {
         data: [],
         page: 0,
         pages: 0,
+        isLoading: false,
       },
       vacations: {
         data: [],
         page: 0,
         pages: 0,
+        isLoading: false,
       },
       albums: {
         data: [],
         page: 0,
         pages: 0,
+        isLoading: false,
       },
     },
-
-    isLoading: false,
   },
   reducers: {
     resetResult: (state, action) => {
@@ -47,8 +50,9 @@ const searchSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(searchOneModel.pending, (state) => {
-        state.isLoading = true;
+      .addCase(searchOneModel.pending, (state, action) => {
+        const { type } = action.meta.arg;
+        state.result[type].isLoading = true;
       })
       .addCase(searchOneModel.fulfilled, (state, action) => {
         //Destruture meta and payload of action
@@ -68,7 +72,7 @@ const searchSlice = createSlice({
         meta?.page && (state.result[type].page = meta?.page);
         meta?.pages && (state.result[type].pages = meta?.pages);
 
-        state.isLoading = false;
+        state.result[type].isLoading = false;
       });
   },
 });

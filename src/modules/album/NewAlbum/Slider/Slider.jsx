@@ -5,6 +5,8 @@ import { useSearchParams } from "react-router-dom";
 import styles from "./Slider.module.scss";
 import classNames from "classnames/bind";
 import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
+import { setImageUrl } from "~/store/slices/slice";
 
 const cx = classNames.bind(styles);
 
@@ -14,6 +16,20 @@ const Slider = () => {
   const cardCount = img.length;
   const [searchParams] = useSearchParams();
   const dataId = Object.fromEntries([...searchParams]);
+
+  const dispatch = useDispatch();
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      const imageUrl = event.target.result;
+      dispatch(setImageUrl(imageUrl));
+    };
+
+    reader.readAsDataURL(file);
+  };
 
   useEffect(() => {
     const fetchData = async () => {

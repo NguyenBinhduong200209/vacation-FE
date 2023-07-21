@@ -5,55 +5,47 @@ import { LOGIN } from "~/utils/constants";
 
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
-export const handleAuth = createAsyncThunk("auth/handleAuth", async (arg, thunkAPI) => {
-  try {
-    let res = await authAPI[arg.type](arg.data);
-    return {
-      result: res.data,
-      type: arg.type,
-      message: res.data.message,
-    };
-  } catch (error) {
-    if (!error.response) {
-      return thunkAPI.rejectWithValue({ message: error.message });
-    }
-    return thunkAPI.rejectWithValue({
-      message: error.response.data.message,
-    });
-  }
-});
-
-export const getInfoUser = createAsyncThunk("auth/getInfoUser", async (arg, thunkAPI) => {
-  try {
-    const res = await authAPI.getInfoUser(arg);
-    console.log(res);
-    return res.data.data;
-  } catch (error) {
-    console.log(error);
-    if (!error.response) {
-      return thunkAPI.rejectWithValue({ message: error.message });
-    } else {
+export const handleAuth = createAsyncThunk(
+  "auth/handleAuth",
+  async (arg, thunkAPI) => {
+    try {
+      let res = await authAPI[arg.type](arg.data);
+      return {
+        result: res.data,
+        type: arg.type,
+        message: res.data.message,
+      };
+    } catch (error) {
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
       return thunkAPI.rejectWithValue({
-        status: error.response.status,
         message: error.response.data.message,
       });
     }
   }
-});
+);
 
-export const getFiendList = createAsyncThunk("auth/getFiendList", async (arg, thunkAPI) => {
-  try {
-    const res = await authAPI.getFiendList();
-    return res.data.data;
-  } catch (error) {
-    if (!error.response) {
-      return thunkAPI.rejectWithValue({ message: error.message });
+export const getInfoUser = createAsyncThunk(
+  "auth/getInfoUser",
+  async (arg, thunkAPI) => {
+    try {
+      const res = await authAPI.getInfoUser(arg);
+      console.log(res);
+      return res.data.data;
+    } catch (error) {
+      console.log(error);
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      } else {
+        return thunkAPI.rejectWithValue({
+          status: error.response.status,
+          message: error.response.data.message,
+        });
+      }
     }
-    return thunkAPI.rejectWithValue({
-      message: error.response.data.message,
-    });
   }
-});
+);
 
 const authSlice = createSlice({
   name: "auth",
@@ -66,7 +58,6 @@ const authSlice = createSlice({
     isSuccess: false,
     isError: false,
     msg: "",
-    friendList: [],
   },
   reducers: {
     changeRenderList: (state, action) => {
@@ -92,8 +83,14 @@ const authSlice = createSlice({
         state.msg = action.payload?.message;
         if (action.payload && action.payload.type === LOGIN) {
           state.isLogin = true;
-          localStorage.setItem("token", `Bearer ${action.payload.result.data.accessToken}`);
-          localStorage.setItem("rfToken", `Bearer ${action.payload.result.data.refreshToken}`);
+          localStorage.setItem(
+            "token",
+            `Bearer ${action.payload.result.data.accessToken}`
+          );
+          localStorage.setItem(
+            "rfToken",
+            `Bearer ${action.payload.result.data.refreshToken}`
+          );
         }
       })
       .addCase(handleAuth.rejected, (state, action) => {
@@ -104,9 +101,6 @@ const authSlice = createSlice({
       .addCase(getInfoUser.fulfilled, (state, action) => {
         if (action.meta.arg) state.otherUserInfo = action.payload;
         else state.info = action.payload;
-      })
-      .addCase(getFiendList.fulfilled, (state, action) => {
-        state.friendList = action.payload;
       });
   },
 });

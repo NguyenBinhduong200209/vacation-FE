@@ -1,12 +1,13 @@
 import { Image } from "antd";
 import React, { useEffect } from "react";
-import Navbar from "~/modules/profile/header/Navbar";
-import UserInfo from "./header/UserInfo";
+import Navbar from "~/modules/profile/nav/Navbar";
+import UserInfo from "./userInfo/UserInfo";
 import classNames from "classnames/bind";
 import styles from "./ProfileLayout.module.scss";
 import { Outlet, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getInfoUser } from "~/store/slices/authSlice";
+// import AvatarList from "./userInfo/Avatar";
 const cx = classNames.bind(styles);
 
 const Profile = () => {

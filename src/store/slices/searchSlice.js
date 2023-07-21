@@ -2,13 +2,10 @@ import searchAPI from "~/api/searchAPI";
 
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
-export const searchOneModel = createAsyncThunk(
-  "search/searchOneModel",
-  async (arg, thunkAPI) => {
-    const res = await searchAPI.searchOneModel(arg.body);
-    return { data: res.data, status: res.status };
-  }
-);
+export const searchOneModel = createAsyncThunk("search/searchOneModel", async (arg, thunkAPI) => {
+  const res = await searchAPI.searchOneModel(arg.body);
+  return { data: res.data, status: res.status };
+});
 
 const searchSlice = createSlice({
   name: "search",
@@ -61,15 +58,11 @@ const searchSlice = createSlice({
           data: { data, meta },
           status,
         } = action.payload;
-        console.log(data, page);
+
         //If page query of meta does not change and is 1, meaning user want to search one more time with nearly the same condition, if response status is 204 then reset result state, else set result state is response data
         //If page query of meta change, meaning user want to get more data with the same condition, if response status is 204, then does not update result state, else, set result state is prev state concat response data
         state.result[type].data =
-          page === 1
-            ? status === 204
-              ? []
-              : data
-            : status !== 204 && state.result[type].data.concat(data);
+          page === 1 ? (status === 204 ? [] : data) : status !== 204 && state.result[type].data.concat(data);
 
         //If response return page and pages, update page and pages state
         meta?.page && (state.result[type].page = meta?.page);

@@ -11,9 +11,11 @@ const cx = classNames.bind(styles);
 
 const Vacations = () => {
   let formatter = Intl.NumberFormat("en", { notation: "compact" });
-  const dispatch = useDispatch();
-  const { list, page, pages } = useSelector((state) => state.vacation.listVacation);
   const { userId } = useOutletContext();
+  const dispatch = useDispatch();
+  const {
+    listVacation: { list, page, pages },
+  } = useSelector((state) => state.vacation);
 
   useEffect(() => {
     dispatch(resetList());

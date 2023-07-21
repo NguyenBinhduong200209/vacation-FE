@@ -5,7 +5,7 @@ import { searchOneModel } from "~/store/slices/searchSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { List, Avatar, Skeleton } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { NavLink, Link, useNavigate, useSearchParams } from "react-router-dom";
+import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import images from "~/images";
 import Image from "~/components/Image/Image";
 import { useDebounce } from "~/helpers/customHook";
@@ -21,6 +21,8 @@ const Search = () => {
   const dispatch = useDispatch();
   const { result } = useSelector((state) => state.search);
   const { suggestions } = result;
+  const { info } = useSelector((state) => state.auth);
+  const currentUserId = info?._id;
 
   useEffect(() => {
     dispatch(
@@ -67,9 +69,7 @@ const Search = () => {
           setHideSuggestions(false);
         }}
         onKeyPress={handleKeyPress}
-        onBlur={() => {
-          setHideSuggestions(true);
-        }}
+        onBlur={() => setTimeout(() => setHideSuggestions(true), 100)}
         spellCheck={false}
       />
       <div id="suggestion" className={cx("suggestions")}>
@@ -79,37 +79,26 @@ const Search = () => {
             dataLength={suggestions.data.length || 0}
             next={loadMoreData}
             hasMore={suggestions.page < suggestions.pages}
-            loader={
-              <Skeleton
-                avatar
-                paragraph={{
-                  rows: 1,
-                }}
-                active
-              />
-            }
+            loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
             scrollableTarget="suggestion"
           >
             <List
               itemLayout="horizontal"
               dataSource={suggestions.data}
-              renderItem={(item, index) => (
-                <Link style={{ color: "white" }} to="/profile">
-                  <List.Item className={cx("item")}>
-                    <List.Item.Meta
-                      avatar={<Avatar size="large" src={item.avatar} />}
-                      title={
-                        <span style={{ color: "white" }}>{item.username}</span>
-                      }
-                      description={
-                        <div
-                          style={{ color: "white" }}
-                        >{`${item.firstname} ${item.lastname}`}</div>
-                      }
-                    />
-                  </List.Item>
-                </Link>
-              )}
+              renderItem={(item, index) => {
+                const { _id, username, firstname, lastname, avatar } = item;
+                return (
+                  <NavLink style={{ color: "white" }} to={`/profile/${_id === currentUserId ? "" : _id}`}>
+                    <List.Item className={cx("item")}>
+                      <List.Item.Meta
+                        avatar={<Avatar size="large" src={avatar} />}
+                        title={<span style={{ color: "white" }}>{username}</span>}
+                        description={<div style={{ color: "white" }}>{`${firstname} ${lastname}`}</div>}
+                      />
+                    </List.Item>
+                  </NavLink>
+                );
+              }}
             />
           </InfiniteScroll>
         )}

@@ -32,3 +32,33 @@
   position: relative;
   margin-top: 10vh;
 }
+
+.navigation {
+  font-size: 2rem;
+  display: flex;
+  background-color: #1a1a1a;
+  align-items: flex-end;
+  padding-top: 1.5rem;
+  padding-bottom: 2rem;
+  width: 100%;
+  position: sticky;
+  top: 10vh;
+  z-index: 10;
+
+  & > * {
+    margin-right: 4rem;
+    cursor: pointer;
+    width: fit-content;
+    font-size: 2.4rem;
+    font-style: italic;
+    color: white;
+    transition: 100ms font-weight linear;
+    text-align: center;
+  }
+
+  .active {
+    color: #d2ae68;
+    border-bottom: #d2ae68 solid 2px;
+    font-weight: 700;
+  }
+}

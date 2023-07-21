@@ -107,18 +107,21 @@ const vacationSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(getListVacation.pending, (state) => {
-        state.isLoading = false;
+        state.isLoading = true;
       })
       .addCase(getListVacation.fulfilled, (state, action) => {
-        console.log(action);
-        if (action.payload.data !== "") {
+        const { data, meta } = action.payload.result;
+
+        if (data && Array.isArray(data)) {
           const { page } = action.meta.arg;
-          const { result } = action.payload;
-          state.listVacation.list = page === 1 ? result.data : state.listVacation.list.concat(result.data);
-          state.listVacation.page = result.meta?.page;
-          state.listVacation.pages = result.meta?.pages;
+          state.listVacation.list = page === 1 ? data : state.listVacation.list.concat(data);
+          state.listVacation.page = meta?.page;
+          state.listVacation.pages = meta?.pages;
         }
 
+        state.isLoading = false;
+      })
+      .addCase(getListVacation.rejected, (state, action) => {
         state.isLoading = false;
       })
       .addCase(getMemberList.fulfilled, (state, action) => {

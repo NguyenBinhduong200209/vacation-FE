@@ -25,26 +25,18 @@
   margin: 0 auto;
 }
 
-.user-info,
-.navigation {
-  position: sticky;
-  top: 10vh;
-  z-index: 10;
-}
-
 .user-info {
   width: 30%;
   height: fit-content;
+  position: sticky;
+  top: 10vh;
+  z-index: 10;
 
   .avatar {
     border: 2px solid white;
     border-radius: 20px;
     cursor: pointer;
-    transition: 200ms transform linear;
-
-    &:hover {
-      transform: scale(1.1);
-    }
+    object-fit: cover;
   }
 
   .user-info-header {
@@ -105,32 +97,5 @@
   #four {
     border-left: #3c2d2d 0.5px solid;
     border-top: #3c2d2d 0.5px solid;
-  }
-}
-
-.navigation {
-  font-size: 2rem;
-  display: flex;
-  background-color: #1a1a1a;
-  align-items: flex-end;
-  padding-top: 1.5rem;
-  padding-bottom: 2rem;
-  width: 100%;
-
-  & > * {
-    margin-right: 4rem;
-    cursor: pointer;
-    width: fit-content;
-    font-size: 2.4rem;
-    font-style: italic;
-    color: white;
-    transition: 100ms font-weight linear;
-    text-align: center;
-  }
-
-  .active {
-    color: #d2ae68;
-    border-bottom: #d2ae68 solid 2px;
-    font-weight: 700;
   }
 }

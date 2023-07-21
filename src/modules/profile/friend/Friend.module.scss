@@ -54,3 +54,21 @@
 .avatar {
   border: solid 1px white;
 }
+
+.drop {
+  background-color: transparent;
+  border-radius: 10px;
+}
+
+.drop-item {
+  font-size: 1.5rem;
+  color: white;
+  font-weight: bold;
+  transition: 100ms all linear;
+  display: flex;
+  align-items: center;
+
+  &:hover > * {
+    color: #f1c40f;
+  }
+}

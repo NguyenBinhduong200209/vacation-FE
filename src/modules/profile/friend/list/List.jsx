@@ -40,10 +40,10 @@ const FriendList = ({ type }) => {
           dataSource={list}
           grid={{ gutter: 32, column: 2 }}
           renderItem={(item) => {
-            const { _id, userInfo, createdAt } = item;
+            const { _id, userInfo, lastUpdateAt } = item;
             return (
               <List.Item className={cx("item")}>
-                <NavLink className={cx("nav")}>
+                <NavLink className={cx("nav")} to={`/profile/${userInfo?._id}`}>
                   <List.Item.Meta
                     className={cx("item-meta")}
                     avatar={
@@ -56,14 +56,14 @@ const FriendList = ({ type }) => {
                     }
                     title={
                       <div style={{ color: "white" }}>
-                        {userInfo?.username}
+                        <i>@{userInfo?.username}</i>
                         <br />
                         {`${userInfo?.firstname} ${userInfo?.lastname}`}
                       </div>
                     }
                     description={
                       <div style={{ color: "white" }}>
-                        <i>{moment(new Date(createdAt)).fromNow()}</i>
+                        <i>{lastUpdateAt ? moment(new Date(lastUpdateAt)).fromNow() : ""}</i>
                       </div>
                     }
                   />
@@ -72,7 +72,7 @@ const FriendList = ({ type }) => {
                   {type === "request" ? (
                     <ButtonGroup userId={userInfo._id} id={_id} />
                   ) : (
-                    <DropdownMore userId={userInfo._id} />
+                    <DropdownMore id={_id} />
                   )}
                 </div>
               </List.Item>

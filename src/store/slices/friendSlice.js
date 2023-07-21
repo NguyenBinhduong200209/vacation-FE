@@ -31,8 +31,8 @@ export const getRequestList = createAsyncThunk("friend/requestList", async (arg,
 
 export const acceptFriend = createAsyncThunk("friend/accept", async (arg, thunkAPI) => {
   try {
-    const { friendRequestId, status } = arg;
-    const res = await friendAPI.acceptFriend({ friendRequestId, status });
+    const { id } = arg;
+    const res = await friendAPI.acceptFriend(id);
     return res.data;
   } catch (error) {
     if (!error.response) {
@@ -126,7 +126,9 @@ const friendSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(acceptFriend.fulfilled, (state, action) => {
+        const currentList = current(state).list;
         state.isLoading = false;
+        state.list = currentList.filter((item) => item._id !== action.payload.data._id);
       })
       .addCase(acceptFriend.rejected, (state, action) => {
         state.isError = true;

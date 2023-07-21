@@ -20,9 +20,7 @@ const NotiItem = ({ item }) => {
 
   const handleSeenStatus = async () => {
     dispatch(updateOne(id));
-
-    console.log(modelInfo.type);
-    if (modelInfo.type === "friends") navigate(`/profile`);
+    if (modelInfo.type === "friends") navigate(`/profile/friends`);
     else {
       const result = await vacationAPI.getOnePost(modelInfo._id);
       const { vacationId } = result.data.data;
@@ -37,7 +35,7 @@ const NotiItem = ({ item }) => {
       </Col>
 
       <Col span={19} offset={1}>
-      {modelInfo.type === "friends" ? <AddFriend item={item} /> : modelInfo.type === "posts" ? <Post item={item} /> : <LikeComment item={item} />}
+        {modelInfo.type === "friends" ? <AddFriend item={item} /> : <LikeComment item={item} />}
         <Typography.Text className={cx("datetime")}>
           {moment(new Date(lastUpdateAt.seconds * 1000 + lastUpdateAt.nanoseconds / 100000)).fromNow()}
         </Typography.Text>

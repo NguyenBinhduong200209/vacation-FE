@@ -1,48 +1,44 @@
 import React from "react";
-import { Dropdown, Space, message } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+import { Menu } from "antd";
+import { EllipsisOutlined, CloseOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import { removeFriend } from "~/store/slices/friendSlice";
+import classNames from "classnames/bind";
+import styles from "../Friend.module.scss";
+const cx = classNames.bind(styles);
 
-const DropdownMore = ({ userId }) => {
+const DropdownMore = ({ id }) => {
   const dispatch = useDispatch();
-  const [messageApi, contextHolder] = message.useMessage();
 
   const handleRemove = () => {
-    dispatch(removeFriend({ id: userId }));
-    messageApi.loading({
-      key: "updateRemove",
-      content: "Loading...",
-    });
-    setTimeout(() => {
-      messageApi.success({
-        key: "updateRemove",
-        content: "Success Remove",
-      });
-    }, 1000);
+    dispatch(removeFriend({ id }));
   };
+
   return (
-    <>
-      {contextHolder}
-      <Dropdown
-        trigger={["click"]}
-        menu={{
-          items: [
+    <Menu
+      className={cx("drop")}
+      triggerSubMenuAction="click"
+      mode="horizontal"
+      theme="dark"
+      items={[
+        {
+          key: "SubMenu",
+
+          icon: <EllipsisOutlined style={{ color: "white", width: "100%", display: "inline-block" }} />,
+          children: [
             {
               key: "1",
-              label: <div onClick={handleRemove}>Remove</div>,
+              label: (
+                <div className={cx("drop-item")}>
+                  <CloseOutlined style={{ fontSize: "2rem" }} />
+                  <span onClick={handleRemove}>Remove</span>
+                </div>
+              ),
             },
           ],
-        }}
-        placement="bottomRight"
-        arrow
-      >
-        <Space style={{ cursor: "pointer", color: "white" }}>
-          More
-          <DownOutlined />
-        </Space>
-      </Dropdown>
-    </>
+        },
+      ]}
+    />
   );
 };
 

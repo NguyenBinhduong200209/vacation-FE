@@ -6,21 +6,24 @@ import { getListVacation, resetList } from "~/store/slices/vacationSlice";
 import { Card, List, Typography, Skeleton } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useOutletContext } from "react-router-dom";
 const cx = classNames.bind(styles);
 
 const Vacations = () => {
   let formatter = Intl.NumberFormat("en", { notation: "compact" });
   const dispatch = useDispatch();
   const { list, page, pages } = useSelector((state) => state.vacation.listVacation);
+  const { userId } = useOutletContext();
 
   useEffect(() => {
     dispatch(resetList());
-    dispatch(getListVacation({ type: "userProfile", page: 1 }));
-  }, [dispatch]);
+    dispatch(getListVacation(Object.assign({ type: "userProfile", page: 1 }, userId ? { userId } : {})));
+  }, [userId, dispatch]);
 
   const loadMoreData = () => {
-    dispatch(getListVacation({ type: "userProfile", page: page + 1 }));
+    dispatch(
+      getListVacation(Object.assign({ type: "userProfile", page: page + 1 }, userId ? { userId } : {}))
+    );
   };
 
   return (

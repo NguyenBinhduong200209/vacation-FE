@@ -180,6 +180,12 @@ ul {
   position: relative;
   width: 100%;
   height: 40vh;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 0 0;
+  }
 }
 
 .feed-head-info {
@@ -192,12 +198,6 @@ ul {
 .feed-time {
   font-size: 1rem;
   letter-spacing: 1px;
-}
-
-.feed-cover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .feed-cover-rad {
@@ -295,7 +295,11 @@ ul {
   width: 100%;
   height: 100%;
   // background-color: ;
-  background: linear-gradient(to bottom, RGBA(40, 40, 40, 0.3), RGBA(40, 40, 40, 0.6));
+  background: linear-gradient(
+    to bottom,
+    RGBA(40, 40, 40, 0.3),
+    RGBA(40, 40, 40, 0.6)
+  );
   pointer-events: none;
 }
 
@@ -410,7 +414,8 @@ ul {
   background-size: 200% 100%;
   border: none;
   border-radius: 30px;
-  box-shadow: -2px -2px 10px rgba(111, 137, 134, 0.5), 2px 2px 10px rgba(62, 62, 72, 0.5);
+  box-shadow: -2px -2px 10px rgba(111, 137, 134, 0.5),
+    2px 2px 10px rgba(62, 62, 72, 0.5);
   color: #170f1e;
   cursor: pointer;
   overflow: hidden;
@@ -425,7 +430,8 @@ ul {
 @keyframes shimmer {
   to {
     background-size: 100% 100%;
-    box-shadow: -2px -2px 6px rgba(255, 227, 126, 0.5), 2px 2px 6px rgba(144, 148, 255, 0.5);
+    box-shadow: -2px -2px 6px rgba(255, 227, 126, 0.5),
+      2px 2px 6px rgba(144, 148, 255, 0.5);
   }
 }
 
@@ -493,14 +499,18 @@ ul {
 .create-sthg::before {
   inset: -0.2em;
   z-index: -1;
-  background: linear-gradient(hsla(var(--shadow-start), 1), hsla(var(--shadow-end), 1));
+  background: linear-gradient(
+    hsla(var(--shadow-start), 1),
+    hsla(var(--shadow-end), 1)
+  );
   filter: blur(1.2em) saturate(1.2);
   transform-origin: bottom;
   transform: scaleY(0.5);
   opacity: 0;
 }
 .create-sthg::after {
-  box-shadow: inset 0 0 0 1px #fff, 0 0 0 4px rgba(255, 255, 255, 0.7), 1px 1px 0 4px #fff;
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 4px rgba(255, 255, 255, 0.7),
+    1px 1px 0 4px #fff;
   mix-blend-mode: overlay;
   opacity: 0;
 }
@@ -508,7 +518,8 @@ ul {
 .create-sthg:focus {
   color: hsla(var(--text-hover), 1);
   border-color: transparent;
-  box-shadow: inset 0 1.4em 0 hsla(var(--shadow-inner), 0.1), inset 0 0 1.4em hsla(var(--shadow-inner), 0.32),
+  box-shadow: inset 0 1.4em 0 hsla(var(--shadow-inner), 0.1),
+    inset 0 0 1.4em hsla(var(--shadow-inner), 0.32),
     0 1px 1px hsla(var(--shadow-inner), 0.32);
 }
 .create-sthg:hover::before,

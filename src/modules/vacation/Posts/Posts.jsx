@@ -2,11 +2,11 @@ import classNames from "classnames/bind";
 import styles from "./Posts.module.scss";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import { Avatar } from "antd";
 
 import Timeline from "../components/Timelines/Timeline";
 import PostItem from "./PostItem/PostItem";
 import CreatePost from "./CreatePost/CreatePost";
-import Image from "~/components/Image/Image";
 import Loading from "~/components/Loading/Loading";
 
 const cx = classNames.bind(styles);
@@ -30,11 +30,14 @@ const Posts = () => {
         <div className={cx("container")}>
           {detail?.isMember && (
             <div className={cx("create-post")}>
-              <Image path={info.avatar?.path} className={cx("avatar")} />
+              <Avatar
+                src={info.avatar?.path}
+                className={cx("avatar")}
+                size={60}
+              />
               <div onClick={handleOpenModal}>Every step is a milestone...</div>
             </div>
           )}
-          <br></br>
           <CreatePost
             handleCloseModal={handleCloseModal}
             showModal={showModal}

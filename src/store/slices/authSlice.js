@@ -46,48 +46,6 @@ export const getInfoUser = createAsyncThunk(
   }
 );
 
-export const getFiendList = createAsyncThunk(
-  "auth/getFiendList",
-  async (arg, thunkAPI) => {
-    try {
-      const res = await authAPI.getFiendList();
-      return res.data.data;
-    } catch (error) {
-      if (!error.response) {
-        return thunkAPI.rejectWithValue({ message: error.message });
-      }
-      return thunkAPI.rejectWithValue({
-        message: error.response.data.message,
-      });
-    }
-  }
-);
-export const refreshToken = createAsyncThunk(
-  "auth/refreshToken",
-  async (arg, thunkAPI) => {
-    try {
-      const refreshToken = localStorage.getItem("rfToken");
-      const res = await axios.post(
-        "https://vacation-backend.onrender.com/auth/refresh",
-        {
-          headers: {
-            "content-type": "application/json",
-            Authorization: refreshToken,
-          },
-        }
-      );
-      console.log(res);
-      return res.data;
-    } catch (error) {
-      if (!error.response) {
-        return thunkAPI.rejectWithValue({ message: error.message });
-      }
-      return thunkAPI.rejectWithValue({
-        message: error.response.data.message,
-      });
-    }
-  }
-);
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -141,12 +99,6 @@ const authSlice = createSlice({
       })
       .addCase(getInfoUser.fulfilled, (state, action) => {
         state.info = action.payload;
-      })
-      .addCase(refreshToken.fulfilled, (state, action) => {
-        console.log(action.payload);
-      })
-      .addCase(getFiendList.fulfilled, (state, action) => {
-        state.friendList = action.payload;
       });
   },
 });

@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import classNames from "classnames/bind";
 import styles from "./Login.module.scss";
-
-import InputForm from "../components/InputForm/InputForm";
 import images from "~/images";
-
-import Retrieval from "./Retrieval/Retrieval";
-import { useNavigate } from "react-router-dom";
 import { LOGIN } from "~/utils/constants";
-import { useDispatch, useSelector } from "react-redux";
 import { changeRenderList } from "~/store/slices/authSlice";
-import Image from "~/components/Image/Image";
+import InputForm from "../components/InputForm/InputForm";
+import Retrieval from "./Retrieval/Retrieval";
 
 const cx = classNames.bind(styles);
 const Login = () => {
@@ -68,9 +65,9 @@ const Login = () => {
           <div className={cx("other-methods")}>
             <div>or sign in with</div>
             <div className={cx("login-icon")}>
-              <Image path={images.facebook} alt="This is Facebook icon" />
-              <Image path={images.google} alt="This is Google icon" />
-              <Image path={images.twitter} alt="This is Twitter icon" />
+              <img src={images.facebook} alt="This is Facebook icon" />
+              <img src={images.google} alt="This is Google icon" />
+              <img src={images.twitter} alt="This is Twitter icon" />
             </div>
           </div>
 

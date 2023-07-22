@@ -19,29 +19,11 @@ const NewAlbum = () => {
     setSelectedImages((prevImages) => [...prevImages, imageUrl]);
   };
 
-  const handleImageRemove = ({ id, index }) => {
-    setSelectedImages((prevImages) => prevImages.toSpliced(index, 1));
+  const handleImageRemove = (imageId) => {
+    setSelectedImages((prevImages) =>
+      prevImages.filter((image) => image._id !== imageId)
+    );
   };
-
-  // const update = [
-  //   {
-  //     albumID: 1,
-  //     vacationID: dataId,
-  //     resource: [
-  //       {
-  //         resourceID: data._id,
-  //         styles: {
-  //           position: {
-  //             x: position.x,
-  //             y: position.y,
-  //           },
-  //           width: "cardSizes[index]?.width",
-  //           height: "cardSizes[index]?.height",
-  //         },
-  //       },
-  //     ],
-  //   },
-  // ];
 
   const [searchParams] = useSearchParams();
   const dataId = Object.fromEntries([...searchParams]);
@@ -79,10 +61,13 @@ const NewAlbum = () => {
   const [width, setWidth] = React.useState(100);
   const [height, setHeight] = React.useState(100);
 
-  const handleResize = async (event, { size }, index) => {
+  const handleResize = async (event, { size }, imageId) => {
     setCardSizes((prevSizes) => {
       const newSizes = [...prevSizes];
-      newSizes[index] = size;
+      const imageIndex = selectedImages.findIndex(
+        (image) => image._id === imageId
+      );
+      newSizes[imageIndex] = size;
       return newSizes;
     });
   };
@@ -112,29 +97,10 @@ const NewAlbum = () => {
         <div className="text">
           <div className={cx("wrapper")}>
             <div className={cx("mother")} ref={ref}>
-              {selectedImages.map((imageUrl, index) => {
-                const update = [
-                  {
-                    albumID: 1,
-                    vacationID: dataId,
-                    resource: [
-                      {
-                        resourceID: imageUrl._id,
-                        styles: {
-                          position: {
-                            x: position.x,
-                            y: position.y,
-                          },
-                          width: "cardSizes[index]?.width",
-                          height: "cardSizes[index]?.height",
-                        },
-                      },
-                    ],
-                  },
-                ];
+              {selectedImages.map((imageUrl) => {
                 return (
                   <Draggable
-                    key={`${imageUrl?._id}${index}`}
+                    key={`${imageUrl?._id}`}
                     handle={`.${cx("handle")}`}
                     defaultPosition={{ x: 0, y: 0 }}
                     onDrag={handleDrag}
@@ -142,10 +108,16 @@ const NewAlbum = () => {
                     defaultClassName={cx("draggable")}
                   >
                     <ResizableBox
-                      width={cardSizes[index]?.width || width}
-                      height={cardSizes[index]?.height || height}
+                      width={
+                        cardSizes.find((item) => item.id === imageUrl._id)
+                          ?.width || width
+                      }
+                      height={
+                        cardSizes.find((item) => item.id === imageUrl._id)
+                          ?.height || height
+                      }
                       onResize={(event, size) =>
-                        handleResize(event, size, index)
+                        handleResize(event, size, imageUrl._id)
                       }
                       maxConstraints={[
                         containerSize.outerWidth - position.x,
@@ -162,9 +134,9 @@ const NewAlbum = () => {
                       >
                         <CloseCircleOutlined
                           className={cx("close-icon")}
-                          onClick={() =>
-                            handleImageRemove({ id: imageUrl?._id, index })
-                          }
+                          onClick={() => {
+                            handleImageRemove(imageUrl._id);
+                          }}
                         />
                       </div>
                     </ResizableBox>
@@ -175,7 +147,11 @@ const NewAlbum = () => {
           </div>
         </div>
       </div>
-      <Slider onImageSelect={handleImageSelect} />
+      <Slider
+        onImageSelect={handleImageSelect}
+        selectedImages={selectedImages}
+        onImageRemove={handleImageRemove}
+      />
     </div>
   );
 };

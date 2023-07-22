@@ -8,7 +8,7 @@ import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 
 const cx = classNames.bind(styles);
 
-const Slider = ({ onImageSelect }) => {
+const Slider = ({ onImageSelect, selectedImages, onImageRemove }) => {
   const [active, setActive] = useState(0);
   const [img, setImg] = useState([]);
   const cardCount = img.length;
@@ -27,7 +27,6 @@ const Slider = ({ onImageSelect }) => {
 
     fetchData();
   }, [dataId.id]);
-  // console.log(img);
 
   const prevSlide = () => {
     setActive((active - 1 + cardCount) % cardCount);
@@ -57,8 +56,6 @@ const Slider = ({ onImageSelect }) => {
     });
   }, [active, cardCount]);
 
-  // console.log(active, img);
-
   return (
     <div className={cx("carousel-container")}>
       {img.length === 0 ? (
@@ -69,8 +66,21 @@ const Slider = ({ onImageSelect }) => {
             <div className={cx("card-container")} key={index}>
               <div className={cx("card")}>
                 <img src={item?.path} alt="?" />
-                <button onClick={() => onImageSelect(item)}>
-                  Select this image
+                <button
+                  onClick={() => {
+                    if (
+                      !selectedImages.some((image) => image._id === item._id)
+                    ) {
+                      onImageSelect(item);
+                    }
+                  }}
+                  disabled={selectedImages.some(
+                    (image) => image._id === item._id
+                  )}
+                >
+                  {selectedImages.some((image) => image._id === item._id)
+                    ? "Selected"
+                    : "Select this image"}
                 </button>
               </div>
             </div>

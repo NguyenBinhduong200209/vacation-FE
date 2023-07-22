@@ -88,8 +88,9 @@ const HandleVacation = ({
   const handleClear = (id) => {
     setMemberList((prev) => prev.filter((item) => item._id !== id));
   };
-  // Function to create a new vacation.
-  const handleVacation = async () => {
+  // Function to create or update a vacation.
+  const handleVacation = async (e) => {
+    e.preventDefault();
     let res;
     // Create the vacation.
     const newMemberList = memberList?.map((item) => item._id);

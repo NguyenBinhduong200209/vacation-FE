@@ -7,11 +7,21 @@ import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
 const cx = classNames.bind(styles);
 ReactModal.setAppElement("#root");
-const Modal = ({ children, open, setOpen, title, className }) => {
+const Modal = ({
+  children,
+  open,
+  setOpen,
+  title,
+  className,
+  handleAfterClose,
+}) => {
   return (
     <ReactModal
       isOpen={open}
-      onRequestClose={() => setOpen(false)}
+      onRequestClose={() => {
+        setOpen(false);
+        handleAfterClose();
+      }}
       className={cx("modal", className)}
       overlayClassName={cx("overlay")}
     >
@@ -19,7 +29,10 @@ const Modal = ({ children, open, setOpen, title, className }) => {
       <FontAwesomeIcon
         icon={faCircleXmark}
         className={cx("close-icon")}
-        onClick={() => setOpen(false)}
+        onClick={() => {
+          setOpen(false);
+          handleAfterClose();
+        }}
       />
       <div className={cx("wrapper")}>{children}</div>
     </ReactModal>

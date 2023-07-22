@@ -1,11 +1,10 @@
 import styles from "./HandlePost.module.scss";
 import classNames from "classnames/bind";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faLocationDot } from "@fortawesome/free-solid-svg-icons";
-import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { useSearchParams } from "react-router-dom";
 import vacationAPI from "~/api/vacationAPI";
@@ -13,8 +12,9 @@ import SelectLocation from "~/modules/components/SelectLocation/SelectLocation";
 import Notification from "~/components/Notification/Notification";
 import ImageField from "~/components/ImageField/ImageField";
 import Modal from "~/components/Modal/Modal";
-import { Avatar } from "antd";
+import { Avatar, Card, List } from "antd";
 import UpLoad from "~/components/UpLoad/UpLoad";
+import { resetResources } from "~/store/slices/resourceSlice";
 
 const cx = classNames.bind(styles);
 const HandlePost = ({
@@ -24,6 +24,7 @@ const HandlePost = ({
   initPostDetail,
   postId,
 }) => {
+  const dispatch = useDispatch();
   // get vacationId
   const [searchParams] = useSearchParams();
   let vacationId = searchParams.get("vacationID");
@@ -41,8 +42,6 @@ const HandlePost = ({
   const [msg, setMsg] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [files, setFiles] = useState([]);
-  const [listFileId, setListFileId] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState({});
   const imgRef = useRef();
@@ -52,12 +51,12 @@ const HandlePost = ({
   //     resources:[],
   //     content:""
   //   }
-
   useEffect(() => {
     setPostDetail(initPostDetail);
     setSelectedLocation(location);
   }, [initPostDetail]);
 
+  //   console.log(selectedLocation);
   function openModal() {
     setIsOpen(true);
   }
@@ -74,7 +73,7 @@ const HandlePost = ({
     try {
       let res;
       setIsLoading(true);
-      if (type === "create || newfeed") {
+      if (type === "create" || "newfeed") {
         res = await vacationAPI.createPost(params);
       } else {
         await vacationAPI.updatePost({ id: postId, body: params });
@@ -88,13 +87,23 @@ const HandlePost = ({
     setIsLoading(false);
     setShowModal(false);
     setOpenNoti(true);
+    dispatch(resetResources());
   };
 
   const titleModal =
     type === "create" || type === "newfeed" ? "New Post" : "Update Post";
+
+  const handleAfterClose = () => {
+    dispatch(resetResources());
+  };
   return (
     <>
-      <Modal open={showModal} setOpen={setShowModal} title={titleModal}>
+      <Modal
+        open={showModal}
+        setOpen={setShowModal}
+        title={titleModal}
+        handleAfterClose={handleAfterClose}
+      >
         <div className={cx("modal-container")}>
           <div className={cx("user-info")}>
             <div className={cx("info-name")}>
@@ -119,59 +128,60 @@ const HandlePost = ({
             }
           />
           <div className={cx("img-uploader")}>
-            {resources.map((resource, index) => (
-              <div className={cx("img-container")} key={index}>
-                <ImageField src={resource.path} className={cx("resource")} />
-                {/* <CloseCircleOutlined
-                  onClick={() => handleDelete(file, index)}
-                  className={cx("img-btn")}
-                /> */}
-              </div>
-            ))}
+            <List
+              grid={{
+                gutter: 8,
+                column: 4,
+              }}
+              dataSource={resources}
+              renderItem={(item) => (
+                <List.Item>
+                  <div className={cx("item")}>
+                    <ImageField
+                      rootClassName={cx("resource")}
+                      src={item.path}
+                    />
+                    <CloseCircleOutlined className={cx("img-btn")} />
+                  </div>
+                </List.Item>
+              )}
+            />
           </div>
-          <div className={cx("post-extension")}>
-            <div> Add on: {selectedLocation?.detail?.title} </div>
-            <div className={cx("extensions")}>
-              <div>
-                <FontAwesomeIcon
-                  onClick={openModal}
-                  icon={faLocationDot}
-                  className={cx("icon")}
-                />
-                <SelectLocation
-                  openLocation={modalIsOpen}
-                  setOpenLocation={setIsOpen}
-                  setLocation={setSelectedLocation}
-                />
-              </div>
-              {/* <div>
-                <input
-                  type="file"
-                  ref={uploadResourcesRef}
-                  onChange={handleUpload}
-                  name="files"
-                  hidden
-                />
-                <FontAwesomeIcon
-                  icon={faImage}
-                  className={cx("icon")}
-                  onClick={() => {
-                    uploadResourcesRef.current.click();
-                  }}
-                />
-              </div> */}
+          <div className={cx("post-extension-container")}>
+            <div className={cx("post-extension")}>
+              <div> Add on: </div>
+              <div className={cx("extensions")}>
+                <div>
+                  <FontAwesomeIcon
+                    onClick={openModal}
+                    icon={faLocationDot}
+                    className={cx("icon")}
+                  />
+                  <SelectLocation
+                    openLocation={modalIsOpen}
+                    setOpenLocation={setIsOpen}
+                    setLocation={setSelectedLocation}
+                  />
+                </div>
 
-              <div
-                className={cx("upload")}
-                onClick={() => imgRef.current.click()}
-              >
-                <UpLoad
-                  imgRef={imgRef}
-                  body={{ field: "post", vacationId: vacationId }}
-                />
-                <FontAwesomeIcon icon={faImage} className={cx("icon")} />
+                <div
+                  className={cx("upload")}
+                  onClick={() => imgRef.current.click()}
+                >
+                  <UpLoad
+                    imgRef={imgRef}
+                    body={{ field: "post", vacationId: vacationId }}
+                  />
+                  <FontAwesomeIcon icon={faImage} className={cx("icon")} />
+                </div>
               </div>
             </div>
+            {selectedLocation.detail && (
+              <div className={cx("result")}>
+                <FontAwesomeIcon icon={faLocationDot} />
+                <span>{` ${selectedLocation.detail?.title} - ${selectedLocation.district?.title} - ${selectedLocation.city?.title}`}</span>
+              </div>
+            )}
           </div>
           <button
             onClick={handleClick}

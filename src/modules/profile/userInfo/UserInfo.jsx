@@ -39,7 +39,6 @@ const UserInfo = ({ info }) => {
         >
           <Image
             className={cx("avatar")}
-            draggable={false}
             height={140}
             width={140}
             preview={{ maskClassName: cx("avatar") }}
@@ -53,7 +52,7 @@ const UserInfo = ({ info }) => {
 
         <i>
           <Typography.Text>@</Typography.Text>
-          <Typography.Text copyable={true}>{username}</Typography.Text>
+          <Typography.Text copyable={{ text: window.location.href }}>{username}</Typography.Text>
         </i>
 
         <Typography.Paragraph ellipsis={{ expandable: false, rows: 2 }} className={cx("user-info-des")}>

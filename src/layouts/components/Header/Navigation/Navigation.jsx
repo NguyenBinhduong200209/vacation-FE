@@ -27,37 +27,19 @@ const Navigation = () => {
         <HomeOutlined />
       </NavLink>
 
-      <NavLink
-        to="/profile/"
-        className={({ isActive }) => {
-          return isActive ? cx("active") : "";
-        }}
-      >
+      <NavLink to="/profile" className={({ isActive }) => (isActive ? cx("active") : "")}>
         <ProfileOutlined />
       </NavLink>
 
-      <NavLink
-        to="/profile/album"
-        className={({ isActive }) => {
-          return isActive ? cx("active") : "";
-        }}
-      >
+      <NavLink to="/profile/album" className={({ isActive }) => (isActive ? cx("active") : "")}>
         <PictureOutlined />
       </NavLink>
 
-      <NavLink
-        to="/profile/friends"
-        className={({ isActive }) => {
-          return isActive ? cx("active") : "";
-        }}
-      >
+      <NavLink to="/profile/friends" className={({ isActive }) => (isActive ? cx("active") : "")}>
         <TeamOutlined />
       </NavLink>
 
-      <div
-        style={{ cursor: "pointer", padding: "0" }}
-        className={isVisible ? cx("active") : ""}
-      >
+      <div style={{ cursor: "pointer", padding: "0" }} className={isVisible ? cx("active") : ""}>
         <Badge count={totalUnseen || 0} overflowCount={9} color="#b18735">
           <BellOutlined />
         </Badge>

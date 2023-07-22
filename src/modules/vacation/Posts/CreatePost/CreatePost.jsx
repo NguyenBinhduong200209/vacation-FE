@@ -17,6 +17,7 @@ import ImageField from "~/components/ImageField/ImageField";
 const cx = classNames.bind(styles);
 Modal.setAppElement("#root");
 const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
+
   const { detail } = useSelector((state) => state.vacation);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [openNoti, setOpenNoti] = useState(false);
@@ -40,7 +41,6 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
   const handleClick = async (e) => {
     let fileList = [];
     e.preventDefault();
-
     try {
       setIsLoading(true);
       await vacationAPI.createPost({
@@ -106,6 +106,7 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
       >
         <div className={cx("wrapper")}>
           <h2 className={cx("title")}>New Post</h2>
+
 
           <FontAwesomeIcon
             icon={faCircleXmark}

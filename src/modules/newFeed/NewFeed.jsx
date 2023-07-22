@@ -6,14 +6,17 @@ import styles from "./NewFeed.module.scss";
 import GlowingButton from "./glowing/GlowingButton";
 import { Avatar } from "antd";
 import {
-  HeartFilled,
-  CommentOutlined,
-  EyeOutlined,
-  FileTextOutlined,
-  PictureOutlined,
-  FolderOpenOutlined,
+	HeartFilled,
+	CommentOutlined,
+	EyeOutlined,
+	FileTextOutlined,
+	PictureOutlined,
+	FolderOpenOutlined,
 } from "@ant-design/icons";
+
+import HandlePost from "../vacation/HandlePost/HandlePost";
 import { getListVacation, resetList } from "~/store/slices/vacationSlice";
+
 import { getTrendingPlace } from "~/store/slices/locationSlice";
 import { getDate } from "~/helpers/function";
 import CreateAlbum from "../album/CreateAlbum/CreateAlbum";
@@ -24,6 +27,7 @@ import images from "~/images";
 
 const cx = classNames.bind(styles);
 const NewFeed = () => {
+
   let formatter = Intl.NumberFormat("en", { notation: "compact" });
   const dispatch = useDispatch();
   const { info } = useSelector((state) => state.auth);
@@ -62,7 +66,25 @@ const NewFeed = () => {
     ]).then((res) => setPreLoader(false));
   }, []);
 
-  // increase currentPage when at bottom page
+
+	// Get list of trending place
+	useEffect(() => {
+		Promise.all([
+			dispatch(
+				getTrendingPlace({
+					type: "trending",
+					number: 7,
+				})
+			),
+			dispatch(
+				getListVacation({
+					page: 1,
+					type: "newFeed",
+				})
+			),
+		]);
+	}, []);
+
 
   const loadMorePosts = () => {
     if (listVacation.page < listVacation.pages && listVacation.page === currentPage.current) {
@@ -76,21 +98,23 @@ const NewFeed = () => {
     }
   };
 
-  // add scroll event when component mounted
-  useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop + 1 >=
-        document.documentElement.scrollHeight
-      ) {
-        loadMorePosts();
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [dispatch, listVacation.page]);
+
+	// add scroll event when component mounted
+	useEffect(() => {
+		const handleScroll = () => {
+			if (
+				window.innerHeight + document.documentElement.scrollTop + 1 >=
+				document.documentElement.scrollHeight
+			) {
+				loadMorePosts();
+			}
+		};
+		window.addEventListener("scroll", handleScroll);
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+		};
+	}, [dispatch, listVacation.page]);
+
 
   return (
 

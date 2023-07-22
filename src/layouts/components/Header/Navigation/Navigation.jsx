@@ -43,7 +43,7 @@ const Navigation = () => {
         <Badge count={totalUnseen || 0} overflowCount={9} color="#b18735">
           <BellOutlined />
         </Badge>
-      </div>
+      </NavLink>
     </div>
   );
 };

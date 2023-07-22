@@ -33,6 +33,12 @@
   margin-top: 10vh;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .navigation {
   font-size: 2rem;
   display: flex;
@@ -61,4 +67,19 @@
     border-bottom: #d2ae68 solid 2px;
     font-weight: 700;
   }
+}
+
+.dropdown {
+  width: fit-content !important;
+
+  & > * {
+    background-color: #1a1a1a;
+    color: white;
+  }
+}
+
+.dropdown-list,
+.dropdown-list > * {
+  background-color: #1a1a1a !important;
+  color: white !important;
 }

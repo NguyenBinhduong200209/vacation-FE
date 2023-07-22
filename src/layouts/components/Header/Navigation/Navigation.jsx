@@ -4,6 +4,7 @@ import {
   TeamOutlined,
   ProfileOutlined,
   BellOutlined,
+  PictureOutlined,
 } from "@ant-design/icons";
 import { Badge } from "antd";
 import { useSelector } from "react-redux";
@@ -33,6 +34,15 @@ const Navigation = () => {
         }}
       >
         <ProfileOutlined />
+      </NavLink>
+
+      <NavLink
+        to="/profile/album"
+        className={({ isActive }) => {
+          return isActive ? cx("active") : "";
+        }}
+      >
+        <PictureOutlined />
       </NavLink>
 
       <NavLink

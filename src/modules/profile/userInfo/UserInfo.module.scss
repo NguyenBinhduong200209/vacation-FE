@@ -32,13 +32,6 @@
   top: 10vh;
   z-index: 10;
 
-  .avatar {
-    border: 2px solid white;
-    border-radius: 20px;
-    cursor: pointer;
-    object-fit: cover;
-  }
-
   .user-info-header {
     text-align: center;
     font-size: 1.8rem;
@@ -52,6 +45,13 @@
       text-align: center;
       margin: auto;
       color: white;
+    }
+
+    .avatar {
+      border: 2px solid white;
+      border-radius: 20px;
+      cursor: pointer;
+      object-fit: cover;
     }
   }
 

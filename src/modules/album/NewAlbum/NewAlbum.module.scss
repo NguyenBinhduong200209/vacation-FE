@@ -4,9 +4,10 @@
 }
 
 .mother {
+  position: relative;
   // position: fixed;
-  top: 18vh;
-  left: 30%;
+  // top: 18vh;
+  // left: 30%;
   width: 100%;
   height: 100%;
   /* border: 1px solid yellow; */
@@ -25,7 +26,7 @@
   cursor: all-scroll;
   object-fit: cover;
   border-radius: 10px;
-  background-image: url("https://nhanvietluanvan.com/wp-content/uploads/2023/05/568603cbd1860c67bf8f6776cbe7f885-612x620.jpg");
+  // background-image: url("https://nhanvietluanvan.com/wp-content/uploads/2023/05/568603cbd1860c67bf8f6776cbe7f885-612x620.jpg");
   background-size: cover;
 }
 
@@ -36,4 +37,10 @@
 
 .carou > img {
   height: 100%;
+}
+
+.draggable {
+  position: absolute;
+  top: 0;
+  left: 0;
 }

@@ -3,6 +3,7 @@ import classNames from "classnames/bind";
 import styles from "./Album.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { getList, resetList } from "~/store/slices/albumSlice";
+import { MoreOutlined } from "@ant-design/icons";
 import { Card, List, Typography, Skeleton } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { NavLink, useOutletContext } from "react-router-dom";
@@ -61,6 +62,7 @@ const Albums = () => {
                   </Typography.Paragraph>
                 </Card>
               </NavLink>
+              <MoreOutlined className={cx("more")} />
             </List.Item>
           )}
         />

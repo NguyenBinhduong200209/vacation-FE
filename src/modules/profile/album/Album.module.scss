@@ -47,3 +47,15 @@
     }
   }
 }
+
+.more {
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  font-size: 3rem;
+  transition: color linear 200ms;
+
+  &:hover {
+    color: #f1c40f;
+  }
+}

@@ -71,10 +71,20 @@
 
 .dropdown {
   width: fit-content !important;
+  height: 42px;
+  margin: auto;
 
   & > * {
     background-color: #1a1a1a;
+    font-size: 1.6rem !important;
+    height: 100% !important;
+    border-color: white;
     color: white;
+
+    &:hover {
+      color: #d2ae68 !important;
+      border-color: #d2ae68 !important;
+    }
   }
 }
 

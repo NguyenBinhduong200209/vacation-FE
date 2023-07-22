@@ -2,39 +2,52 @@ import axios from "axios";
 import resourcesAPI from "~/api/resourcesAPI";
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
-export const getAvatar = createAsyncThunk("resource/getAvatar", async (arg, thunkAPI) => {
-  try {
-    const res = await resourcesAPI.getAvatar({ page: arg?.page, userId: arg?.userId });
-    return res.data;
-  } catch (error) {
-    if (!error.response) {
-      return thunkAPI.rejectWithValue({ message: error.message });
+export const getAvatar = createAsyncThunk(
+  "resource/getAvatar",
+  async (arg, thunkAPI) => {
+    try {
+      const res = await resourcesAPI.getAvatar({
+        page: arg?.page,
+        userId: arg?.userId,
+      });
+      return res.data;
+    } catch (error) {
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
+      return thunkAPI.rejectWithValue({
+        message: error.response.data.message,
+      });
     }
-    return thunkAPI.rejectWithValue({
-      message: error.response.data.message,
-    });
   }
-});
+);
 
-export const uploadResource = createAsyncThunk("uploadResource/resource", async (arg, thunkAPI) => {
-  try {
-    const token = localStorage.getItem("token");
-    const res = await axios.post("https://vacation-backend.onrender.com/resource", arg, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: token,
-      },
-    });
-    return res.data;
-  } catch (error) {
-    if (!error.response) {
-      return thunkAPI.rejectWithValue({ message: error.message });
+export const uploadResource = createAsyncThunk(
+  "uploadResource/resource",
+  async (arg, thunkAPI) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.post(
+        "https://vacation-backend.onrender.com/resource",
+        arg,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: token,
+          },
+        }
+      );
+      return res.data;
+    } catch (error) {
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
+      return thunkAPI.rejectWithValue({
+        message: error.response.data.message,
+      });
     }
-    return thunkAPI.rejectWithValue({
-      message: error.response.data.message,
-    });
   }
-});
+);
 
 const resourceSlice = createSlice({
   name: "resource",
@@ -53,7 +66,7 @@ const resourceSlice = createSlice({
     resetResources: (state) => {
       state.resources = [];
     },
-    deletImg: (state, action) => {
+    deleteImg: (state, action) => {
       const newList = state.filter((item) => item._id === action.payload);
       state.resources = newList;
     },
@@ -102,5 +115,5 @@ const resourceSlice = createSlice({
   },
 });
 const { reducer, actions } = resourceSlice;
-export const { resetList, resetResources } = actions;
+export const { resetList, resetResources, deleteImg } = actions;
 export default reducer;

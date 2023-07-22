@@ -6,8 +6,9 @@ import { Avatar } from "antd";
 
 import Timeline from "../components/Timelines/Timeline";
 import PostItem from "./PostItem/PostItem";
-import CreatePost from "./CreatePost/CreatePost";
+// import CreatePost from "./CreatePost/CreatePost";
 import Loading from "~/components/Loading/Loading";
+import HandlePost from "./HandlePost/HandlePost";
 
 const cx = classNames.bind(styles);
 
@@ -17,11 +18,10 @@ const Posts = () => {
   const { posts, detail, isLoading } = useSelector((state) => state.vacation);
   const { postList } = posts;
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-  const handleOpenModal = () => {
-    setShowModal(true);
+  const initPostDetail = {
+    content: "",
+    location: {},
+    resources: [],
   };
 
   return (
@@ -35,13 +35,19 @@ const Posts = () => {
                 className={cx("avatar")}
                 size={60}
               />
-              <div onClick={handleOpenModal}>Every step is a milestone...</div>
+              <div onClick={() => setShowModal(true)}>
+                Every step is a milestone...
+              </div>
             </div>
           )}
-          <CreatePost
-            handleCloseModal={handleCloseModal}
+          {/* <CreatePost setShowModal={setShowModal} showModal={showModal} /> */}
+          <HandlePost
+            setShowModal={setShowModal}
             showModal={showModal}
+            initPostDetail={initPostDetail}
+            type="create"
           />
+
           {postList?.map((item, index) => (
             <PostItem postDetail={item} key={index} />
           ))}

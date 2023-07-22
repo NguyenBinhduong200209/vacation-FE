@@ -54,7 +54,10 @@ const Navigation = () => {
         <TeamOutlined />
       </NavLink>
 
-      <div style={{ cursor: "pointer", padding: "0" }} className={isVisible ? cx("active") : ""}>
+      <div
+        style={{ cursor: "pointer", padding: "0" }}
+        className={isVisible ? cx("active") : ""}
+      >
         <Badge count={totalUnseen || 0} overflowCount={9} color="#b18735">
           <BellOutlined />
         </Badge>

@@ -5,15 +5,31 @@ import { useSearchParams } from "react-router-dom";
 import styles from "./Slider.module.scss";
 import classNames from "classnames/bind";
 import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
+import { setImageUrl } from "~/store/slices/slice";
 
 const cx = classNames.bind(styles);
 
-const Slider = () => {
+const Slider = ({ onImageSelect }) => {
   const [active, setActive] = useState(0);
   const [img, setImg] = useState([]);
   const cardCount = img.length;
   const [searchParams] = useSearchParams();
   const dataId = Object.fromEntries([...searchParams]);
+
+  const dispatch = useDispatch();
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      const imageUrl = event.target.result;
+      dispatch(setImageUrl(imageUrl));
+    };
+
+    reader.readAsDataURL(file);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,35 +77,6 @@ const Slider = () => {
   console.log(active, img);
 
   return (
-    // <div className={cx("carousel-container")}>
-    //   <div className={cx("carousel")}>
-    //     {/* {img.map((item, index) => (
-    //       <div className={cx("card-container")}>
-    //         <div className={cx("card")}>
-    //           <img key={item._id} src={item?.path} alt="?" />
-    //         </div>
-    //         <button>chọn cái này nhé bạn ơi</button>
-    //       </div>
-    //     ))} */}
-
-    //     {img.map((item, index) => (
-    //       <div className={cx("card-container")} key={index}>
-    //         <div className={cx("card")}>
-    //           <img src={item?.path} alt="?" />
-    //         </div>
-    //         <button>chọn cái này nhé bạn ơi</button>
-    //       </div>
-    //     ))}
-
-    //     <button className={cx("nav-left")} onClick={prevSlide}>
-    //       <div className={cx("bi bi-chevron-left")}>trai</div>
-    //     </button>
-    //     <button className={cx("nav-right")} onClick={nextSlide}>
-    //       <div className={cx("bi bi-chevron-right")}>phai</div>
-    //     </button>
-    //   </div>
-    // </div>
-
     <div className={cx("carousel-container")}>
       {img.length === 0 ? (
         <div className={cx("no-picture")}>No pictures available.</div>
@@ -100,9 +87,11 @@ const Slider = () => {
               <div className={cx("card")}>
                 <img src={item?.path} alt="?" />
               </div>
+              <button onClick={() => onImageSelect(item?.path)}>
+                Select this image
+              </button>
             </div>
           ))}
-
           <button className={cx("nav-left")} onClick={prevSlide}>
             <LeftCircleOutlined />
           </button>
@@ -111,7 +100,6 @@ const Slider = () => {
           </button>
         </div>
       )}
-      <button>chọn cái này nhé bạn ơi</button>
     </div>
   );
 };

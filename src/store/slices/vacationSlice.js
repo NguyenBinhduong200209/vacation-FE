@@ -17,7 +17,9 @@ export const getListVacation = createAsyncThunk(
       });
     }
   }
+
 );
+
 
 export const getDetailVacation = createAsyncThunk(
   "vacation/getDetailVacation",
@@ -46,14 +48,15 @@ export const getManyPosts = createAsyncThunk(
       return res.data;
     } catch (error) {
       if (!error.response) {
-        return thunkAPI.rejectWithValue({ message: error.message });
+        return thunkAPI.rejectWithValue({ message: error.message })
       }
       return thunkAPI.rejectWithValue({
-        message: error.response.data.message,
+        message: error.response.data.message
       });
     }
   }
 );
+
 export const getMemberList = createAsyncThunk(
   "vacation/getMemberList",
   async (arg, thunkAPI) => {
@@ -67,6 +70,7 @@ export const getMemberList = createAsyncThunk(
       return thunkAPI.rejectWithValue({
         message: error.response.data.message,
       });
+
     }
   }
 );

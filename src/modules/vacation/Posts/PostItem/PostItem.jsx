@@ -14,6 +14,7 @@ import UpdatePost from "../UpdatePost/UpdatePost";
 import vacationAPI from "~/api/vacationAPI";
 import Modal from "~/components/Modal/Modal";
 import ImageField from "~/components/ImageField/ImageField";
+import HandlePost from "../HandlePost/HandlePost";
 
 const cx = classNames.bind(styles);
 
@@ -28,8 +29,9 @@ const PostItem = ({ postDetail }) => {
     _id,
     createdAt,
     isLiked,
+    location,
   } = postDetail;
-  // console.log(_id, authorInfo.username, isLiked, likes);
+  // console.log(location);
 
   const { info } = useSelector((state) => state.auth);
   const postItemRef = useRef(null);
@@ -38,12 +40,10 @@ const PostItem = ({ postDetail }) => {
   const [open, setOpen] = useState(false);
   const [openImg, setOpenImg] = useState(false);
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-  const handleOpenModal = () => {
-    setShowModal(true);
-    setOpen(false);
+  const initPostDetail = {
+    content: content,
+    resources: resource,
+    location: location,
   };
   const handleOpenChange = (newOpen) => {
     setOpen(newOpen);
@@ -87,11 +87,11 @@ const PostItem = ({ postDetail }) => {
             <div className={cx("moment")}>{moment(lastUpdateAt).fromNow()}</div>
           </div>
         </div>
-        {authorInfo._id === info.id && (
+        {authorInfo._id === info._id && (
           <Popover
             content={
               <div className={cx("pop-over")}>
-                <p className={cx("options")} onClick={handleOpenModal}>
+                <p className={cx("options")} onClick={() => setShowModal(true)}>
                   Edit
                 </p>
                 <p className={cx("options")} onClick={handleDeletePost}>
@@ -110,29 +110,34 @@ const PostItem = ({ postDetail }) => {
             />
           </Popover>
         )}
-        <UpdatePost
+        {/* <UpdatePost
           handleCloseModal={handleCloseModal}
           showModal={showModal}
           postDetail={postDetail}
+        /> */}
+
+        <HandlePost
+          showModal={showModal}
+          setShowModal={setShowModal}
+          initPostDetail={initPostDetail}
+          postId={_id}
         />
       </header>
 
       <main>
         <div className={cx("description")}>{content}</div>
         <div className={cx("img-container")}>
-          {[...resource, ...resource, ...resource].map((item, index) => (
-            <>
-              {index <= 5 && (
-                <div
-                  className={cx(index === 5 && "last-img")}
-                  onClick={() => index === 5 && setOpenImg(true)}
-                  key={index}
-                >
-                  <ImageField src={item.path} preview={index < 5} />
-                </div>
-              )}
-            </>
-          ))}
+          {[...resource, ...resource, ...resource].map((item, index) => {
+            index <= 5 && (
+              <div
+                className={cx(index === 5 && "last-img")}
+                onClick={() => index === 5 && setOpenImg(true)}
+                key={index}
+              >
+                <ImageField src={item.path} preview={index < 5} />
+              </div>
+            );
+          })}
         </div>
 
         <Modal open={openImg} setOpen={setOpenImg} title="Resources">

@@ -8,7 +8,7 @@ import UpdateUser from "~/modules/auth/Update/UpdateUser";
 import Security from "~/modules/auth/Update/Security/Security";
 import Personal from "~/modules/auth/Update/Personal/Personal";
 import Overview from "~/modules/auth/Update/Overview/Overview";
-import NewFeed from "~/modules/newFeed/NewFeed";
+import NewFeed from "~/modules/newfeed/NewFeed";
 import Profile from "~/modules/profile/Profile";
 import VacationProfile from "~/modules/profile/vacation/Vacations";
 import AlbumProfile from "~/modules/profile/album/Albums";
@@ -32,6 +32,7 @@ import SearchUser from "~/modules/search/SearchUser/SearchUser";
 import SearchLocation from "~/modules/search/SearchLocation/SearchLocation";
 import SearchVacation from "~/modules/search/SearchVacation/SearchVacation";
 import SearchAlbum from "~/modules/search/SearchAlbum/SearchAlbum";
+import Preloader from "~/components/Preloader/Preloader";
 
 export const publicRoutes = [
   { path: "/", component: NewFeed, layout: DefaultLayout },
@@ -76,6 +77,7 @@ export const publicRoutes = [
     ],
   },
   { path: "/newAlbum", component: NewAlbum, layout: DefaultLayout },
+  { path: "/pre", component: Preloader, layout: DefaultLayout },
 
   {
     path: VACATION_ROUTE,

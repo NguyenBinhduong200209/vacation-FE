@@ -1,5 +1,4 @@
 import React, { useLayoutEffect, useRef, useState } from "react";
-// import { useSearchParams } from "react-router-dom";
 import "react-resizable/css/styles.css";
 import Draggable from "react-draggable";
 import { ResizableBox } from "react-resizable";
@@ -9,11 +8,27 @@ import Slider from "./Slider/Slider";
 import "./Preloader.scss";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
+import { CloseCircleOutlined } from "@ant-design/icons";
 
 const cx = classNames.bind(styles);
 
 const NewAlbum = () => {
   const imageUrl = useSelector((state) => state.image.imageUrl);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [cardSizes, setCardSizes] = useState([]);
+
+  const handleImageSelect = (imageUrl) => {
+    setSelectedImages((prevImages) => [...prevImages, imageUrl]);
+  };
+
+  const handleImageRemove = (index) => {
+    setSelectedImages((prevImages) => {
+      const newImages = [...prevImages];
+      newImages.splice(index, 1);
+      return newImages;
+    });
+  };
+
   const [searchParams] = useSearchParams();
   const dataId = Object.fromEntries([...searchParams]);
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +52,6 @@ const NewAlbum = () => {
   }, []);
 
   const handleDrag = async (event, data) => {
-    // console.log(event, data);
     const { lastX, lastY } = data;
 
     if (event.target.parentElement) {
@@ -51,9 +65,12 @@ const NewAlbum = () => {
   const [width, setWidth] = React.useState(100);
   const [height, setHeight] = React.useState(100);
 
-  const handleResize = async (event, { size }) => {
-    setWidth(size.width);
-    setHeight(size.height);
+  const handleResize = async (event, { size }, index) => {
+    setCardSizes((prevSizes) => {
+      const newSizes = [...prevSizes];
+      newSizes[index] = size;
+      return newSizes;
+    });
   };
 
   return (
@@ -81,36 +98,44 @@ const NewAlbum = () => {
         <div className="text">
           <div className={cx("wrapper")}>
             <div className={cx("mother")} ref={ref}>
-              <Draggable
-                handle={`.${cx("handle")}`}
-                defaultPosition={{ x: position.x, y: position.y }}
-                onDrag={handleDrag}
-                bounds="parent"
-              >
-                <ResizableBox
-                  width={width}
-                  height={height}
-                  onResize={handleResize}
-                  maxConstraints={[
-                    containerSize.outerWidth - position.x,
-                    containerSize.outerHeight - position.y,
-                  ]}
+              {selectedImages.map((imageUrl, index) => (
+                <Draggable
+                  key={index}
+                  handle={`.${cx("handle")}`}
+                  defaultPosition={{ x: position.x, y: position.y }}
+                  onDrag={handleDrag}
+                  bounds="parent"
                 >
-                  <div
-                    className={cx("handle")}
-                    // style={{
-                    //   backgroundImage: `url(${imageUrl})`,
-                    //   backgroundSize: "cover",
-                    //   backgroundPosition: "center",
-                    // }}
-                  ></div>
-                </ResizableBox>
-              </Draggable>
+                  <ResizableBox
+                    width={cardSizes[index]?.width || width}
+                    height={cardSizes[index]?.height || height}
+                    onResize={(event, size) => handleResize(event, size, index)}
+                    maxConstraints={[
+                      containerSize.outerWidth - position.x,
+                      containerSize.outerHeight - position.y,
+                    ]}
+                  >
+                    <div
+                      className={cx("handle")}
+                      style={{
+                        backgroundImage: `url(${imageUrl})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                      }}
+                    >
+                      <CloseCircleOutlined
+                        className={cx("close-icon")}
+                        onClick={() => handleImageRemove(index)}
+                      />
+                    </div>
+                  </ResizableBox>
+                </Draggable>
+              ))}
             </div>
           </div>
         </div>
       </div>
-      <Slider></Slider>
+      <Slider onImageSelect={handleImageSelect} />
     </div>
   );
 };

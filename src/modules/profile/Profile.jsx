@@ -7,7 +7,6 @@ import styles from "./ProfileLayout.module.scss";
 import { Outlet, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getInfoUser } from "~/store/slices/authSlice";
-// import AvatarList from "./userInfo/Avatar";
 const cx = classNames.bind(styles);
 
 const Profile = () => {
@@ -29,7 +28,7 @@ const Profile = () => {
       <div className={cx("info")}>
         {id ? <UserInfo info={otherUserInfo} /> : <UserInfo info={info} />}
         <div className={cx("container")}>
-          <Navbar />
+          <Navbar userId={id} />
           <Outlet context={{ userId: id }} />
         </div>
       </div>

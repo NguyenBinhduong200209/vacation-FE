@@ -15,13 +15,9 @@ export const getListVacation = createAsyncThunk(
       return thunkAPI.rejectWithValue({
         message: error.response.data.message,
       });
-
     }
-    return thunkAPI.rejectWithValue({
-      message: error.response.data.message,
-    });
   }
-});
+)
 
 export const getDetailVacation = createAsyncThunk("vacation/getDetailVacation", async (arg, thunkAPI) => {
   try {
@@ -47,18 +43,15 @@ export const getManyPosts = createAsyncThunk(
       return res.data;
     } catch (error) {
       if (!error.response) {
-        return thunkAPI.rejectWithValue({ message: error.message });
+        return thunkAPI.rejectWithValue({ message: error.message })
       }
       return thunkAPI.rejectWithValue({
-        message: error.response.data.message,
+        message: error.response.data.message
       });
 
     }
-    return thunkAPI.rejectWithValue({
-      message: error.response.data.message,
-    });
   }
-});
+);
 export const getMemberList = createAsyncThunk("vacation/getMemberList", async (arg, thunkAPI) => {
   try {
     const res = await statusAPI.statusList(arg);

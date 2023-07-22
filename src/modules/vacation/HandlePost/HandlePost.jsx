@@ -1,5 +1,5 @@
 import Modal from "react-modal";
-import styles from "./CreatePost.module.scss";
+import styles from "./HandlePost.module.scss";
 import classNames from "classnames/bind";
 import Image from "~/components/Image/Image";
 import { useSelector } from "react-redux";
@@ -14,19 +14,20 @@ import { useSearchParams } from "react-router-dom";
 import vacationAPI from "~/api/vacationAPI";
 import SelectLocation from "~/modules/components/SelectLocation/SelectLocation";
 import Notification from "~/components/Notification/Notification";
+import Dropdown from "../../album/CreateAlbum/Dropdown/Dropdown";
 
 const cx = classNames.bind(styles);
 Modal.setAppElement("#root");
-const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
-	const { detail } = useSelector((state) => state.vacation);
+const HandlePost = ({ showModal, handleCloseModal, newfeed }) => {
+	const { info } = useSelector((state) => state.auth);
 	const [modalIsOpen, setIsOpen] = useState(false);
+	const [vacationId, setVacationId] = useState(null);
 	const [openNoti, setOpenNoti] = useState(false);
 	const [msg, setMsg] = useState("");
 	const [isSuccess, setIsSuccess] = useState(false);
+	const [selected, setSelected] = useState("Choose Your Vacation");
 	const [isError, setIsError] = useState(false);
-	const { authorInfo } = detail;
 	const [searchParams] = useSearchParams();
-	let vacationId = searchParams.get("vacationID");
 	const [content, setContent] = useState("");
 	const [files, setFiles] = useState([]);
 	const [listFileId, setListFileId] = useState([]);
@@ -63,8 +64,6 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 			setFiles([e.target.files[0]]);
 		}
 	};
-
-	console.log(files);
 
 	useEffect(() => {
 		const formData = new FormData();
@@ -118,10 +117,17 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 					<div className={cx("modal-container")}>
 						<div className={cx("user-info")}>
 							<div className={cx("info-name")}>
-								<Image path={authorInfo && authorInfo.avatar} />
-								<div className={cx("username")}>{authorInfo && authorInfo.username}</div>
+								<Image path={info?.avatar?.path} />
+								<div className={cx("username")}>{info?.username}</div>
 							</div>
-							{newfeed && <div className={cx("select-vacation")}>Choose your Vacation</div>}
+                            <div className={cx("dropdown")}>
+                                <Dropdown
+                                    selected={selected}
+                                    setSelected={setSelected}
+                                    setVacationId={setVacationId}
+                                />
+                            </div>
+							
 						</div>
 						<TextArea
 							placeholder="What is on your mind..."
@@ -194,4 +200,4 @@ const CreatePost = ({ showModal, handleCloseModal, newfeed }) => {
 	);
 };
 
-export default CreatePost;
+export default HandlePost;

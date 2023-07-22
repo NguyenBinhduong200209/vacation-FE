@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Interaction from "../../components/Interact/Interaction";
 import { setTimeline } from "~/store/slices/vacationSlice";
 import { getDate } from "~/helpers/function";
-import UpdatePost from "../UpdatePost/UpdatePost";
 import vacationAPI from "~/api/vacationAPI";
 import Modal from "~/components/Modal/Modal";
 import ImageField from "~/components/ImageField/ImageField";
@@ -31,7 +30,7 @@ const PostItem = ({ postDetail }) => {
     isLiked,
     location,
   } = postDetail;
-  // console.log(location);
+  console.log(resource);
 
   const { info } = useSelector((state) => state.auth);
   const postItemRef = useRef(null);
@@ -43,7 +42,11 @@ const PostItem = ({ postDetail }) => {
   const initPostDetail = {
     content: content,
     resources: resource,
-    location: location,
+    location: {
+      city: { title: location.city },
+      district: { title: location.district },
+      detail: { title: location.detail },
+    },
   };
   const handleOpenChange = (newOpen) => {
     setOpen(newOpen);
@@ -80,10 +83,14 @@ const PostItem = ({ postDetail }) => {
       <header>
         <div className={cx("user-info")}>
           <Avatar src={authorInfo?.avatar?.path} size={45} />
-
           <div className={cx("username-container")}>
-            <div className={cx("username")}>{authorInfo.username}</div>
-
+            <div className={cx("username")}>
+              {authorInfo.username}
+              <span>at</span>
+              <span className={cx("location")}>
+                {` ${location.detail} - ${location.district} - ${location.city}`}
+              </span>
+            </div>
             <div className={cx("moment")}>{moment(lastUpdateAt).fromNow()}</div>
           </div>
         </div>
@@ -110,11 +117,6 @@ const PostItem = ({ postDetail }) => {
             />
           </Popover>
         )}
-        {/* <UpdatePost
-          handleCloseModal={handleCloseModal}
-          showModal={showModal}
-          postDetail={postDetail}
-        /> */}
 
         <HandlePost
           showModal={showModal}
@@ -128,14 +130,16 @@ const PostItem = ({ postDetail }) => {
         <div className={cx("description")}>{content}</div>
         <div className={cx("img-container")}>
           {[...resource, ...resource, ...resource].map((item, index) => {
-            index <= 5 && (
-              <div
-                className={cx(index === 5 && "last-img")}
-                onClick={() => index === 5 && setOpenImg(true)}
-                key={index}
-              >
-                <ImageField src={item.path} preview={index < 5} />
-              </div>
+            return (
+              index <= 5 && (
+                <div
+                  className={cx(index === 5 && "last-img")}
+                  onClick={() => index === 5 && setOpenImg(true)}
+                  key={index}
+                >
+                  <ImageField src={item.path} preview={index < 5} />
+                </div>
+              )
             );
           })}
         </div>

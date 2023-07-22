@@ -6,14 +6,12 @@ import styles from "./NewAlbum.module.scss";
 import classNames from "classnames/bind";
 import Slider from "./Slider/Slider";
 import "./Preloader.scss";
-import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { CloseCircleOutlined } from "@ant-design/icons";
 
 const cx = classNames.bind(styles);
 
 const NewAlbum = () => {
-  const imageUrl = useSelector((state) => state.image.imageUrl);
   const [selectedImages, setSelectedImages] = useState([]);
   const [cardSizes, setCardSizes] = useState([]);
 
@@ -21,13 +19,29 @@ const NewAlbum = () => {
     setSelectedImages((prevImages) => [...prevImages, imageUrl]);
   };
 
-  const handleImageRemove = (index) => {
-    setSelectedImages((prevImages) => {
-      const newImages = [...prevImages];
-      newImages.splice(index, 1);
-      return newImages;
-    });
+  const handleImageRemove = ({ id, index }) => {
+    setSelectedImages((prevImages) => prevImages.toSpliced(index, 1));
   };
+
+  // const update = [
+  //   {
+  //     albumID: 1,
+  //     vacationID: dataId,
+  //     resource: [
+  //       {
+  //         resourceID: data._id,
+  //         styles: {
+  //           position: {
+  //             x: position.x,
+  //             y: position.y,
+  //           },
+  //           width: "cardSizes[index]?.width",
+  //           height: "cardSizes[index]?.height",
+  //         },
+  //       },
+  //     ],
+  //   },
+  // ];
 
   const [searchParams] = useSearchParams();
   const dataId = Object.fromEntries([...searchParams]);
@@ -98,39 +112,65 @@ const NewAlbum = () => {
         <div className="text">
           <div className={cx("wrapper")}>
             <div className={cx("mother")} ref={ref}>
-              {selectedImages.map((imageUrl, index) => (
-                <Draggable
-                  key={index}
-                  handle={`.${cx("handle")}`}
-                  defaultPosition={{ x: position.x, y: position.y }}
-                  onDrag={handleDrag}
-                  bounds="parent"
-                >
-                  <ResizableBox
-                    width={cardSizes[index]?.width || width}
-                    height={cardSizes[index]?.height || height}
-                    onResize={(event, size) => handleResize(event, size, index)}
-                    maxConstraints={[
-                      containerSize.outerWidth - position.x,
-                      containerSize.outerHeight - position.y,
-                    ]}
+              {selectedImages.map((imageUrl, index) => {
+                const update = [
+                  {
+                    albumID: 1,
+                    vacationID: dataId,
+                    resource: [
+                      {
+                        resourceID: imageUrl._id,
+                        styles: {
+                          position: {
+                            x: position.x,
+                            y: position.y,
+                          },
+                          width: "cardSizes[index]?.width",
+                          height: "cardSizes[index]?.height",
+                        },
+                      },
+                    ],
+                  },
+                ];
+                return (
+                  <Draggable
+                    key={`${imageUrl?._id}${index}`}
+                    handle={`.${cx("handle")}`}
+                    defaultPosition={{ x: 0, y: 0 }}
+                    onDrag={handleDrag}
+                    bounds="parent"
+                    defaultClassName={cx("draggable")}
                   >
-                    <div
-                      className={cx("handle")}
-                      style={{
-                        backgroundImage: `url(${imageUrl})`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                      }}
+                    <ResizableBox
+                      width={cardSizes[index]?.width || width}
+                      height={cardSizes[index]?.height || height}
+                      onResize={(event, size) =>
+                        handleResize(event, size, index)
+                      }
+                      maxConstraints={[
+                        containerSize.outerWidth - position.x,
+                        containerSize.outerHeight - position.y,
+                      ]}
                     >
-                      <CloseCircleOutlined
-                        className={cx("close-icon")}
-                        onClick={() => handleImageRemove(index)}
-                      />
-                    </div>
-                  </ResizableBox>
-                </Draggable>
-              ))}
+                      <div
+                        className={cx("handle")}
+                        style={{
+                          backgroundImage: `url(${imageUrl?.path})`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                        }}
+                      >
+                        <CloseCircleOutlined
+                          className={cx("close-icon")}
+                          onClick={() =>
+                            handleImageRemove({ id: imageUrl?._id, index })
+                          }
+                        />
+                      </div>
+                    </ResizableBox>
+                  </Draggable>
+                );
+              })}
             </div>
           </div>
         </div>

@@ -5,8 +5,6 @@ import { useSearchParams } from "react-router-dom";
 import styles from "./Slider.module.scss";
 import classNames from "classnames/bind";
 import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
-import { useDispatch } from "react-redux";
-import { setImageUrl } from "~/store/slices/slice";
 
 const cx = classNames.bind(styles);
 
@@ -17,26 +15,11 @@ const Slider = ({ onImageSelect }) => {
   const [searchParams] = useSearchParams();
   const dataId = Object.fromEntries([...searchParams]);
 
-  const dispatch = useDispatch();
-
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = (event) => {
-      const imageUrl = event.target.result;
-      dispatch(setImageUrl(imageUrl));
-    };
-
-    reader.readAsDataURL(file);
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const fetchImg = await axiosClient.get(`vacation/${dataId.id}/images`);
         setImg(fetchImg.data.data);
-        console.log(fetchImg);
       } catch (error) {
         console.log(error);
       }
@@ -44,7 +27,7 @@ const Slider = ({ onImageSelect }) => {
 
     fetchData();
   }, [dataId.id]);
-  console.log(img);
+  // console.log(img);
 
   const prevSlide = () => {
     setActive((active - 1 + cardCount) % cardCount);
@@ -74,7 +57,7 @@ const Slider = ({ onImageSelect }) => {
     });
   }, [active, cardCount]);
 
-  console.log(active, img);
+  // console.log(active, img);
 
   return (
     <div className={cx("carousel-container")}>
@@ -86,10 +69,10 @@ const Slider = ({ onImageSelect }) => {
             <div className={cx("card-container")} key={index}>
               <div className={cx("card")}>
                 <img src={item?.path} alt="?" />
+                <button onClick={() => onImageSelect(item)}>
+                  Select this image
+                </button>
               </div>
-              <button onClick={() => onImageSelect(item?.path)}>
-                Select this image
-              </button>
             </div>
           ))}
           <button className={cx("nav-left")} onClick={prevSlide}>

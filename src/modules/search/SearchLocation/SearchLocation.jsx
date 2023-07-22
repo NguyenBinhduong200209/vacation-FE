@@ -14,9 +14,10 @@ const SearchLocation = () => {
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const searchVal = searchParams.get("f");
-  const { result, isLoading } = useSelector((state) => state.search);
+  const { result } = useSelector((state) => state.search);
   const { locations } = result;
-  console.log(locations);
+  const { isLoading } = locations;
+
   useEffect(() => {
     dispatch(
       searchOneModel({
@@ -41,8 +42,8 @@ const SearchLocation = () => {
           );
         })}
       </div>
-      {locations.data?.length === 0 && !isLoading && <EmptyRes />}
       {isLoading && <Loading className="searching" />}
+      {locations.data?.length === 0 && !isLoading && <EmptyRes />}
     </>
   );
 };

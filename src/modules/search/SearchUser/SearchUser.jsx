@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import styles from "./SearchUser.module.scss";
 import classNames from "classnames/bind";
 import { searchOneModel } from "~/store/slices/searchSlice";
@@ -16,9 +16,12 @@ const SearchUser = () => {
   const [searchParams] = useSearchParams();
   const searchVal = searchParams.get("f");
   const dispatch = useDispatch();
-  const { result, isLoading } = useSelector((state) => state.search);
+  const { result } = useSelector((state) => state.search);
   const { users } = result;
+  const { isLoading } = users;
   const currentPage = useRef(1);
+
+  // console.log(users, isLoading);
 
   useEffect(() => {
     dispatch(
@@ -41,7 +44,6 @@ const SearchUser = () => {
           type: "users",
         })
       );
-
       currentPage.current += 1;
     }
   };
@@ -66,7 +68,11 @@ const SearchUser = () => {
       <div id="result" className={cx("result")}>
         {users.data?.map((item) => {
           return (
-            <div className={cx("item")} key={item._id}>
+            <Link
+              className={cx("item")}
+              key={item._id}
+              to={`/profile?id=${item._id}`}
+            >
               <Avatar size={64} src={item.avatar} />
               <div className={cx("user-info")}>
                 <div className={cx("username")} style={{ color: "white" }}>
@@ -76,12 +82,12 @@ const SearchUser = () => {
                   {`${item.firstname} ${item.lastname}`}
                 </div>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>
-      {users.data?.length === 0 && !isLoading && <EmptyRes />}
       {isLoading && <Loading className="searching" />}
+      {!isLoading && users.data?.length === 0 && <EmptyRes />}
     </>
   );
 };

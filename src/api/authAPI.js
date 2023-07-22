@@ -18,12 +18,7 @@ const authAPI = {
     return axiosClient.put(URL.UPDATE_USER_URL, info);
   },
   getInfoUser: (id) => {
-    let url;
-    if (id) {
-      url = `${URL.GET_INFO_URL}/${id}`;
-    } else {
-      url = URL.GET_INFO_URL;
-    }
+    const url = id ? `${URL.GET_INFO_URL}/${id}` : URL.GET_INFO_URL;
     return axiosClient.get(url);
   },
   getFiendList: () => {

@@ -15,22 +15,22 @@ import {
 } from "~/store/slices/vacationSlice";
 
 import { getDate } from "~/helpers/function";
-import { Modal, Tooltip } from "antd";
-import Image from "~/components/Image/Image";
+import { Avatar, Tooltip } from "antd";
 import Posts from "./Posts/Posts";
 import Album from "./Album/Album";
 import UserList from "./components/UserList/UserList";
 import HandleVacation from "./HandleVacation/HandleVacation";
 import Preloader from "~/components/Preloader/Preloader";
+import ImageField from "~/components/ImageField/ImageField";
 
 const cx = classNames.bind(styles);
-const Vacation = ({ children }) => {
+const Vacation = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let [searchParams] = useSearchParams();
   let vacationID = searchParams.get("vacationID"); // get vacationId of url
   const urlType = searchParams.get("type"); // get type  of url (post || album)
-  const isFristReq = useRef(true);
+  // const isFristReq = useRef(true);
   const totalPage = useRef(0);
   const { detail, posts, memberList } = useSelector((state) => state.vacation);
   const { info } = useSelector((state) => state.auth);
@@ -45,11 +45,11 @@ const Vacation = ({ children }) => {
     shareStatus,
     shareList,
   } = detail;
-  // console.log(detail);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [openUserList, setOpenUserList] = useState(false);
   const [open, setOpen] = useState(false);
-  const [preload, setPreload] = useState(false);
+  const [preload, setPreload] = useState(true);
   const startDate = getDate(startingTime);
   const endDate = getDate(endingTime);
 
@@ -112,7 +112,7 @@ const Vacation = ({ children }) => {
         totalPage.current = res.payload.meta?.pages;
     });
   }, [currentPage]);
-  const isAuthor = info?.id === authorInfo?._id;
+  const isAuthor = info?._id === authorInfo?._id;
   const initVacationDetail = {
     title: title,
     des: description,
@@ -128,7 +128,11 @@ const Vacation = ({ children }) => {
       ) : (
         <div className={cx("wrapper")}>
           <div className={cx("sidebar")}>
-            <Image path={""} alt="This is BG" className={cx("img-BG")} />
+            <ImageField
+              src={cover?.path}
+              className={cx("img-BG")}
+              preview={false}
+            />
             <div className={cx("sidebar-content")}>
               <div className={cx("user-info")}>
                 <div className={cx("user-index")}>
@@ -136,9 +140,13 @@ const Vacation = ({ children }) => {
                   <div className={cx("index-title")}>friends</div>
                 </div>
                 <div className={cx("user-avatar")}>
-                  <div className={cx("avatar")}>
-                    <Image path={authorInfo?.avatar.path} />
-                  </div>
+                  <Avatar
+                    src={authorInfo?.avatar.path}
+                    shape="square"
+                    size={100}
+                    className={cx("avatar")}
+                  />
+
                   <div className={cx("fullname")}>
                     {authorInfo?.firstname} {authorInfo?.lastname}
                   </div>

@@ -2,27 +2,30 @@ import React, { useEffect } from "react";
 import classNames from "classnames/bind";
 import styles from "./Vacation.module.scss";
 import { HeartFilled, CommentOutlined, EyeOutlined } from "@ant-design/icons";
-import { getListVacation } from "~/store/slices/vacationSlice";
+import { getListVacation, resetList } from "~/store/slices/vacationSlice";
 import { Card, List, Typography, Skeleton } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useOutletContext } from "react-router-dom";
 const cx = classNames.bind(styles);
 
 const Vacations = () => {
   let formatter = Intl.NumberFormat("en", { notation: "compact" });
+  const { userId } = useOutletContext();
   const dispatch = useDispatch();
   const {
-    list,
-    meta: { page, pages },
-  } = useSelector((state) => state.vacation.listVacation);
+    listVacation: { list, page, pages },
+  } = useSelector((state) => state.vacation);
 
   useEffect(() => {
-    dispatch(getListVacation({ type: "userProfile", page: 1 }));
-  }, [dispatch]);
+    dispatch(resetList());
+    dispatch(getListVacation(Object.assign({ type: "userProfile", page: 1 }, userId ? { userId } : {})));
+  }, [userId, dispatch]);
 
   const loadMoreData = () => {
-    dispatch(getListVacation({ type: "userProfile", page: page + 1 }));
+    dispatch(
+      getListVacation(Object.assign({ type: "userProfile", page: page + 1 }, userId ? { userId } : {}))
+    );
   };
 
   return (

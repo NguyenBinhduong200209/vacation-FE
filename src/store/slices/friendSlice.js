@@ -3,7 +3,7 @@ const { createSlice, createAsyncThunk, current } = require("@reduxjs/toolkit");
 
 export const getFriendList = createAsyncThunk("friend/friendList", async (arg, thunkAPI) => {
   try {
-    const res = await friendAPI.getFriendList(arg?.page || 1);
+    const res = await friendAPI.getFriendList({ page: arg?.page, userId: arg?.userId });
     return res.data;
   } catch (error) {
     if (!error.response) {
@@ -31,8 +31,8 @@ export const getRequestList = createAsyncThunk("friend/requestList", async (arg,
 
 export const acceptFriend = createAsyncThunk("friend/accept", async (arg, thunkAPI) => {
   try {
-    const { friendRequestId, status } = arg;
-    const res = await friendAPI.acceptFriend({ friendRequestId, status });
+    const { id } = arg;
+    const res = await friendAPI.acceptFriend(id);
     return res.data;
   } catch (error) {
     if (!error.response) {
@@ -85,7 +85,6 @@ const friendSlice = createSlice({
             meta: { page, pages, total },
           } = action.payload;
 
-          state.isLoading = false;
           if (data.length > 0) {
             state.list = page === 1 ? data : state.list.concat(data);
           }
@@ -93,6 +92,7 @@ const friendSlice = createSlice({
           state.meta.pages = pages;
           state.meta.total = total;
         }
+        state.isLoading = false;
       })
       .addCase(getFriendList.rejected, (state, action) => {
         state.isError = true;
@@ -109,12 +109,14 @@ const friendSlice = createSlice({
             data,
             meta: { page, pages, total },
           } = action.payload;
-          state.isLoading = false;
           state.list = page === 1 ? data : data?.length > 0 && state.list.concat(data);
           state.meta.page = page;
           state.meta.pages = pages;
           state.meta.total = total;
+        } else {
+          state.meta = { page: 1, pages: 1, total: 1 };
         }
+        state.isLoading = false;
       })
       .addCase(getRequestList.rejected, (state, action) => {
         state.isError = true;
@@ -126,7 +128,9 @@ const friendSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(acceptFriend.fulfilled, (state, action) => {
+        const currentList = current(state).list;
         state.isLoading = false;
+        state.list = currentList.filter((item) => item._id !== action.payload.data._id);
       })
       .addCase(acceptFriend.rejected, (state, action) => {
         state.isError = true;

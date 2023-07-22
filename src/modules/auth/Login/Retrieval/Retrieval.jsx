@@ -1,9 +1,8 @@
 import styles from "./Retrieval.module.scss";
 import classNames from "classnames/bind";
-import InputForm from "../../components/InputForm/InputForm";
 import images from "~/images";
 import { FORGOT, RESET } from "~/utils/constants";
-import Image from "~/components/Image/Image";
+import InputForm from "../../components/InputForm/InputForm";
 
 const cx = classNames.bind(styles);
 const Retrieval = (props) => {
@@ -12,7 +11,7 @@ const Retrieval = (props) => {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("header")}>
-        <Image path={images.key} alt="This is icon" />
+        <img src={images.key} alt="This is icon" />
         <div className={cx("title")}>Forgot your password?</div>
         <div>Don’t worry we will send you reset code</div>
       </div>
@@ -24,7 +23,7 @@ const Retrieval = (props) => {
       />
 
       <div className={cx("footer")}>
-        <Image path={images.back} alt="This is icon" />
+        <img src={images.back} alt="This is icon" />
         Back to <span onClick={handleBack}>login</span>
       </div>
     </div>

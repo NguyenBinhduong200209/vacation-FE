@@ -62,3 +62,4 @@ export const SEARCH_USER_ROUTE = "/search/user";
 export const SEARCH_LOCATION_ROUTE = "/search/location";
 export const SEARCH_VACATION_ROUTE = "/search/vacation";
 export const SEARCH_ALBUM_ROUTE = "/search/album";
+export const RESOURCE_ROUTE = "/resource";

@@ -21,7 +21,6 @@ import {
   REGISTER_ROUTE,
   SEARCH_ALBUM_ROUTE,
   SEARCH_LOCATION_ROUTE,
-  SEARCH_ROUTE,
   SEARCH_USER_ROUTE,
   SEARCH_VACATION_ROUTE,
   SECURITY_ROUTE,
@@ -33,6 +32,7 @@ import SearchUser from "~/modules/search/SearchUser/SearchUser";
 import SearchLocation from "~/modules/search/SearchLocation/SearchLocation";
 import SearchVacation from "~/modules/search/SearchVacation/SearchVacation";
 import SearchAlbum from "~/modules/search/SearchAlbum/SearchAlbum";
+import Preloader from "~/components/Preloader/Preloader";
 
 export const publicRoutes = [
   { path: "/", component: NewFeed, layout: DefaultLayout },
@@ -67,7 +67,7 @@ export const publicRoutes = [
   },
 
   {
-    path: "/profile",
+    path: "/profile/:id?",
     component: Profile,
     layout: DefaultLayout,
     child: [
@@ -77,6 +77,7 @@ export const publicRoutes = [
     ],
   },
   { path: "/newAlbum", component: NewAlbum, layout: DefaultLayout },
+  { path: "/pre", component: Preloader, layout: DefaultLayout },
 
   {
     path: VACATION_ROUTE,

@@ -22,6 +22,7 @@ import HandleVacation from "../vacation/HandleVacation/HandleVacation";
 import Preloader from "~/components/Preloader/Preloader";
 import { getInfoUser } from "~/store/slices/authSlice";
 import images from "~/images";
+import HandlePost from "../vacation/Posts/HandlePost/HandlePost";
 
 const cx = classNames.bind(styles);
 const NewFeed = () => {
@@ -29,11 +30,14 @@ const NewFeed = () => {
   const dispatch = useDispatch();
   const { info } = useSelector((state) => state.auth);
   const { listVacation } = useSelector((state) => state.vacation);
+  // console.log(listVacation);
   const { trendingList } = useSelector((state) => state.location);
   const [preLoader, setPreLoader] = useState(true);
   const [open, setOpen] = useState(false);
   const [openAlbum, setOpenAlbum] = useState(false);
   const currentPage = useRef(1);
+  // show handlePost modal
+  const [showModal, setShowModal] = useState(false);
   const initVacationDetail = {
     title: "",
     des: "",
@@ -41,6 +45,14 @@ const NewFeed = () => {
     dates: [],
     status: "Public",
   };
+  // post detail
+  const initPostDetail = {
+    content: "",
+    location: {},
+    initResources: [],
+  };
+
+  // const listVacationAbleToChange
 
   // Get list of trending place
   useEffect(() => {
@@ -147,10 +159,19 @@ const NewFeed = () => {
                   Every step is a milestone ...{" "}
                 </button>
                 <div className={cx("create-details")}>
-                  <button className={cx("create-sthg")}>
+                  <button
+                    className={cx("create-sthg")}
+                    onClick={() => setShowModal(true)}
+                  >
                     <FileTextOutlined />
                     <div className={cx("create-sthg-details")}>Add Post</div>
                   </button>
+                  <HandlePost
+                    setShowModal={setShowModal}
+                    showModal={showModal}
+                    initPostDetail={initPostDetail}
+                    type="newfeed"
+                  />
                   <button
                     className={cx("create-sthg")}
                     onClick={() => setOpenAlbum(true)}

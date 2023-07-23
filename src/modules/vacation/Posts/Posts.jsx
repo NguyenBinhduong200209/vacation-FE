@@ -40,7 +40,6 @@ const Posts = () => {
               </div>
             </div>
           )}
-          {/* <CreatePost setShowModal={setShowModal} showModal={showModal} /> */}
           <HandlePost
             setShowModal={setShowModal}
             showModal={showModal}

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getInfoUser, refreshToken } from "~/store/slices/authSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
+import Preloader from "~/components/Preloader/Preloader";
 
 const cx = classNames.bind(styles);
 
@@ -13,9 +14,10 @@ const DefaultLayout = ({ children }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLogin } = useSelector((state) => state.auth);
+  const [pre, setPre] = useState(true);
   useEffect(() => {
     if (isLogin) {
-      dispatch(getInfoUser());
+      dispatch(getInfoUser()).then((res) => setPre(false));
     } else {
       navigate("/login");
     }
@@ -23,8 +25,14 @@ const DefaultLayout = ({ children }) => {
 
   return (
     <div className={cx("wrapper")}>
-      <Header />
-      <div className={cx("container")}>{children}</div>
+      {pre ? (
+        <Preloader />
+      ) : (
+        <>
+          <Header />
+          <div className={cx("container")}>{children}</div>
+        </>
+      )}
     </div>
   );
 };

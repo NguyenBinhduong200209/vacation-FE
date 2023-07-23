@@ -78,6 +78,11 @@ const vacationSlice = createSlice({
       page: 0,
       pages: 0,
     },
+    listVacationProf: {
+      list: [],
+      page: 0,
+      page: 0,
+    },
     detail: {},
     posts: {
       list: [],
@@ -136,11 +141,23 @@ const vacationSlice = createSlice({
         const { data, meta } = action.payload.result;
 
         if (data && Array.isArray(data)) {
-          const { page } = action.meta.arg;
-          state.listVacation.list =
-            page === 1 ? data : state.listVacation.list.concat(data);
-          state.listVacation.page = meta?.page;
-          state.listVacation.pages = meta?.pages;
+          const { page, type } = action.meta.arg;
+          switch (type) {
+            case "newFeed":
+              state.listVacation.list =
+                page === 1 ? data : state.listVacation.list.concat(data);
+              state.listVacation.page = meta?.page;
+              state.listVacation.pages = meta?.pages;
+              break;
+            case "userProfile":
+              state.listVacationProf.list =
+                page === 1 ? data : state.listVacationProf.list.concat(data);
+              state.listVacationProf.page = meta?.page;
+              state.listVacationProf.pages = meta?.pages;
+              break;
+            default:
+              break;
+          }
         }
 
         state.isLoading = false;

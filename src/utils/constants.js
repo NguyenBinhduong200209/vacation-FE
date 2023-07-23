@@ -42,7 +42,7 @@ export const FORGOT = "forgotPassword";
 export const RESET = "resetPassword";
 export const STRONG_PASSWORD =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?\\\]&/|>,"'`~.#$%^()_+=\-[}{;:])[A-Za-z\d@$!%*?&/|>,"'`~.#$%^()_+=\-[}{;\]\\:]{8,}$/;
-
+export const UPDATE_OVERVIEW = "updateOverview";
 export const UPDATE_PERSONAL = "updatePersonal";
 export const UPDATE_SECURITY = "updateSecurity";
 

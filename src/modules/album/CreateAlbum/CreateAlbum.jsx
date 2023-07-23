@@ -10,8 +10,10 @@ import { Avatar } from "antd";
 const cx = classNames.bind(styles);
 const CreateAlbum = ({ open, setOpen }) => {
   const { info } = useSelector((state) => state.auth);
-  const [selected, setSelected] = useState("Choose Your Vacation");
-  const [vacationId, setVacationId] = useState(null);
+  const [selected, setSelected] = useState({
+    title: "Choose Your Vacation",
+    id: "",
+  });
   const [inputValue, setInputValue] = useState("");
   const navigate = useNavigate();
   const handleInputValue = (e) => {
@@ -19,7 +21,7 @@ const CreateAlbum = ({ open, setOpen }) => {
   };
 
   const handleRoute = () => {
-    navigate(`/newAlbum?id=${vacationId}&title=${inputValue}`);
+    navigate(`/newAlbum?id=${selected._id}&title=${inputValue}`);
   };
   return (
     <Modal open={open} setOpen={setOpen} title="New Album">
@@ -36,14 +38,10 @@ const CreateAlbum = ({ open, setOpen }) => {
           spellCheck={false}
           value={inputValue}
         />
-        <Dropdown
-          selected={selected}
-          setSelected={setSelected}
-          setVacationId={setVacationId}
-        />
+        <Dropdown selected={selected} setSelected={setSelected} />
         <button
           className={cx("dropdown-route")}
-          disabled={inputValue === "" || vacationId === null}
+          disabled={inputValue === "" || selected._id === ""}
           onClick={handleRoute}
         >
           Select Images

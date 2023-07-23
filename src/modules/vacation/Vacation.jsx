@@ -28,7 +28,7 @@ const Vacation = () => {
   const dispatch = useDispatch();
   let [searchParams] = useSearchParams();
   let vacationID = searchParams.get("vacationID"); // get vacationId of url
-  const urlType = searchParams.get("type"); // get type  of url (post || album)
+  const urlType = searchParams.get("type") || "post"; // get type  of url (post || album)
   const { info } = useSelector((state) => state.auth);
   const { detail, posts, memberList } = useSelector((state) => state.vacation);
   const {
@@ -42,9 +42,7 @@ const Vacation = () => {
     shareStatus,
     shareList,
   } = detail;
-
   const { page, pages, timeline, totalPost, isUpdatePost } = posts;
-
   const currentPage = useRef(1);
   const [openUserList, setOpenUserList] = useState(false);
   const [open, setOpen] = useState(false);
@@ -124,8 +122,6 @@ const Vacation = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [page]);
-
-  console.log(page);
 
   //check user is author or not
   const isAuthor = info?._id === authorInfo?._id;
@@ -232,11 +228,16 @@ const Vacation = () => {
               <div className={cx("route")}>
                 <div
                   onClick={() => handleRoute("post")}
-                  className={cx("active")}
+                  className={cx(urlType === "post" && "active")}
                 >
                   See All Posts
                 </div>
-                <div onClick={() => handleRoute("album")}>See Album</div>
+                <div
+                  onClick={() => handleRoute("album")}
+                  className={cx(urlType === "album" && "active")}
+                >
+                  See Album
+                </div>
               </div>
             </div>
           </div>

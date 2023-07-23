@@ -24,6 +24,8 @@ const NewAlbum = () => {
     setIsOpen((prevState) => !prevState);
   };
 
+  console.log(list);
+
   return (
     <div>
       <div className={`wrap ${isOpen ? "open" : ""}`}>

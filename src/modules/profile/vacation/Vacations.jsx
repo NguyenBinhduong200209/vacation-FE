@@ -14,7 +14,7 @@ const Vacations = () => {
   const { userId } = useOutletContext();
   const dispatch = useDispatch();
   const {
-    listVacation: { list, page, pages },
+    listVacationProf: { list, page, pages },
   } = useSelector((state) => state.vacation);
 
   useEffect(() => {

@@ -56,26 +56,29 @@ const Vacation = () => {
   // Get vacation detail &7 set activeTimeline
   useEffect(() => {
     setPreload(true);
-    Promise.all([
-      dispatch(getDetailVacation(vacationID)),
-      dispatch(
-        getMemberList({
-          type: "vacations",
-          id: vacationID,
-          listType: "memberList",
-          page: 1,
-        })
-      ),
-      dispatch(
-        getManyPosts({
-          type: "vacation",
-          id: vacationID,
-          page: 1,
-        })
-      ),
-    ]).then(() => setPreload(false));
-    if (timeline) {
-      dispatch(setTimeline(timeline[0]));
+
+    if (urlType === "post") {
+      Promise.all([
+        dispatch(getDetailVacation(vacationID)),
+        dispatch(
+          getMemberList({
+            type: "vacations",
+            id: vacationID,
+            listType: "memberList",
+            page: 1,
+          })
+        ),
+        dispatch(
+          getManyPosts({
+            type: "vacation",
+            id: vacationID,
+            page: 1,
+          })
+        ),
+      ]).then(() => setPreload(false));
+      if (timeline) {
+        dispatch(setTimeline(timeline[0]));
+      }
     }
   }, []);
 

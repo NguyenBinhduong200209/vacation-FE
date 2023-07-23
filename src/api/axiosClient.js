@@ -25,7 +25,11 @@ axiosClient.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    if (error.response?.status === 403 && !originalRequest._retry) {
+    if (
+      error.response?.status === 403 &&
+      !originalRequest._retry &&
+      error.response?.data.message === "invalid token"
+    ) {
       originalRequest._retry = true;
       const rfToken = localStorage.getItem("rfToken");
       try {

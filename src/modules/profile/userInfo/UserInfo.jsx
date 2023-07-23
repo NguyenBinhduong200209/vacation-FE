@@ -13,7 +13,7 @@ const UserInfo = ({ info }) => {
   const otherUserId = info?._id;
   const {
     list,
-    meta: { page },
+    meta: { page, total },
   } = useSelector((state) => state.resource);
   const loginUserId = useSelector((state) => state.auth.info?._id);
   const isLoginUser = otherUserId === loginUserId;
@@ -29,6 +29,7 @@ const UserInfo = ({ info }) => {
         <Image.PreviewGroup
           items={list.map((item) => item.path)}
           preview={{
+            countRender: (current) => `${current}/${total}`,
             onChange: (current) => {
               list.length - current < 2 &&
                 dispatch(

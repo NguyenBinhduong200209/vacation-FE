@@ -52,7 +52,9 @@ const UserInfo = ({ info }) => {
 
         <i>
           <Typography.Text>@</Typography.Text>
-          <Typography.Text copyable={{ text: window.location.href }}>{username}</Typography.Text>
+          <Typography.Text copyable={{ text: `${window.location.host}/profile/${otherUserId}` }}>
+            {username}
+          </Typography.Text>
         </i>
 
         <Typography.Paragraph ellipsis={{ expandable: false, rows: 2 }} className={cx("user-info-des")}>

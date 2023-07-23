@@ -17,9 +17,7 @@ export const getListVacation = createAsyncThunk(
       });
     }
   }
-
 );
-
 
 export const getDetailVacation = createAsyncThunk(
   "vacation/getDetailVacation",
@@ -38,7 +36,6 @@ export const getDetailVacation = createAsyncThunk(
   }
 );
 
-
 export const getManyPosts = createAsyncThunk(
   "vacation/getManyPosts",
   async (arg, thunkAPI) => {
@@ -48,10 +45,10 @@ export const getManyPosts = createAsyncThunk(
       return res.data;
     } catch (error) {
       if (!error.response) {
-        return thunkAPI.rejectWithValue({ message: error.message })
+        return thunkAPI.rejectWithValue({ message: error.message });
       }
       return thunkAPI.rejectWithValue({
-        message: error.response.data.message
+        message: error.response.data.message,
       });
     }
   }
@@ -70,7 +67,6 @@ export const getMemberList = createAsyncThunk(
       return thunkAPI.rejectWithValue({
         message: error.response.data.message,
       });
-
     }
   }
 );
@@ -84,8 +80,12 @@ const vacationSlice = createSlice({
     },
     detail: {},
     posts: {
-      postList: [],
-      meta: {},
+      list: [],
+      page: 0,
+      pages: 0,
+      timeline: [],
+      totalPost: 0,
+      isUpdatePost: false,
     },
     activeTimeline: null,
     memberList: [],
@@ -98,6 +98,9 @@ const vacationSlice = createSlice({
     resetList: (state, action) => {
       state.listVacation.list = [];
       state.listVacation.meta = {};
+    },
+    isPostListChanged: (state, action) => {
+      state.posts.isUpdatePost = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -113,13 +116,15 @@ const vacationSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getManyPosts.fulfilled, (state, action) => {
-        if (action.payload) {
-          let newList = [];
-          if (action.payload.data?.length > 0) {
-            newList = state.posts.postList.concat(action.payload.data);
-          }
-          state.posts.postList = newList;
-          state.posts.meta = action.payload.meta;
+        const { data, meta } = action.payload;
+
+        if (data && Array.isArray(data)) {
+          const { page } = action.meta.arg;
+          state.posts.list = page === 1 ? data : state.posts.list.concat(data);
+          state.posts.page = meta?.page;
+          state.posts.pages = meta?.pages;
+          state.posts.timeline = meta?.timeline;
+          state.posts.totalPost = meta?.total;
         }
 
         state.isLoading = false;
@@ -132,7 +137,8 @@ const vacationSlice = createSlice({
 
         if (data && Array.isArray(data)) {
           const { page } = action.meta.arg;
-          state.listVacation.list = page === 1 ? data : state.listVacation.list.concat(data);
+          state.listVacation.list =
+            page === 1 ? data : state.listVacation.list.concat(data);
           state.listVacation.page = meta?.page;
           state.listVacation.pages = meta?.pages;
         }
@@ -148,5 +154,5 @@ const vacationSlice = createSlice({
   },
 });
 const { reducer, actions } = vacationSlice;
-export const { setTimeline, resetList } = actions;
+export const { setTimeline, resetList, isPostListChanged } = actions;
 export default reducer;

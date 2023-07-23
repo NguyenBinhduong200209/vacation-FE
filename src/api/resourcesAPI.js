@@ -13,5 +13,8 @@ const resourceAPI = {
   uploadFile: (data) => {
     return axiosClient.post(URL.RESOURCE_URL, data);
   },
+  deleteImg: (id) => {
+    return axiosClient.delete(`${URL.RESOURCE_URL}/${id}`);
+  },
 };
 export default resourceAPI;

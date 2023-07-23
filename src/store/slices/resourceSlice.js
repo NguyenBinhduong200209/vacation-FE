@@ -49,6 +49,22 @@ export const uploadResource = createAsyncThunk(
   }
 );
 
+export const deleteImg = createAsyncThunk(
+  "deleteImg/resource",
+  async (arg, thunkAPI) => {
+    try {
+      await resourcesAPI.deleteImg(arg);
+    } catch (error) {
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
+      return thunkAPI.rejectWithValue({
+        message: error.response.data.message,
+      });
+    }
+  }
+);
+
 const resourceSlice = createSlice({
   name: "resource",
   initialState: {
@@ -60,15 +76,14 @@ const resourceSlice = createSlice({
     msg: "",
   },
   reducers: {
-    resetList: (state, action) => {
+    resetList: (state) => {
       state.list = [];
+    },
+    setInitResources: (state, action) => {
+      state.resources = action.payload;
     },
     resetResources: (state) => {
       state.resources = [];
-    },
-    deleteImg: (state, action) => {
-      const newList = state.filter((item) => item._id === action.payload);
-      state.resources = newList;
     },
   },
   extraReducers: (builder) => {
@@ -111,9 +126,23 @@ const resourceSlice = createSlice({
         state.isLoading = false;
         state.list = [];
         state.msg = action.payload?.message;
+      })
+      .addCase(deleteImg.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteImg.fulfilled, (state, action) => {
+        const newList = state.resources.filter(
+          (item) => item._id !== action.meta.arg
+        );
+        state.resources = newList;
+        state.isLoading = false;
+      })
+      .addCase(deleteImg.rejected, (state, action) => {
+        state.msg = action.payload;
+        state.isLoading = false;
       });
   },
 });
 const { reducer, actions } = resourceSlice;
-export const { resetList, resetResources, deleteImg } = actions;
+export const { resetList, resetResources, setInitResources } = actions;
 export default reducer;

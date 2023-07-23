@@ -60,25 +60,7 @@ const NewFeed = () => {
         })
       ),
       dispatch(getInfoUser()),
-    ]).then((res) => setPreLoader(false));
-  }, []);
-
-  // Get list of trending place
-  useEffect(() => {
-    Promise.all([
-      dispatch(
-        getTrendingPlace({
-          type: "trending",
-          number: 7,
-        })
-      ),
-      dispatch(
-        getListVacation({
-          page: 1,
-          type: "newFeed",
-        })
-      ),
-    ]);
+    ]).then(() => setPreLoader(false));
   }, []);
 
   const loadMorePosts = () => {

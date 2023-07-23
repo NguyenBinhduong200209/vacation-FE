@@ -20,7 +20,7 @@ const Modal = ({
       isOpen={open}
       onRequestClose={() => {
         setOpen(false);
-        handleAfterClose();
+        handleAfterClose && handleAfterClose();
       }}
       className={cx("modal", className)}
       overlayClassName={cx("overlay")}
@@ -31,7 +31,7 @@ const Modal = ({
         className={cx("close-icon")}
         onClick={() => {
           setOpen(false);
-          handleAfterClose();
+          handleAfterClose && handleAfterClose();
         }}
       />
       <div className={cx("wrapper")}>{children}</div>

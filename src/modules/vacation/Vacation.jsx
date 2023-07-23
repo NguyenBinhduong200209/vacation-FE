@@ -7,22 +7,21 @@ import { faCircleInfo, faPen, faUser } from "@fortawesome/free-solid-svg-icons";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Avatar, Tooltip } from "antd";
 import {
   getDetailVacation,
   getManyPosts,
   getMemberList,
+  isPostListChanged,
   setTimeline,
 } from "~/store/slices/vacationSlice";
-
 import { getDate } from "~/helpers/function";
-import { Avatar, Tooltip } from "antd";
 import Posts from "./Posts/Posts";
 import Album from "./Album/Album";
 import UserList from "./components/UserList/UserList";
 import HandleVacation from "./HandleVacation/HandleVacation";
 import Preloader from "~/components/Preloader/Preloader";
 import ImageField from "~/components/ImageField/ImageField";
-
 const cx = classNames.bind(styles);
 const Vacation = () => {
   const navigate = useNavigate();
@@ -30,10 +29,8 @@ const Vacation = () => {
   let [searchParams] = useSearchParams();
   let vacationID = searchParams.get("vacationID"); // get vacationId of url
   const urlType = searchParams.get("type"); // get type  of url (post || album)
-  // const isFristReq = useRef(true);
-  const totalPage = useRef(0);
-  const { detail, posts, memberList } = useSelector((state) => state.vacation);
   const { info } = useSelector((state) => state.auth);
+  const { detail, posts, memberList } = useSelector((state) => state.vacation);
   const {
     authorInfo,
     cover,
@@ -46,7 +43,9 @@ const Vacation = () => {
     shareList,
   } = detail;
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const { page, pages, timeline, totalPost, isUpdatePost } = posts;
+
+  const currentPage = useRef(1);
   const [openUserList, setOpenUserList] = useState(false);
   const [open, setOpen] = useState(false);
   const [preload, setPreload] = useState(true);
@@ -56,7 +55,6 @@ const Vacation = () => {
   const handleRoute = (type) => {
     navigate(`${VACATION_ROUTE}?vacationID=${vacationID}&type=${type}`);
   };
-
   // Get vacation detail &7 set activeTimeline
   useEffect(() => {
     setPreload(true);
@@ -70,16 +68,44 @@ const Vacation = () => {
           page: 1,
         })
       ),
+      dispatch(
+        getManyPosts({
+          type: "vacation",
+          id: vacationID,
+          page: 1,
+        })
+      ),
     ]).then(() => setPreload(false));
-    if (posts?.meta?.timeline) {
-      dispatch(setTimeline(posts.meta.timeline[0]));
+    if (timeline) {
+      dispatch(setTimeline(timeline[0]));
     }
   }, []);
 
+  useEffect(() => {
+    if (isUpdatePost) {
+      dispatch(
+        getManyPosts({
+          type: "vacation",
+          id: vacationID,
+          page: 1,
+        })
+      );
+
+      dispatch(isPostListChanged(false));
+    }
+  }, [isUpdatePost]);
+
   // handle Scroll increase currentPage
   const loadMorePosts = () => {
-    if (currentPage < totalPage.current) {
-      setCurrentPage((prev) => prev + 1);
+    if (page < pages && page === currentPage.current) {
+      dispatch(
+        getManyPosts({
+          type: "vacation",
+          id: vacationID,
+          page: page + 1,
+        })
+      );
+      currentPage.current += 1;
     }
   };
 
@@ -97,22 +123,14 @@ const Vacation = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [currentPage]);
+  }, [page]);
 
-  // get list posts of vacation
-  useEffect(() => {
-    dispatch(
-      getManyPosts({
-        type: "vacation",
-        id: vacationID,
-        page: currentPage,
-      })
-    ).then((res) => {
-      if (res.payload !== "" && res.payload?.pages !== totalPage.current)
-        totalPage.current = res.payload.meta?.pages;
-    });
-  }, [currentPage]);
+  console.log(page);
+
+  //check user is author or not
   const isAuthor = info?._id === authorInfo?._id;
+
+  // set init Vacation Detail
   const initVacationDetail = {
     title: title,
     des: description,
@@ -153,7 +171,7 @@ const Vacation = () => {
                   <div className={cx("username")}>{authorInfo?.username}</div>
                 </div>
                 <div className={cx("user-index")}>
-                  <div className={cx("index")}>{posts.meta?.total || 0}</div>
+                  <div className={cx("index")}>{totalPost || 0}</div>
                   <div className={cx("index-title")}>Posts</div>
                 </div>
               </div>

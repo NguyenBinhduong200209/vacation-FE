@@ -7,12 +7,18 @@ import styles from "./ProfileLayout.module.scss";
 import { Outlet, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getInfoUser } from "~/store/slices/authSlice";
+import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(styles);
 
 const Profile = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
   const { info, otherUserInfo } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    info._id === id && navigate("/profile");
+  }, [info, id, navigate]);
 
   useEffect(() => {
     dispatch(getInfoUser(id));

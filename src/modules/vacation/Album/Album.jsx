@@ -3,6 +3,7 @@ import axiosClient from "~/api/axiosClient";
 import styles from "./Album.module.scss";
 import classNames from "classnames/bind";
 import { useSearchParams } from "react-router-dom";
+import { Image } from "antd";
 
 const cx = classNames.bind(styles);
 
@@ -14,16 +15,15 @@ const Album = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchImg = await axiosClient.get(`vacation/${dataId.id}/images`);
+        const fetchImg = await axiosClient.get(`vacation/${dataId.vacationID}/images`);
         setImg(fetchImg.data.data);
-        console.log(fetchImg);
       } catch (error) {
         console.log(error);
       }
     };
 
     fetchData();
-  }, [dataId.id]);
+  }, [dataId.vacationID]);
 
   return (
     <div className={cx("album-wrap")}>
@@ -36,7 +36,12 @@ const Album = () => {
             <div className={cx("stack")} key={index}>
               <div className={cx("card-album-container")}>
                 <div className={cx("image")}>
-                  <img src={item?.path} alt="?" className={cx("images")} />
+                  <Image
+                    preview={{ toolbarRender: () => null }}
+                    src={item?.path}
+                    alt="?"
+                    rootClassName={cx("images")}
+                  />
                 </div>
               </div>
             </div>

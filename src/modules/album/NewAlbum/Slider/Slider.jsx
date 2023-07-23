@@ -23,7 +23,7 @@ const Slider = () => {
     const fetchData = async () => {
       try {
         const fetchImg = await axiosClient.get(`vacation/${dataId.id}/images`);
-        setImg(fetchImg.data.data);
+        setImg(fetchImg.data.data || []);
       } catch (error) {
         console.log(error);
       }
@@ -63,7 +63,7 @@ const Slider = () => {
 
   return (
     <div className={cx("carousel-container")}>
-      {img.length === 0 ? (
+      {cardCount === 0 ? (
         <div className={cx("no-picture")}>No pictures available.</div>
       ) : (
         <div className={cx("carousel")}>

@@ -1,5 +1,5 @@
 import albumAPI from "~/api/albumAPI";
-const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
+const { createSlice, createAsyncThunk, current } = require("@reduxjs/toolkit");
 
 export const getList = createAsyncThunk("album/getList", async (arg, thunkAPI) => {
   try {
@@ -19,6 +19,7 @@ const albumSlice = createSlice({
   name: "album",
   initialState: {
     list: [],
+    selectedImages: [],
     meta: { page: 1, pages: 1, total: 1 },
     isLoading: false,
     isError: false,
@@ -28,6 +29,21 @@ const albumSlice = createSlice({
     resetList: (state, action) => {
       state.list = [];
       state.meta = { page: 1, pages: 1, total: 1 };
+    },
+    addSelected: (state, action) => {
+      const currentSelectedList = current(state).selectedImages;
+      state.selectedImages = currentSelectedList.concat(
+        Object.assign({ style: { width: 100, height: 100, top: 0, left: 0 } }, action.payload)
+      );
+    },
+    updateSelected: (state, action) => {
+      const currentSelectedList = current(state).selectedImages;
+      const index = currentSelectedList.findIndex((item) => item._id === action.payload._id);
+      state.selectedImages = currentSelectedList.toSpliced(index, 1, action.payload);
+    },
+    removeSelected: (state, action) => {
+      const currentSelectedList = current(state).selectedImages;
+      state.selectedImages = currentSelectedList.filter((image) => image._id !== action.payload);
     },
   },
   extraReducers: (builder) => {
@@ -56,5 +72,5 @@ const albumSlice = createSlice({
   },
 });
 const { reducer, actions } = albumSlice;
-export const { changeRenderList, resetList } = actions;
+export const { resetList, addSelected, removeSelected, updateSelected } = actions;
 export default reducer;

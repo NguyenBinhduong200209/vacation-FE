@@ -2,13 +2,17 @@ import React, { useState, useEffect } from "react";
 import axiosClient from "~/api/axiosClient";
 import "./Slider.css";
 import { useSearchParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addSelected } from "~/store/slices/albumSlice";
 import styles from "./Slider.module.scss";
 import classNames from "classnames/bind";
 import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 
 const cx = classNames.bind(styles);
 
-const Slider = ({ onImageSelect, selectedImages, onImageRemove }) => {
+const Slider = () => {
+  const selectedImages = useSelector((state) => state.album.selectedImages);
+  const dispatch = useDispatch();
   const [active, setActive] = useState(0);
   const [img, setImg] = useState([]);
   const cardCount = img.length;
@@ -36,10 +40,11 @@ const Slider = ({ onImageSelect, selectedImages, onImageRemove }) => {
     setActive((active + 1) % cardCount);
   };
 
+  const handleAdd = (item) =>
+    selectedImages.every((image) => image._id !== item._id) && dispatch(addSelected(item));
+
   useEffect(() => {
-    const cardContainers = document.querySelectorAll(
-      `.${cx("card-container")}`
-    );
+    const cardContainers = document.querySelectorAll(`.${cx("card-container")}`);
 
     cardContainers.forEach((container, i) => {
       const offset = ((active - i) % cardCount) / 3;
@@ -62,29 +67,19 @@ const Slider = ({ onImageSelect, selectedImages, onImageRemove }) => {
         <div className={cx("no-picture")}>No pictures available.</div>
       ) : (
         <div className={cx("carousel")}>
-          {img.map((item, index) => (
-            <div className={cx("card-container")} key={index}>
-              <div className={cx("card")}>
-                <img src={item?.path} alt="?" />
-                <button
-                  onClick={() => {
-                    if (
-                      !selectedImages.some((image) => image._id === item._id)
-                    ) {
-                      onImageSelect(item);
-                    }
-                  }}
-                  disabled={selectedImages.some(
-                    (image) => image._id === item._id
-                  )}
-                >
-                  {selectedImages.some((image) => image._id === item._id)
-                    ? "Selected"
-                    : "Select this image"}
-                </button>
+          {img.map((item, index) => {
+            const isSelected = selectedImages.some((image) => image._id === item._id);
+            return (
+              <div className={cx("card-container")} key={index}>
+                <div className={cx("card")}>
+                  <img src={item?.path} alt="?" />
+                  <button onClick={() => handleAdd(item)} disabled={isSelected}>
+                    {isSelected ? "Selected" : "Select this image"}
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
           <button className={cx("nav-left")} onClick={prevSlide}>
             <LeftCircleOutlined />
           </button>

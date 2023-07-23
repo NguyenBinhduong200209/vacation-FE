@@ -50,12 +50,13 @@
 
 .more {
   position: absolute;
-  top: 5%;
-  right: 5%;
-  font-size: 3rem;
+  top: min(5%, 10px);
+  right: min(5%, 15px);
+  font-size: 2.7rem;
   transition: color linear 200ms;
 
   &:hover {
     color: #f1c40f;
+    cursor: pointer;
   }
 }

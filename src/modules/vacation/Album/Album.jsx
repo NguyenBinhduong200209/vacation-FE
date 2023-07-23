@@ -14,9 +14,7 @@ const Album = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchImg = await axiosClient.get(
-          `vacation/${dataId.vacationID}/images`
-        );
+        const fetchImg = await axiosClient.get(`vacation/${dataId.id}/images`);
         setImg(fetchImg.data.data);
         console.log(fetchImg);
       } catch (error) {
@@ -26,22 +24,25 @@ const Album = () => {
 
     fetchData();
   }, [dataId.id]);
-  console.log(dataId.vacationID);
 
   return (
     <div className={cx("album-wrap")}>
       <div className={cx("album-title")}>Vacation's Album</div>
-      <div className={cx("album-container")}>
-        {img.map((item, index) => (
-          <div className={cx("stack")}>
-            <div className={cx("card-album-container")} key={index}>
-              <div className={cx("image")}>
-                <img src={item?.path} alt="?" className={cx("images")} />
+      {img.length === 0 ? (
+        <div className={cx("no-images")}>Không có ảnh</div>
+      ) : (
+        <div className={cx("album-container")}>
+          {img.map((item, index) => (
+            <div className={cx("stack")} key={index}>
+              <div className={cx("card-album-container")}>
+                <div className={cx("image")}>
+                  <img src={item?.path} alt="?" className={cx("images")} />
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

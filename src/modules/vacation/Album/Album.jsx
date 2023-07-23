@@ -14,9 +14,7 @@ const Album = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchImg = await axiosClient.get(
-          `vacation/${dataId.id}/images` // Fix the dataId object key here
-        );
+        const fetchImg = await axiosClient.get(`vacation/${dataId.id}/images`);
         setImg(fetchImg.data.data);
         console.log(fetchImg);
       } catch (error) {

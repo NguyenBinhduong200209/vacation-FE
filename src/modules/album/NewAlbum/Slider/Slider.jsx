@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { addSelected } from "~/store/slices/albumSlice";
 import styles from "./Slider.module.scss";
 import classNames from "classnames/bind";
-import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
+import ClickableButton from "./ClickableBtn";
+import { LeftCircleFilled, RightCircleFilled } from "@ant-design/icons";
 
 const cx = classNames.bind(styles);
 
@@ -41,10 +42,13 @@ const Slider = () => {
   };
 
   const handleAdd = (item) =>
-    selectedImages.every((image) => image._id !== item._id) && dispatch(addSelected(item));
+    selectedImages.every((image) => image._id !== item._id) &&
+    dispatch(addSelected(item));
 
   useEffect(() => {
-    const cardContainers = document.querySelectorAll(`.${cx("card-container")}`);
+    const cardContainers = document.querySelectorAll(
+      `.${cx("card-container")}`
+    );
 
     cardContainers.forEach((container, i) => {
       const offset = ((active - i) % cardCount) / 3;
@@ -68,12 +72,18 @@ const Slider = () => {
       ) : (
         <div className={cx("carousel")}>
           {img.map((item, index) => {
-            const isSelected = selectedImages.some((image) => image._id === item._id);
+            const isSelected = selectedImages.some(
+              (image) => image._id === item._id
+            );
             return (
               <div className={cx("card-container")} key={index}>
                 <div className={cx("card")}>
                   <img src={item?.path} alt="?" />
-                  <button onClick={() => handleAdd(item)} disabled={isSelected}>
+                  <button
+                    onClick={() => handleAdd(item)}
+                    disabled={isSelected}
+                    className={cx("btn")}
+                  >
                     {isSelected ? "Selected" : "Select this image"}
                   </button>
                 </div>
@@ -81,11 +91,12 @@ const Slider = () => {
             );
           })}
           <button className={cx("nav-left")} onClick={prevSlide}>
-            <LeftCircleOutlined />
+            <LeftCircleFilled />
           </button>
           <button className={cx("nav-right")} onClick={nextSlide}>
-            <RightCircleOutlined />
+            <RightCircleFilled />
           </button>
+          {/* <ClickableButton /> */}
         </div>
       )}
     </div>

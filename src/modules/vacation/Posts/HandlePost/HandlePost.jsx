@@ -12,9 +12,15 @@ import SelectLocation from "~/modules/components/SelectLocation/SelectLocation";
 import Notification from "~/components/Notification/Notification";
 import ImageField from "~/components/ImageField/ImageField";
 import Modal from "~/components/Modal/Modal";
-import { Avatar, Card, List } from "antd";
+import { Avatar, List } from "antd";
 import UpLoad from "~/components/UpLoad/UpLoad";
-import { resetResources } from "~/store/slices/resourceSlice";
+import {
+  deleteImg,
+  resetResources,
+  setInitResources,
+} from "~/store/slices/resourceSlice";
+import Loading from "~/components/Loading/Loading";
+import { isPostListChanged } from "~/store/slices/vacationSlice";
 
 const cx = classNames.bind(styles);
 const HandlePost = ({
@@ -33,7 +39,7 @@ const HandlePost = ({
   const { authorInfo } = detail;
   // init post detail
   const [postDetail, setPostDetail] = useState(initPostDetail);
-  const { location, content } = postDetail;
+  const { location, content, initResources } = postDetail;
   // get resources when upload
   const { resources } = useSelector((state) => state.resource);
 
@@ -46,14 +52,11 @@ const HandlePost = ({
   const [selectedLocation, setSelectedLocation] = useState({});
   const imgRef = useRef();
 
-  //   initPostDetail = {
-  //     location:{},
-  //     resources:[],
-  //     content:""
-  //   }
+  //   console.log(postDetail);
   useEffect(() => {
     setPostDetail(initPostDetail);
     setSelectedLocation(location);
+    dispatch(setInitResources(initResources));
   }, [initPostDetail]);
 
   //   console.log(selectedLocation);
@@ -73,13 +76,14 @@ const HandlePost = ({
     try {
       let res;
       setIsLoading(true);
-      if (type === "create" || "newfeed") {
+      if (type === "create" || type === "newfeed") {
         res = await vacationAPI.createPost(params);
       } else {
-        await vacationAPI.updatePost({ id: postId, body: params });
+        res = await vacationAPI.updatePost({ id: postId, body: params });
       }
       setIsSuccess(true);
       setMsg(res.data?.message);
+      dispatch(isPostListChanged(true));
     } catch (error) {
       setIsError(true);
       setMsg(error.message);
@@ -89,6 +93,9 @@ const HandlePost = ({
     setOpenNoti(true);
     dispatch(resetResources());
   };
+  const handleDeleteImg = (id) => {
+    dispatch(deleteImg(id));
+  };
 
   const titleModal =
     type === "create" || type === "newfeed" ? "New Post" : "Update Post";
@@ -96,6 +103,8 @@ const HandlePost = ({
   const handleAfterClose = () => {
     dispatch(resetResources());
   };
+
+  //   console.log(resources);
   return (
     <>
       <Modal
@@ -134,14 +143,17 @@ const HandlePost = ({
                 column: 4,
               }}
               dataSource={resources}
-              renderItem={(item) => (
+              renderItem={(item, index) => (
                 <List.Item>
                   <div className={cx("item")}>
                     <ImageField
                       rootClassName={cx("resource")}
                       src={item.path}
                     />
-                    <CloseCircleOutlined className={cx("img-btn")} />
+                    <CloseCircleOutlined
+                      className={cx("img-btn")}
+                      onClick={() => handleDeleteImg(item._id)}
+                    />
                   </div>
                 </List.Item>
               )}
@@ -188,7 +200,10 @@ const HandlePost = ({
             disabled={isLoading}
             className={cx("btn-submit")}
           >
-            Sending Post
+            {type === "create" || type === "newfeed"
+              ? " Create Post"
+              : "Update"}
+            {isLoading && <Loading />}
           </button>
         </div>
       </Modal>

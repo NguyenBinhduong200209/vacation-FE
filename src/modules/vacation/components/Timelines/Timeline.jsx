@@ -9,6 +9,7 @@ const cx = classNames.bind(styles);
 
 const Timeline = () => {
   const { posts, activeTimeline } = useSelector((state) => state.vacation);
+  const { timeline } = posts;
 
   return (
     <>
@@ -16,7 +17,7 @@ const Timeline = () => {
         <div className={cx("container")}>
           <header># Timeline</header>
           <main>
-            {posts.meta.timeline?.map((item, index) => {
+            {timeline?.map((item, index) => {
               return (
                 <div
                   className={cx(

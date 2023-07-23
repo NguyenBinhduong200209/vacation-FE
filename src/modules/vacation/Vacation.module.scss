@@ -16,8 +16,6 @@
   left: 8rem;
   width: 20%;
   min-width: 250px;
-  min-height: 75vh;
-  max-height: 85vh;
   padding-bottom: 2rem;
   border-radius: 30px;
   background: linear-gradient(
@@ -148,6 +146,7 @@
     font-size: 1.6rem;
     font-weight: 300;
     letter-spacing: 1.5px;
+    cursor: pointer;
   }
 
   .active {

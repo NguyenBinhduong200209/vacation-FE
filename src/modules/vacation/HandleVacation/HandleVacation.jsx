@@ -268,11 +268,12 @@ const HandleVacation = ({
                 </div>
                 <div className={cx("resources")}>
                   {type === "update" && resources.length > 0 && "Cover:"}
-                  {resources.map((resource) => {
+                  {resources.map((resource, index) => {
                     return (
                       <ImageField
                         src={resource.path}
                         className={cx("resource")}
+                        key={index}
                       />
                     );
                   })}

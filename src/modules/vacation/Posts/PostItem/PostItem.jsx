@@ -6,9 +6,8 @@ import classNames from "classnames/bind";
 import moment from "moment/moment";
 import { Avatar, Popover } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-
 import Interaction from "../../components/Interact/Interaction";
-import { setTimeline } from "~/store/slices/vacationSlice";
+import { isPostListChanged, setTimeline } from "~/store/slices/vacationSlice";
 import { getDate } from "~/helpers/function";
 import vacationAPI from "~/api/vacationAPI";
 import Modal from "~/components/Modal/Modal";
@@ -30,7 +29,7 @@ const PostItem = ({ postDetail }) => {
     isLiked,
     location,
   } = postDetail;
-  console.log(resource);
+  // console.log(location);
 
   const { info } = useSelector((state) => state.auth);
   const postItemRef = useRef(null);
@@ -41,15 +40,12 @@ const PostItem = ({ postDetail }) => {
 
   const initPostDetail = {
     content: content,
-    resources: resource,
+    initResources: resource,
     location: {
       city: { title: location.city },
       district: { title: location.district },
-      detail: { title: location.detail },
+      detail: { title: location.detail, id: location._id },
     },
-  };
-  const handleOpenChange = (newOpen) => {
-    setOpen(newOpen);
   };
 
   useEffect(() => {
@@ -73,6 +69,7 @@ const PostItem = ({ postDetail }) => {
   const handleDeletePost = async () => {
     await vacationAPI.deletePost(_id);
     setOpen(false);
+    dispatch(isPostListChanged(true));
   };
   return (
     <div
@@ -98,7 +95,13 @@ const PostItem = ({ postDetail }) => {
           <Popover
             content={
               <div className={cx("pop-over")}>
-                <p className={cx("options")} onClick={() => setShowModal(true)}>
+                <p
+                  className={cx("options")}
+                  onClick={() => {
+                    setShowModal(true);
+                    setOpen(false);
+                  }}
+                >
                   Edit
                 </p>
                 <p className={cx("options")} onClick={handleDeletePost}>
@@ -108,12 +111,12 @@ const PostItem = ({ postDetail }) => {
             }
             open={open}
             trigger="click"
-            onOpenChange={handleOpenChange}
             placement="bottom"
           >
             <FontAwesomeIcon
               icon={faEllipsisVertical}
               className={cx("options")}
+              onClick={() => setOpen(!open)}
             />
           </Popover>
         )}
@@ -123,6 +126,7 @@ const PostItem = ({ postDetail }) => {
           setShowModal={setShowModal}
           initPostDetail={initPostDetail}
           postId={_id}
+          type={"update"}
         />
       </header>
 

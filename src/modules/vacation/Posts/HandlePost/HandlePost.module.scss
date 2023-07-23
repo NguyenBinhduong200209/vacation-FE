@@ -126,6 +126,10 @@
 
 // btn
 .btn-submit {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   padding: 1rem;
   background-color: rgba(116, 96, 96, 0.35);

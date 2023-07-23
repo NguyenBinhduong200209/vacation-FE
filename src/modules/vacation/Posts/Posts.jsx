@@ -16,12 +16,12 @@ const Posts = () => {
   const [showModal, setShowModal] = useState(false);
   const { info } = useSelector((state) => state.auth);
   const { posts, detail, isLoading } = useSelector((state) => state.vacation);
-  const { postList } = posts;
+  const { list } = posts;
 
   const initPostDetail = {
     content: "",
     location: {},
-    resources: [],
+    initResources: [],
   };
 
   return (
@@ -48,7 +48,7 @@ const Posts = () => {
             type="create"
           />
 
-          {postList?.map((item, index) => (
+          {list?.map((item, index) => (
             <PostItem postDetail={item} key={index} />
           ))}
 

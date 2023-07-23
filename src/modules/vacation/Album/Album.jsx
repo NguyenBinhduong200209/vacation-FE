@@ -16,7 +16,7 @@ const Album = () => {
     const fetchData = async () => {
       try {
         const fetchImg = await axiosClient.get(`vacation/${dataId.vacationID}/images`);
-        setImg(fetchImg.data.data);
+        setImg(fetchImg.data.data || []);
       } catch (error) {
         console.log(error);
       }

@@ -13,6 +13,7 @@ import vacationAPI from "~/api/vacationAPI";
 import Modal from "~/components/Modal/Modal";
 import ImageField from "~/components/ImageField/ImageField";
 import HandlePost from "../HandlePost/HandlePost";
+import Notification from "~/components/Notification/Notification";
 
 const cx = classNames.bind(styles);
 
@@ -37,6 +38,10 @@ const PostItem = ({ postDetail }) => {
   const [showModal, setShowModal] = useState(false);
   const [open, setOpen] = useState(false);
   const [openImg, setOpenImg] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [msg, setMsg] = useState("");
+  const [openNoti, setOpenNoti] = useState(false);
 
   const initPostDetail = {
     content: content,
@@ -67,9 +72,18 @@ const PostItem = ({ postDetail }) => {
   }, []);
 
   const handleDeletePost = async () => {
-    await vacationAPI.deletePost(_id);
-    setOpen(false);
-    dispatch(isPostListChanged(true));
+    try {
+      const res = await vacationAPI.deletePost(_id);
+      setMsg(res.data?.message);
+      setOpen(false);
+      dispatch(isPostListChanged(true));
+      setIsSuccess(true);
+    } catch (error) {
+      setMsg(error.message);
+      setIsError(true);
+    }
+
+    setOpenNoti(true);
   };
   return (
     <div
@@ -170,6 +184,14 @@ const PostItem = ({ postDetail }) => {
         comments={comments}
         postID={_id}
         isLikedStatus={isLiked}
+      />
+
+      <Notification
+        isSuccess={isSuccess}
+        isError={isError}
+        msg={msg}
+        openNoti={openNoti}
+        setOpenNoti={setOpenNoti}
       />
     </div>
   );

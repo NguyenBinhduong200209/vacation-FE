@@ -14,12 +14,12 @@ $col-6: #2196f3;
 .dice {
   height: 100vh;
   display: flex;
-  margin-top: 4rem;
+  margin-top: -10vh;
   justify-content: center;
   align-items: center;
   font-family: "Crafty Girls", cursive;
   font-size: 16px;
-  z-index: 100000;
+  // z-index: 100000;
   h1 {
     padding: 3rem 1rem 0;
     text-align: center;

@@ -21,6 +21,7 @@ import {
 } from "~/store/slices/resourceSlice";
 import Loading from "~/components/Loading/Loading";
 import { isPostListChanged } from "~/store/slices/vacationSlice";
+import Dropdown from "~/modules/album/CreateAlbum/Dropdown/Dropdown";
 
 const cx = classNames.bind(styles);
 const HandlePost = ({
@@ -35,14 +36,17 @@ const HandlePost = ({
   const [searchParams] = useSearchParams();
   let vacationId = searchParams.get("vacationID");
   // get vacation detail
-  const { detail } = useSelector((state) => state.vacation);
-  const { authorInfo } = detail;
+  const { info } = useSelector((state) => state.auth);
+
   // init post detail
   const [postDetail, setPostDetail] = useState(initPostDetail);
   const { location, content, initResources } = postDetail;
   // get resources when upload
   const { resources } = useSelector((state) => state.resource);
-
+  const [selected, setSelected] = useState({
+    title: "Choose Your Vacation",
+    id: "",
+  });
   const [modalIsOpen, setIsOpen] = useState(false);
   const [openNoti, setOpenNoti] = useState(false);
   const [msg, setMsg] = useState("");
@@ -76,10 +80,21 @@ const HandlePost = ({
     try {
       let res;
       setIsLoading(true);
-      if (type === "create" || type === "newfeed") {
-        res = await vacationAPI.createPost(params);
-      } else {
-        res = await vacationAPI.updatePost({ id: postId, body: params });
+      switch (type) {
+        case "create":
+          res = await vacationAPI.createPost(params);
+          break;
+        case "newfeed":
+          res = await vacationAPI.createPost({
+            ...params,
+            vacationId: selected._id,
+          });
+          break;
+        case "update":
+          res = await vacationAPI.updatePost({ id: postId, body: params });
+          break;
+        default:
+          break;
       }
       setIsSuccess(true);
       setMsg(res.data?.message);
@@ -104,7 +119,6 @@ const HandlePost = ({
     dispatch(resetResources());
   };
 
-  //   console.log(resources);
   return (
     <>
       <Modal
@@ -116,11 +130,15 @@ const HandlePost = ({
         <div className={cx("modal-container")}>
           <div className={cx("user-info")}>
             <div className={cx("info-name")}>
-              <Avatar src={authorInfo?.avatar.path} />
-              <div className={cx("username")}>{authorInfo?.username}</div>
+              <Avatar src={info?.avatar?.path} />
+              <div className={cx("username")}>{info?.username}</div>
             </div>
             {type === "newfeed" && (
-              <div className={cx("select-vacation")}>Choose your Vacation</div>
+              <Dropdown
+                className="post-modal"
+                selected={selected}
+                setSelected={setSelected}
+              />
             )}
           </div>
           <TextArea
@@ -207,6 +225,14 @@ const HandlePost = ({
           </button>
         </div>
       </Modal>
+
+      <Notification
+        isSuccess={isSuccess}
+        isError={isError}
+        msg={msg}
+        openNoti={openNoti}
+        setOpenNoti={setOpenNoti}
+      />
     </>
   );
 };

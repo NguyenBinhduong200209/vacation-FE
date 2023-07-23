@@ -11,6 +11,7 @@ import UpLoad from "~/components/UpLoad/UpLoad";
 import { resetResources } from "~/store/slices/resourceSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import { UPDATE_OVERVIEW } from "~/utils/constants";
 
 const cx = classNames.bind(styles);
 
@@ -108,6 +109,7 @@ const Overview = () => {
         msg={msg}
         openNoti={openNoti}
         setOpenNoti={setOpenNoti}
+        type={UPDATE_OVERVIEW}
       />
     </div>
   );

@@ -18,12 +18,6 @@ const Posts = () => {
   const { posts, detail, isLoading } = useSelector((state) => state.vacation);
   const { list } = posts;
 
-  const initPostDetail = {
-    content: "",
-    location: {},
-    initResources: [],
-  };
-
   return (
     <>
       <div className={cx("wrapper")}>
@@ -43,7 +37,6 @@ const Posts = () => {
           <HandlePost
             setShowModal={setShowModal}
             showModal={showModal}
-            initPostDetail={initPostDetail}
             type="create"
           />
 

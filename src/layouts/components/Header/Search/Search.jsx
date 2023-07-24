@@ -55,7 +55,7 @@ const Search = () => {
   return (
     <div className={cx("nav-search")}>
       <NavLink className={cx("nav-logo")} to="/">
-        <img src={images.Vector} className={cx("nav-logo-img")} />
+        <img src={images.Vector} className={cx("nav-logo-img")} alt="" />
       </NavLink>
       <input
         className={cx("search-input")}
@@ -67,7 +67,7 @@ const Search = () => {
           setHideSuggestions(false);
         }}
         onKeyPress={handleKeyPress}
-        onBlur={() => setTimeout(() => setHideSuggestions(true), 100)}
+        onBlur={() => setTimeout(() => setHideSuggestions(true), 400)}
         spellCheck={false}
       />
       <div id="suggestion" className={cx("suggestions")}>

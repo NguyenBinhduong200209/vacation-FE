@@ -15,6 +15,21 @@ export const getList = createAsyncThunk("album/getList", async (arg, thunkAPI) =
   }
 });
 
+export const deleteAlbum = createAsyncThunk("album/delete", async (arg, thunkAPI) => {
+  try {
+    const { id } = arg;
+    const res = await albumAPI.delete(id);
+    return res.data;
+  } catch (error) {
+    if (!error.response) {
+      return thunkAPI.rejectWithValue({ message: error.message });
+    }
+    return thunkAPI.rejectWithValue({
+      message: error.response.data.message,
+    });
+  }
+});
+
 const albumSlice = createSlice({
   name: "album",
   initialState: {
@@ -53,18 +68,28 @@ const albumSlice = createSlice({
       })
       .addCase(getList.fulfilled, (state, action) => {
         if (action.payload) {
-          const {
-            data,
-            meta: { Page, Pages, totalAlbums },
-          } = action.payload;
+          const { data, meta } = action.payload;
           state.isLoading = false;
-          state.list = Page === 1 ? data : data?.length > 0 && state.list.concat(data);
-          state.meta.page = Page;
-          state.meta.pages = Pages;
-          state.meta.total = totalAlbums;
+          if (data?.length > 0) {
+            state.list = meta.page === 1 ? data : state.list.concat(data);
+          }
+          state.meta = meta;
         }
       })
       .addCase(getList.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.msg = action.payload?.message;
+      })
+      .addCase(deleteAlbum.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteAlbum.fulfilled, (state, action) => {
+        const currentList = current(state).list;
+        state.list = currentList.filter((item) => item._id !== action.meta.arg.id);
+        state.isLoading = false;
+      })
+      .addCase(deleteAlbum.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = false;
         state.msg = action.payload?.message;

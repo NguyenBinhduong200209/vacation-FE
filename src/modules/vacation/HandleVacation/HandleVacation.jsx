@@ -20,20 +20,24 @@ import SelectFriend from "~/modules/components/SelectFriend/SelectFriend";
 import Notification from "~/components/Notification/Notification";
 import UpLoad from "~/components/UpLoad/UpLoad";
 import ImageField from "~/components/ImageField/ImageField";
+import { getDate } from "~/helpers/function";
 
 const { RangePicker } = DatePicker;
 const cx = classNames.bind(styles);
-const HandleVacation = ({
-  showModal,
-  setOpen,
-  type,
-  initVacationDetail,
-  vacationId,
-}) => {
+const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
   // Get the current user information from the state.
   const { info } = useSelector((state) => state.auth);
   const { resources } = useSelector((state) => state.resource);
-  const [vacationDetail, setVacationDetail] = useState(initVacationDetail);
+  const { detail, memberList: vacationMemberList } = useSelector(
+    (state) => state.vacation
+  );
+  const [vacationDetail, setVacationDetail] = useState({
+    title: "",
+    des: "",
+    status: "",
+    shareList: "",
+    dates: [],
+  });
   const { title, des, dates, status } = vacationDetail;
   const [memberList, setMemberList] = useState([]);
   const [openNoti, setOpenNoti] = useState(false);
@@ -47,9 +51,19 @@ const HandleVacation = ({
   const [openStatus, setOpenStatus] = useState(false);
 
   useEffect(() => {
-    setVacationDetail(initVacationDetail);
-    setMemberList(initVacationDetail.memberList);
-  }, [initVacationDetail]);
+    if (vacationId) {
+      setVacationDetail((prev) => {
+        return {
+          title: detail?.title,
+          des: detail?.description,
+          status: detail?.shareStatus,
+          shareList: detail?.shareList,
+          dates: [getDate(detail?.startingTime), getDate(detail?.endingTime)],
+        };
+      });
+      setMemberList(vacationMemberList);
+    }
+  }, []);
 
   // Function to handle changes to the title.
   const onChange = (e, type) => {
@@ -130,12 +144,20 @@ const HandleVacation = ({
         title !== "" &&
         des !== "" &&
         dates?.length === 2 &&
-        memberList.length > 0
+        memberList?.length > 0
       ),
     [title, des, dates, memberList]
   );
 
   const isDisabledUpdate = useMemo(() => {
+    const initVacationDetail = {
+      title: detail?.title,
+      des: detail?.description,
+      status: detail?.shareStatus,
+      shareList: detail?.shareList,
+      dates: [getDate(detail?.startingTime), getDate(detail?.endingTime)],
+      memberList: detail?.memberList,
+    };
     const newVacationDetail = {
       title: title,
       des: des,
@@ -151,6 +173,7 @@ const HandleVacation = ({
   const handleImgClick = () => {
     imgRef.current.click();
   };
+  console.log(memberList);
   return (
     <>
       <Modal
@@ -267,8 +290,8 @@ const HandleVacation = ({
                   })}
                 </div>
                 <div className={cx("resources")}>
-                  {type === "update" && resources.length > 0 && "Cover:"}
-                  {resources.map((resource, index) => {
+                  {type === "update" && resources?.length > 0 && "Cover:"}
+                  {resources?.map((resource, index) => {
                     return (
                       <ImageField
                         src={resource.path}

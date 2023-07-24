@@ -18,12 +18,7 @@ const Navigation = () => {
 
   return (
     <div className={cx("nav-tools")}>
-      <NavLink
-        to="/"
-        className={({ isActive }) => {
-          return isActive ? cx("active") : "";
-        }}
-      >
+      <NavLink to="/" className={({ isActive }) => (isActive ? cx("active") : "")}>
         <HomeOutlined />
       </NavLink>
 

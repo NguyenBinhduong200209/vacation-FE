@@ -55,7 +55,7 @@ const Search = () => {
   return (
     <div className={cx("nav-search")}>
       <NavLink className={cx("nav-logo")} to="/">
-        <img src={images.Vector} className={cx("nav-logo-img")} />
+        <img src={images.Vector} className={cx("nav-logo-img")} alt="" />
       </NavLink>
       <input
         className={cx("search-input")}
@@ -67,7 +67,7 @@ const Search = () => {
           setHideSuggestions(false);
         }}
         onKeyPress={handleKeyPress}
-        onBlur={() => setTimeout(() => setHideSuggestions(true), 100)}
+        onBlur={() => setTimeout(() => setHideSuggestions(true), 400)}
         spellCheck={false}
       />
       <div id="suggestion" className={cx("suggestions")}>
@@ -86,12 +86,21 @@ const Search = () => {
               renderItem={(item, index) => {
                 const { _id, username, firstname, lastname, avatar } = item;
                 return (
-                  <NavLink style={{ color: "white" }} to={`/profile/${_id === currentUserId ? "" : _id}`}>
+                  <NavLink
+                    style={{ color: "white" }}
+                    to={`/profile/${_id === currentUserId ? "" : _id}`}
+                  >
                     <List.Item className={cx("item")}>
                       <List.Item.Meta
                         avatar={<Avatar size="large" src={avatar} />}
-                        title={<span style={{ color: "white" }}>{username}</span>}
-                        description={<div style={{ color: "white" }}>{`${firstname} ${lastname}`}</div>}
+                        title={
+                          <span style={{ color: "white" }}>{username}</span>
+                        }
+                        description={
+                          <div
+                            style={{ color: "white" }}
+                          >{`${firstname} ${lastname}`}</div>
+                        }
                       />
                     </List.Item>
                   </NavLink>

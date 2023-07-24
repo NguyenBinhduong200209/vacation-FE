@@ -16,18 +16,21 @@ const NewAlbum = () => {
   const list = useSelector((state) => state.album.selectedImages);
   const [searchParams] = useSearchParams();
   const albumId = searchParams.get("albumId");
-  const vacationId = searchParams.get("id")
+  const vacationId = searchParams.get("id");
   const dataId = Object.fromEntries(searchParams);
-  const [containerSize, setContainerSize] = useState({ outerWidth: 0, outerHeight: 0 });
+  const [containerSize, setContainerSize] = useState({
+    outerWidth: 0,
+    outerHeight: 0,
+  });
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef(null);
   const navigate = useNavigate();
 
-	const saveAlbum = async (e) => {
-		e.preventDefault();
-		try {
-			const data = {
-				albumId: albumId,
+  const saveAlbum = async (e) => {
+    e.preventDefault();
+    try {
+      const data = {
+        albumId: albumId,
         vacationId: vacationId,
         page: 1,
         resource: list.map((item) => ({
@@ -42,8 +45,12 @@ const NewAlbum = () => {
 		}
 	};
 
+
   useEffect(() => {
-    setContainerSize({ outerWidth: ref.current.offsetWidth, outerHeight: ref.current.offsetHeight });
+    setContainerSize({
+      outerWidth: ref.current.offsetWidth,
+      outerHeight: ref.current.offsetHeight,
+    });
   }, [ref]);
 
   const handleWrapClick = () => {
@@ -56,8 +63,13 @@ const NewAlbum = () => {
         <div className={`wrap ${isOpen ? "open" : ""}`}>
           <div className="overlay" onClick={handleWrapClick}>
             <div className="overlay-content animate slide-left delay-2">
-              <h1 className="animate slide-left pop delay-4 line">{dataId.title}</h1>
-              <p className="animate slide-left pop delay-5" style={{ color: "white", marginBottom: "2.5rem" }}>
+              <h1 className="animate slide-left pop delay-4 line">
+                {dataId.title}
+              </h1>
+              <p
+                className="animate slide-left pop delay-5"
+                style={{ color: "white", marginBottom: "2.5rem" }}
+              >
                 Sign: <em>Creator</em>
               </p>
             </div>
@@ -72,21 +84,22 @@ const NewAlbum = () => {
             <div className={cx("wrapper")}>
               <div className={cx("mother")} ref={ref}>
                 {list.map((item) => (
-                  <Image key={item._id} imgData={item} containerSize={containerSize} />
+                  <Image
+                    key={item._id}
+                    imgData={item}
+                    containerSize={containerSize}
+                  />
                 ))}
               </div>
             </div>
           </div>
         </div>
         <Slider />
-
-        
       </div>
       <button className={cx("save-btn")} onClick={saveAlbum}>
         Save
-      </button>    
+      </button>
     </>
-
   );
 };
 

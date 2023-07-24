@@ -31,17 +31,8 @@ const Vacation = () => {
   const urlType = searchParams.get("type") || "post"; // get type  of url (post || album)
   const { info } = useSelector((state) => state.auth);
   const { detail, posts, memberList } = useSelector((state) => state.vacation);
-  const {
-    authorInfo,
-    cover,
-    members,
-    title,
-    description,
-    startingTime,
-    endingTime,
-    shareStatus,
-    shareList,
-  } = detail;
+  const { authorInfo, cover, members, title, startingTime, endingTime } =
+    detail;
   const { page, pages, timeline, totalPost, isUpdatePost } = posts;
   const currentPage = useRef(1);
   const [openUserList, setOpenUserList] = useState(false);
@@ -94,7 +85,7 @@ const Vacation = () => {
 
       dispatch(isPostListChanged(false));
     }
-  }, [isUpdatePost]);
+  }, [isUpdatePost, dispatch, vacationID]);
 
   // handle Scroll increase currentPage
   const loadMorePosts = () => {
@@ -129,15 +120,6 @@ const Vacation = () => {
   //check user is author or not
   const isAuthor = info?._id === authorInfo?._id;
 
-  // set init Vacation Detail
-  const initVacationDetail = {
-    title: title,
-    des: description,
-    status: shareStatus,
-    shareList: shareList,
-    dates: [getDate(startingTime), getDate(endingTime)],
-    memberList: memberList,
-  };
   return (
     <>
       {preload ? (
@@ -187,7 +169,6 @@ const Vacation = () => {
                   <HandleVacation
                     setOpen={setOpen}
                     showModal={open}
-                    initVacationDetail={initVacationDetail}
                     type="update"
                     vacationId={vacationID}
                   />

@@ -39,7 +39,7 @@
 
   &:hover {
     .album-img {
-      transform: scale(1.1);
+      transform: scale(1.1) rotate(2deg);
       opacity: 1;
     }
     .album-title {
@@ -48,15 +48,35 @@
   }
 }
 
-.more {
+.pop-over {
   position: absolute;
-  top: min(5%, 10px);
-  right: min(5%, 15px);
+  top: min(5%, 15px);
+  right: min(5%, 20px);
   font-size: 2.7rem;
   transition: color linear 200ms;
 
-  &:hover {
+  :hover {
     color: #f1c40f;
     cursor: pointer;
   }
+}
+
+.pop-content {
+  & > * {
+    background-color: #282828 !important;
+    color: white !important;
+    border: none;
+    display: block;
+    text-align: right;
+    padding: 0 !important;
+    width: 100%;
+
+    :hover {
+      color: #f1c40f;
+      text-decoration: underline;
+    }
+  }
+}
+
+.more {
 }

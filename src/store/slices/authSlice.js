@@ -1,4 +1,3 @@
-import axios from "axios";
 import authAPI from "~/api/authAPI";
 import { LoginData } from "~/modules/auth/components/config/data";
 import { LOGIN } from "~/utils/constants";

@@ -35,8 +35,8 @@ const NewAlbum = () => {
           resourceId: item._id
         }))
 			};
-			const res = await axiosClient.post("https://vacation-backend.onrender.com/albumpage/", data);
-      navigate("/");
+			const res = await axiosClient.post("https://vacation-social-network.onrender.com/album/", data);
+      navigate("/profile/album");
 		} catch (error) {
 			console.log(error);
 		}

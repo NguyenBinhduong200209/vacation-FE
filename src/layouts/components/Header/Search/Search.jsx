@@ -86,12 +86,21 @@ const Search = () => {
               renderItem={(item, index) => {
                 const { _id, username, firstname, lastname, avatar } = item;
                 return (
-                  <NavLink style={{ color: "white" }} to={`/profile/${_id === currentUserId ? "" : _id}`}>
+                  <NavLink
+                    style={{ color: "white" }}
+                    to={`/profile/${_id === currentUserId ? "" : _id}`}
+                  >
                     <List.Item className={cx("item")}>
                       <List.Item.Meta
                         avatar={<Avatar size="large" src={avatar} />}
-                        title={<span style={{ color: "white" }}>{username}</span>}
-                        description={<div style={{ color: "white" }}>{`${firstname} ${lastname}`}</div>}
+                        title={
+                          <span style={{ color: "white" }}>{username}</span>
+                        }
+                        description={
+                          <div
+                            style={{ color: "white" }}
+                          >{`${firstname} ${lastname}`}</div>
+                        }
                       />
                     </List.Item>
                   </NavLink>

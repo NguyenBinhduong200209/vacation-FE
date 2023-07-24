@@ -79,7 +79,7 @@ const FriendList = ({ type, userId }) => {
                 />
               </NavLink>
               <div className={cx("button-container")}>
-                {type === "request" ? <ButtonGroup id={_id} /> : <DropdownMore id={_id} />}
+                {type === "request" ? <ButtonGroup id={_id} /> : <DropdownMore id={userInfo?._id} />}
               </div>
             </List.Item>
           );

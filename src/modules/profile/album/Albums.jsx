@@ -7,6 +7,7 @@ import { MoreOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Card, List, Typography, Skeleton, Popover, Button, Image } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { NavLink, useOutletContext } from "react-router-dom";
+import axiosClient from "~/api/axiosClient";
 const cx = classNames.bind(styles);
 
 const Albums = () => {
@@ -16,6 +17,8 @@ const Albums = () => {
     meta: { page, pages },
   } = useSelector((state) => state.album);
 
+  console.log(list);
+  
   const { userId } = useOutletContext();
 
   useEffect(() => {
@@ -27,11 +30,25 @@ const Albums = () => {
     dispatch(getList({ userId, page: page + 1 }));
   };
 
+
+  const takeAlbum = async(e) => {
+    e.preventDefault();
+    try {
+      const data = {
+        
+      }
+      const res = axiosClient.put('https://vacation-social-network.onrender.com/albumpage/', data)
+    } catch (error) {
+      
+    }
+  }
+
   const handleDelete = (id) => {
     dispatch(deleteAlbum({ id }));
   };
 
   console.log(list);
+
 
   return (
     <div className={cx("albums")}>

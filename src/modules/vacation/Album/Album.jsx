@@ -34,7 +34,7 @@ const Album = () => {
         <div className={cx("album-container")}>
           {img.map((item, index) => (
             <div className={cx("stack")} key={index}>
-              <div className={cx("card-album-container")}>
+              <div className={cx("card-album-container")} >
                 <div className={cx("image")}>
                   <Image
                     preview={{ toolbarRender: () => null }}

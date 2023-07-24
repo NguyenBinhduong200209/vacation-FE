@@ -29,13 +29,14 @@ const CreateAlbum = ({ open, setOpen }) => {
 				vacationId: selected._id,
 				title: inputValue,
 			};
-			const res = await axiosClient.post("https://vacation-backend.onrender.com/album", data);
+			const res = await axiosClient.post("album", data);
 			navigate(`/newAlbum?id=${selected._id}&title=${inputValue}&albumId=${res.data.data._id}`);
 			return res.data.data._id;
 		} catch (error) {
 			console.log(error);
 		}
 	};
+
 
 	return (
 		<Modal open={open} setOpen={setOpen} title="New Album">

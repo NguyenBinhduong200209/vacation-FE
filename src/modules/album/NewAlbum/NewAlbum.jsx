@@ -35,18 +35,16 @@ const NewAlbum = () => {
         page: 1,
         resource: list.map((item) => ({
           style: item.style,
-          resourceId: item._id,
-        })),
-      };
-      const res = await axiosClient.post(
-        "https://vacation-backend.onrender.com/albumpage/",
-        data
-      );
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+          resourceId: item._id
+        }))
+			};
+			const res = await axiosClient.post("https://vacation-social-network.onrender.com/album/", data);
+      navigate("/profile/album");
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 
   useEffect(() => {
     setContainerSize({

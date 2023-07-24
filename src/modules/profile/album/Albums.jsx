@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import classNames from "classnames/bind";
 import styles from "./Album.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { getList, resetList } from "~/store/slices/albumSlice";
-import { MoreOutlined } from "@ant-design/icons";
-import { Card, List, Typography, Skeleton } from "antd";
+import { getList, resetList, deleteAlbum } from "~/store/slices/albumSlice";
+import { MoreOutlined, LoadingOutlined } from "@ant-design/icons";
+import { Card, List, Typography, Skeleton, Popover, Button, Image } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { NavLink, useOutletContext } from "react-router-dom";
 const cx = classNames.bind(styles);
@@ -27,6 +27,12 @@ const Albums = () => {
     dispatch(getList({ userId, page: page + 1 }));
   };
 
+  const handleDelete = (id) => {
+    dispatch(deleteAlbum({ id }));
+  };
+
+  console.log(list);
+
   return (
     <div className={cx("albums")}>
       <InfiniteScroll
@@ -47,9 +53,10 @@ const Albums = () => {
                   className={cx("album-card")}
                   hoverable={true}
                   cover={
-                    <img
+                    <Image
                       className={cx("album-img")}
                       src={`https://picsum.photos/900/600?random=${index}`}
+                      placeholder={<LoadingOutlined />}
                       alt=""
                     />
                   }
@@ -62,7 +69,21 @@ const Albums = () => {
                   </Typography.Paragraph>
                 </Card>
               </NavLink>
-              <MoreOutlined className={cx("more")} />
+              <Popover
+                className={cx("pop-over")}
+                arrow
+                placement="bottomRight"
+                trigger={"click"}
+                color="#282828"
+                content={
+                  <div className={cx("pop-content")}>
+                    <Button>Edit</Button>
+                    <Button onClick={() => handleDelete(item._id)}>Delete</Button>
+                  </div>
+                }
+              >
+                <MoreOutlined className={cx("more")} />
+              </Popover>
             </List.Item>
           )}
         />

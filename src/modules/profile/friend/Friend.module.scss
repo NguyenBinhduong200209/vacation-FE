@@ -55,20 +55,30 @@
   border: solid 1px white;
 }
 
-.drop {
-  background-color: transparent;
-  border-radius: 10px;
+.pop-over {
+  font-size: 2rem;
+  color: white;
+  transition: color linear 200ms;
+
+  :hover {
+    color: #f1c40f;
+    cursor: pointer;
+  }
 }
 
-.drop-item {
-  font-size: 1.5rem;
-  color: white;
-  font-weight: bold;
-  transition: 100ms all linear;
-  display: flex;
-  align-items: center;
+.pop-content {
+  & > * {
+    background-color: #282828 !important;
+    color: white !important;
+    border: none;
+    display: block;
+    text-align: right;
+    padding: 0 !important;
+    width: 100%;
 
-  &:hover > * {
-    color: #f1c40f;
+    :hover {
+      color: #f1c40f;
+      text-decoration: underline;
+    }
   }
 }

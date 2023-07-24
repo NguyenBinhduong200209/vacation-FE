@@ -1,11 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import styles from "./NewAlbum.module.scss";
 import classNames from "classnames/bind";
 import Slider from "./Slider/Slider";
 import "./Preloader.scss";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import albumAPI from "~/api/albumAPI";
+import { useSearchParams } from "react-router-dom";
 import Image from "./Image/Image";
+import axios from "axios";
 import axiosClient from "~/api/axiosClient";
 const cx = classNames.bind(styles);
 
@@ -35,7 +38,6 @@ const NewAlbum = () => {
           resourceId: item._id,
         })),
       };
-
       const res = await axiosClient.post(
         "https://vacation-backend.onrender.com/albumpage/",
         data

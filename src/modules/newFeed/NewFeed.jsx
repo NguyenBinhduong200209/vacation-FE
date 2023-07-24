@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import classNames from "classnames/bind";
 import styles from "./NewFeed.module.scss";
 import GlowingButton from "./glowing/GlowingButton";
@@ -244,9 +244,13 @@ const NewFeed = () => {
             </h2>
             <ul>
               {trendingList?.map((location) => (
-                <li key={location._id} className={cx("underline")}>
+                <Link
+                  to={`/search/location?f=${location.title}`}
+                  key={location._id}
+                  className={cx("underline")}
+                >
                   # {location.title}
-                </li>
+                </Link>
               ))}
               <div className={cx("trending-more")}>...</div>
             </ul>

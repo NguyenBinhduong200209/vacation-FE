@@ -12,27 +12,36 @@ const NewAlbum = () => {
   const list = useSelector((state) => state.album.selectedImages);
   const [searchParams] = useSearchParams();
   const dataId = Object.fromEntries(searchParams);
-  const [containerSize, setContainerSize] = useState({ outerWidth: 0, outerHeight: 0 });
+  const [containerSize, setContainerSize] = useState({
+    outerWidth: 0,
+    outerHeight: 0,
+  });
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef(null);
 
   useEffect(() => {
-    setContainerSize({ outerWidth: ref.current.offsetWidth, outerHeight: ref.current.offsetHeight });
+    setContainerSize({
+      outerWidth: ref.current.offsetWidth,
+      outerHeight: ref.current.offsetHeight,
+    });
   }, [ref]);
 
   const handleWrapClick = () => {
     setIsOpen((prevState) => !prevState);
   };
 
-  console.log(list);
-
   return (
     <div>
       <div className={`wrap ${isOpen ? "open" : ""}`}>
         <div className="overlay" onClick={handleWrapClick}>
           <div className="overlay-content animate slide-left delay-2">
-            <h1 className="animate slide-left pop delay-4 line">{dataId.title}</h1>
-            <p className="animate slide-left pop delay-5" style={{ color: "white", marginBottom: "2.5rem" }}>
+            <h1 className="animate slide-left pop delay-4 line">
+              {dataId.title}
+            </h1>
+            <p
+              className="animate slide-left pop delay-5"
+              style={{ color: "white", marginBottom: "2.5rem" }}
+            >
               Sign: <em>Creator</em>
             </p>
           </div>
@@ -47,7 +56,11 @@ const NewAlbum = () => {
           <div className={cx("wrapper")}>
             <div className={cx("mother")} ref={ref}>
               {list.map((item) => (
-                <Image key={item._id} imgData={item} containerSize={containerSize} />
+                <Image
+                  key={item._id}
+                  imgData={item}
+                  containerSize={containerSize}
+                />
               ))}
             </div>
           </div>

@@ -18,13 +18,25 @@ const Image = ({ imgData, containerSize }) => {
   const dispatch = useDispatch();
 
   const handleResize = (event, { size }) => {
-    dispatch(updateSelected({ _id, path, style: { width: size.width, height: size.height, top, left } }));
+    dispatch(
+      updateSelected({
+        _id,
+        path,
+        style: { width: size.width, height: size.height, top, left },
+      })
+    );
   };
 
   const handleDragStop = (event, data) => {
     const { lastX, lastY } = data;
     event.target.parentElement &&
-      dispatch(updateSelected({ _id, path, style: { width, height, top: lastY, left: lastX } }));
+      dispatch(
+        updateSelected({
+          _id,
+          path,
+          style: { width, height, top: lastY, left: lastX },
+        })
+      );
   };
 
   const handleImageRemove = () => {
@@ -44,7 +56,10 @@ const Image = ({ imgData, containerSize }) => {
         height={height}
         onResizeStop={handleResize}
         minConstraints={[50, 50]}
-        maxConstraints={[containerSize.outerWidth - left, containerSize.outerHeight - top]}
+        maxConstraints={[
+          containerSize.outerWidth - left,
+          containerSize.outerHeight - top,
+        ]}
       >
         <div
           className={cx("handle")}
@@ -54,7 +69,10 @@ const Image = ({ imgData, containerSize }) => {
             backgroundPosition: "center",
           }}
         >
-          <CloseCircleOutlined className={cx("close-icon")} onClick={handleImageRemove} />
+          <CloseCircleOutlined
+            className={cx("close-icon")}
+            onClick={handleImageRemove}
+          />
         </div>
       </ResizableBox>
     </Draggable>

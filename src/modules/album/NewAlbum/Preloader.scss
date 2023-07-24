@@ -12,7 +12,7 @@ p {
   flex-wrap: nowrap;
   justify-content: space-between;
   width: 90vmin;
-  height: 30em;
+  height: 37em;
   margin: 2rem auto;
   border: 8px solid;
   border-image: linear-gradient(
@@ -109,7 +109,7 @@ p {
   position: absolute;
   top: 0;
   right: 0;
-  width: 60vmin;
+  width: 70vmin;
   height: 100%;
   background: #fff;
   box-shadow: inset 1px 1px 15px 0 rgba(0 0 0 / 0.4);
@@ -117,7 +117,7 @@ p {
 }
 
 .wrap.open .overlay {
-  transform: translateX(-60vmin);
+  transform: translateX(-70vmin);
 }
 
 .wrap.open .image-content {
@@ -127,7 +127,7 @@ p {
 .wrap.open .overlay-content {
   border: none;
   transition-delay: 0.2s;
-  transform: translateX(60vmin);
+  transform: translateX(70vmin);
 }
 
 .wrap.open .dots {

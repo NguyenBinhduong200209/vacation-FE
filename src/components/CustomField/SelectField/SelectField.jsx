@@ -15,8 +15,7 @@ const SelectField = (props) => {
   useEffect(() => {
     if (name === "nationality") {
       const fetchAPi = async () => {
-        const url =
-          "https://vacation-backend.onrender.com/location?type=level&number=4";
+        const url = "https://vacation-social-network.onrender.com/location?type=level&number=4";
         const res = await axiosClient.get(url);
         setSelectList(res.data.data);
       };
@@ -63,10 +62,7 @@ const SelectField = (props) => {
         ))}
       </select>
       <label className={labelClasses}>{label}</label>
-      <ErrorMessage
-        name={name}
-        render={(msg) => <p className={cx("error")}>{msg}</p>}
-      />
+      <ErrorMessage name={name} render={(msg) => <p className={cx("error")}>{msg}</p>} />
     </div>
   );
 };

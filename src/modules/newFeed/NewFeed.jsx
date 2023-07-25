@@ -38,8 +38,7 @@ const NewFeed = () => {
         <div className={cx("container")}>
           {!isMediumSize && <UserInfo />}
           <div className={cx("feed")}>
-            <Create />
-            {isSmallSize && <Trending />}
+            {isSmallSize ? <Trending /> : <Create />}
             <List />
           </div>
           {!isSmallSize && <Trending />}

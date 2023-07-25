@@ -14,12 +14,10 @@
 }
 
 @media (max-width: 575.98px) {
-  .wrapper {
-    top: 90vh;
-    position: fixed;
-
-    & > * {
-      height: 100%;
-    }
+  .right-wrapper {
+    width: 70%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 5%;
   }
 }

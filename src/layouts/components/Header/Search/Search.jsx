@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import styles from "../Header.module.scss";
 import styles from "./Search.module.scss";
 import classNames from "classnames/bind";
 import { searchOneModel } from "~/store/slices/searchSlice";
@@ -23,6 +22,8 @@ const Search = () => {
   const { suggestions } = result;
   const { info } = useSelector((state) => state.auth);
   const currentUserId = info?._id;
+  const { size } = useSelector((state) => state.general);
+  const isSmallSize = size.width <= 576;
 
   useEffect(() => {
     dispatch(
@@ -57,20 +58,23 @@ const Search = () => {
     <div className={cx("nav-search")}>
       <NavLink className={cx("nav-logo")} to="/">
         <img src={images.Vector} className={cx("nav-logo-img")} alt="" />
+        {isSmallSize && <span className={cx("name")}>Seen</span>}
       </NavLink>
-      <input
-        className={cx("search-input")}
-        type="text"
-        placeholder="# Explore..."
-        value={value}
-        onChange={(e) => {
-          setValue(e.target.value);
-          setHideSuggestions(false);
-        }}
-        onKeyPress={handleKeyPress}
-        onBlur={() => setTimeout(() => setHideSuggestions(true), 400)}
-        spellCheck={false}
-      />
+      {!isSmallSize && (
+        <input
+          className={cx("search-input")}
+          type="text"
+          placeholder="# Explore..."
+          value={value}
+          onChange={(e) => {
+            setValue(e.target.value);
+            setHideSuggestions(false);
+          }}
+          onKeyPress={handleKeyPress}
+          onBlur={() => setTimeout(() => setHideSuggestions(true), 400)}
+          spellCheck={false}
+        />
+      )}
       <div id="suggestion" className={cx("suggestions")}>
         {!hideSuggestions && (
           <InfiniteScroll
@@ -87,21 +91,12 @@ const Search = () => {
               renderItem={(item, index) => {
                 const { _id, username, firstname, lastname, avatar } = item;
                 return (
-                  <NavLink
-                    style={{ color: "white" }}
-                    to={`/profile/${_id === currentUserId ? "" : _id}`}
-                  >
+                  <NavLink style={{ color: "white" }} to={`/profile/${_id === currentUserId ? "" : _id}`}>
                     <List.Item className={cx("item")}>
                       <List.Item.Meta
                         avatar={<Avatar size="large" src={avatar} />}
-                        title={
-                          <span style={{ color: "white" }}>{username}</span>
-                        }
-                        description={
-                          <div
-                            style={{ color: "white" }}
-                          >{`${firstname} ${lastname}`}</div>
-                        }
+                        title={<span style={{ color: "white" }}>{username}</span>}
+                        description={<div style={{ color: "white" }}>{`${firstname} ${lastname}`}</div>}
                       />
                     </List.Item>
                   </NavLink>

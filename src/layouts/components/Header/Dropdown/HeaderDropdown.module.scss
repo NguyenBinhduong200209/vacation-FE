@@ -92,6 +92,12 @@
   margin: 0.2rem 0;
 }
 
+@media only screen and (max-width: 991.98px) {
+  .dropdown-container {
+    width: 25%;
+  }
+}
+
 @media only screen and (max-width: 575.98px) {
   .dropdown-container {
     width: 15%;
@@ -101,8 +107,6 @@
   .nav-user {
     aspect-ratio: unset;
     padding: 0;
-    width: 100%;
-    height: 100%;
     justify-content: center;
     background-color: #1a1a1a;
 
@@ -111,18 +115,5 @@
       height: 6vh;
       margin: 0;
     }
-  }
-  .dropdown-menu {
-    position: fixed;
-    top: unset;
-    bottom: 10vh;
-    height: fit-content;
-    margin-top: 0;
-  }
-}
-
-@media only screen and (max-width: 991.98px) {
-  .dropdown-container {
-    width: 25%;
   }
 }

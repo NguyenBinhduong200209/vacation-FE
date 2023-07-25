@@ -5,16 +5,23 @@ import {
   ProfileOutlined,
   BellOutlined,
   PictureOutlined,
+  RiseOutlined,
+  SearchOutlined,
 } from "@ant-design/icons";
 import { Badge } from "antd";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateSearchMobileVisible } from "~/store/slices/generalSlice";
 import { NavLink } from "react-router-dom";
 import styles from "./Navigation.module.scss";
 import classNames from "classnames/bind";
+import { changeVisible } from "~/store/slices/locationSlice";
 const cx = classNames.bind(styles);
 
 const Navigation = () => {
+  const dispatch = useDispatch();
   const { isVisible, totalUnseen } = useSelector((state) => state.noti);
+  const { isSearchMobileVisible } = useSelector((state) => state.general);
+  const isTrendingVisible = useSelector((state) => state.location.isVisible);
   const { size } = useSelector((state) => state.general);
   const isMediumSize = size.width <= 992;
   const isSmallSize = size.width <= 576;
@@ -26,7 +33,7 @@ const Navigation = () => {
           <HomeOutlined />
         </NavLink>
       )}
-      {!isSmallSize && (
+      {!isSmallSize ? (
         <>
           <NavLink to="/profile" className={({ isActive }) => (isActive ? cx("active") : "")}>
             <ProfileOutlined />
@@ -39,13 +46,30 @@ const Navigation = () => {
           <NavLink to="/profile/friends" className={({ isActive }) => (isActive ? cx("active") : "")}>
             <TeamOutlined />
           </NavLink>
-          <div style={{ cursor: "pointer", padding: "0" }} className={isVisible ? cx("active") : ""}>
-            <Badge count={totalUnseen || 0} overflowCount={9} color="#b18735">
-              <BellOutlined />
-            </Badge>
-          </div>
+        </>
+      ) : (
+        <>
+          <SearchOutlined
+            style={{ cursor: "pointer" }}
+            className={isSearchMobileVisible ? cx("active") : ""}
+            onClick={() => dispatch(updateSearchMobileVisible())}
+          />
+          <RiseOutlined
+            onClick={() => dispatch(changeVisible())}
+            style={{ cursor: "pointer" }}
+            className={isTrendingVisible ? cx("active") : ""}
+          />
         </>
       )}
+
+      <Badge
+        className={isVisible ? cx("active") : ""}
+        count={totalUnseen || 0}
+        overflowCount={9}
+        color="#b18735"
+      >
+        <BellOutlined className={cx("bell")} />
+      </Badge>
     </div>
   );
 };

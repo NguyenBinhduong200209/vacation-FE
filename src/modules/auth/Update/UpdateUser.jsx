@@ -23,6 +23,7 @@ const UpdateUser = () => {
 
     return () => window.removeEventListener("popstate", GetPathURL);
   }, []);
+  console.log(activeTag);
 
   // Handle Route
   const handleRoute = (url) => {
@@ -36,7 +37,10 @@ const UpdateUser = () => {
         <div className={cx("sidebar")}>
           <div
             onClick={() => handleRoute(OVERVIEW_ROUTE)}
-            className={cx(activeTag === OVERVIEW_ROUTE && "active")}
+            className={cx(
+              (activeTag === OVERVIEW_ROUTE || activeTag === "/setting") &&
+                "active"
+            )}
           >
             Overview
           </div>

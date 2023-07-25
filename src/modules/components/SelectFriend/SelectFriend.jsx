@@ -87,7 +87,7 @@ const SelectFriend = ({ open, setOpen, memberList, setMemberList }) => {
         <div className={cx("select-result")}>
           <span>Member:</span>
           <div className={cx("result-list")}>
-            {memberList.map((friend) => {
+            {memberList?.map((friend) => {
               return (
                 <span key={friend._id}>
                   {friend.username}

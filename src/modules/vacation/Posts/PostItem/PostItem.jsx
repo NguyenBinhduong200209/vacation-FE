@@ -30,7 +30,6 @@ const PostItem = ({ postDetail }) => {
     isLiked,
     location,
   } = postDetail;
-  // console.log(location);
 
   const { info } = useSelector((state) => state.auth);
   const postItemRef = useRef(null);
@@ -42,16 +41,6 @@ const PostItem = ({ postDetail }) => {
   const [isError, setIsError] = useState(false);
   const [msg, setMsg] = useState("");
   const [openNoti, setOpenNoti] = useState(false);
-
-  const initPostDetail = {
-    content: content,
-    initResources: resource,
-    location: {
-      city: { title: location.city },
-      district: { title: location.district },
-      detail: { title: location.detail, id: location._id },
-    },
-  };
 
   useEffect(() => {
     const handleScrollPost = () => {
@@ -118,6 +107,7 @@ const PostItem = ({ postDetail }) => {
                 >
                   Edit
                 </p>
+
                 <p className={cx("options")} onClick={handleDeletePost}>
                   Delete
                 </p>
@@ -134,20 +124,20 @@ const PostItem = ({ postDetail }) => {
             />
           </Popover>
         )}
-
-        <HandlePost
-          showModal={showModal}
-          setShowModal={setShowModal}
-          initPostDetail={initPostDetail}
-          postId={_id}
-          type={"update"}
-        />
+        {showModal && (
+          <HandlePost
+            showModal={showModal}
+            setShowModal={setShowModal}
+            postId={_id}
+            type={"update"}
+          />
+        )}
       </header>
 
       <main>
         <div className={cx("description")}>{content}</div>
         <div className={cx("img-container")}>
-          {[...resource, ...resource, ...resource].map((item, index) => {
+          {resource?.map((item, index) => {
             return (
               index <= 5 && (
                 <div
@@ -164,13 +154,7 @@ const PostItem = ({ postDetail }) => {
 
         <Modal open={openImg} setOpen={setOpenImg} title="Resources">
           <div className={cx("img-container")}>
-            {[
-              ...resource,
-              ...resource,
-              ...resource,
-              ...resource,
-              ...resource,
-            ].map((item, index) => (
+            {resource?.map((item, index) => (
               <div key={index}>
                 <ImageField src={item.path} />
               </div>

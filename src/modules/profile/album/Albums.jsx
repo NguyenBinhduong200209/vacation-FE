@@ -7,6 +7,9 @@ import { MoreOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Card, List, Typography, Skeleton, Popover, Button, Image } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { NavLink, useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axiosClient from "~/api/axiosClient";
+import axios from "axios";
 const cx = classNames.bind(styles);
 
 const Albums = () => {
@@ -16,6 +19,9 @@ const Albums = () => {
     meta: { page, pages },
   } = useSelector((state) => state.album);
 
+  console.log(list);
+
+  const navigate = useNavigate()  
   const { userId } = useOutletContext();
 
   useEffect(() => {
@@ -27,9 +33,27 @@ const Albums = () => {
     dispatch(getList({ userId, page: page + 1 }));
   };
 
+
+  const takeAlbum = (_id, title, vacationId) => {
+    try {
+      const data = {
+        page: "1",
+        _id: _id,
+      }
+      console.log(data);
+      const res = axiosClient.get("albumpage/vacation", data)
+      // navigate(`/vacation/newAlbum?id=${vacationId}&title=${title}&albumId=${_id}`)
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+    
+  }
+
   const handleDelete = (id) => {
     dispatch(deleteAlbum({ id }));
   };
+
 
   return (
     <div className={cx("albums")}>
@@ -45,8 +69,9 @@ const Albums = () => {
           dataSource={list}
           renderItem={(item, index) => (
             <List.Item className={cx("album-item")}>
-              <NavLink to={`/`}>
+              <NavLink>
                 <Card
+                  onClick={() => takeAlbum(item.id, item.title, item.vacationId)}
                   bordered={false}
                   className={cx("album-card")}
                   hoverable={true}

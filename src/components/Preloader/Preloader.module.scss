@@ -39,16 +39,19 @@ $col-6: #2196f3;
 // OUR DICE FACES
 .face {
   display: flex;
-  width: 3rem;
-  height: 3rem;
-  margin: 0 0.7rem;
+  aspect-ratio: 1/1;
+  height: 12%;
+  margin: 0 1.6rem;
   padding: 0.5rem;
   border-radius: 5px;
   opacity: 0;
+  align-items: center;
+  justify-content: space-around;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 
   .dot {
-    width: 0.8rem;
-    height: 0.8rem;
+    width: 1.4rem;
+    height: 1.4rem;
     background: $col-1;
     border-radius: 50%;
   }
@@ -140,6 +143,7 @@ $col-6: #2196f3;
   justify-content: space-between;
 
   .column {
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -151,6 +155,7 @@ $col-6: #2196f3;
   justify-content: space-between;
 
   .column {
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -166,10 +171,34 @@ $col-6: #2196f3;
   justify-content: space-between;
 
   .column {
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
+}
+
+.column {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.columnx {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 1.5rem;
+}
+
+.columny {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
 }
 
 /*******************************************************/

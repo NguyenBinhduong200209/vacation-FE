@@ -6,14 +6,15 @@ import { CaretDownOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Avatar } from "antd";
-
 const cx = classNames.bind(styles);
 
 const HeaderDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { info } = useSelector((state) => state.auth);
+  const { size } = useSelector((state) => state.general);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  const isSmallSize = size.width <= 576;
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -42,16 +43,15 @@ const HeaderDropdown = () => {
   return (
     <div className={cx("dropdown-container")}>
       <div ref={dropdownRef} className={cx("nav-user")} onClick={toggleDropdown}>
-        <Avatar
-          src={info?.avatar?.path}
-          size="small"
-          style={{ border: "1px solid white", marginRight: "1rem" }}
-          alt=""
-        />
-        <div className={cx("user-fullname")}>
-          <li>{info?.username}</li>
-        </div>
-        <CaretDownOutlined className={cx("dropdown-icon")} />
+        <Avatar src={info?.avatar?.path} size="small" alt="" className={cx("avatar")} />
+        {!isSmallSize && (
+          <>
+            <div className={cx("user-fullname")}>
+              <li>{info?.username}</li>
+            </div>
+            <CaretDownOutlined className={cx("dropdown-icon")} />
+          </>
+        )}
       </div>
       {isOpen && (
         <div className={cx("dropdown-menu")}>

@@ -7,9 +7,7 @@ import { MoreOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Card, List, Typography, Skeleton, Popover, Button, Image } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { NavLink, useOutletContext } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import axiosClient from "~/api/axiosClient";
-import axios from "axios";
 const cx = classNames.bind(styles);
 
 const Albums = () => {
@@ -19,9 +17,6 @@ const Albums = () => {
     meta: { page, pages },
   } = useSelector((state) => state.album);
 
-  console.log(list);
-
-  const navigate = useNavigate()  
   const { userId } = useOutletContext();
 
   useEffect(() => {
@@ -33,29 +28,25 @@ const Albums = () => {
     dispatch(getList({ userId, page: page + 1 }));
   };
 
+  // const takeAlbum = (_id, title, vacationId) => {
+  //   try {
+  //     const data = {
+  //       page: "1",
+  //       _id: _id,
+  //     }
+  //     console.log(data);
+  //     const res = axiosClient.get("albumpage/vacation", data)
+  //     // navigate(`/vacation/newAlbum?id=${vacationId}&title=${title}&albumId=${_id}`)
+  //     return res;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
 
-  const takeAlbum = (_id, title, vacationId) => {
-    try {
-      const data = {
-        page: "1",
-        _id: _id,
-      }
-      console.log(data);
-      const res = axiosClient.get("albumpage/vacation", data)
-      // navigate(`/vacation/newAlbum?id=${vacationId}&title=${title}&albumId=${_id}`)
-      return res;
-    } catch (error) {
-      console.log(error);
-    }
-    
-  }
+  // }
 
   const handleDelete = (id) => {
     dispatch(deleteAlbum({ id }));
   };
-
-  console.log(list);
-
 
   return (
     <div className={cx("albums")}>
@@ -67,19 +58,20 @@ const Albums = () => {
       >
         <List
           className={cx("album-grid")}
-          grid={{ gutter: 30, column: 3 }}
+          grid={{ gutter: 35, xs: 1, sm: 2, md: 2, lg: 3, xl: 3, xxl: 3 }}
           dataSource={list}
           renderItem={(item, index) => (
             <List.Item className={cx("album-item")}>
               <NavLink>
                 <Card
-                  onClick={() => takeAlbum(item.id, item.title, item.vacationId)}
+                  // onClick={() => takeAlbum(item.id, item.title, item.vacationId)}
                   bordered={false}
                   className={cx("album-card")}
                   hoverable={true}
                   cover={
                     <Image
                       className={cx("album-img")}
+                      preview={false}
                       src={`https://picsum.photos/900/600?random=${index}`}
                       placeholder={<LoadingOutlined />}
                       alt=""

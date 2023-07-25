@@ -45,7 +45,7 @@ const FriendList = ({ type, userId }) => {
       <List
         className={cx("list")}
         dataSource={list}
-        grid={{ gutter: 32, column: 2 }}
+        grid={{ gutter: 15, xs: 1, sm: 2, md: 2, lg: 2, xl: 2, xxl: 3 }}
         renderItem={(item) => {
           const { _id, userInfo, lastUpdateAt } = item;
           return (

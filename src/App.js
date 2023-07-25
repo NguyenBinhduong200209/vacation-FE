@@ -1,20 +1,27 @@
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
 import React, { Fragment, useEffect, useRef } from "react";
 import { createBrowserHistory } from "history";
 import { publicRoutes } from "./routes";
 import { useDispatch, useSelector } from "react-redux";
 import { getInfoUser } from "./store/slices/authSlice";
-
 import vacationAPI from "./api/vacationAPI";
+import { updateSize } from "./store/slices/generalSlice";
 import { getManyLocations } from "./store/slices/locationSlice";
 
 function App() {
   const history = createBrowserHistory();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    function handleWindowResize() {
+      dispatch(updateSize({ height: window.innerHeight, width: window.innerWidth }));
+    }
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
 
   return (
     <Router history={history}>

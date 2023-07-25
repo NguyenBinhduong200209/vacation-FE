@@ -54,6 +54,7 @@
   right: min(5%, 20px);
   font-size: 2.7rem;
   transition: color linear 200ms;
+  color: white;
 
   :hover {
     color: #f1c40f;
@@ -63,8 +64,8 @@
 
 .pop-content {
   & > * {
-    background-color: #282828 !important;
     color: white !important;
+    background-color: #282828 !important;
     border: none;
     display: block;
     text-align: right;
@@ -78,5 +79,47 @@
   }
 }
 
-.more {
+@media only screen and (max-width: 991.98px) {
+  .album-card {
+    .album-img {
+      height: 20vh;
+    }
+  }
+
+  .feed-item {
+    .feed-info {
+      right: 1.5rem;
+      font-size: 1.6rem;
+      width: fit-content;
+
+      & > * {
+        margin-top: 2rem;
+      }
+    }
+  }
+
+  .pop-over {
+    font-size: 3rem;
+    top: min(5%, 20px);
+    right: min(5%, 25px);
+  }
+
+  .pop-content {
+    & > * {
+      font-size: 2rem;
+    }
+  }
+}
+
+@media (max-width: 575.98px) {
+  .albums {
+    min-height: 90vh;
+    padding-bottom: 10vh;
+  }
+
+  .album-card {
+    .album-img {
+      height: 35vh;
+    }
+  }
 }

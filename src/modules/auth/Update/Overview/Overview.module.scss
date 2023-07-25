@@ -119,3 +119,37 @@
     background: rgba(154, 172, 101, 0.7);
   }
 }
+
+@media only screen and (max-width: 991.98px) {
+  .des-container {
+    padding: 25px;
+
+    .title {
+      font-size: 2.2rem;
+      font-weight: bolder;
+    }
+
+    .des-detail {
+      padding: 15px;
+    }
+  }
+}
+
+@media (max-width: 575.98px) {
+  .des-container {
+    padding: 15px;
+    gap: 10px;
+
+    .title {
+      font-size: 2rem;
+    }
+
+    .des-detail {
+      padding: 10px;
+
+      textarea {
+        font-size: 1.5rem;
+      }
+    }
+  }
+}

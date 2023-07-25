@@ -99,7 +99,6 @@ const Interaction = (props) => {
   const handleCmt = async (type, cmtId) => {
     setValue("");
     setEditCmtId(null);
-
     try {
       // when user add new Cmt => change cmtList state and send a request to add new Cmt
       if (type === "newCmt" && value !== "") {
@@ -125,7 +124,8 @@ const Interaction = (props) => {
         setCmtList((prev) => {
           return {
             ...prev,
-            list: [...commentList, newCmt],
+            list: [...prev.list, newCmt],
+            total: prev.total + 1,
           };
         });
       } else if (type === "editCmt" && editCmtValue !== "") {
@@ -240,6 +240,7 @@ const Interaction = (props) => {
         return {
           ...prev,
           list: newCmtList,
+          total: prev.total - 1,
         };
       });
     } catch (error) {

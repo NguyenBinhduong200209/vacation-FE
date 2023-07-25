@@ -43,7 +43,7 @@ const Search = ({ children }) => {
     window.addEventListener("popstate", GetPathURL);
 
     return () => window.removeEventListener("popstate", GetPathURL);
-  }, [searchVal]);
+  }, [searchVal, window.location.pathname]);
 
   return (
     <DefaultLayout>

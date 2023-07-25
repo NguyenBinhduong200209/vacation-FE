@@ -80,8 +80,8 @@ const SearchAlbum = () => {
                 </div>
                 <ImageField
                   src={item.cover?.path}
-                  preview={true}
                   rootClassName={cx("cover")}
+                  preview={false}
                 />
                 <div className={cx("item-name")}>
                   <span>{item.title}</span>

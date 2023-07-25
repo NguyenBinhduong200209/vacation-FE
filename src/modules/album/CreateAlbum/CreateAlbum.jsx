@@ -6,8 +6,7 @@ import Input from "antd/es/input/Input";
 import Dropdown from "./Dropdown/Dropdown";
 import { useNavigate } from "react-router-dom";
 import Modal from "~/components/Modal/Modal";
-import { Avatar } from "antd";
-import axios from "axios";
+import { Avatar, message } from "antd";
 import axiosClient from "~/api/axiosClient";
 const cx = classNames.bind(styles);
 const CreateAlbum = ({ open, setOpen }) => {
@@ -33,7 +32,7 @@ const CreateAlbum = ({ open, setOpen }) => {
 			navigate(`/newAlbum?id=${selected._id}&title=${inputValue}&albumId=${res.data.data._id}`);
 			return res.data.data._id;
 		} catch (error) {
-			console.log(error);
+			message.error(error.response.data.message);
 		}
 	};
 

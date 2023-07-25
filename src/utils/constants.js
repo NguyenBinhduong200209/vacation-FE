@@ -56,6 +56,7 @@ export const PERSONAL_ROUTE = "/setting/personal";
 export const SECURITY_ROUTE = "/setting/security";
 export const VACATION_ROUTE = "/vacation";
 export const ALBUM_ROUTE = "/album";
+export const ALBUMPAGE_ROUTE = "/albumpage";
 export const FRIEND_ROUTE = "/friend";
 export const POST_BY_VACATION = "/post/vacation";
 export const SEARCH_ROUTE = "/search";

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import classNames from "classnames/bind";
-import styles from "../ProfileLayout.module.scss";
+import styles from "./Navbar.module.scss";
 import { NavLink } from "react-router-dom";
 import { Dropdown } from "antd";
 import { SendOutlined, ClockCircleOutlined, UserDeleteOutlined, TeamOutlined } from "@ant-design/icons";

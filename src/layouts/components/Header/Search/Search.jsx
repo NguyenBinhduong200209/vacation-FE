@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import styles from "../Header.module.scss";
+// import styles from "../Header.module.scss";
+import styles from "./Search.module.scss";
 import classNames from "classnames/bind";
 import { searchOneModel } from "~/store/slices/searchSlice";
 import { useDispatch, useSelector } from "react-redux";

@@ -31,8 +31,6 @@ const Albums = () => {
     dispatch(deleteAlbum({ id }));
   };
 
-  console.log(list);
-
   return (
     <div className={cx("albums")}>
       <InfiniteScroll
@@ -43,7 +41,7 @@ const Albums = () => {
       >
         <List
           className={cx("album-grid")}
-          grid={{ gutter: 30, column: 3 }}
+          grid={{ gutter: 35, xs: 1, sm: 2, md: 2, lg: 3, xl: 3, xxl: 3 }}
           dataSource={list}
           renderItem={(item, index) => (
             <List.Item className={cx("album-item")}>
@@ -55,6 +53,7 @@ const Albums = () => {
                   cover={
                     <Image
                       className={cx("album-img")}
+                      preview={false}
                       src={`https://picsum.photos/900/600?random=${index}`}
                       placeholder={<LoadingOutlined />}
                       alt=""

@@ -15,6 +15,20 @@ export const getList = createAsyncThunk("album/getList", async (arg, thunkAPI) =
   }
 });
 
+export const getAlbumPage = createAsyncThunk("album/getAlbumPage", async (arg, thunkAPI) => {
+  try {
+    const res = await albumAPI.getAlbumPage({ albumId: arg?.albumId, page: arg?.page || 1 });
+    return res.data;
+  } catch (error) {
+    if (!error.response) {
+      return thunkAPI.rejectWithValue({ message: error.message });
+    }
+    return thunkAPI.rejectWithValue({
+      message: error.response.data.message,
+    });
+  }
+});
+
 export const deleteAlbum = createAsyncThunk("album/delete", async (arg, thunkAPI) => {
   try {
     const { id } = arg;
@@ -35,6 +49,7 @@ const albumSlice = createSlice({
   initialState: {
     list: [],
     selectedImages: [],
+    selectedPageId: "",
     meta: { page: 1, pages: 1, total: 1 },
     isLoading: false,
     isError: false,
@@ -77,6 +92,20 @@ const albumSlice = createSlice({
         }
       })
       .addCase(getList.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.msg = action.payload?.message;
+      })
+      .addCase(getAlbumPage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAlbumPage.fulfilled, (state, action) => {
+        const { resource, _id } = action.payload?.data;
+        state.selectedImages = resource.map(item => Object.assign({ path: item.path, style: item.style, _id: item.resourceId }))
+        state.selectedPageId = _id
+        state.isLoading = false;
+      })
+      .addCase(getAlbumPage.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = false;
         state.msg = action.payload?.message;

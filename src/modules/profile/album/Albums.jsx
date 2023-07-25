@@ -4,7 +4,7 @@ import styles from "./Album.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { getList, resetList, deleteAlbum } from "~/store/slices/albumSlice";
 import { MoreOutlined, LoadingOutlined } from "@ant-design/icons";
-import { Card, List, Typography, Skeleton, Popover, Button, Image } from "antd";
+import { Card, List, Typography, Skeleton, Popover, Button, Image, message } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { NavLink, useOutletContext } from "react-router-dom";
 import axiosClient from "~/api/axiosClient";
@@ -17,6 +17,8 @@ const Albums = () => {
     meta: { page, pages },
   } = useSelector((state) => state.album);
 
+  const navigate = useNavigate()  
+
   const { userId } = useOutletContext();
 
   useEffect(() => {
@@ -28,25 +30,38 @@ const Albums = () => {
     dispatch(getList({ userId, page: page + 1 }));
   };
 
-  // const takeAlbum = (_id, title, vacationId) => {
-  //   try {
-  //     const data = {
-  //       page: "1",
-  //       _id: _id,
-  //     }
-  //     console.log(data);
-  //     const res = axiosClient.get("albumpage/vacation", data)
-  //     // navigate(`/vacation/newAlbum?id=${vacationId}&title=${title}&albumId=${_id}`)
-  //     return res;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
 
-  // }
+  const takeAlbum = async(_id, title, vacationId, page = 1) => {
+    try {
+      const data = {
+        _id: _id,
+        page: page,
+        title: title,
+        vacationId: vacationId
+      }
+      console.log(data);
+      await axiosClient.get(`/albumpage/${_id}?page=${page}`, data)
+      navigate(`/newAlbum?id=${vacationId}&title=${title}&albumId=${_id}`);
+    } catch (error) {
+      message.error(error.response.data.message);
+    }
+    
+  }
+
+  const handleRoute = async (vacationId, title, _id) => {
+		try {
+			navigate(`/newAlbum?id=${vacationId}&title=${title}&albumId=${_id}`);
+		} catch (error) {
+			message.error(error.response.data.message);
+		}
+	};
 
   const handleDelete = (id) => {
     dispatch(deleteAlbum({ id }));
   };
+
+
+  console.log(list);
 
   return (
     <div className={cx("albums")}>
@@ -94,7 +109,7 @@ const Albums = () => {
                 color="#282828"
                 content={
                   <div className={cx("pop-content")}>
-                    <Button>Edit</Button>
+                    <Button onClick={() => handleRoute(item.vacationId, item.title, item._id)}>Edit</Button>
                     <Button onClick={() => handleDelete(item._id)}>Delete</Button>
                   </div>
                 }

@@ -91,6 +91,8 @@ const vacationSlice = createSlice({
     resetList: (state, action) => {
       state.listVacation.list = [];
       state.listVacation.meta = {};
+      state.listVacationProf.list = [];
+      state.listVacationProf.meta = {};
     },
     isPostListChanged: (state, action) => {
       state.posts.isUpdatePost = action.payload;

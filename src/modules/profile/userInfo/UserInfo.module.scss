@@ -1,30 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Holtwood+One+SC&display=swap");
 
-//User info/
-.user-info-bgimg {
-  position: sticky;
-  top: 10%;
-  width: 90%;
-  margin: 0 5%;
-  height: 20vh !important;
-  z-index: 10;
-
-  img {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    object-fit: cover;
-    vertical-align: top !important;
-    height: 100% !important;
-  }
-}
-
-.info {
-  display: flex;
-  justify-content: space-between;
-  width: 89%;
-  margin: 0 auto;
-}
-
 .user-info {
   width: 30%;
   height: fit-content;
@@ -97,5 +72,19 @@
   #four {
     border-left: #3c2d2d 0.5px solid;
     border-top: #3c2d2d 0.5px solid;
+  }
+}
+
+@media only screen and (max-width: 991.98px) {
+  .user-info {
+    width: 33%;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .user-info {
+    width: 100%;
+    position: relative;
+    top: -5vh;
   }
 }

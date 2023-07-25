@@ -20,7 +20,7 @@ const DefaultLayout = ({ children }) => {
   const [pre, setPre] = useState(true);
   useEffect(() => {
     if (isLogin) {
-      dispatch(getInfoUser()).then((res) => setPre(false));
+      dispatch(getInfoUser());
     } else {
       navigate("/login");
     }
@@ -33,15 +33,11 @@ const DefaultLayout = ({ children }) => {
 
   return (
     <div className={cx("wrapper")}>
-      {pre ? (
-        <Preloader />
-      ) : (
-        <>
-          <Header />
-          <div className={cx("container")}>{children}</div>
-          {isSmallSize && <Footer />}
-        </>
-      )}
+      <>
+        <Header />
+        <div className={cx("container")}>{children}</div>
+        {isSmallSize && <Footer />}
+      </>
     </div>
   );
 };

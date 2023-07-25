@@ -30,6 +30,7 @@ const UserInfo = ({ info }) => {
           items={list.map((item) => item.path)}
           preview={{
             closeIcon: null,
+            toolbarRender: () => null,
             countRender: (current) => `${current}/${total}`,
             onChange: (current) => {
               list.length - current < 2 &&

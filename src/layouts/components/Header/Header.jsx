@@ -1,4 +1,3 @@
-// import styles from "./Header.module.scss";
 import styles from "./Header.module.scss";
 import classNames from "classnames/bind";
 import { useEffect } from "react";
@@ -8,6 +7,7 @@ import NotiList from "~/modules/notification/NotiList";
 import { getList } from "~/store/slices/notiSlice";
 import Navigation from "./Navigation/Navigation";
 import Search from "./Search/Search";
+import SearchMobile from "./Search/SearchMobile";
 const cx = classNames.bind(styles);
 
 const Header = () => {
@@ -22,10 +22,20 @@ const Header = () => {
   return (
     <>
       <div className={cx("wrapper")}>
-        {!isSmallSize && <Search />}
-        <Navigation />
-        <HeaderDropdown />
+        <Search />
+        {isSmallSize ? (
+          <div className={cx("right-wrapper")}>
+            <Navigation />
+            <HeaderDropdown />
+          </div>
+        ) : (
+          <>
+            <Navigation />
+            <HeaderDropdown />
+          </>
+        )}
       </div>
+      {isSmallSize && <SearchMobile />}
       <NotiList />
     </>
   );

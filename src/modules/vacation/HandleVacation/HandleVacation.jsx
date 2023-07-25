@@ -173,7 +173,7 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
   const handleImgClick = () => {
     imgRef.current.click();
   };
-  console.log(memberList);
+
   return (
     <>
       <Modal

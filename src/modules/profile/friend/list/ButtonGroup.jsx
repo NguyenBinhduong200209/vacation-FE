@@ -3,6 +3,9 @@ import { Space, Button } from "antd";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import { acceptFriend, removeFriend } from "~/store/slices/friendSlice";
+import classNames from "classnames/bind";
+import styles from "../Friend.module.scss";
+const cx = classNames.bind(styles);
 
 const ButtonGroup = ({ id }) => {
   const dispatch = useDispatch();
@@ -16,27 +19,25 @@ const ButtonGroup = ({ id }) => {
   };
 
   return (
-    <Space align={"center"} direction={"vertical"}>
+    <Space align={"center"} direction={"vertical"} className={cx("button-group")}>
       <Button
-        style={{ width: "100px" }}
         onClick={handleAccept}
         type="primary"
         block
         ghost
-        icon={<CheckOutlined />}
+        icon={<CheckOutlined style={{ marginInlineEnd: "-8px" }} />}
       >
-        Accept
+        <span className={cx("text")}>Accept</span>
       </Button>
       <Button
-        style={{ width: "100px" }}
         onClick={handleRemove}
         type="primary"
         block
         danger
         ghost
-        icon={<CloseOutlined />}
+        icon={<CloseOutlined style={{ marginInlineEnd: "-8px" }} />}
       >
-        Decline
+        <span className={cx("text")}>Decline</span>
       </Button>
     </Space>
   );

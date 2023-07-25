@@ -1,11 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Holtwood+One+SC&display=swap");
 
 //User info/
-.user-info-bgimg {
+.user-info-bgimg,
+.info {
   position: relative;
-  top: 10%;
   width: 95%;
   margin: 0 auto;
+}
+
+.user-info-bgimg {
+  top: 10%;
   height: 20vh !important;
   z-index: 10;
 
@@ -21,9 +25,6 @@
 .info {
   display: flex;
   justify-content: space-between;
-  width: 97.5%;
-  margin-right: 2.5%;
-  position: relative;
   top: -10vh;
 }
 
@@ -33,63 +34,33 @@
   margin-top: 10vh;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.navigation {
-  font-size: 2rem;
-  display: flex;
-  background-color: #1a1a1a;
-  align-items: flex-end;
-  padding-top: 1.5rem;
-  padding-bottom: 2rem;
-  width: 100%;
-  position: sticky;
-  top: 10vh;
-  z-index: 10;
-
-  & > * {
-    margin-right: 4rem;
-    cursor: pointer;
-    width: fit-content;
-    font-size: 2.4rem;
-    font-style: italic;
-    color: white;
-    transition: 100ms font-weight linear;
-    text-align: center;
+@media only screen and (max-width: 991.98px) {
+  .user-info-bgimg,
+  .info {
+    width: 98%;
   }
 
-  .active {
-    color: #d2ae68;
-    border-bottom: #d2ae68 solid 2px;
-    font-weight: 700;
+  .user-info-bgimg {
+    height: 15vh !important;
+  }
+
+  .container {
+    width: 67%;
   }
 }
 
-.dropdown {
-  width: fit-content !important;
-  height: 42px;
-  margin: auto;
-
-  & > * {
-    background-color: #1a1a1a;
-    font-size: 1.6rem !important;
-    height: 100% !important;
-    border-color: white;
-    color: white;
-
-    &:hover {
-      color: #d2ae68 !important;
-      border-color: #d2ae68 !important;
-    }
+@media (max-width: 575.98px) {
+  .info {
+    display: block;
+    top: 0;
   }
-}
 
-.dropdown-list,
-.dropdown-list > * {
-  background-color: #1a1a1a !important;
-  color: white !important;
+  .container {
+    width: 100%;
+    margin-top: 0;
+  }
+
+  .user-info-bgimg {
+    height: 20vh !important;
+  }
 }

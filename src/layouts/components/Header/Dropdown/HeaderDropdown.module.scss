@@ -9,6 +9,11 @@
   padding: 1rem;
   margin-right: 0;
   margin-left: auto;
+
+  .avatar {
+    border: 1px solid white;
+    margin-right: 1rem;
+  }
 }
 
 .user-fullname {
@@ -17,16 +22,12 @@
 
   li {
     list-style: none;
-    // font-size: 1.2rem;
   }
 }
 
 .user-fullname > * {
   margin: 0;
-  // margin-right: 0.2rem;
 }
-
-/* HeaderDropdown.module.scss */
 
 .dropdown-container {
   width: 24%;
@@ -89,4 +90,30 @@
 .dropdown-menu-line {
   border: 1px solid white;
   margin: 0.2rem 0;
+}
+
+@media only screen and (max-width: 991.98px) {
+  .dropdown-container {
+    width: 25%;
+  }
+}
+
+@media only screen and (max-width: 575.98px) {
+  .dropdown-container {
+    width: 15%;
+    height: 100%;
+  }
+
+  .nav-user {
+    aspect-ratio: unset;
+    padding: 0;
+    justify-content: center;
+    background-color: #1a1a1a;
+
+    .avatar {
+      width: 6vh;
+      height: 6vh;
+      margin: 0;
+    }
+  }
 }

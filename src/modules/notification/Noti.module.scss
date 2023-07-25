@@ -20,7 +20,7 @@
   top: 10vh;
   height: 80vh;
   right: 2.5%;
-  width: 22vw;
+  width: 22%;
   min-width: 360px;
   border-radius: 10px;
   padding: 0 5px;
@@ -98,4 +98,19 @@
   aspect-ratio: 1/1;
   background-color: #2980b9;
   border-radius: 50%;
+}
+
+@media only screen and (max-width: 991.98px) {
+  .notification {
+    width: 50%;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .notification {
+    right: 0;
+    height: 90vh;
+    width: 100%;
+    background-color: #1a1a1a;
+  }
 }

@@ -70,19 +70,17 @@
   }
 }
 .cmt-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
   padding: 0.5rem;
   max-height: 50rem;
   overflow: overlay;
 }
 .cmt-item {
   display: flex;
-  gap: 1.5rem;
   align-items: center;
-  background-color: rgb(58, 59, 60);
+  gap: 1.5rem;
+  margin-bottom: 1rem;
   padding: 1rem 2rem;
+  background-color: rgb(58, 59, 60);
   border-radius: 10px;
 
   img {
@@ -98,10 +96,19 @@
   flex-direction: column;
   gap: 0.5rem;
   .item-username {
-    width: 100px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     font-size: 1.5rem;
-    color: rgba(233, 229, 229);
     font-weight: 600;
+    color: rgba(233, 229, 229);
+
+    .moment {
+      font-size: 1rem;
+      font-style: italic;
+      opacity: 0.5;
+      font-weight: normal;
+    }
   }
   .item-content,
   .edit-cmt {
@@ -179,6 +186,12 @@
       background-color: rgba(240, 234, 234, 0);
     }
   }
+}
+
+.loading {
+  font-size: 1.2rem;
+  color: white;
+  opacity: 0.7;
 }
 // React css
 

@@ -7,6 +7,7 @@ import notiReducer from "./slices/notiSlice";
 import albumReducer from "./slices/albumSlice";
 import friendReducer from "./slices/friendSlice";
 import resourceReducer from "./slices/resourceSlice";
+import generalReducer from "./slices/generalSlice";
 
 const rootReducer = {
   auth: authReducer,
@@ -17,6 +18,7 @@ const rootReducer = {
   album: albumReducer,
   friend: friendReducer,
   resource: resourceReducer,
+  general: generalReducer,
 };
 const store = configureStore({
   reducer: rootReducer,

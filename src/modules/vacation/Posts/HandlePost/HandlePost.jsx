@@ -56,7 +56,6 @@ const HandlePost = ({ showModal, setShowModal, type, postId }) => {
   const imgRef = useRef();
   // get vacationId
 
-  //   console.log(postDetail);
   useEffect(() => {
     if (postId && type === "update") {
       const postUpdate = posts.list.find((item) => item._id === postId);
@@ -79,13 +78,11 @@ const HandlePost = ({ showModal, setShowModal, type, postId }) => {
     setIsOpen(true);
   }
   let vacationId = useMemo(() => {
-    console.log(selectedVacation);
     return type === "create" || type === "update"
       ? searchParams.get("vacationID")
       : selectedVacation._id;
   }, [selectedVacation]);
 
-  console.log(vacationId);
   const handleClick = async (e) => {
     e.preventDefault();
     const srcListId = resources?.map((item) => item._id);
@@ -146,7 +143,7 @@ const HandlePost = ({ showModal, setShowModal, type, postId }) => {
 
     setSelectedVacation({ title: "Choose Your Vacation", _id: "" });
   };
-  // console.log(resources);
+
   return (
     <>
       <Modal

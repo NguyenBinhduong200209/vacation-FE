@@ -50,14 +50,12 @@
   font-weight: 400;
   padding: 0 16px;
   margin-bottom: 2rem;
-
 }
 
 .checkbox {
   color: white;
   display: flex;
   align-items: center;
-
 
   input {
     margin-right: 10px;
@@ -73,4 +71,10 @@
   font-weight: 500;
   cursor: pointer;
   font-style: italic;
+}
+
+@media only screen and (max-width: 992px) {
+}
+
+@media only screen and (max-width: 576px) {
 }

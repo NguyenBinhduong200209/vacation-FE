@@ -19,7 +19,7 @@ $col-6: #2196f3;
   align-items: center;
   font-family: "Crafty Girls", cursive;
   font-size: 16px;
-  // z-index: 100000;
+
   h1 {
     padding: 3rem 1rem 0;
     text-align: center;
@@ -223,5 +223,30 @@ $col-6: #2196f3;
 
   70% {
     opacity: 0;
+  }
+}
+
+@media only screen and (max-width: 992px) {
+}
+
+@media only screen and (max-width: 576px) {
+  .dice {
+    width: 98%;
+    margin: 0 auto;
+    justify-content: space-between;
+  }
+
+  .face {
+    height: unset;
+    width: 15%;
+    margin: 0;
+  }
+
+  .columnx {
+    margin-top: 0;
+  }
+
+  .columny {
+    margin-bottom: 0;
   }
 }

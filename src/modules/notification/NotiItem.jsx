@@ -10,7 +10,6 @@ import { updateOne } from "~/store/slices/notiSlice";
 import { useDispatch } from "react-redux";
 import vacationAPI from "~/api/vacationAPI";
 import { useNavigate } from "react-router-dom";
-import Post from "./content/Post";
 const cx = classNames.bind(styles);
 
 const NotiItem = ({ item }) => {
@@ -22,9 +21,13 @@ const NotiItem = ({ item }) => {
     dispatch(updateOne(id));
     if (modelInfo.type === "friends") navigate(`/profile/friends`);
     else {
-      const result = await vacationAPI.getOnePost(modelInfo._id);
-      const { vacationId } = result.data.data;
-      navigate(`/vacation?vacationID=${vacationId}`);
+      try {
+        const result = await vacationAPI.getOnePost(modelInfo._id);
+        const { vacationId } = result.data.data;
+        navigate(`/vacation?vacationID=${vacationId}`);
+      } catch (error) {
+        navigate("notfound");
+      }
     }
   };
 

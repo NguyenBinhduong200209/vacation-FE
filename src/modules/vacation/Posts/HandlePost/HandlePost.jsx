@@ -12,7 +12,7 @@ import SelectLocation from "~/modules/components/SelectLocation/SelectLocation";
 import Notification from "~/components/Notification/Notification";
 import ImageField from "~/components/ImageField/ImageField";
 import Modal from "~/components/Modal/Modal";
-import { Avatar, List } from "antd";
+import { Avatar, List, Skeleton } from "antd";
 import UpLoad from "~/components/UpLoad/UpLoad";
 import {
   deleteImg,
@@ -33,7 +33,9 @@ const HandlePost = ({ showModal, setShowModal, type, postId }) => {
   const { info } = useSelector((state) => state.auth);
   const { posts } = useSelector((state) => state.vacation);
   // get resources when upload
-  const { resources } = useSelector((state) => state.resource);
+  const { resources, isLoading: isLoadingImg } = useSelector(
+    (state) => state.resource
+  );
   // get vacation selected
   const [selectedVacation, setSelectedVacation] = useState({
     title: "Choose Your Vacation",
@@ -182,19 +184,25 @@ const HandlePost = ({ showModal, setShowModal, type, postId }) => {
                 column: 4,
               }}
               dataSource={resources}
+              loading={{
+                spinning: isLoadingImg,
+                indicator: <Loading />,
+              }}
               renderItem={(item, index) => (
-                <List.Item>
-                  <div className={cx("item")}>
-                    <ImageField
-                      rootClassName={cx("resource")}
-                      src={item.path}
-                    />
-                    <CloseCircleOutlined
-                      className={cx("img-btn")}
-                      onClick={() => handleDeleteImg(item._id)}
-                    />
-                  </div>
-                </List.Item>
+                <>
+                  <List.Item>
+                    <div className={cx("item")}>
+                      <ImageField
+                        rootClassName={cx("resource")}
+                        src={item.path}
+                      />
+                      <CloseCircleOutlined
+                        className={cx("img-btn")}
+                        onClick={() => handleDeleteImg(item._id)}
+                      />
+                    </div>
+                  </List.Item>
+                </>
               )}
             />
           </div>

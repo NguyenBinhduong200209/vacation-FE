@@ -7,7 +7,7 @@ import {
   faPaperPlane,
   faRectangleXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { Avatar, Dropdown, List, Popover, Skeleton, Space } from "antd";
+import { Avatar, List, Popover, Skeleton } from "antd";
 import { useSelector } from "react-redux";
 import styles from "./Interaction.module.scss";
 import classNames from "classnames/bind";
@@ -34,11 +34,16 @@ const Interaction = (props) => {
   const [value, setValue] = useState(""); // state for input value
   // const [totalCmt, setTotalCmt] = useState(comments);
   // state for react fnc
-  const [likedList, setLikedList] = useState([]);
+  const [likedList, setLikedList] = useState({
+    list: [],
+    page: 1,
+    pages: 1,
+  });
   const [isLiked, setIsLiked] = useState(isLikedStatus);
   const [totalLike, setTotalLike] = useState(likes);
   const [isLikeAction, setAction] = useState(false);
   const [isCallingReq, setIsCallingReq] = useState(false);
+  const [openLike, setOpenLike] = useState(false);
   // state for edit cmt
   const [editCmtId, setEditCmtId] = useState(null);
   const [editCmtValue, setEditCmtValue] = useState(""); // state for input value
@@ -50,6 +55,7 @@ const Interaction = (props) => {
   //state for loading
   const [loading, setLoading] = useState(true);
   const [cmtLoadingId, setCmtLoadingId] = useState("");
+  const [likeLoading, setLikeLoading] = useState(true);
 
   // Get comment list
   useEffect(() => {
@@ -72,7 +78,10 @@ const Interaction = (props) => {
       };
       fetchApi();
     }
-  }, [open]);
+
+    setTotalLike(likes);
+    setIsLiked(isLikedStatus);
+  }, [open, likes, isLikedStatus]);
 
   // function load nex page cmt
   const loadMoreData = async () => {
@@ -166,10 +175,6 @@ const Interaction = (props) => {
     setIsCallingReq(true);
     if (!isCallingReq) {
       try {
-        await interactionAPI.updateLike({
-          id: postID,
-          type: "posts",
-        });
         setIsLiked((prev) => !prev); // set Like status
         // update total like
         if (isLiked) {
@@ -178,6 +183,10 @@ const Interaction = (props) => {
           setTotalLike((prev) => prev + 1);
         }
         setAction(true); // set like action
+        await interactionAPI.updateLike({
+          id: postID,
+          type: "posts",
+        });
         setIsCallingReq(false);
       } catch (error) {
         setIsError(true);
@@ -189,7 +198,8 @@ const Interaction = (props) => {
 
   // Handle when mouse enter the total like's area
   const handleMouseEnter = async () => {
-    if (likedList?.length === 0 || isLikeAction) {
+    setOpenLike(true);
+    if (likedList.list?.length === 0 || isLikeAction) {
       //when user mouse enter first time or after user click heart icon
       try {
         const res = await interactionAPI.getLikedList({
@@ -197,19 +207,15 @@ const Interaction = (props) => {
           type: "posts",
           page: 1,
         });
-        // console.log(res.data.data);
-        const items = res.data.data?.map((item) => {
-          return {
-            key: item.authorInfo._id,
-            label: (
-              <div className={cx("react-list-item")}>
-                <Avatar src={item.authorInfo?.avatar.path} />
-                <span>{item.authorInfo.username}</span>
-              </div>
-            ),
-          };
+
+        // update info list of user who liked
+        setLikedList({
+          list: res.data.data,
+          page: 1,
+          pages: res.data.meta?.pages,
         });
-        setLikedList(items); // update info list of user who liked
+
+        setLikeLoading(false);
       } catch (error) {
         setIsError(true);
         setOpenNoti(true);
@@ -217,9 +223,21 @@ const Interaction = (props) => {
       }
     }
   };
-
+  const loadMoreDataLikes = async () => {
+    const res = await interactionAPI.getLikedList({
+      id: postID,
+      type: "posts",
+      page: likedList.page + 1,
+    });
+    setLikedList((prev) => ({
+      ...prev,
+      list: [...prev.list, ...res.data.data],
+      page: res.data.meta.page,
+    }));
+  };
   // Handle Mouse leave
   const handleMouseLeave = () => {
+    setOpenLike(false);
     setAction(false);
   };
 
@@ -249,7 +267,6 @@ const Interaction = (props) => {
       setMsg(error.message);
     }
   };
-
   return (
     <div className={cx("wrapper")}>
       <div className={cx("container")}>
@@ -259,21 +276,56 @@ const Interaction = (props) => {
             onClick={handleLike}
             className={cx(isLiked ? "liked" : "unlike")}
           />
-          <Dropdown
-            menu={{
-              items: likedList || [],
-            }}
-            overlayClassName={cx("dropdown")}
+
+          <div
+            className={cx("react-list-wrapper")}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
-            <Space>
-              <span
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
+            <span>{totalLike}</span>
+            {openLike && (
+              <div
+                id="react-list-container"
+                className={cx("react-list-container")}
               >
-                {totalLike}
-              </span>
-            </Space>
-          </Dropdown>
+                {likeLoading ? (
+                  <Loading className={cx("interaction-loading")} />
+                ) : (
+                  <InfiniteScroll
+                    scrollThreshold="50%"
+                    dataLength={likedList.list?.length || 0}
+                    next={loadMoreDataLikes}
+                    hasMore={likedList.page < likedList.pages}
+                    loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
+                    scrollableTarget="react-list-container"
+                  >
+                    <List
+                      itemLayout="horizontal"
+                      dataSource={likedList.list}
+                      renderItem={(item) => {
+                        return (
+                          <List.Item
+                            key={item.email}
+                            className={cx("react-list-item")}
+                          >
+                            <List.Item.Meta
+                              avatar={
+                                <Avatar
+                                  src={item.authorInfo?.avatar.path}
+                                  size={25}
+                                />
+                              }
+                              title={item.authorInfo.username}
+                            />
+                          </List.Item>
+                        );
+                      }}
+                    />
+                  </InfiniteScroll>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         <div className={cx("comment")} onClick={() => setOpen((prev) => !prev)}>

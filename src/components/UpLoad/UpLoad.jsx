@@ -16,6 +16,7 @@ const UpLoad = ({ imgRef, body }) => {
 
   const handleImgChange = (e) => {
     setFiles(e.target.files[0]);
+    e.target.value = null;
   };
 
   return (

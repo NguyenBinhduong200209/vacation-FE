@@ -15,8 +15,7 @@ import {
   message,
 } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { NavLink, useOutletContext } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useOutletContext } from "react-router-dom";
 import axiosClient from "~/api/axiosClient";
 const cx = classNames.bind(styles);
 

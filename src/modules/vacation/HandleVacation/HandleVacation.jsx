@@ -21,6 +21,7 @@ import Notification from "~/components/Notification/Notification";
 import UpLoad from "~/components/UpLoad/UpLoad";
 import ImageField from "~/components/ImageField/ImageField";
 import { getDate } from "~/helpers/function";
+import { useClickOutside } from "~/helpers/customHook";
 
 const { RangePicker } = DatePicker;
 const cx = classNames.bind(styles);
@@ -34,7 +35,7 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
   const [vacationDetail, setVacationDetail] = useState({
     title: "",
     des: "",
-    status: "",
+    status: "Public",
     shareList: "",
     dates: [],
   });
@@ -44,22 +45,20 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
   const [msg, setMsg] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
-  const imgRef = useRef();
 
   // State for the open friend modal.
   const [openFriend, setOpenFriend] = useState(false);
   const [openStatus, setOpenStatus] = useState(false);
-
+  // ref for status
+  const statusRef = useRef();
   useEffect(() => {
     if (vacationId) {
-      setVacationDetail((prev) => {
-        return {
-          title: detail?.title,
-          des: detail?.description,
-          status: detail?.shareStatus,
-          shareList: detail?.shareList,
-          dates: [getDate(detail?.startingTime), getDate(detail?.endingTime)],
-        };
+      setVacationDetail({
+        title: detail?.title,
+        des: detail?.description,
+        status: detail?.shareStatus,
+        shareList: detail?.shareList,
+        dates: [getDate(detail?.startingTime), getDate(detail?.endingTime)],
       });
       setMemberList(vacationMemberList);
     }
@@ -170,10 +169,7 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
     );
   }, [title, des, dates, status, memberList]);
 
-  const handleImgClick = () => {
-    imgRef.current.click();
-  };
-
+  useClickOutside(statusRef, () => setOpenStatus(false));
   return (
     <>
       <Modal
@@ -189,6 +185,7 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
                 <div className={cx("username")}>
                   <div>{info?.username}</div>
                   <div
+                    ref={statusRef}
                     className={cx("status")}
                     onClick={() => setOpenStatus(!openStatus)}
                   >
@@ -221,7 +218,9 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
                   border: "none",
                   height: "50px",
                 }}
-                defaultValue={[dayjs(dates[0]), dayjs(dates[1])]}
+                defaultValue={
+                  dates.length > 0 ? [dayjs(dates[0]), dayjs(dates[1])] : []
+                }
                 onChange={(values) => handleCalendar(values)}
               />
             </div>
@@ -248,28 +247,17 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
               <div className={cx("extension-container")}>
                 <div> Add on</div>
                 <div className={cx("extensions")}>
-                  <div>
-                    <FontAwesomeIcon
-                      icon={faUserPlus}
-                      className={cx("icon")}
-                      onClick={() => setOpenFriend(true)}
-                    />
-                    <SelectFriend
-                      open={openFriend}
-                      setOpen={setOpenFriend}
-                      setMemberList={setMemberList}
-                      memberList={memberList}
-                    />
-                  </div>
-                  {type === "update" && (
-                    <div className={cx("upload")} onClick={handleImgClick}>
-                      <UpLoad
-                        imgRef={imgRef}
-                        body={{ field: "cover", vacationId: vacationId }}
-                      />
-                      <FontAwesomeIcon icon={faImage} className={cx("icon")} />
-                    </div>
-                  )}
+                  <FontAwesomeIcon
+                    icon={faUserPlus}
+                    className={cx("icon")}
+                    onClick={() => setOpenFriend(true)}
+                  />
+                  <SelectFriend
+                    open={openFriend}
+                    setOpen={setOpenFriend}
+                    setMemberList={setMemberList}
+                    memberList={memberList}
+                  />
                 </div>
               </div>
 

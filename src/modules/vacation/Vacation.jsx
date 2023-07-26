@@ -3,7 +3,13 @@ import styles from "./Vacation.module.scss";
 import classNames from "classnames/bind";
 import { VACATION_ROUTE } from "~/utils/constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleInfo, faPen, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCamera,
+  faCircleInfo,
+  faPen,
+  faShareNodes,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,6 +28,8 @@ import UserList from "./components/UserList/UserList";
 import HandleVacation from "./HandleVacation/HandleVacation";
 import Preloader from "~/components/Preloader/Preloader";
 import ImageField from "~/components/ImageField/ImageField";
+import UpLoad from "~/components/UpLoad/UpLoad";
+import Notification from "~/components/Notification/Notification";
 const cx = classNames.bind(styles);
 const Vacation = () => {
   const navigate = useNavigate();
@@ -31,15 +39,26 @@ const Vacation = () => {
   const urlType = searchParams.get("type") || "post"; // get type  of url (post || album)
   const { info } = useSelector((state) => state.auth);
   const { detail, posts, memberList } = useSelector((state) => state.vacation);
-  const { authorInfo, cover, members, title, startingTime, endingTime } =
-    detail;
+  const {
+    authorInfo,
+    cover,
+    members,
+    title,
+    startingTime,
+    endingTime,
+    shareStatus,
+  } = detail;
+
   const { page, pages, timeline, totalPost, isUpdatePost } = posts;
+  const { msg, isSuccess, isError } = useSelector((state) => state.resource);
+  const [openNoti, setOpenNoti] = useState(false);
   const currentPage = useRef(1);
   const [openUserList, setOpenUserList] = useState(false);
   const [open, setOpen] = useState(false);
   const [preload, setPreload] = useState(true);
   const startDate = getDate(startingTime);
   const endDate = getDate(endingTime);
+  const imgRef = useRef();
 
   const handleRoute = (type) => {
     navigate(`${VACATION_ROUTE}?vacationID=${vacationID}&type=${type}`);
@@ -119,7 +138,12 @@ const Vacation = () => {
 
   //check user is author or not
   const isAuthor = info?._id === authorInfo?._id;
-
+  const handleImgClick = () => {
+    isAuthor && imgRef.current.click();
+  };
+  const handleAfterClose = () => {
+    window.location.reload();
+  };
   return (
     <>
       {preload ? (
@@ -127,11 +151,24 @@ const Vacation = () => {
       ) : (
         <div className={cx("wrapper")}>
           <div className={cx("sidebar")}>
-            <ImageField
-              src={cover?.path}
-              className={cx("img-BG")}
-              preview={false}
-            />
+            <div onClick={handleImgClick} className={cx("bg-container")}>
+              {isAuthor && (
+                <UpLoad
+                  imgRef={imgRef}
+                  body={{ field: "cover", vacationId: vacationID }}
+                  handleAfterClose={handleAfterClose}
+                />
+              )}
+              <ImageField
+                src={cover?.path}
+                className={cx("img-BG")}
+                preview={false}
+              />
+              <div className={cx("bg-icon-container")}>
+                <span>Edit cover photo</span>
+                <FontAwesomeIcon icon={faCamera} className={cx("bg-icon")} />
+              </div>
+            </div>
             <div className={cx("sidebar-content")}>
               <div className={cx("user-info")}>
                 <div className={cx("user-index")}>
@@ -190,6 +227,14 @@ const Vacation = () => {
                     </Tooltip>
                   </div>
 
+                  <div className={cx("status")}>
+                    <FontAwesomeIcon
+                      icon={faShareNodes}
+                      className={cx("icon")}
+                    />
+                    <span>{shareStatus}</span>
+                  </div>
+
                   <div onClick={() => setOpenUserList(true)}>
                     <FontAwesomeIcon icon={faUser} className={cx("icon")} />
                     <span>{members} people join in</span>
@@ -201,11 +246,19 @@ const Vacation = () => {
                     list={memberList}
                   />
 
-                  <div>
+                  <div className={cx("timeline")}>
                     <FontAwesomeIcon icon={faCalendar} className={cx("icon")} />
-                    <span>
-                      {startDate} - {endDate}
-                    </span>
+                    <Tooltip
+                      title={`${startDate} - ${endDate}`}
+                      color="grey"
+                      overlayInnerStyle={{
+                        textAlign: "center",
+                      }}
+                    >
+                      <span>
+                        {startDate} - {endDate}
+                      </span>
+                    </Tooltip>
                   </div>
                 </div>
               </div>
@@ -228,6 +281,14 @@ const Vacation = () => {
           <div className={cx("content")}>
             {urlType === null || urlType === "post" ? <Posts /> : <Album />}
           </div>
+
+          <Notification
+            isError={isError}
+            isSuccess={isSuccess}
+            msg={msg}
+            openNoti={openNoti}
+            setOpenNoti={setOpenNoti}
+          />
         </div>
       )}
     </>

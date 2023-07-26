@@ -18,20 +18,7 @@ const Create = () => {
   const [open, setOpen] = useState(false);
   const [openAlbum, setOpenAlbum] = useState(false);
   const { info } = useSelector((state) => state.auth);
-  const initVacationDetail = {
-    title: "",
-    des: "",
-    memberList: [],
-    dates: [],
-    status: "Public",
-  };
-  // post detail
-  const initPostDetail = {
-    content: "",
-    location: {},
-    initResources: [],
-  };
-  console.log(info);
+
   return (
     <div className={cx("create")}>
       <div className={cx("create-posts")}>
@@ -46,10 +33,18 @@ const Create = () => {
             alt=""
           />
           {/* <div>What is on your mind, </div> */}
-          <div className={cx("create-line-text")}>
+          <div
+            className={cx("create-line-text")}
+            onClick={() => setShowModal(true)}
+          >
             Where have you wandered, {info.firstname} {info.lastname} ?
           </div>
         </div>
+        <HandlePost
+          setShowModal={setShowModal}
+          showModal={showModal}
+          type="newfeed"
+        />
         <div className={cx("create-details")}>
           <button
             className={cx("create-sthg")}
@@ -61,7 +56,6 @@ const Create = () => {
           <HandlePost
             setShowModal={setShowModal}
             showModal={showModal}
-            initPostDetail={initPostDetail}
             type="newfeed"
           />
           <button
@@ -88,12 +82,7 @@ const Create = () => {
               Add Vacation
             </div>
           </button>
-          <HandleVacation
-            setOpen={setOpen}
-            showModal={open}
-            initVacationDetail={initVacationDetail}
-            type="create"
-          />
+          <HandleVacation setOpen={setOpen} showModal={open} type="create" />
         </div>
       </div>
     </div>

@@ -4,9 +4,19 @@ import styles from "./Album.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { getList, resetList, deleteAlbum } from "~/store/slices/albumSlice";
 import { MoreOutlined, LoadingOutlined } from "@ant-design/icons";
-import { Card, List, Typography, Skeleton, Popover, Button, Image, message } from "antd";
+import {
+  Card,
+  List,
+  Typography,
+  Skeleton,
+  Popover,
+  Button,
+  Image,
+  message,
+} from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { NavLink, useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axiosClient from "~/api/axiosClient";
 const cx = classNames.bind(styles);
 
@@ -17,7 +27,7 @@ const Albums = () => {
     meta: { page, pages },
   } = useSelector((state) => state.album);
 
-  const navigate = useNavigate()  
+  const navigate = useNavigate();
 
   const { userId } = useOutletContext();
 
@@ -30,36 +40,33 @@ const Albums = () => {
     dispatch(getList({ userId, page: page + 1 }));
   };
 
-
-  const takeAlbum = async(_id, title, vacationId, page = 1) => {
+  const takeAlbum = async (_id, title, vacationId, page = 1) => {
     try {
       const data = {
         _id: _id,
         page: page,
         title: title,
-        vacationId: vacationId
-      }
+        vacationId: vacationId,
+      };
       console.log(data);
-      await axiosClient.get(`/albumpage/${_id}?page=${page}`, data)
+      await axiosClient.get(`/albumpage/${_id}?page=${page}`, data);
       navigate(`/newAlbum?id=${vacationId}&title=${title}&albumId=${_id}`);
     } catch (error) {
       message.error(error.response.data.message);
     }
-    
-  }
+  };
 
   const handleRoute = async (vacationId, title, _id) => {
-		try {
-			navigate(`/newAlbum?id=${vacationId}&title=${title}&albumId=${_id}`);
-		} catch (error) {
-			message.error(error.response.data.message);
-		}
-	};
+    try {
+      navigate(`/newAlbum?id=${vacationId}&title=${title}&albumId=${_id}`);
+    } catch (error) {
+      message.error(error.response.data.message);
+    }
+  };
 
   const handleDelete = (id) => {
     dispatch(deleteAlbum({ id }));
   };
-
 
   console.log(list);
 
@@ -109,8 +116,16 @@ const Albums = () => {
                 color="#282828"
                 content={
                   <div className={cx("pop-content")}>
-                    <Button onClick={() => handleRoute(item.vacationId, item.title, item._id)}>Edit</Button>
-                    <Button onClick={() => handleDelete(item._id)}>Delete</Button>
+                    <Button
+                      onClick={() =>
+                        handleRoute(item.vacationId, item.title, item._id)
+                      }
+                    >
+                      Edit
+                    </Button>
+                    <Button onClick={() => handleDelete(item._id)}>
+                      Delete
+                    </Button>
                   </div>
                 }
               >

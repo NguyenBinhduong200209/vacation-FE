@@ -11,6 +11,8 @@ import axiosClient from "~/api/axiosClient";
 const cx = classNames.bind(styles);
 const CreateAlbum = ({ open, setOpen }) => {
 	const { info } = useSelector((state) => state.auth);
+	console.log(info._id);
+	
 	const [selected, setSelected] = useState({
 		title: "Choose Your Vacation",
 		id: "",
@@ -27,12 +29,14 @@ const CreateAlbum = ({ open, setOpen }) => {
 			const data = {
 				vacationId: selected._id,
 				title: inputValue,
+				userId: info._id,
 			};
 			const res = await axiosClient.post("album", data);
-			navigate(`/newAlbum?id=${selected._id}&title=${inputValue}&albumId=${res.data.data._id}`);
+			navigate(`/newAlbum?id=${selected._id}&title=${inputValue}&albumId=${res.data.data._id}&userId=${info._id}`);
 			console.log(res)
 		} catch (error) {
-			message.error(error.response.data.message);
+			message.error(error.response?.data.message);
+			console.log(error);
 		}
 	};
 

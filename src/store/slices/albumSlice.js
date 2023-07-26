@@ -54,6 +54,7 @@ const albumSlice = createSlice({
     isLoading: false,
     isError: false,
     msg: "",
+    userId: ""
   },
   reducers: {
     resetList: (state, action) => {
@@ -100,10 +101,11 @@ const albumSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getAlbumPage.fulfilled, (state, action) => {
-        const { resource, _id } = action.payload?.data;
+        const { resource, _id, userId } = action.payload?.data;
         state.selectedImages = resource.map(item => Object.assign({ path: item.path, style: item.style, _id: item.resourceId }))
         state.selectedPageId = _id
         state.isLoading = false;
+        state.userId = userId
       })
       .addCase(getAlbumPage.rejected, (state, action) => {
         state.isError = true;

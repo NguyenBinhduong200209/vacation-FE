@@ -52,7 +52,7 @@ const NewAlbum = () => {
 			navigate("/profile/album");
 			console.log(res.data.data._id);
 		} catch (error) {
-			console.log(error);
+			message.error(error.response.data.message);
 		}
 	};
 
@@ -73,14 +73,13 @@ const NewAlbum = () => {
 				})),
 			};
 			console.log(data.resource);
-			const res = await axiosClient.put(
+			await axiosClient.put(
 				`https://vacation-social-network.onrender.com/albumpage/${albumpageId}`,
 				data
 			);
 			navigate("/profile/album");
-			console.log(res);
 		} catch (error) {
-			console.log(error.response.data.message);
+			message.error(error.response.data.message);
 		}
 	};
 
@@ -129,15 +128,15 @@ const NewAlbum = () => {
 				<Slider />
 			</div>
 
-
+			{list.length === 0 ? (
 				<button className={cx("save-btn")} onClick={saveAlbum}>
 					Save
 				</button>
-
+			) : ( 
 				<button className={cx("save-btn")} onClick={updateAlbumPage}>
 					Update
 				</button>
-
+			)}
 		</>
 	);
 };

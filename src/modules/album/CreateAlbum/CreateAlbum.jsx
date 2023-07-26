@@ -30,7 +30,7 @@ const CreateAlbum = ({ open, setOpen }) => {
 			};
 			const res = await axiosClient.post("album", data);
 			navigate(`/newAlbum?id=${selected._id}&title=${inputValue}&albumId=${res.data.data._id}`);
-			return res.data.data._id;
+			console.log(res)
 		} catch (error) {
 			message.error(error.response.data.message);
 		}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { uploadResource } from "~/store/slices/resourceSlice";
 
-const UpLoad = ({ imgRef, body }) => {
+const UpLoad = ({ imgRef, body, disabled }) => {
   const [files, setFiles] = useState(null);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -27,6 +27,7 @@ const UpLoad = ({ imgRef, body }) => {
       hidden
       id="avatar"
       name="files"
+      disabled={disabled}
     />
   );
 };

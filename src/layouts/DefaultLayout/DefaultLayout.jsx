@@ -5,9 +5,7 @@ import classNames from "classnames/bind";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { getInfoUser, refreshToken } from "~/store/slices/authSlice";
-import { unwrapResult } from "@reduxjs/toolkit";
-import Preloader from "~/components/Preloader/Preloader";
+import { getInfoUser } from "~/store/slices/authSlice";
 
 const cx = classNames.bind(styles);
 

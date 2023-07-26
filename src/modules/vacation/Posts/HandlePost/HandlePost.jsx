@@ -146,6 +146,9 @@ const HandlePost = ({ showModal, setShowModal, type, postId }) => {
     setSelectedVacation({ title: "Choose Your Vacation", _id: "" });
   };
 
+  const isDisabledCreate = useMemo(() => {
+    return !vacationId || selectedLocation.detail?.id === "" || content === "";
+  }, [vacationId, selectedLocation, content]);
   return (
     <>
       <Modal
@@ -176,6 +179,8 @@ const HandlePost = ({ showModal, setShowModal, type, postId }) => {
             }}
             value={content}
             onChange={(e) => setContent(e.target.value)}
+            disabled={!vacationId}
+            spellCheck={false}
           />
           <div className={cx("img-uploader")}>
             <List
@@ -214,13 +219,15 @@ const HandlePost = ({ showModal, setShowModal, type, postId }) => {
                   <FontAwesomeIcon
                     onClick={openModal}
                     icon={faLocationDot}
-                    className={cx("icon")}
+                    className={cx("icon", !vacationId && "disable")}
                   />
-                  <SelectLocation
-                    openLocation={modalIsOpen}
-                    setOpenLocation={setIsOpen}
-                    setLocation={setSelectedLocation}
-                  />
+                  {!!vacationId && (
+                    <SelectLocation
+                      openLocation={modalIsOpen}
+                      setOpenLocation={setIsOpen}
+                      setLocation={setSelectedLocation}
+                    />
+                  )}
                 </div>
 
                 <div
@@ -230,8 +237,12 @@ const HandlePost = ({ showModal, setShowModal, type, postId }) => {
                   <UpLoad
                     imgRef={imgRef}
                     body={{ field: "post", vacationId: vacationId }}
+                    disabled={!vacationId}
                   />
-                  <FontAwesomeIcon icon={faImage} className={cx("icon")} />
+                  <FontAwesomeIcon
+                    icon={faImage}
+                    className={cx("icon", !vacationId && "disable")}
+                  />
                 </div>
               </div>
             </div>
@@ -244,7 +255,7 @@ const HandlePost = ({ showModal, setShowModal, type, postId }) => {
           </div>
           <button
             onClick={handleClick}
-            disabled={isLoading}
+            disabled={isLoading || isDisabledCreate}
             className={cx("btn-submit")}
           >
             {type === "create" || type === "newfeed"

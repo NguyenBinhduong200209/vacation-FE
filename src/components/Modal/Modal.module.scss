@@ -47,3 +47,20 @@
     transform: scale(1.1);
   }
 }
+
+@media only screen and (max-width: 992px) {
+}
+@media (max-width: 576px) {
+  .modal {
+    width: 95%;
+    padding: 1rem;
+  }
+
+  .title {
+    width: 90%;
+    & ~ svg {
+      top: 2rem;
+      right: 2rem;
+    }
+  }
+}

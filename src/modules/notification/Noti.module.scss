@@ -100,13 +100,13 @@
   border-radius: 50%;
 }
 
-@media only screen and (max-width: 991.98px) {
+@media only screen and (max-width: 992px) {
   .notification {
     width: 50%;
   }
 }
 
-@media (max-width: 575.98px) {
+@media (max-width: 576px) {
   .notification {
     right: 0;
     height: 90vh;

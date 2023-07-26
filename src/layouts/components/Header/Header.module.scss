@@ -13,11 +13,12 @@
   z-index: 99;
 }
 
-@media (max-width: 575.98px) {
+@media (max-width: 576px) {
   .right-wrapper {
     width: 70%;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     gap: 5%;
   }
 }

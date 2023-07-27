@@ -22,7 +22,6 @@ import ImageField from "~/components/ImageField/ImageField";
 import { getDate } from "~/helpers/function";
 import { useClickOutside } from "~/helpers/customHook";
 import Loading from "~/components/Loading/Loading";
-
 const { RangePicker } = DatePicker;
 const cx = classNames.bind(styles);
 const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {

@@ -55,7 +55,7 @@ const UserInfo = ({ info }) => {
 
         <i>
           <Typography.Text>@</Typography.Text>
-          <Typography.Text copyable={{ text: `${window.location.host}/profile/${otherUserId}` }}>
+          <Typography.Text copyable={{ text: `${window.location.host}/profile/${otherUserId}/vacation` }}>
             {username}
           </Typography.Text>
         </i>
@@ -73,7 +73,7 @@ const UserInfo = ({ info }) => {
               </NavLink>
             </Col>
             <Col span={12} className={cx("cell")} id={cx("two")}>
-              <NavLink to="">
+              <NavLink to="vacation">
                 <Typography.Paragraph className={cx("para")}>{vacations}</Typography.Paragraph>
                 <Typography.Paragraph className={cx("para")}>Vacations</Typography.Paragraph>
               </NavLink>

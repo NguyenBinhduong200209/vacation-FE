@@ -22,6 +22,7 @@ import { Avatar, Tooltip } from "antd";
 const cx = classNames.bind(styles);
 
 const NewAlbum = () => {
+
 	const list = useSelector((state) => state.album.selectedImages);
 	const albumpageId = useSelector((state) => state.album.selectedPageId);
 	const { userInfo } = useSelector((state) => state.album)
@@ -83,7 +84,6 @@ const NewAlbum = () => {
 	};
 
 
-
 	const updateAlbumPage = async () => {
 		try {
 			const data = {
@@ -107,12 +107,14 @@ const NewAlbum = () => {
 		}
 	};
 
-	useEffect(() => {
-		setContainerSize({
-			outerWidth: ref.current.offsetWidth,
-			outerHeight: ref.current.offsetHeight,
-		});
-	}, [ref]);
+
+  useEffect(() => {
+    setContainerSize({
+      outerWidth: ref.current.offsetWidth,
+      outerHeight: ref.current.offsetHeight,
+    });
+  }, [ref]);
+
 
 	const handleWrapClick = () => {
 		setIsOpen((prevState) => !prevState);

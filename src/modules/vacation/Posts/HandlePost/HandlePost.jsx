@@ -12,13 +12,9 @@ import SelectLocation from "~/modules/components/SelectLocation/SelectLocation";
 import Notification from "~/components/Notification/Notification";
 import ImageField from "~/components/ImageField/ImageField";
 import Modal from "~/components/Modal/Modal";
-import { Avatar, List, Skeleton } from "antd";
+import { Avatar, List } from "antd";
 import UpLoad from "~/components/UpLoad/UpLoad";
-import {
-  deleteImg,
-  resetResources,
-  setInitResources,
-} from "~/store/slices/resourceSlice";
+import { deleteImg, resetResources, setInitResources } from "~/store/slices/resourceSlice";
 import Loading from "~/components/Loading/Loading";
 import { isPostListChanged } from "~/store/slices/vacationSlice";
 import Dropdown from "~/modules/album/CreateAlbum/Dropdown/Dropdown";
@@ -26,16 +22,13 @@ import Dropdown from "~/modules/album/CreateAlbum/Dropdown/Dropdown";
 const cx = classNames.bind(styles);
 const HandlePost = ({ showModal, setShowModal, type, postId }) => {
   const dispatch = useDispatch();
-  // get vacationId
   const [searchParams] = useSearchParams();
 
   // get vacation detail
   const { info } = useSelector((state) => state.auth);
   const { posts } = useSelector((state) => state.vacation);
   // get resources when upload
-  const { resources, isLoading: isLoadingImg } = useSelector(
-    (state) => state.resource
-  );
+  const { resources, isLoading: isLoadingImg } = useSelector((state) => state.resource);
   // get vacation selected
   const [selectedVacation, setSelectedVacation] = useState({
     title: "Choose Your Vacation",
@@ -56,12 +49,16 @@ const HandlePost = ({ showModal, setShowModal, type, postId }) => {
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const imgRef = useRef();
-  // get vacationId
+  // This function gets the vacationId from the searchParams.
+  let vacationId = useMemo(() => {
+    return type === "create" || type === "update"
+      ? searchParams.get("vacationID")
+      : selectedVacation._id;
+  }, [selectedVacation]);
 
   useEffect(() => {
     if (postId && type === "update") {
       const postUpdate = posts.list.find((item) => item._id === postId);
-      // console.log(postUpdate);
       setContent(postUpdate.content);
       setSelectedLocation({
         city: { title: postUpdate.location.city, id: "" },
@@ -75,16 +72,12 @@ const HandlePost = ({ showModal, setShowModal, type, postId }) => {
     }
   }, [postId]);
 
-  //   console.log(selectedLocation);
+
+  // This function opens the modal.
   function openModal() {
     setIsOpen(true);
   }
-  let vacationId = useMemo(() => {
-    return type === "create" || type === "update"
-      ? searchParams.get("vacationID")
-      : selectedVacation._id;
-  }, [selectedVacation]);
-
+  // This function handles the click event.
   const handleClick = async (e) => {
     e.preventDefault();
     const srcListId = resources?.map((item) => item._id);
@@ -127,13 +120,15 @@ const HandlePost = ({ showModal, setShowModal, type, postId }) => {
     });
     setSelectedVacation({ title: "Choose Your Vacation", _id: "" });
   };
+  // This function handles the click event.
   const handleDeleteImg = (id) => {
     dispatch(deleteImg(id));
   };
 
+  // This function gets the title of the modal.
   const titleModal =
     type === "create" || type === "newfeed" ? "New Post" : "Update Post";
-
+  // This function handles the close event of the modal.
   const handleAfterClose = () => {
     dispatch(resetResources());
     setContent("");
@@ -145,18 +140,15 @@ const HandlePost = ({ showModal, setShowModal, type, postId }) => {
 
     setSelectedVacation({ title: "Choose Your Vacation", _id: "" });
   };
+  // This function checks if the create button is disabled.
+  const isDisabledCreate = useMemo(
+    () => !vacationId || !selectedLocation.detail?.id || !content,
+    [vacationId, selectedLocation, content]
+  );
 
-  const isDisabledCreate = useMemo(() => {
-    return !vacationId || selectedLocation.detail?.id === "" || content === "";
-  }, [vacationId, selectedLocation, content]);
   return (
     <>
-      <Modal
-        open={showModal}
-        setOpen={setShowModal}
-        title={titleModal}
-        handleAfterClose={handleAfterClose}
-      >
+      <Modal open={showModal} setOpen={setShowModal} title={titleModal} handleAfterClose={handleAfterClose}>
         <div className={cx("modal-container")}>
           <div className={cx("user-info")}>
             <div className={cx("info-name")}>
@@ -197,10 +189,7 @@ const HandlePost = ({ showModal, setShowModal, type, postId }) => {
                 <>
                   <List.Item>
                     <div className={cx("item")}>
-                      <ImageField
-                        rootClassName={cx("resource")}
-                        src={item.path}
-                      />
+                      <ImageField rootClassName={cx("resource")} src={item.path} />
                       <CloseCircleOutlined
                         className={cx("img-btn")}
                         onClick={() => handleDeleteImg(item._id)}
@@ -230,19 +219,13 @@ const HandlePost = ({ showModal, setShowModal, type, postId }) => {
                   )}
                 </div>
 
-                <div
-                  className={cx("upload")}
-                  onClick={() => imgRef.current.click()}
-                >
+                <div className={cx("upload")} onClick={() => imgRef.current.click()}>
                   <UpLoad
                     imgRef={imgRef}
                     body={{ field: "post", vacationId: vacationId }}
                     disabled={!vacationId}
                   />
-                  <FontAwesomeIcon
-                    icon={faImage}
-                    className={cx("icon", !vacationId && "disable")}
-                  />
+                  <FontAwesomeIcon icon={faImage} className={cx("icon", !vacationId && "disable")} />
                 </div>
               </div>
             </div>
@@ -253,14 +236,8 @@ const HandlePost = ({ showModal, setShowModal, type, postId }) => {
               </div>
             )}
           </div>
-          <button
-            onClick={handleClick}
-            disabled={isLoading || isDisabledCreate}
-            className={cx("btn-submit")}
-          >
-            {type === "create" || type === "newfeed"
-              ? " Create Post"
-              : "Update"}
+          <button onClick={handleClick} disabled={isLoading || isDisabledCreate} className={cx("btn-submit")}>
+            {type === "create" || type === "newfeed" ? " Create Post" : "Update"}
             {isLoading && <Loading />}
           </button>
         </div>

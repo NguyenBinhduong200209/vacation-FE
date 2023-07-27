@@ -21,12 +21,11 @@ const Albums = () => {
 	const { userId } = useOutletContext();
 	const currentUserId = userId ? userId : info._id;
 
-	console.log(userId);
-
 	useEffect(() => {
 		dispatch(resetList());
 		dispatch(getList({ userId: currentUserId, page: 1 }));
 	}, [dispatch, currentUserId]);
+
 
 	const loadMoreData = () => {
 		dispatch(getList({ userId: currentUserId, page: page + 1 }));
@@ -100,6 +99,7 @@ const Albums = () => {
 			</InfiniteScroll>
 		</div>
 	);
+
 };
 
 export default Albums;

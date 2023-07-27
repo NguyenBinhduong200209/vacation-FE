@@ -21,7 +21,6 @@ import Notification from "~/components/Notification/Notification";
 import UpLoad from "~/components/UpLoad/UpLoad";
 import ImageField from "~/components/ImageField/ImageField";
 import { getDate } from "~/helpers/function";
-import { useClickOutside } from "~/helpers/customHook";
 
 const { RangePicker } = DatePicker;
 const cx = classNames.bind(styles);
@@ -169,7 +168,9 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
     );
   }, [title, des, dates, status, memberList]);
 
-  useClickOutside(statusRef, () => setOpenStatus(false));
+  const handleImgClick = () => {
+    imgRef.current.click();
+  };
   return (
     <>
       <Modal

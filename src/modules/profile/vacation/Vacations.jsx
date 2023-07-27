@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import classNames from "classnames/bind";
 import styles from "./Vacation.module.scss";
-import { HeartFilled, CommentOutlined, EyeOutlined, Loading3QuartersOutlined } from "@ant-design/icons";
+import { HeartFilled, CommentOutlined, EyeOutlined } from "@ant-design/icons";
 import { getListVacation, resetList } from "~/store/slices/vacationSlice";
 import { Card, List, Typography, Skeleton, Image } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useOutletContext } from "react-router-dom";
+import images from "~/images";
 const cx = classNames.bind(styles);
 
 const Vacations = () => {
@@ -51,7 +52,7 @@ const Vacations = () => {
                     <Image
                       preview={false}
                       className={cx("feed-cover")}
-                      fallback={process.env.REACT_APP_DEFAULT_IMAGE}
+                      fallback={images.noImage}
                       src={item?.cover?.path}
                     />
                   }

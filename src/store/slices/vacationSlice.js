@@ -36,6 +36,7 @@ export const getDetailVacation = createAsyncThunk(
   }
 );
 
+
 export const getManyPosts = createAsyncThunk(
   "vacation/getManyPosts",
   async (arg, thunkAPI) => {

@@ -9,8 +9,9 @@ const albumAPI = {
     );
     return axiosClient.get(url);
   },
+
   getAlbumPage: (data) => {
-    const url = `${URL.ALBUMPAGE_ROUTE}/${data.albumId}?page=${data.page}`
+    const url = `${URL.ALBUMPAGE_ROUTE}/${data.albumId}?page=${data.page}`;
     return axiosClient.get(url);
   },
 

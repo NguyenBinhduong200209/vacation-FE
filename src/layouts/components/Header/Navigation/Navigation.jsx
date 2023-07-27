@@ -35,7 +35,7 @@ const Navigation = () => {
       )}
       {!isSmallSize ? (
         <>
-          <NavLink to="/profile" className={({ isActive }) => (isActive ? cx("active") : "")}>
+          <NavLink to="/profile/vacation" className={({ isActive }) => (isActive ? cx("active") : "")}>
             <ProfileOutlined />
           </NavLink>
 

@@ -66,12 +66,11 @@ const searchSlice = createSlice({
         //If page query of meta does not change and is 1, meaning user want to search one more time with nearly the same condition, if response status is 204 then reset result state, else set result state is response data
         //If page query of meta change, meaning user want to get more data with the same condition, if response status is 204, then does not update result state, else, set result state is prev state concat response data
         state.result[type].data =
-          page === 1 ? (status === 204 ? [] : data) : status !== 204 && state.result[type].data.concat(data);
+          page === 1 ? (status === 204 ? [] : data) : state.result[type].data.concat(data);
 
         //If response return page and pages, update page and pages state
-        meta?.page && (state.result[type].page = meta?.page);
-        meta?.pages && (state.result[type].pages = meta?.pages);
-
+        state.result[type].page = status === 204 ? 1 : meta?.page;
+        state.result[type].pages = status === 204 ? 1 : meta?.pages;
         state.result[type].isLoading = false;
       });
   },

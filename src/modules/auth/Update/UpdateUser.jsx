@@ -2,11 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./UpdateUser.module.scss";
 import classNames from "classnames/bind";
 import { Outlet, useNavigate } from "react-router-dom";
-import {
-  OVERVIEW_ROUTE,
-  PERSONAL_ROUTE,
-  SECURITY_ROUTE,
-} from "~/utils/constants";
+import { OVERVIEW_ROUTE, PERSONAL_ROUTE, SECURITY_ROUTE } from "~/utils/constants";
 
 const cx = classNames.bind(styles);
 const UpdateUser = () => {
@@ -23,7 +19,6 @@ const UpdateUser = () => {
 
     return () => window.removeEventListener("popstate", GetPathURL);
   }, []);
-  console.log(activeTag);
 
   // Handle Route
   const handleRoute = (url) => {
@@ -37,10 +32,7 @@ const UpdateUser = () => {
         <div className={cx("sidebar")}>
           <div
             onClick={() => handleRoute(OVERVIEW_ROUTE)}
-            className={cx(
-              (activeTag === OVERVIEW_ROUTE || activeTag === "/setting") &&
-                "active"
-            )}
+            className={cx((activeTag === OVERVIEW_ROUTE || activeTag === "/setting") && "active")}
           >
             Overview
           </div>

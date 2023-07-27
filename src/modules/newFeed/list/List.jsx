@@ -1,84 +1,68 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React from "react";
 import { getDate } from "~/helpers/function";
-import classNames from "classnames/bind";
-import styles from "./List.module.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { getListVacation } from "~/store/slices/vacationSlice";
-import { Avatar } from "antd";
-import { HeartFilled, CommentOutlined, EyeOutlined } from "@ant-design/icons";
 import images from "~/images";
+import { NavLink } from "react-router-dom";
+import { List, Skeleton, Avatar } from "antd";
+import { HeartFilled, CommentOutlined, EyeOutlined } from "@ant-design/icons";
+import InfiniteScroll from "react-infinite-scroll-component";
+import classNames from "classnames/bind";
+import styles from "./List.module.scss";
 const cx = classNames.bind(styles);
 
-const List = () => {
+const NewFeedList = () => {
   let formatter = Intl.NumberFormat("en", { notation: "compact" });
   const dispatch = useDispatch();
-  const { listVacation } = useSelector((state) => state.vacation);
-  const currentPage = useRef(1);
-
-  const loadMorePosts = useCallback(() => {
-    if (listVacation.page < listVacation.pages && listVacation.page === currentPage.current) {
-      dispatch(
-        getListVacation({
-          page: listVacation.page + 1,
-          type: "newFeed",
-        })
-      );
-      currentPage.current += 1;
-    }
-  }, [listVacation, currentPage, dispatch]);
-
-  // add scroll event when component mounted
-  useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop + 1 >=
-        document.documentElement.scrollHeight
-      ) {
-        loadMorePosts();
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [dispatch, listVacation.page, loadMorePosts]);
+  const { page, pages, list } = useSelector((state) => state.vacation.listVacation);
+  const loadMorePosts = () => dispatch(getListVacation({ page: page + 1, type: "newFeed" }));
 
   return (
-    <>
-      {listVacation.list?.map((vacation) => (
-        <a key={vacation._id} className={cx("feed-post")} href={`/vacation?vacationID=${vacation._id}`}>
-          <div className={cx("feed-head")}>
-            <Avatar src={vacation.authorInfo?.avatar?.path} className={cx("feed-ava")} />
-            <div className={cx("feed-head-info")}>
-              <div className={cx("feed-user-name")}>@{vacation.authorInfo?.username}</div>
-              <div className={cx("feed-time")}>
-                {getDate(vacation.startingTime)} - {getDate(vacation.endingTime)}
+    <InfiniteScroll
+      dataLength={list.length}
+      next={loadMorePosts}
+      hasMore={page < pages}
+      loader={<Skeleton paragraph={{ rows: 1 }} active />}
+    >
+      <List
+        className={cx("feed")}
+        grid={{ column: 1 }}
+        dataSource={list}
+        renderItem={({ _id, authorInfo, cover, title, startingTime, endingTime, views, likes, comments }) => (
+          <div className={cx("feed-post")} to={`/vacation?vacationID=${_id}`}>
+            <NavLink to={`/profile/${authorInfo._id}/vacation`} className={cx("feed-head")}>
+              <Avatar src={authorInfo?.avatar?.path} className={cx("feed-ava")} />
+              <div className={cx("feed-head-info")}>
+                <div className={cx("feed-user-name")}>@{authorInfo?.username}</div>
+                <div className={cx("feed-time")}>
+                  {getDate(startingTime)} - {getDate(endingTime)}
+                </div>
               </div>
+            </NavLink>
+            <NavLink to={`/vacation?vacationID=${_id}`} className={cx("feed-cover")}>
+              <img src={cover?.path || images.noImage} alt="This is Vacation cover" />
+              <div className={cx("feed-cover-rad")}></div>
+              <div className={`${cx("cover-item")} ${cx("views")}`}>
+                <EyeOutlined />
+                {formatter.format(views)}
+              </div>
+              <div className={`${cx("cover-item")} ${cx("likes")}`}>
+                <HeartFilled />
+                {formatter.format(likes)}
+              </div>
+              <div className={`${cx("cover-item")} ${cx("cmts")}`}>
+                <CommentOutlined />
+                {formatter.format(comments)}
+              </div>
+            </NavLink>
+            <div className={cx("feed-title-center")}>
+              <div className={cx("feed-title")}>{title}</div>
             </div>
           </div>
-          <div className={cx("feed-cover")}>
-            <img src={vacation.cover?.path || images.noImage} alt="This is Vacation cover" />
-            <div className={cx("feed-cover-rad")}></div>
-            <div className={`${cx("cover-item")} ${cx("views")}`}>
-              <EyeOutlined />
-              {formatter.format(vacation.views)}
-            </div>
-            <div className={`${cx("cover-item")} ${cx("likes")}`}>
-              <HeartFilled />
-              {formatter.format(vacation.likes)}
-            </div>
-            <div className={`${cx("cover-item")} ${cx("cmts")}`}>
-              <CommentOutlined />
-              {formatter.format(vacation.comments)}
-            </div>
-          </div>
-          <div className={cx("feed-title-center")}>
-            <div className={cx("feed-title")}>{vacation.title}</div>
-          </div>
-        </a>
-      ))}
-    </>
+        )}
+      />
+    </InfiniteScroll>
   );
 };
 
-export default List;
+export default NewFeedList;

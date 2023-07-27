@@ -95,7 +95,7 @@ const Navbar = ({ userId }) => {
   return (
     <div className={cx("header")}>
       <div className={cx("navigation")}>
-        <NavLink to="" end className={({ isActive }) => (isActive ? cx("active") : "")}>
+        <NavLink to="vacation" end className={({ isActive }) => (isActive ? cx("active") : "")}>
           Vacations
         </NavLink>
         <NavLink to="album" end className={({ isActive }) => (isActive ? cx("active") : "")}>

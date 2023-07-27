@@ -1,13 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import styles from "./NewAlbum.module.scss";
 import classNames from "classnames/bind";
 import Slider from "./Slider/Slider";
 import "./Preloader.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import UserList from "~/modules/vacation/components/UserList/UserList";
-import { useSearchParams } from "react-router-dom";
 import { VACATION_ROUTE } from "~/utils/constants";
 import HandleVacation from "~/modules/vacation/HandleVacation/HandleVacation";
 import Image from "./Image/Image";
@@ -26,17 +25,18 @@ const NewAlbum = () => {
 
 	const list = useSelector((state) => state.album.selectedImages);
 	const albumpageId = useSelector((state) => state.album.selectedPageId);
-	const { detail, posts, memberList } = useSelector((state) => state.vacation);
+	const { userInfo } = useSelector((state) => state.album)
+	const { detail, memberList } = useSelector((state) => state.vacation);
 	const { authorInfo, cover, members, title, startingTime, endingTime } = detail;
-	const { totalPost } = posts;
 
 	const info = useSelector((state) => state.auth);
-	const albumInfo = useSelector((state) => state.album);
+
 	const dispatch = useDispatch();
 	const [searchParams] = useSearchParams();
 	const albumId = searchParams.get("albumId");
 	const vacationId = searchParams.get("id");
 	const dataId = Object.fromEntries(searchParams);
+	const creatorId = searchParams.get("userId");
 	const [containerSize, setContainerSize] = useState({
 		outerWidth: 0,
 		outerHeight: 0,
@@ -49,7 +49,10 @@ const NewAlbum = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const ref = useRef(null);
 	const navigate = useNavigate();
-	const urlType = searchParams.get("type") || "post";
+
+	useEffect(() => {
+		dispatch(getAlbumPage({ page: 1, albumId }));
+	}, [dispatch, albumId]);
 
 	useEffect(() => {
 		dispatch(getDetailVacation(vacationId));
@@ -80,10 +83,6 @@ const NewAlbum = () => {
 		}
 	};
 
-
-  useEffect(() => {
-    dispatch(getAlbumPage({ page: 1, albumId }));
-  }, [dispatch, albumId]);
 
 	const updateAlbumPage = async () => {
 		try {
@@ -120,7 +119,7 @@ const NewAlbum = () => {
 	const handleWrapClick = () => {
 		setIsOpen((prevState) => !prevState);
 	};
-	console.log(authorInfo.avatar?.path);
+
 	return (
 		<>
 			<div className={cx("wrapper")}>
@@ -133,39 +132,21 @@ const NewAlbum = () => {
 								<div className={cx("index-title")}>friends</div>
 							</div>
 							<div className={cx("user-avatar")}>
-								<Avatar
-									src={authorInfo.avatar?.path}
-									shape="square"
-									size={100}
-									className={cx("avatar")}
-								/>
+								<Avatar src={authorInfo?.avatar?.path} shape="square" size={100} className={cx("avatar")} />
 
 								<div className={cx("fullname")}>
 									{authorInfo?.firstname} {authorInfo?.lastname}
 								</div>
 								<div className={cx("username")}>{authorInfo?.username}</div>
 							</div>
-							<div className={cx("user-index")}>
-								<div className={cx("index")}>{totalPost || 0}</div>
-								<div className={cx("index-title")}>Posts</div>
-							</div>
 						</div>
 						<div className={cx("vacation-detail")}>
 							<div className={cx("vacation-title")}>
 								Vacation Detail
 								{isAuthor && (
-									<FontAwesomeIcon
-										icon={faPen}
-										className={cx("title-icon")}
-										onClick={() => setOpen(true)}
-									/>
+									<FontAwesomeIcon icon={faPen} className={cx("title-icon")} onClick={() => setOpen(true)} />
 								)}
-								<HandleVacation
-									setOpen={setOpen}
-									showModal={open}
-									type="update"
-									vacationId={vacationId}
-								/>
+								<HandleVacation setOpen={setOpen} showModal={open} type="update" vacationId={vacationId} />
 							</div>
 							<div className={cx("vacation-info")}>
 								<div className={cx("vacation-name")}>
@@ -201,9 +182,7 @@ const NewAlbum = () => {
 							</div>
 						</div>
 						<div className={cx("route")}>
-							{info.info._id !== albumInfo.userId ? (
-								<></>
-							) : (
+							{creatorId === info.info._id ? (
 								<>
 									<button className={cx("save-btn")} onClick={saveAlbum}>
 										Save
@@ -212,6 +191,8 @@ const NewAlbum = () => {
 										Update
 									</button>
 								</>
+							) : (
+								<></>
 							)}
 						</div>
 					</div>
@@ -227,7 +208,7 @@ const NewAlbum = () => {
 										className="animate slide-left pop delay-5"
 										style={{ color: "white", marginBottom: "2.5rem" }}
 									>
-										Sign: <em>{info.info.username}</em>
+										Sign: <em>{userInfo?.username}</em>
 									</p>
 								</div>
 								<div className="image-content animate slide delay-5"></div>
@@ -239,7 +220,7 @@ const NewAlbum = () => {
 							</div>
 							<div className="text">
 								<div className={cx("wrapper")}>
-									{info.info._id === albumInfo.userId ? (
+									{creatorId === info.info._id ? (
 										<>
 											<div className={cx("mother")} ref={ref}>
 												{list.map((item) => (

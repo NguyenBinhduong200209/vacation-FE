@@ -19,6 +19,8 @@ const Slider = () => {
 	const cardCount = img.length;
 	const [searchParams] = useSearchParams();
 	const dataId = Object.fromEntries([...searchParams]);
+	const creatorId = searchParams.get("userId");
+		const info = useSelector((state) => state.auth);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -65,9 +67,7 @@ const Slider = () => {
 
 	return (
 		<div className={cx("carousel-container")}>
-			{cardCount === 0 ? (
-				<div className={cx("no-picture")}>No pictures available.</div>
-			) : (
+			{cardCount !== 0 && creatorId === info.info._id ? (
 				<div className={cx("carousel")}>
 					{img.map((item, index) => {
 						const isSelected = selectedImages.some((image) => image._id === item._id);
@@ -93,7 +93,9 @@ const Slider = () => {
 						<RightCircleFilled />
 					</button>
 					{/* <ClickableButton /> */}
-				</div>
+				</div>				
+			) : (
+				<div className={cx("no-picture")}>No pictures available.</div>
 			)}
 		</div>
 	);

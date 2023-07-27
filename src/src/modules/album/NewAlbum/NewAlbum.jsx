@@ -28,6 +28,7 @@ const NewAlbum = () => {
 	const { detail, posts, memberList } = useSelector((state) => state.vacation);
 	const { authorInfo, cover, members, title, startingTime, endingTime } = detail;
 	const { totalPost } = posts;
+	console.log({ cover });
 
 	const info = useSelector((state) => state.auth);
 	const albumInfo = useSelector((state) => state.album);

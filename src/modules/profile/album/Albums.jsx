@@ -18,7 +18,6 @@ const Albums = () => {
   } = useSelector((state) => state.album);
 
   const { info } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
   const { userId } = useOutletContext();
   const { id } = useParams();
 
@@ -50,7 +49,11 @@ const Albums = () => {
             return (
               <List.Item className={cx("album-item")}>
                 <NavLink
-                  to={id ? `/album/${_id}` : `/album/new?id=${vacationId}&title=${title}&albumId=${_id}`}
+                  to={
+                    id
+                      ? `/album/${_id}`
+                      : `/album/new?id=${vacationId}&title=${title}&albumId=${_id}`
+                  }
                 >
                   <Card
                     bordered={false}
@@ -82,10 +85,14 @@ const Albums = () => {
                     color="#282828"
                     content={
                       <div className={cx("pop-content")}>
-                        <NavLink to={`/newAlbum?id=${vacationId}&title=${title}&albumId=${_id}`}>
+                        <NavLink
+                          to={`/newAlbum?id=${vacationId}&title=${title}&albumId=${_id}`}
+                        >
                           Edit
                         </NavLink>
-                        <Button onClick={() => handleDelete(_id)}>Delete</Button>
+                        <Button onClick={() => handleDelete(_id)}>
+                          Delete
+                        </Button>
                       </div>
                     }
                   >

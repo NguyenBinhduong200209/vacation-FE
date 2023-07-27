@@ -1,7 +1,7 @@
 import React from "react";
 import "react-resizable/css/styles.css";
 import Draggable from "react-draggable";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { removeSelected, updateSelected } from "~/store/slices/albumSlice";
 import { ResizableBox } from "react-resizable";
 import { CloseCircleOutlined } from "@ant-design/icons";
@@ -16,10 +16,6 @@ const Image = ({ imgData, containerSize }) => {
 		path,
 	} = imgData;
 	const dispatch = useDispatch();
-	const info = useSelector((state) => state.auth);
-	console.log(info.info._id)
-	const albumInfo = useSelector((state) => state.album);
-	console.log(albumInfo.userId);
 	const handleResize = (event, { size }) => {
 		dispatch(
 			updateSelected({

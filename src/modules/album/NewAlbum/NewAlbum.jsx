@@ -18,6 +18,7 @@ import ImageField from "~/components/ImageField/ImageField";
 import { faCircleInfo, faPen, faUser } from "@fortawesome/free-solid-svg-icons";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import { getDate } from "~/helpers/function";
+import { getDetailVacation } from "~/store/slices/vacationSlice";
 import { Avatar, Tooltip } from "antd";
 const cx = classNames.bind(styles);
 
@@ -27,10 +28,10 @@ const NewAlbum = () => {
 	const { detail, posts, memberList } = useSelector((state) => state.vacation);
 	const { authorInfo, cover, members, title, startingTime, endingTime } = detail;
 	const { totalPost } = posts;
+	console.log({ cover });
+
 	const info = useSelector((state) => state.auth);
-	console.log(info.info._id);
 	const albumInfo = useSelector((state) => state.album);
-	console.log(albumInfo.userId);
 	const dispatch = useDispatch();
 	const [searchParams] = useSearchParams();
 	const albumId = searchParams.get("albumId");
@@ -49,6 +50,10 @@ const NewAlbum = () => {
 	const ref = useRef(null);
 	const navigate = useNavigate();
 	const urlType = searchParams.get("type") || "post";
+
+	useEffect(() => {
+		dispatch(getDetailVacation(vacationId));
+	}, [dispatch]);
 
 	const saveAlbum = async (e) => {
 		e.preventDefault();
@@ -102,10 +107,6 @@ const NewAlbum = () => {
 		}
 	};
 
-	const handleRoute = (type) => {
-		navigate(`${VACATION_ROUTE}?vacationID=${vacationId}&type=${type}`);
-	};
-
 	useEffect(() => {
 		setContainerSize({
 			outerWidth: ref.current.offsetWidth,
@@ -116,7 +117,7 @@ const NewAlbum = () => {
 	const handleWrapClick = () => {
 		setIsOpen((prevState) => !prevState);
 	};
-
+	console.log(authorInfo.avatar?.path);
 	return (
 		<>
 			<div className={cx("wrapper")}>
@@ -130,7 +131,7 @@ const NewAlbum = () => {
 							</div>
 							<div className={cx("user-avatar")}>
 								<Avatar
-									src={isAuthor?.avatar?.path}
+									src={authorInfo.avatar?.path}
 									shape="square"
 									size={100}
 									className={cx("avatar")}

@@ -169,7 +169,7 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
     );
   }, [title, des, dates, status, memberList]);
 
-  useClickOutside(statusRef, () => setOpenStatus(false));
+
   return (
     <>
       <Modal

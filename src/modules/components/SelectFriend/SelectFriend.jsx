@@ -142,7 +142,6 @@ const SelectFriend = ({
                         <Avatar src={item.avatar} />
                         <span>{item.username}</span>
                       </div>
-                      {/* <button>Add</button> */}
                     </div>
                   );
                 })

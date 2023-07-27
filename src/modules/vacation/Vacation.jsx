@@ -37,8 +37,14 @@ const Vacation = () => {
   let [searchParams] = useSearchParams();
   let vacationID = searchParams.get("vacationID"); // get vacationId of url
   const urlType = searchParams.get("type") || "post"; // get type  of url (post || album)
+  const imgRef = useRef();
+  const currentPage = useRef(1);
+  // Get User's info
   const { info } = useSelector((state) => state.auth);
-  const { detail, posts, memberList } = useSelector((state) => state.vacation);
+  // Get detail of vacation
+  const { detail, posts, memberList, shareList } = useSelector(
+    (state) => state.vacation
+  );
   const {
     authorInfo,
     cover,
@@ -49,56 +55,58 @@ const Vacation = () => {
     shareStatus,
   } = detail;
 
+  // Get detail of posts
   const { page, pages, timeline, totalPost, isUpdatePost } = posts;
+  // get msg of upload image
   const { msg, isSuccess, isError } = useSelector((state) => state.resource);
   const [openNoti, setOpenNoti] = useState(false);
-  const currentPage = useRef(1);
   const [openUserList, setOpenUserList] = useState(false);
   const [open, setOpen] = useState(false);
   const [preload, setPreload] = useState(true);
+  // create state for listType is memberList or shareList
+  const [listType, setListType] = useState("memberList");
   const startDate = getDate(startingTime);
   const endDate = getDate(endingTime);
-  const imgRef = useRef();
+
   const handleRoute = (type) => {
     navigate(`${VACATION_ROUTE}?vacationID=${vacationID}&type=${type}`);
   };
-  // Get vacation detail &7 set activeTimeline
+  // Get vacation detail & set activeTimeline
   useEffect(() => {
     setPreload(true);
 
-    if (urlType === "post") {
-      Promise.all([
-        dispatch(getDetailVacation(vacationID)),
-        dispatch(
-          getStatusList({
-            type: "vacations",
-            id: vacationID,
-            listType: "memberList",
-            page: 1,
-          })
-        ),
-        dispatch(
-          getStatusList({
-            type: "vacations",
-            id: vacationID,
-            listType: "shareList",
-            page: 1,
-          })
-        ),
-        dispatch(
-          getManyPosts({
-            type: "vacation",
-            id: vacationID,
-            page: 1,
-          })
-        ),
-      ]).then(() => setPreload(false));
-      if (timeline) {
-        dispatch(setTimeline(timeline[0]));
-      }
+    Promise.all([
+      dispatch(getDetailVacation(vacationID)),
+      dispatch(
+        getStatusList({
+          type: "vacations",
+          id: vacationID,
+          listType: "memberList",
+          page: 1,
+        })
+      ),
+      dispatch(
+        getStatusList({
+          type: "vacations",
+          id: vacationID,
+          listType: "shareList",
+          page: 1,
+        })
+      ),
+      dispatch(
+        getManyPosts({
+          type: "vacation",
+          id: vacationID,
+          page: 1,
+        })
+      ),
+    ]).then(() => setPreload(false));
+    if (timeline) {
+      dispatch(setTimeline(timeline[0]));
     }
   }, []);
 
+  // when new post added, call API again to update new post to list
   useEffect(() => {
     if (isUpdatePost) {
       dispatch(
@@ -108,7 +116,6 @@ const Vacation = () => {
           page: 1,
         })
       );
-
       dispatch(isPostListChanged(false));
     }
   }, [isUpdatePost, dispatch, vacationID]);
@@ -234,23 +241,40 @@ const Vacation = () => {
                     </Tooltip>
                   </div>
 
-                  <div className={cx("status")}>
+                  <div
+                    className={cx("status")}
+                    onClick={() => {
+                      setOpenUserList(true);
+                      setListType("shareList");
+                    }}
+                  >
                     <FontAwesomeIcon
                       icon={faShareNodes}
                       className={cx("icon")}
                     />
-                    <span>{shareStatus}</span>
+                    <span className={cx("memberList")}>{shareStatus}</span>
                   </div>
 
-                  <div onClick={() => setOpenUserList(true)}>
+                  <div
+                    onClick={() => {
+                      setOpenUserList(true);
+                      setListType("memberList");
+                    }}
+                  >
                     <FontAwesomeIcon icon={faUser} className={cx("icon")} />
-                    <span>{members} people join in</span>
+                    <span className={cx("memberList")}>
+                      {members} people join in
+                    </span>
                   </div>
                   <UserList
                     openUserList={openUserList}
                     setOpenUserList={setOpenUserList}
-                    title="Member List"
-                    list={memberList}
+                    title={
+                      listType === "memberList"
+                        ? "Member List"
+                        : "Friend Who Can See Your Vacation"
+                    }
+                    list={listType === "memberList" ? memberList : shareList}
                   />
 
                   <div className={cx("timeline")}>

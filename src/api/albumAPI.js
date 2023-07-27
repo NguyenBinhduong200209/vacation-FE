@@ -13,7 +13,6 @@ const albumAPI = {
     const url = `${URL.ALBUMPAGE_ROUTE}/${data.albumId}?page=${data.page}`
     return axiosClient.get(url);
   },
-
   delete: (id) => axiosClient.delete(`${URL.ALBUM_ROUTE}/${id}`),
 };
 export default albumAPI;

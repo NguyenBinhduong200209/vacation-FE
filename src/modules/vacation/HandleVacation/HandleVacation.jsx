@@ -54,7 +54,9 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  // Create state variables to store the open friend, open status, and friendType.
+  const imgRef = useRef();
+  // State for the open friend modal.
+
   const [openFriend, setOpenFriend] = useState(false);
   const [openStatus, setOpenStatus] = useState(false);
   const [friendType, setFriendType] = useState("memberList");

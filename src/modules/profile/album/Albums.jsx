@@ -3,20 +3,11 @@ import classNames from "classnames/bind";
 import styles from "./Album.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { getList, resetList, deleteAlbum } from "~/store/slices/albumSlice";
-import { MoreOutlined, LoadingOutlined } from "@ant-design/icons";
-import {
-  Card,
-  List,
-  Typography,
-  Skeleton,
-  Popover,
-  Button,
-  Image,
-  message,
-} from "antd";
+import { MoreOutlined } from "@ant-design/icons";
+import { Card, List, Typography, Skeleton, Popover, Button, Image } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { NavLink, useNavigate, useOutletContext } from "react-router-dom";
-import axiosClient from "~/api/axiosClient";
+import { NavLink, useOutletContext, useParams } from "react-router-dom";
+import images from "~/images";
 const cx = classNames.bind(styles);
 
 const Albums = () => {
@@ -25,49 +16,19 @@ const Albums = () => {
     list,
     meta: { page, pages },
   } = useSelector((state) => state.album);
-
-  const navigate = useNavigate();
-
   const { userId } = useOutletContext();
+  const { id } = useParams();
 
   useEffect(() => {
     dispatch(resetList());
     dispatch(getList({ userId, page: 1 }));
   }, [dispatch, userId]);
 
-  const loadMoreData = () => {
-    dispatch(getList({ userId, page: page + 1 }));
-  };
-
-  const takeAlbum = async (_id, title, vacationId, page = 1) => {
-    try {
-      const data = {
-        _id: _id,
-        page: page,
-        title: title,
-        vacationId: vacationId,
-      };
-      console.log(data);
-      await axiosClient.get(`/albumpage/${_id}?page=${page}`, data);
-      navigate(`/newAlbum?id=${vacationId}&title=${title}&albumId=${_id}`);
-    } catch (error) {
-      message.error(error.response.data.message);
-    }
-  };
-
-  const handleRoute = async (vacationId, title, _id) => {
-    try {
-      navigate(`/newAlbum?id=${vacationId}&title=${title}&albumId=${_id}`);
-    } catch (error) {
-      message.error(error.response.data.message);
-    }
-  };
+  const loadMoreData = () => dispatch(getList({ userId, page: page + 1 }));
 
   const handleDelete = (id) => {
     dispatch(deleteAlbum({ id }));
   };
-
-  console.log(list);
 
   return (
     <div className={cx("albums")}>
@@ -81,57 +42,56 @@ const Albums = () => {
           className={cx("album-grid")}
           grid={{ gutter: 35, xs: 1, sm: 2, md: 2, lg: 3, xl: 3, xxl: 3 }}
           dataSource={list}
-          renderItem={(item, index) => (
-            <List.Item className={cx("album-item")}>
-              <NavLink>
-                <Card
-                  // onClick={() => takeAlbum(item.id, item.title, item.vacationId)}
-                  bordered={false}
-                  className={cx("album-card")}
-                  hoverable={true}
-                  cover={
-                    <Image
-                      className={cx("album-img")}
-                      preview={false}
-                      src={`https://picsum.photos/900/600?random=${index}`}
-                      placeholder={<LoadingOutlined />}
-                      alt=""
-                    />
-                  }
+          renderItem={(item) => {
+            const { _id, title, vacationId, cover } = item;
+            return (
+              <List.Item className={cx("album-item")}>
+                <NavLink
+                  to={id ? `/album/${_id}` : `/album/new?id=${vacationId}&title=${title}&albumId=${_id}`}
                 >
-                  <Typography.Paragraph
-                    className={cx("album-title")}
-                    ellipsis={{ expandable: false, rows: 1 }}
+                  <Card
+                    bordered={false}
+                    className={cx("album-card")}
+                    hoverable={true}
+                    cover={
+                      <Image
+                        className={cx("album-img")}
+                        preview={false}
+                        src={cover}
+                        fallback={images.noImage}
+                      />
+                    }
                   >
-                    {item.title}
-                  </Typography.Paragraph>
-                </Card>
-              </NavLink>
-              <Popover
-                className={cx("pop-over")}
-                arrow
-                placement="bottomRight"
-                trigger={"click"}
-                color="#282828"
-                content={
-                  <div className={cx("pop-content")}>
-                    <Button
-                      onClick={() =>
-                        handleRoute(item.vacationId, item.title, item._id)
-                      }
+                    <Typography.Paragraph
+                      className={cx("album-title")}
+                      ellipsis={{ expandable: false, rows: 1 }}
                     >
-                      Edit
-                    </Button>
-                    <Button onClick={() => handleDelete(item._id)}>
-                      Delete
-                    </Button>
-                  </div>
-                }
-              >
-                <MoreOutlined className={cx("more")} />
-              </Popover>
-            </List.Item>
-          )}
+                      {title}
+                    </Typography.Paragraph>
+                  </Card>
+                </NavLink>
+                {!userId && (
+                  <Popover
+                    className={cx("pop-over")}
+                    arrow
+                    placement="bottomRight"
+                    trigger={"click"}
+                    color="#282828"
+                    content={
+                      <div className={cx("pop-content")}>
+                        <NavLink to={`/newAlbum?id=${vacationId}&title=${title}&albumId=${_id}`}>
+                          Edit
+                        </NavLink>
+                        <Button onClick={() => handleDelete(_id)}>Delete</Button>
+                      </div>
+                    }
+                  >
+                    <MoreOutlined className={cx("more")} />
+                  </Popover>
+                )}
+              </List.Item>
+            );
+          }}
         />
       </InfiniteScroll>
     </div>

@@ -21,8 +21,6 @@ const SearchUser = () => {
   const { isLoading } = users;
   const currentPage = useRef(1);
 
-  // console.log(users, isLoading);
-
   useEffect(() => {
     dispatch(
       searchOneModel({
@@ -68,11 +66,7 @@ const SearchUser = () => {
       <div id="result" className={cx("result")}>
         {users.data?.map((item) => {
           return (
-            <Link
-              className={cx("item")}
-              key={item._id}
-              to={`/profile?id=${item._id}`}
-            >
+            <Link className={cx("item")} key={item._id} to={`/profile?id=${item._id}`}>
               <Avatar size={64} src={item.avatar} />
               <div className={cx("user-info")}>
                 <div className={cx("username")} style={{ color: "white" }}>

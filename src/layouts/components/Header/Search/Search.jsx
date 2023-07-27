@@ -18,10 +18,8 @@ const Search = () => {
   const debouncedValue = useDebounce(value, 500);
   const [hideSuggestions, setHideSuggestions] = useState(true);
   const dispatch = useDispatch();
-  const { result } = useSelector((state) => state.search);
-  const { suggestions } = result;
-  const { info } = useSelector((state) => state.auth);
-  const currentUserId = info?._id;
+  const { page, pages, data } = useSelector((state) => state.search.result.suggestions);
+  const currentUserId = useSelector((state) => state.auth.info?._id);
   const { size } = useSelector((state) => state.general);
   const isSmallSize = size.width <= 576;
 
@@ -36,14 +34,7 @@ const Search = () => {
 
   const loadMoreData = () => {
     dispatch(
-      searchOneModel({
-        body: {
-          model: "user",
-          value: debouncedValue,
-          page: suggestions.page + 1,
-        },
-        type: "suggestions",
-      })
+      searchOneModel({ body: { model: "user", value: debouncedValue, page: page + 1 }, type: "suggestions" })
     );
   };
 
@@ -58,7 +49,7 @@ const Search = () => {
     <div className={cx("nav-search")}>
       <NavLink className={cx("nav-logo")} to="/">
         <img src={images.Vector} className={cx("nav-logo-img")} alt="" />
-        {isSmallSize && <span className={cx("name")}>Seen</span>}
+        {isSmallSize && <span className={cx("name")}>een</span>}
       </NavLink>
       {!isSmallSize && (
         <input
@@ -70,7 +61,7 @@ const Search = () => {
             setValue(e.target.value);
             setHideSuggestions(false);
           }}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyPress}
           onBlur={() => setTimeout(() => setHideSuggestions(true), 400)}
           spellCheck={false}
         />
@@ -79,19 +70,22 @@ const Search = () => {
         {!hideSuggestions && (
           <InfiniteScroll
             scrollThreshold="50%"
-            dataLength={suggestions.data.length || 0}
+            dataLength={data.length || 0}
             next={loadMoreData}
-            hasMore={suggestions.page < suggestions.pages}
+            hasMore={page < pages}
             loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
             scrollableTarget="suggestion"
           >
             <List
               itemLayout="horizontal"
-              dataSource={suggestions.data}
+              dataSource={data}
               renderItem={(item, index) => {
                 const { _id, username, firstname, lastname, avatar } = item;
                 return (
-                  <NavLink style={{ color: "white" }} to={`/profile/${_id === currentUserId ? "" : _id}`}>
+                  <NavLink
+                    style={{ color: "white" }}
+                    to={`/profile/${_id === currentUserId ? "vacation" : `${_id}/vacation`}`}
+                  >
                     <List.Item className={cx("item")}>
                       <List.Item.Meta
                         avatar={<Avatar size="large" src={avatar} />}

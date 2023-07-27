@@ -21,7 +21,7 @@ const Footer = () => {
         <HomeOutlined />
       </NavLink>
       <PlusCircleFilled className={cx("add")} style={{ cursor: "pointer" }} onClick={() => setOpen(true)} />
-      <NavLink to="/profile" className={({ isActive }) => (isActive ? cx("active") : "")}>
+      <NavLink to="/profile/vacation" className={({ isActive }) => (isActive ? cx("active") : "")}>
         <ProfileOutlined />
       </NavLink>
       <HandleVacation

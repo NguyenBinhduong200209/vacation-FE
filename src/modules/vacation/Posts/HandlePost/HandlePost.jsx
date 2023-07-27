@@ -12,7 +12,7 @@ import SelectLocation from "~/modules/components/SelectLocation/SelectLocation";
 import Notification from "~/components/Notification/Notification";
 import ImageField from "~/components/ImageField/ImageField";
 import Modal from "~/components/Modal/Modal";
-import { Avatar, List, Skeleton } from "antd";
+import { Avatar, List } from "antd";
 import UpLoad from "~/components/UpLoad/UpLoad";
 import {
   deleteImg,

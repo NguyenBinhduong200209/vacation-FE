@@ -5,7 +5,7 @@ import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCaretDown,
-  faImage,
+  faShield,
   faUserPlus,
   faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
@@ -18,42 +18,53 @@ import vacationAPI from "~/api/vacationAPI";
 import Modal from "~/components/Modal/Modal";
 import SelectFriend from "~/modules/components/SelectFriend/SelectFriend";
 import Notification from "~/components/Notification/Notification";
-import UpLoad from "~/components/UpLoad/UpLoad";
 import ImageField from "~/components/ImageField/ImageField";
 import { getDate } from "~/helpers/function";
 import { useClickOutside } from "~/helpers/customHook";
+import Loading from "~/components/Loading/Loading";
 
 const { RangePicker } = DatePicker;
 const cx = classNames.bind(styles);
 const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
+  const statusRef = useRef();
   // Get the current user information from the state.
   const { info } = useSelector((state) => state.auth);
   const { resources } = useSelector((state) => state.resource);
-  const { detail, memberList: vacationMemberList } = useSelector(
-    (state) => state.vacation
-  );
-  const [vacationDetail, setVacationDetail] = useState({
+  // Get the vacation details from the state.
+  const {
+    detail,
+    memberList: vacationMemberList,
+    shareList: vacationShareList,
+  } = useSelector((state) => state.vacation);
+
+  // Create a state variable to store the vacation information.
+  const [vacationInfo, setVacationInfo] = useState({
     title: "",
     des: "",
-    status: "Public",
-    shareList: "",
+    status: "public",
     dates: [],
   });
-  const { title, des, dates, status } = vacationDetail;
+  const { title, des, dates, status } = vacationInfo;
+  // Create state variables to store the member list and share list.
   const [memberList, setMemberList] = useState([]);
+  const [shareList, setShareList] = useState([]);
+
+  // Create state variables to store the open noti, msg, isSuccess, and isError.
   const [openNoti, setOpenNoti] = useState(false);
   const [msg, setMsg] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  // State for the open friend modal.
+  // Create state variables to store the open friend, open status, and friendType.
   const [openFriend, setOpenFriend] = useState(false);
   const [openStatus, setOpenStatus] = useState(false);
-  // ref for status
-  const statusRef = useRef();
+  const [friendType, setFriendType] = useState("memberList");
+  // Create a state variable to store the loading status.
+  const [isLoading, setIsLoading] = useState(false);
+  // UseEffect hook to set the initial state of vacationInfo, the member list and share list.
   useEffect(() => {
     if (vacationId) {
-      setVacationDetail({
+      setVacationInfo({
         title: detail?.title,
         des: detail?.description,
         status: detail?.shareStatus,
@@ -61,17 +72,18 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
         dates: [getDate(detail?.startingTime), getDate(detail?.endingTime)],
       });
       setMemberList(vacationMemberList);
+      setShareList(vacationShareList);
     }
   }, []);
 
   // Function to handle changes to the title.
   const onChange = (e, type) => {
     if (type === "title")
-      setVacationDetail((prev) => {
+      setVacationInfo((prev) => {
         return { ...prev, title: e.target.value };
       });
     else
-      setVacationDetail((prev) => {
+      setVacationInfo((prev) => {
         return { ...prev, des: e.target.value };
       });
   };
@@ -81,7 +93,7 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
     const newDate = values?.map((item) => {
       return item?.format("YYYY-MM-DD");
     });
-    setVacationDetail((prev) => {
+    setVacationInfo((prev) => {
       return {
         ...prev,
         dates: newDate || [],
@@ -89,11 +101,16 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
     });
   };
 
-  // Function to handle changes to the date range.
+  //This function handles changes to the status of the vacation.
+  //The status can be either "public" or "protected" or "only me".
   const handleStatus = (status) => {
-    setVacationDetail((prev) => {
+    setVacationInfo((prev) => {
       return { ...prev, status: status };
     });
+    if (status === "protected") {
+      setOpenFriend(true);
+      setFriendType("shareList");
+    }
     setOpenStatus(false);
   };
 
@@ -103,16 +120,18 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
   };
   // Function to create or update a vacation.
   const handleVacation = async (e) => {
+    setIsLoading(true);
     e.preventDefault();
     let res;
-    // Create the vacation.
-    const newMemberList = memberList?.map((item) => item._id);
-    // const resourceList = resources?.map((item) => item._id);
+    // get list Id of memberList and shareList
+    const memberListId = memberList?.map((item) => item._id);
+    const shareListId = shareList?.map((item) => item._id);
     const params = {
       title: title,
       description: des,
-      memberList: newMemberList,
+      memberList: memberListId,
       shareStatus: status.toLowerCase(),
+      shareList: shareListId,
       startingTime: dates[0],
       endingTime: dates[1],
     };
@@ -129,14 +148,23 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
       }
       setIsSuccess(true);
       setMsg(res.data?.message);
+      setIsLoading(false);
     } catch (error) {
       setIsError(true);
       setMsg(error.message);
+      setIsLoading(false);
     }
 
     setOpen(false);
     setOpenNoti(true);
   };
+
+  // The `isDisabledCreate` function is used to determine whether the create button should be disabled.
+  // The function returns true if any of the following conditions are met:
+  //   * The title is empty.
+  //   * The description is empty.
+  //   * The dates are not set.
+  //   * The member list is empty.
   const isDisabledCreate = useMemo(
     () =>
       !(
@@ -147,9 +175,10 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
       ),
     [title, des, dates, memberList]
   );
-
+  // The `isDisabledUpdate` function is used to determine whether the update button should be disabled.
+  // The function returns true if the vacation information has not been changed.
   const isDisabledUpdate = useMemo(() => {
-    const initVacationDetail = {
+    const initVacationInfo = {
       title: detail?.title,
       des: detail?.description,
       status: detail?.shareStatus,
@@ -157,19 +186,20 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
       dates: [getDate(detail?.startingTime), getDate(detail?.endingTime)],
       memberList: detail?.memberList,
     };
-    const newVacationDetail = {
+    const newVacationInfo = {
       title: title,
       des: des,
       status: status,
+      shareList: shareList,
       dates: dates,
       memberList: memberList,
     };
-    return (
-      JSON.stringify(newVacationDetail) === JSON.stringify(initVacationDetail)
-    );
-  }, [title, des, dates, status, memberList]);
-
+    return JSON.stringify(newVacationInfo) === JSON.stringify(initVacationInfo);
+  }, [title, des, dates, status, memberList, shareList]);
+  // The `useClickOutside` hook is used to close the status modal when the user clicks outside of it.
+  // The hook takes a ref as an argument, and the ref is used to track the element that the modal is attached to.
   useClickOutside(statusRef, () => setOpenStatus(false));
+
   return (
     <>
       <Modal
@@ -196,14 +226,24 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
                     />
                     {openStatus && (
                       <div className={cx("dropdown-status")}>
-                        <div onClick={() => handleStatus("Public")}>Public</div>
-                        <div onClick={() => handleStatus("Protected")}>
+                        <div onClick={() => handleStatus("public")}>Public</div>
+                        <div onClick={() => handleStatus("protected")}>
                           Protected
                         </div>
-                        <div onClick={() => handleStatus("Only Me")}>
+                        <div onClick={() => handleStatus("only me")}>
                           Only Me
                         </div>
                       </div>
+                    )}
+                    {status === "protected" && (
+                      <FontAwesomeIcon
+                        icon={faShield}
+                        className={cx("icon")}
+                        onClick={() => {
+                          setOpenFriend(true);
+                          setFriendType("shareList");
+                        }}
+                      />
                     )}
                   </div>
                 </div>
@@ -233,7 +273,7 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
               spellCheck={false}
             />
             <TextArea
-              maxLength={500}
+              maxLength={5000}
               onChange={(e) => onChange(e, "des")}
               placeholder="Description..."
               style={{
@@ -250,13 +290,10 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
                   <FontAwesomeIcon
                     icon={faUserPlus}
                     className={cx("icon")}
-                    onClick={() => setOpenFriend(true)}
-                  />
-                  <SelectFriend
-                    open={openFriend}
-                    setOpen={setOpenFriend}
-                    setMemberList={setMemberList}
-                    memberList={memberList}
+                    onClick={() => {
+                      setOpenFriend(true);
+                      setFriendType("memberList");
+                    }}
                   />
                 </div>
               </div>
@@ -297,9 +334,30 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
               onClick={handleVacation}
             >
               {type === "create" ? "Create Vacation" : "Update"}
+
+              {isLoading && <Loading />}
             </button>
           </div>
         </div>
+        {friendType === "memberList" ? (
+          <SelectFriend
+            open={openFriend}
+            setOpen={setOpenFriend}
+            setUserList={setMemberList}
+            userList={memberList}
+            type={friendType}
+            title="Your Member"
+          />
+        ) : (
+          <SelectFriend
+            open={openFriend}
+            setOpen={setOpenFriend}
+            setUserList={setShareList}
+            userList={shareList}
+            type={friendType}
+            title="Friends who will see your vacation"
+          />
+        )}
       </Modal>
       <Notification
         openNoti={openNoti}

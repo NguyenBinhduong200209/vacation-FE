@@ -17,7 +17,7 @@ import { Avatar, Tooltip } from "antd";
 import {
   getDetailVacation,
   getManyPosts,
-  getMemberList,
+  getStatusList,
   isPostListChanged,
   setTimeline,
 } from "~/store/slices/vacationSlice";
@@ -59,7 +59,6 @@ const Vacation = () => {
   const startDate = getDate(startingTime);
   const endDate = getDate(endingTime);
   const imgRef = useRef();
-
   const handleRoute = (type) => {
     navigate(`${VACATION_ROUTE}?vacationID=${vacationID}&type=${type}`);
   };
@@ -71,10 +70,18 @@ const Vacation = () => {
       Promise.all([
         dispatch(getDetailVacation(vacationID)),
         dispatch(
-          getMemberList({
+          getStatusList({
             type: "vacations",
             id: vacationID,
             listType: "memberList",
+            page: 1,
+          })
+        ),
+        dispatch(
+          getStatusList({
+            type: "vacations",
+            id: vacationID,
+            listType: "shareList",
             page: 1,
           })
         ),
@@ -151,7 +158,7 @@ const Vacation = () => {
       ) : (
         <div className={cx("wrapper")}>
           <div className={cx("sidebar")}>
-            <div onClick={handleImgClick} className={cx("bg-container")}>
+            <div className={cx("bg-container")}>
               {isAuthor && (
                 <UpLoad
                   imgRef={imgRef}
@@ -162,9 +169,9 @@ const Vacation = () => {
               <ImageField
                 src={cover?.path}
                 className={cx("img-BG")}
-                preview={false}
+                preview={true}
               />
-              <div className={cx("bg-icon-container")}>
+              <div className={cx("bg-icon-container")} onClick={handleImgClick}>
                 <span>Edit cover photo</span>
                 <FontAwesomeIcon icon={faCamera} className={cx("bg-icon")} />
               </div>

@@ -82,6 +82,13 @@
   font-style: normal;
   color: #b9babb;
   cursor: pointer;
+
+  .icon {
+    margin-left: 0.5rem;
+  }
+  span {
+    text-transform: capitalize;
+  }
 }
 
 .dropdown-status {
@@ -164,6 +171,10 @@
 }
 // btn
 .btn-submit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
   width: 100%;
   padding: 1rem;
   background-color: rgba(116, 96, 96, 0.35);

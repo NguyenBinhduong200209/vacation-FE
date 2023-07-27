@@ -24,12 +24,14 @@ const Search = () => {
   const isSmallSize = size.width <= 576;
 
   useEffect(() => {
-    dispatch(
-      searchOneModel({
-        body: { model: "user", value: debouncedValue, page: 1 },
-        type: "suggestions",
-      })
-    );
+    if (debouncedValue !== "") {
+      dispatch(
+        searchOneModel({
+          body: { model: "user", value: debouncedValue, page: 1 },
+          type: "suggestions",
+        })
+      );
+    }
   }, [dispatch, debouncedValue]);
 
   const loadMoreData = () => {
@@ -85,12 +87,19 @@ const Search = () => {
                   <NavLink
                     style={{ color: "white" }}
                     to={`/profile/${_id === currentUserId ? "vacation" : `${_id}/vacation`}`}
+
                   >
                     <List.Item className={cx("item")}>
                       <List.Item.Meta
                         avatar={<Avatar size="large" src={avatar} />}
-                        title={<span style={{ color: "white" }}>{username}</span>}
-                        description={<div style={{ color: "white" }}>{`${firstname} ${lastname}`}</div>}
+                        title={
+                          <span style={{ color: "white" }}>{username}</span>
+                        }
+                        description={
+                          <div
+                            style={{ color: "white" }}
+                          >{`${firstname} ${lastname}`}</div>
+                        }
                       />
                     </List.Item>
                   </NavLink>

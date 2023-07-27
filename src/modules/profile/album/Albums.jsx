@@ -16,6 +16,9 @@ const Albums = () => {
     list,
     meta: { page, pages },
   } = useSelector((state) => state.album);
+
+  const { info } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
   const { userId } = useOutletContext();
   const { id } = useParams();
 

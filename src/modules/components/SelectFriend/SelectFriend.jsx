@@ -12,7 +12,15 @@ import Loading from "~/components/Loading/Loading";
 import Modal from "~/components/Modal/Modal";
 
 const cx = classNames.bind(styles);
-const SelectFriend = ({ open, setOpen, memberList, setMemberList }) => {
+const SelectFriend = ({
+  open,
+  setOpen,
+  userList,
+  setUserList,
+  type,
+  title,
+}) => {
+  console.log(type);
   const dispatch = useDispatch();
   const isFirstReq = useRef(true);
   const resultRef = useRef();
@@ -70,11 +78,11 @@ const SelectFriend = ({ open, setOpen, memberList, setMemberList }) => {
 
   // handle friend selected
   const handleSelectedUser = (friend) => {
-    setMemberList((prev) => [...prev, friend]);
+    setUserList((prev) => [...prev, friend]);
   };
 
   const handleClear = (id) => {
-    setMemberList((prev) => prev.filter((item) => item._id !== id));
+    setUserList((prev) => prev.filter((item) => item._id !== id));
   };
 
   const handleSubmit = () => {
@@ -85,9 +93,9 @@ const SelectFriend = ({ open, setOpen, memberList, setMemberList }) => {
     <Modal open={open} setOpen={setOpen} title="Select Your Friend">
       <div className={cx("wrapper")}>
         <div className={cx("select-result")}>
-          <span>Member:</span>
+          <span>{title}</span>
           <div className={cx("result-list")}>
-            {memberList?.map((friend) => {
+            {userList?.map((friend) => {
               return (
                 <span key={friend._id}>
                   {friend.username}
@@ -121,7 +129,7 @@ const SelectFriend = ({ open, setOpen, memberList, setMemberList }) => {
                 <div className={cx("result-empty")}>Not Found</div>
               ) : (
                 data?.map((item) => {
-                  if (memberList.some((friend) => friend._id === item._id)) {
+                  if (userList?.some((friend) => friend._id === item._id)) {
                     return;
                   }
                   return (
@@ -134,7 +142,6 @@ const SelectFriend = ({ open, setOpen, memberList, setMemberList }) => {
                         <Avatar src={item.avatar} />
                         <span>{item.username}</span>
                       </div>
-                      {/* <button>Add</button> */}
                     </div>
                   );
                 })

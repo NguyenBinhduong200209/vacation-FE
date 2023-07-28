@@ -53,8 +53,6 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
   const [msg, setMsg] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
-
-  const imgRef = useRef();
   // State for the open friend modal.
 
   const [openFriend, setOpenFriend] = useState(false);
@@ -360,14 +358,16 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
           />
         )}
       </Modal>
-      <Notification
-        openNoti={openNoti}
-        setOpenNoti={setOpenNoti}
-        msg={msg}
-        type="handleVacation"
-        isError={isError}
-        isSuccess={isSuccess}
-      />
+      {(isError || isSuccess) && (
+        <Notification
+          openNoti={openNoti}
+          setOpenNoti={setOpenNoti}
+          msg={msg}
+          type="handleVacation"
+          isError={isError}
+          isSuccess={isSuccess}
+        />
+      )}
     </>
   );
 };

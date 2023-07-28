@@ -102,15 +102,16 @@ const Overview = () => {
           </button>
         </div>
       )}
-
-      <Notification
-        isSuccess={isSuccess}
-        isError={isError}
-        msg={msg}
-        openNoti={openNoti}
-        setOpenNoti={setOpenNoti}
-        type={UPDATE_OVERVIEW}
-      />
+      {(isError || isSuccess) && (
+        <Notification
+          isSuccess={isSuccess}
+          isError={isError}
+          msg={msg}
+          openNoti={openNoti}
+          setOpenNoti={setOpenNoti}
+          type={UPDATE_OVERVIEW}
+        />
+      )}
     </div>
   );
 };

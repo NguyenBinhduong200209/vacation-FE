@@ -25,7 +25,7 @@ const Notification = (props) => {
     isError,
     handleRoute,
   } = props;
-
+  console.log(isSuccess);
   const navigate = useNavigate();
   function handleSucces() {
     switch (type) {

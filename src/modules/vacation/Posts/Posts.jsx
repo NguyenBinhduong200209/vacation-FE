@@ -17,6 +17,7 @@ const Posts = () => {
   const { info } = useSelector((state) => state.auth);
   const { posts, detail, isLoading } = useSelector((state) => state.vacation);
   const { list } = posts;
+  const [handlePost, setHandlePost] = useState("create");
 
   return (
     <>
@@ -29,19 +30,32 @@ const Posts = () => {
                 className={cx("avatar")}
                 size={60}
               />
-              <div onClick={() => setShowModal(true)}>
+              <div
+                onClick={() => {
+                  setShowModal(true);
+                  setHandlePost("create");
+                }}
+              >
                 Every step is a milestone...
               </div>
             </div>
           )}
-          <HandlePost
-            setShowModal={setShowModal}
-            showModal={showModal}
-            type="create"
-          />
+
+          {handlePost === "create" && (
+            <HandlePost
+              setShowModal={setShowModal}
+              showModal={showModal}
+              type={handlePost}
+            />
+          )}
 
           {list?.map((item, index) => (
-            <PostItem postDetail={item} key={index} />
+            <PostItem
+              postDetail={item}
+              key={index}
+              setHandlePost={setHandlePost}
+              handlePost={handlePost}
+            />
           ))}
 
           <>{isLoading && <Loading />}</>

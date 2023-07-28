@@ -9,13 +9,22 @@
   font-weight: 600;
   padding: 0 3rem;
 }
-.item {
+.result-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 5rem;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding: 1rem 5rem !important;
+}
+.item-info {
   display: flex;
   gap: 1rem;
+  flex: 1;
   align-items: center;
-  margin-bottom: 1rem;
   border-radius: 12px;
-  padding: 1rem 5rem !important;
+  padding: 1rem 2rem !important;
   cursor: pointer;
 
   .user-info {
@@ -37,4 +46,23 @@
     background-color: rgb(110, 110, 110, 0.2);
     transition: all 0.3s ease-in;
   }
+}
+.btn-add-fr,
+.btn-fr {
+  width: 10rem;
+  height: 5rem;
+  padding: 0 1rem;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: 600;
+
+  color: white;
+}
+
+.btn-add-fr {
+  cursor: pointer;
+  background-color: rgb(103, 103, 168);
+}
+.btn-fr {
+  background-color: rgb(10, 10, 12);
 }

@@ -33,6 +33,7 @@ import SearchLocation from "~/modules/search/SearchLocation/SearchLocation";
 import SearchVacation from "~/modules/search/SearchVacation/SearchVacation";
 import SearchAlbum from "~/modules/search/SearchAlbum/SearchAlbum";
 import Preloader from "~/components/Preloader/Preloader";
+import PostResult from "~/modules/search/PostResult/PostResult";
 
 export const publicRoutes = [
   { path: "/", component: NewFeed, layout: DefaultLayout },
@@ -95,6 +96,7 @@ export const publicRoutes = [
   },
   { path: SEARCH_VACATION_ROUTE, component: SearchVacation, layout: Search },
   { path: SEARCH_ALBUM_ROUTE, component: SearchAlbum, layout: Search },
+  { path: "post/:type", component: PostResult, layout: DefaultLayout },
 
   { path: "*", component: NotFound },
 ];

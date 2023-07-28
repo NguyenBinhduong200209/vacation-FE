@@ -1,24 +1,30 @@
 import locationAPI from "~/api/locationAPI";
 const { createSlice, createAsyncThunk, current } = require("@reduxjs/toolkit");
 
-export const getTrendingPlace = createAsyncThunk("location/getTrendingPlace", async (arg, thunkAPI) => {
-  try {
-    const res = await locationAPI.getTrendingPlace(arg);
-    console.log(res);
-    return res.data.data;
-  } catch (error) {
-    console.log("error:", error);
+export const getTrendingPlace = createAsyncThunk(
+  "location/getTrendingPlace",
+  async (arg, thunkAPI) => {
+    try {
+      const res = await locationAPI.getTrendingPlace(arg);
+      console.log(res);
+      return res.data.data;
+    } catch (error) {
+      console.log("error:", error);
+    }
   }
-});
+);
 
-export const getManyLocations = createAsyncThunk("location/getManyLocations", async (arg, thunkAPI) => {
-  try {
-    const res = await locationAPI.getManyLocations(arg);
-    return res.data.data;
-  } catch (error) {
-    console.log("error:", error);
+export const getManyLocations = createAsyncThunk(
+  "location/getManyLocations",
+  async (arg, thunkAPI) => {
+    try {
+      const res = await locationAPI.getManyLocations(arg);
+      return res.data.data;
+    } catch (error) {
+      console.log("error:", error);
+    }
   }
-});
+);
 
 const locationSlice = createSlice({
   name: "location",
@@ -48,6 +54,7 @@ const locationSlice = createSlice({
       })
       .addCase(getManyLocations.fulfilled, (state, action) => {
         state.locationList = action.payload;
+        state.isLoading = false;
       });
   },
 });

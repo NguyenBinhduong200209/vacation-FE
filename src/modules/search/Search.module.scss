@@ -65,7 +65,7 @@ $sidebar-left: 3rem;
 .result-container {
   width: calc(100vw - $sidebar-width - $sidebar-left - 1rem);
   min-height: 100%;
-  padding: 10vh 10vw 0;
+  padding: 0 10vw;
   margin-left: $sidebar-width + $sidebar-left;
 
   &::-webkit-scrollbar-thumb {

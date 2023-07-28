@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAnglesDown,
   faArrowLeft,
-  faCircleXmark,
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -13,11 +12,12 @@ import { getManyLocations } from "~/store/slices/locationSlice";
 import TextArea from "antd/es/input/TextArea";
 import locationAPI from "~/api/locationAPI";
 import Modal from "~/components/Modal/Modal";
+import Loading from "~/components/Loading/Loading";
 
 const cx = classNames.bind(styles);
 const SelectLocation = ({ setOpenLocation, openLocation, setLocation }) => {
   const dispatch = useDispatch();
-  const { locationList } = useSelector((state) => state.location);
+  const { locationList, isLoading } = useSelector((state) => state.location);
   const [selectedLocation, setSelectedLocation] = useState({
     city: { title: "", id: "" },
     district: { title: "", id: "" },
@@ -27,10 +27,8 @@ const SelectLocation = ({ setOpenLocation, openLocation, setLocation }) => {
   const [inputValue, setInputValue] = useState("");
   const [locationName, setLocationName] = useState("");
   const [locationDes, setLocationDes] = useState("");
+  const [adding, setAdding] = useState(false);
   const isChangeList = useRef(false);
-  // let cityId = useRef(null);
-  // let districtId = useRef(null);
-  //   console.log(locationList);
 
   // get locationList
   useEffect(() => {
@@ -46,7 +44,6 @@ const SelectLocation = ({ setOpenLocation, openLocation, setLocation }) => {
             : null,
       })
     );
-
     isChangeList.current = false;
   }, [level, isChangeList.current]);
 
@@ -106,14 +103,14 @@ const SelectLocation = ({ setOpenLocation, openLocation, setLocation }) => {
 
   // add new location
   const handleAddLocation = async () => {
-    const res = await locationAPI.addLocation({
+    setAdding(true);
+    await locationAPI.addLocation({
       parentId: selectedLocation.district.id,
       title: locationName,
       description: locationDes,
     });
-    setSelectedLocation((prev) => {
-      return { ...prev, detail: { title: locationName, id: "" } };
-    });
+    setAdding(false);
+
     setInputValue("");
     setLocationName("");
     setLocationDes("");
@@ -152,20 +149,25 @@ const SelectLocation = ({ setOpenLocation, openLocation, setLocation }) => {
             />
           )}
 
-          {locationList?.map((location) => {
-            return (
-              location.title.toLowerCase().indexOf(inputValue.toLowerCase()) !==
-                -1 && (
-                <div
-                  className={cx("dropdown-item")}
-                  onClick={() => handleSelect(location.title, location._id)}
-                  key={location._id}
-                >
-                  {location.title}
-                </div>
-              )
-            );
-          })}
+          {isLoading ? (
+            <Loading className={cx("loading")} />
+          ) : (
+            locationList?.map((location) => {
+              return (
+                location.title
+                  .toLowerCase()
+                  .indexOf(inputValue.toLowerCase()) !== -1 && (
+                  <div
+                    className={cx("dropdown-item")}
+                    onClick={() => handleSelect(location.title, location._id)}
+                    key={location._id}
+                  >
+                    {location.title}
+                  </div>
+                )
+              );
+            })
+          )}
 
           {(isEmpty || locationList?.length === 0 || !locationList) && (
             <div className={cx("dropdown-error")}>Not Found</div>
@@ -207,13 +209,16 @@ const SelectLocation = ({ setOpenLocation, openLocation, setLocation }) => {
               className={cx("btn-create-location")}
             >
               Add New Location
+              {adding && <Loading />}
             </button>
           </div>
         )}
 
         <button
           className={cx("btn-save")}
-          disabled={Object.values(selectedLocation).some((item) => item === "")}
+          disabled={Object.values(selectedLocation).some(
+            (item) => item.id === ""
+          )}
           onClick={handleSaveLocation}
         >
           Save {selectedLocation.city && `: ${selectedLocation.city.title}`}

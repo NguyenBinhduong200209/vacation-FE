@@ -1,15 +1,15 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import styles from "./Timeline.module.scss";
 import classNames from "classnames/bind";
-import { useEffect, useState } from "react";
-import { setTimeline } from "~/store/slices/vacationSlice";
-import Loading from "~/components/Loading/Loading";
+import { Link, useSearchParams } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 
 const Timeline = () => {
   const { posts, activeTimeline } = useSelector((state) => state.vacation);
   const { timeline } = posts;
+  const [searchParams] = useSearchParams();
+  const vacationId = searchParams.get("vacationID");
 
   return (
     <>
@@ -19,7 +19,8 @@ const Timeline = () => {
           <main>
             {timeline?.map((item, index) => {
               return (
-                <div
+                <Link
+                  to={`/post/timeline?tl=${item}&id=${vacationId}`}
                   className={cx(
                     "timeline-item",
                     activeTimeline === item && "item-active"
@@ -28,7 +29,7 @@ const Timeline = () => {
                 >
                   <span className={cx("index")}>{index + 1}.</span>
                   <span className={cx("value")}>{item}</span>
-                </div>
+                </Link>
               );
             })}
           </main>

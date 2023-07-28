@@ -26,6 +26,8 @@
   }
 
   main {
+    display: flex;
+    flex-direction: column;
     line-height: 4;
     max-height: 30vh;
     overflow: overlay;
@@ -63,10 +65,19 @@
   font-size: 1.6rem;
   font-style: italic;
   font-weight: 500;
+  color: white;
+  cursor: pointer;
 
   .index {
     display: inline-block;
     width: 30px;
+  }
+
+  &:hover {
+    color: var(--active-color);
+    .value {
+      text-decoration: underline;
+    }
   }
 }
 

@@ -17,7 +17,7 @@ import Notification from "~/components/Notification/Notification";
 
 const cx = classNames.bind(styles);
 
-const PostItem = ({ postDetail }) => {
+const PostItem = ({ postDetail, vacationId, setHandlePost, handlePost }) => {
   const {
     authorInfo,
     content,
@@ -41,6 +41,7 @@ const PostItem = ({ postDetail }) => {
   const [isError, setIsError] = useState(false);
   const [msg, setMsg] = useState("");
   const [openNoti, setOpenNoti] = useState(false);
+  const [postId, setPostId] = useState("");
 
   useEffect(() => {
     const handleScrollPost = () => {
@@ -62,9 +63,9 @@ const PostItem = ({ postDetail }) => {
 
   const handleDeletePost = async () => {
     try {
+      setOpen(false);
       const res = await vacationAPI.deletePost(_id);
       setMsg(res.data?.message);
-      setOpen(false);
       dispatch(isPostListChanged(true));
       setIsSuccess(true);
     } catch (error) {
@@ -86,9 +87,10 @@ const PostItem = ({ postDetail }) => {
           <div className={cx("username-container")}>
             <div className={cx("username")}>
               {authorInfo.username}
+
               <span>at</span>
               <span className={cx("location")}>
-                {` ${location.detail} - ${location.district} - ${location.city}`}
+                {` ${location?.detail} - ${location?.district} - ${location?.city}`}
               </span>
             </div>
             <div className={cx("moment")}>{moment(lastUpdateAt).fromNow()}</div>
@@ -103,6 +105,8 @@ const PostItem = ({ postDetail }) => {
                   onClick={() => {
                     setShowModal(true);
                     setOpen(false);
+                    setHandlePost("update");
+                    setPostId(_id);
                   }}
                 >
                   Edit
@@ -117,20 +121,22 @@ const PostItem = ({ postDetail }) => {
             trigger="click"
             placement="bottom"
           >
+            {handlePost === "update" && (
+              <HandlePost
+                showModal={showModal}
+                setShowModal={setShowModal}
+                setPostId={setPostId}
+                postId={postId}
+                vacationId={vacationId}
+                type={handlePost}
+              />
+            )}
             <FontAwesomeIcon
               icon={faEllipsisVertical}
               className={cx("options")}
               onClick={() => setOpen(!open)}
             />
           </Popover>
-        )}
-        {showModal && (
-          <HandlePost
-            showModal={showModal}
-            setShowModal={setShowModal}
-            postId={_id}
-            type={"update"}
-          />
         )}
       </header>
 
@@ -169,14 +175,15 @@ const PostItem = ({ postDetail }) => {
         postID={_id}
         isLikedStatus={isLiked}
       />
-
-      <Notification
-        isSuccess={isSuccess}
-        isError={isError}
-        msg={msg}
-        openNoti={openNoti}
-        setOpenNoti={setOpenNoti}
-      />
+      {(isSuccess || isError) && (
+        <Notification
+          isSuccess={isSuccess}
+          isError={isError}
+          msg={msg}
+          openNoti={openNoti}
+          setOpenNoti={setOpenNoti}
+        />
+      )}
     </div>
   );
 };

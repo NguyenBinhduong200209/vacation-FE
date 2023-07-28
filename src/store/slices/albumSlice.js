@@ -15,9 +15,65 @@ export const getList = createAsyncThunk("album/getList", async (arg, thunkAPI) =
   }
 });
 
+export const createAlbum = createAsyncThunk("album/createAlbum", async (arg, thunkAPI) => {
+  try {
+    const { vacationId, title, userId } = arg;
+    const res = await albumAPI.createAlbum({ vacationId, title, userId });
+    return res.data;
+  } catch (error) {
+    if (!error.response) {
+      return thunkAPI.rejectWithValue({ message: error.message });
+    }
+    return thunkAPI.rejectWithValue({
+      message: error.response.data.message,
+    });
+  }
+});
+
 export const getAlbumPage = createAsyncThunk("album/getAlbumPage", async (arg, thunkAPI) => {
   try {
     const res = await albumAPI.getAlbumPage({ albumId: arg?.albumId, page: arg?.page || 1 });
+    return res.data;
+  } catch (error) {
+    if (!error.response) {
+      return thunkAPI.rejectWithValue({ message: error.message });
+    }
+    return thunkAPI.rejectWithValue({
+      message: error.response.data.message,
+    });
+  }
+});
+
+export const createAlbumPage = createAsyncThunk("album/createAlbumPage", async (arg, thunkAPI) => {
+  try {
+    const res = await albumAPI.createAlbumPage({
+      albumId: arg?.albumId,
+      vacationId: arg?.vacationId,
+      page: arg?.page || 1,
+      resource: arg?.resource,
+    });
+    return res.data;
+  } catch (error) {
+    if (!error.response) {
+      return thunkAPI.rejectWithValue({ message: error.message });
+    }
+    return thunkAPI.rejectWithValue({
+      message: error.response.data.message,
+    });
+  }
+});
+
+export const updateAlbumPage = createAsyncThunk("album/updateAlbumPage", async (arg, thunkAPI) => {
+  try {
+    const res = await albumAPI.updateAlbumPage({
+      albumpageId: arg?.albumpageId,
+      data: {
+        albumId: arg?.albumId,
+        vacationId: arg?.vacationId,
+        page: arg?.page || 1,
+        resource: arg?.resource,
+      },
+    });
     return res.data;
   } catch (error) {
     if (!error.response) {
@@ -61,6 +117,9 @@ const albumSlice = createSlice({
       state.list = [];
       state.meta = { page: 1, pages: 1, total: 1 };
     },
+    resetSelectedImages: (state) => {
+      state.selectedImages = [];
+    },
     addSelected: (state, action) => {
       const currentSelectedList = current(state).selectedImages;
       state.selectedImages = currentSelectedList.concat(
@@ -102,12 +161,49 @@ const albumSlice = createSlice({
       })
       .addCase(getAlbumPage.fulfilled, (state, action) => {
         const { resource, _id, userInfo } = action.payload?.data;
-        state.selectedImages = resource.map(item => Object.assign({ path: item.path, style: item.style, _id: item.resourceId }))
-        state.selectedPageId = _id
+        state.selectedImages = resource.map((item) =>
+          Object.assign({ path: item.path, style: item.style, _id: item.resourceId })
+        );
+        state.selectedPageId = _id;
         state.isLoading = false;
-        state.userInfo = userInfo
+        state.userInfo = userInfo;
       })
       .addCase(getAlbumPage.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.msg = action.payload?.message;
+      })
+      .addCase(createAlbum.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createAlbum.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const currentList = current(state).list;
+        state.list = currentList.concat(action.payload?.data);
+      })
+      .addCase(createAlbum.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.msg = action.payload?.message;
+      })
+      .addCase(createAlbumPage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createAlbumPage.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(createAlbumPage.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.msg = action.payload?.message;
+      })
+      .addCase(updateAlbumPage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateAlbumPage.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(updateAlbumPage.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = false;
         state.msg = action.payload?.message;
@@ -128,5 +224,5 @@ const albumSlice = createSlice({
   },
 });
 const { reducer, actions } = albumSlice;
-export const { resetList, addSelected, removeSelected, updateSelected } = actions;
+export const { resetList, addSelected, removeSelected, updateSelected, resetSelectedImages } = actions;
 export default reducer;

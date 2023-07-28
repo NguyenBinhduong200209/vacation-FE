@@ -10,10 +10,17 @@ const albumAPI = {
     return axiosClient.get(url);
   },
 
+  createAlbum: (data) => axiosClient.post(URL.ALBUM_ROUTE, data),
+
   getAlbumPage: (data) => {
     const url = `${URL.ALBUMPAGE_ROUTE}/${data.albumId}?page=${data.page}`;
     return axiosClient.get(url);
   },
+
+  createAlbumPage: (data) => axiosClient.post(URL.ALBUMPAGE_ROUTE, data),
+
+  updateAlbumPage: ({ id, data }) => axiosClient.put(`${URL.ALBUMPAGE_ROUTE}/${id}`, data),
+
   delete: (id) => axiosClient.delete(`${URL.ALBUM_ROUTE}/${id}`),
 };
 export default albumAPI;

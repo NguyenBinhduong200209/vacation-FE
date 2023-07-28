@@ -4,109 +4,34 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import styles from "./NewAlbum.module.scss";
 import classNames from "classnames/bind";
 import Slider from "./Slider/Slider";
+import VacationDetail from "./VacationDetail/VacationDetail";
 import "./Preloader.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import UserList from "~/modules/vacation/components/UserList/UserList";
-import { VACATION_ROUTE } from "~/utils/constants";
-import HandleVacation from "~/modules/vacation/HandleVacation/HandleVacation";
 import Image from "./Image/Image";
-import axiosClient from "~/api/axiosClient";
-import { message } from "antd";
-import { getList, getAlbumPage } from "~/store/slices/albumSlice";
+import {
+  createAlbumPage,
+  getAlbumPage,
+  updateAlbumPage,
+  resetSelectedImages,
+} from "~/store/slices/albumSlice";
 import ImageField from "~/components/ImageField/ImageField";
-import { faCircleInfo, faPen, faUser } from "@fortawesome/free-solid-svg-icons";
-import { faCalendar } from "@fortawesome/free-regular-svg-icons";
-import { getDate } from "~/helpers/function";
-import { getDetailVacation } from "~/store/slices/vacationSlice";
-import { Avatar, Tooltip } from "antd";
+import { Avatar } from "antd";
 const cx = classNames.bind(styles);
 
 const NewAlbum = () => {
-
-	const list = useSelector((state) => state.album.selectedImages);
-	const albumpageId = useSelector((state) => state.album.selectedPageId);
-	const { userInfo } = useSelector((state) => state.album)
-	const { detail, memberList } = useSelector((state) => state.vacation);
-	const { authorInfo, cover, members, title, startingTime, endingTime } = detail;
-
-	const info = useSelector((state) => state.auth);
-
-	const dispatch = useDispatch();
-	const [searchParams] = useSearchParams();
-	const albumId = searchParams.get("albumId");
-	const vacationId = searchParams.get("id");
-	const dataId = Object.fromEntries(searchParams);
-	const creatorId = searchParams.get("userId");
-	const [containerSize, setContainerSize] = useState({
-		outerWidth: 0,
-		outerHeight: 0,
-	});
-	const isAuthor = info?._id === authorInfo?._id;
-	const [openUserList, setOpenUserList] = useState(false);
-	const startDate = getDate(startingTime);
-	const endDate = getDate(endingTime);
-	const [open, setOpen] = useState(false);
-	const [isOpen, setIsOpen] = useState(false);
-	const ref = useRef(null);
-	const navigate = useNavigate();
-
-	useEffect(() => {
-		dispatch(getAlbumPage({ page: 1, albumId }));
-	}, [dispatch, albumId]);
-
-	useEffect(() => {
-		dispatch(getDetailVacation(vacationId));
-	}, [dispatch]);
-
-	const saveAlbum = async (e) => {
-		e.preventDefault();
-		try {
-			const data = {
-				albumId: albumId,
-				vacationId: vacationId,
-				page: 1,
-				resource: list.map((item) => {
-					return {
-						style: item.style,
-						resourceId: item._id,
-					};
-				}),
-			};
-			const res = await axiosClient.post(
-				"https://vacation-social-network.onrender.com/albumpage/",
-				data
-			);
-			navigate("/profile/album");
-			console.log(res.data.data._id);
-		} catch (error) {
-			message.error(error.response.data.message);
-		}
-	};
-
-
-	const updateAlbumPage = async () => {
-		try {
-			const data = {
-				albumpageId: albumpageId,
-				albumId: albumId,
-				vacationId: vacationId,
-				page: "1",
-				resource: list.map((item) => ({
-					style: item.style,
-					resourceId: item._id,
-				})),
-			};
-			console.log(data.resource);
-			await axiosClient.put(
-				`https://vacation-social-network.onrender.com/albumpage/${albumpageId}`,
-				data
-			);
-			navigate("/profile/album");
-		} catch (error) {
-			message.error(error.response.data.message);
-		}
-	};
-
+  const dispatch = useDispatch();
+  const ref = useRef(null);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { selectedImages, selectedPageId, userInfo } = useSelector((state) => state.album);
+  const { authorInfo, cover } = useSelector((state) => state.vacation.detail);
+  const { info } = useSelector((state) => state.auth);
+  const { title, id, albumId } = Object.fromEntries(searchParams);
+  const creatorId = searchParams.get("userId");
+  const [containerSize, setContainerSize] = useState({
+    outerWidth: 0,
+    outerHeight: 0,
+  });
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     setContainerSize({
@@ -115,137 +40,113 @@ const NewAlbum = () => {
     });
   }, [ref]);
 
+  useEffect(() => {
+    dispatch(resetSelectedImages());
+    dispatch(getAlbumPage({ page: 1, albumId }));
+  }, [dispatch, albumId]);
 
-	const handleWrapClick = () => {
-		setIsOpen((prevState) => !prevState);
-	};
+  const saveAlbum = () => {
+    dispatch(
+      createAlbumPage({
+        albumId: albumId,
+        vacationId: id,
+        page: 1,
+        resource: selectedImages.map((item) => {
+          return {
+            style: item.style,
+            resourceId: item._id,
+          };
+        }),
+      })
+    ).then(() => navigate("/profile/album"));
+  };
 
-	return (
-		<>
-			<div className={cx("wrapper")}>
-				<div className={cx("sidebar")}>
-					<ImageField src={cover?.path} className={cx("img-BG")} preview={false} />
-					<div className={cx("sidebar-content")}>
-						<div className={cx("user-info")}>
-							<div className={cx("user-index")}>
-								<div className={cx("index")}>{authorInfo?.friends}</div>
-								<div className={cx("index-title")}>friends</div>
-							</div>
-							<div className={cx("user-avatar")}>
-								<Avatar src={authorInfo?.avatar?.path} shape="square" size={100} className={cx("avatar")} />
+  const updateAlbum = () => {
+    dispatch(
+      updateAlbumPage({
+        albumpageId: selectedPageId,
+        data: {
+          albumId: albumId,
+          vacationId: id,
+          page: 1,
+          resource: selectedImages.map((item) => ({
+            style: item.style,
+            resourceId: item._id,
+          })),
+        },
+      })
+    ).then(() => navigate("/profile/album"));
+  };
 
-								<div className={cx("fullname")}>
-									{authorInfo?.firstname} {authorInfo?.lastname}
-								</div>
-								<div className={cx("username")}>{authorInfo?.username}</div>
-							</div>
-						</div>
-						<div className={cx("vacation-detail")}>
-							<div className={cx("vacation-title")}>
-								Vacation Detail
-								{isAuthor && (
-									<FontAwesomeIcon icon={faPen} className={cx("title-icon")} onClick={() => setOpen(true)} />
-								)}
-								<HandleVacation setOpen={setOpen} showModal={open} type="update" vacationId={vacationId} />
-							</div>
-							<div className={cx("vacation-info")}>
-								<div className={cx("vacation-name")}>
-									<FontAwesomeIcon icon={faCircleInfo} className={cx("icon")} />
-									<Tooltip
-										title={title}
-										color="grey"
-										overlayInnerStyle={{
-											textAlign: "center",
-										}}
-									>
-										<span>{title}</span>
-									</Tooltip>
-								</div>
+  const handleWrapClick = () => {
+    setIsOpen((prevState) => !prevState);
+  };
 
-								<div onClick={() => setOpenUserList(true)}>
-									<FontAwesomeIcon icon={faUser} className={cx("icon")} />
-									<span>{members} people join in</span>
-								</div>
-								<UserList
-									openUserList={openUserList}
-									setOpenUserList={setOpenUserList}
-									title="Member List"
-									list={memberList}
-								/>
+  return (
+    <div className={cx("wrapper")}>
+      <div className={cx("sidebar")}>
+        <ImageField src={cover?.path} className={cx("img-BG")} preview={false} />
+        <div className={cx("sidebar-content")}>
+          <div className={cx("user-info")}>
+            <div className={cx("user-avatar")}>
+              <Avatar src={authorInfo?.avatar?.path} shape="square" size={100} className={cx("avatar")} />
+              <div className={cx("fullname")}>
+                {authorInfo?.firstname} {authorInfo?.lastname}
+              </div>
+              <div className={cx("username")}>{authorInfo?.username}</div>
+            </div>
+          </div>
+          <VacationDetail vacationId={id} />
+          <div className={cx("route")}>
+            {creatorId === info._id && (
+              <>
+                <button type="button" className={cx("save-btn")} onClick={saveAlbum}>
+                  Save
+                </button>
+                <button type="button" className={cx("save-btn")} onClick={updateAlbum}>
+                  Update
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
 
-								<div>
-									<FontAwesomeIcon icon={faCalendar} className={cx("icon")} />
-									<span>
-										{startDate} - {endDate}
-									</span>
-								</div>
-							</div>
-						</div>
-						<div className={cx("route")}>
-							{creatorId === info.info._id ? (
-								<>
-									<button className={cx("save-btn")} onClick={saveAlbum}>
-										Save
-									</button>
-									<button className={cx("save-btn")} onClick={updateAlbumPage}>
-										Update
-									</button>
-								</>
-							) : (
-								<></>
-							)}
-						</div>
-					</div>
-				</div>
-
-				<div>
-					<div>
-						<div className={`wrap ${isOpen ? "open" : ""}`}>
-							<div className="overlay" onClick={handleWrapClick}>
-								<div className="overlay-content animate slide-left delay-2">
-									<h1 className="animate slide-left pop delay-4 line">{dataId.title}</h1>
-									<p
-										className="animate slide-left pop delay-5"
-										style={{ color: "white", marginBottom: "2.5rem" }}
-									>
-										Sign: <em>{userInfo?.username}</em>
-									</p>
-								</div>
-								<div className="image-content animate slide delay-5"></div>
-								<div className="dots animate">
-									<div className="dot animate slide-up delay-6"></div>
-									<div className="dot animate slide-up delay-7"></div>
-									<div className="dot animate slide-up delay-8"></div>
-								</div>
-							</div>
-							<div className="text">
-								<div className={cx("wrapper")}>
-									{creatorId === info.info._id ? (
-										<>
-											<div className={cx("mother")} ref={ref}>
-												{list.map((item) => (
-													<Image key={item._id} imgData={item} containerSize={containerSize} />
-												))}
-											</div>
-										</>
-									) : (
-										<>
-											<div className={cx("mother-banned-you")} ref={ref}>
-												{list.map((item) => (
-													<Image key={item._id} imgData={item} containerSize={containerSize} />
-												))}
-											</div>
-										</>
-									)}
-								</div>
-							</div>
-						</div>
-						<Slider />
-					</div>
-				</div>
-			</div>
-		</>
-	);
+      <div>
+        <div>
+          <div className={`wrap ${isOpen ? "open" : ""}`}>
+            <div className="overlay" onClick={handleWrapClick}>
+              <div className="overlay-content animate slide-left delay-2">
+                <h1 className="animate slide-left pop delay-4 line">{title}</h1>
+                <p
+                  className="animate slide-left pop delay-5"
+                  style={{ color: "white", marginBottom: "2.5rem" }}
+                >
+                  Sign: <em>{userInfo?.username}</em>
+                </p>
+              </div>
+              <div className="image-content animate slide delay-5"></div>
+              <div className="dots animate">
+                <div className="dot animate slide-up delay-6"></div>
+                <div className="dot animate slide-up delay-7"></div>
+                <div className="dot animate slide-up delay-8"></div>
+              </div>
+            </div>
+            <div className="text">
+              <div className={cx("wrapper")}>
+                <div className={cx(creatorId === info._id ? "mother" : "mother-banned-you")} ref={ref}>
+                  {selectedImages.map((item) => (
+                    <Image key={item._id} imgData={item} containerSize={containerSize} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+          <Slider />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default NewAlbum;

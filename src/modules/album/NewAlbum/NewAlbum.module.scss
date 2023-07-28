@@ -63,8 +63,9 @@
 }
 
 .save-btn {
-  width: 100%;
-  margin-top: 5%;
+  width: 10%;
+  min-width: 90px;
+  margin: auto;
   padding: 12px;
   cursor: pointer;
   border-radius: 20px;
@@ -164,7 +165,6 @@
   }
 }
 
-
 // css for vacation detail
 
 .vacation-title {
@@ -206,4 +206,3 @@
     margin-right: 2.5rem;
   }
 }
-

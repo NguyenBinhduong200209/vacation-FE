@@ -7,22 +7,15 @@
 
 .wrap {
   z-index: 3;
-  top: 5vh;
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
-  width: 90vmin;
-  height: 37em;
-  margin: 2rem auto;
+  min-width: 125vmin;
+  height: 45em;
+  margin: auto;
+  margin-left: 5%;
   border: 8px solid;
-  border-image: linear-gradient(
-      -50deg,
-      #83a4d4,
-      #b6fbff,
-      rgb(180, 182, 223),
-      rgb(35, 216, 204)
-    )
-    1;
+  border-image: linear-gradient(-50deg, #83a4d4, #b6fbff, rgb(180, 182, 223), rgb(35, 216, 204)) 1;
   transition: 0.3s ease-in-out;
   position: relative;
   overflow: hidden;
@@ -45,13 +38,7 @@
   height: 100%;
   padding: 0.5rem 0 0 0.5rem;
   border: 3px solid;
-  border-image: linear-gradient(
-      to bottom,
-      #73c8a9 10%,
-      rgb(148, 168, 189) 35% 65%,
-      #656f87 1000%
-    )
-    0 0 0 100%;
+  border-image: linear-gradient(to bottom, #73c8a9 10%, rgb(148, 168, 189) 35% 65%, #656f87 1000%) 0 0 0 100%;
   transition: 0.3s ease-in-out 0.2s;
   z-index: 1;
 }
@@ -59,7 +46,7 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 70vmin;
+  width: 100vmin;
   height: 100%;
   background-image: url("https://img.freepik.com/free-vector/vietnam-map-touristic-isometric-poster_1284-17336.jpg");
   background-size: cover;
@@ -109,7 +96,7 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 70vmin;
+  width: 100vmin;
   height: 100%;
   background: #fff;
   box-shadow: inset 1px 1px 15px 0 rgba(0 0 0 / 0.4);
@@ -117,7 +104,7 @@
 }
 
 .wrap.open .overlay {
-  transform: translateX(-70vmin);
+  transform: translateX(-100vmin);
 }
 
 .wrap.open .image-content {
@@ -127,7 +114,7 @@
 .wrap.open .overlay-content {
   border: none;
   transition-delay: 0.2s;
-  transform: translateX(70vmin);
+  transform: translateX(100vmin);
 }
 
 .wrap.open .dots {

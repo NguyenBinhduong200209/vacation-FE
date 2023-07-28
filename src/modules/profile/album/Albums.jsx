@@ -82,11 +82,7 @@ const Albums = () => {
                   color="#282828"
                   content={
                     <div className={cx("pop-content")}>
-                      <NavLink
-                        to={`/newAlbum?id=${item.vacationId}&title=${item.title}&albumId=${item._id}&userId=${currentUserId}`}
-                      >
-                        Edit
-                      </NavLink>
+                      <NavLink to={`/album/${item._id}`}>Edit</NavLink>
                       <Button onClick={() => handleDelete(item._id)}>Delete</Button>
                     </div>
                   }

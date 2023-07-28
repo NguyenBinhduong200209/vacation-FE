@@ -80,7 +80,7 @@ export const createAlbumPage = createAsyncThunk("album/createAlbumPage", async (
 export const updateAlbumPage = createAsyncThunk("album/updateAlbumPage", async (arg, thunkAPI) => {
   try {
     const res = await albumAPI.updateAlbumPage({
-      albumpageId: arg?.albumpageId,
+      id: arg?.albumpageId,
       data: {
         albumId: arg?.albumId,
         vacationId: arg?.vacationId,

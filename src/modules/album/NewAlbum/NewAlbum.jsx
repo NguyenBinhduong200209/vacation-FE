@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./NewAlbum.module.scss";
 import classNames from "classnames/bind";
 import Slider from "./Slider/Slider";
@@ -12,21 +12,26 @@ import {
   getAlbumPage,
   updateAlbumPage,
   resetSelectedImages,
+  resetSelectedAlbum,
+  getDetail,
 } from "~/store/slices/albumSlice";
 import ImageField from "~/components/ImageField/ImageField";
 import { Avatar } from "antd";
 const cx = classNames.bind(styles);
 
 const NewAlbum = () => {
+  const albumId = useParams().id;
   const dispatch = useDispatch();
   const ref = useRef(null);
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const { selectedImages, selectedPageId, userInfo } = useSelector((state) => state.album);
+  const {
+    selectedImages,
+    selectedPageId,
+    userInfo,
+    selectedAlbum: { _id, title, vacationId, userId },
+  } = useSelector((state) => state.album);
   const { authorInfo, cover } = useSelector((state) => state.vacation.detail);
   const { info } = useSelector((state) => state.auth);
-  const { title, id, albumId } = Object.fromEntries(searchParams);
-  const creatorId = searchParams.get("userId");
   const [containerSize, setContainerSize] = useState({
     outerWidth: 0,
     outerHeight: 0,
@@ -41,41 +46,40 @@ const NewAlbum = () => {
   }, [ref]);
 
   useEffect(() => {
+    albumId ? dispatch(getDetail({ id: albumId })) : dispatch(resetSelectedAlbum());
     dispatch(resetSelectedImages());
-    dispatch(getAlbumPage({ page: 1, albumId }));
+    dispatch(getAlbumPage({ page: 1, albumId: albumId }));
   }, [dispatch, albumId]);
 
   const saveAlbum = () => {
-    dispatch(
-      createAlbumPage({
-        albumId: albumId,
-        vacationId: id,
-        page: 1,
-        resource: selectedImages.map((item) => {
-          return {
-            style: item.style,
-            resourceId: item._id,
-          };
-        }),
-      })
-    ).then(() => navigate("/profile/album"));
-  };
-
-  const updateAlbum = () => {
-    dispatch(
-      updateAlbumPage({
-        albumpageId: selectedPageId,
-        data: {
-          albumId: albumId,
-          vacationId: id,
-          page: 1,
-          resource: selectedImages.map((item) => ({
-            style: item.style,
-            resourceId: item._id,
-          })),
-        },
-      })
-    ).then(() => navigate("/profile/album"));
+    albumId
+      ? dispatch(
+          updateAlbumPage({
+            albumpageId: selectedPageId,
+            data: {
+              albumId: _id,
+              vacationId: vacationId,
+              page: 1,
+              resource: selectedImages.map((item) => ({
+                style: item.style,
+                resourceId: item._id,
+              })),
+            },
+          })
+        )
+      : dispatch(
+          createAlbumPage({
+            albumId: _id,
+            vacationId: vacationId,
+            page: 1,
+            resource: selectedImages.map((item) => {
+              return {
+                style: item.style,
+                resourceId: item._id,
+              };
+            }),
+          })
+        ).then(() => navigate("/profile/album"));
   };
 
   const handleWrapClick = () => {
@@ -96,17 +100,12 @@ const NewAlbum = () => {
               <div className={cx("username")}>{authorInfo?.username}</div>
             </div>
           </div>
-          <VacationDetail vacationId={id} />
+          <VacationDetail vacationId={vacationId} />
           <div className={cx("route")}>
-            {creatorId === info._id && (
-              <>
-                <button type="button" className={cx("save-btn")} onClick={saveAlbum}>
-                  Save
-                </button>
-                <button type="button" className={cx("save-btn")} onClick={updateAlbum}>
-                  Update
-                </button>
-              </>
+            {userId === info._id && (
+              <button type="button" className={cx("save-btn")} onClick={saveAlbum}>
+                Save
+              </button>
             )}
           </div>
         </div>
@@ -134,7 +133,7 @@ const NewAlbum = () => {
             </div>
             <div className="text">
               <div className={cx("wrapper")}>
-                <div className={cx(creatorId === info._id ? "mother" : "mother-banned-you")} ref={ref}>
+                <div className={cx(userId === info._id ? "mother" : "mother-banned-you")} ref={ref}>
                   {selectedImages.map((item) => (
                     <Image key={item._id} imgData={item} containerSize={containerSize} />
                   ))}

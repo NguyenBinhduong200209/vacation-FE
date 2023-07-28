@@ -28,23 +28,19 @@ const NewFeed = () => {
       dispatch(getListVacation({ page: 1, type: "newFeed" })),
       dispatch(getInfoUser()),
     ]).then(() => setPreLoader(false));
-  }, []);
+  }, [dispatch]);
 
-  return (
-    <>
-      {preLoader ? (
-        <Preloader />
-      ) : (
-        <div className={cx("container")}>
-          {!isMediumSize && <UserInfo />}
-          <div className={cx("feed")}>
-            {isSmallSize ? <Trending /> : <Create />}
-            <List />
-          </div>
-          {!isSmallSize && <Trending />}
-        </div>
-      )}
-    </>
+  return preLoader ? (
+    <Preloader />
+  ) : (
+    <div className={cx("container")}>
+      {!isMediumSize && <UserInfo />}
+      <div className={cx("feed")}>
+        {isSmallSize ? <Trending /> : <Create />}
+        <List />
+      </div>
+      {!isSmallSize && <Trending />}
+    </div>
   );
 };
 

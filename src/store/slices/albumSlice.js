@@ -15,6 +15,20 @@ export const getList = createAsyncThunk("album/getList", async (arg, thunkAPI) =
   }
 });
 
+export const getDetail = createAsyncThunk("album/getDetail", async (arg, thunkAPI) => {
+  try {
+    const res = await albumAPI.getDetail(arg?.id);
+    return res.data;
+  } catch (error) {
+    if (!error.response) {
+      return thunkAPI.rejectWithValue({ message: error.message });
+    }
+    return thunkAPI.rejectWithValue({
+      message: error.response.data.message,
+    });
+  }
+});
+
 export const createAlbum = createAsyncThunk("album/createAlbum", async (arg, thunkAPI) => {
   try {
     const { vacationId, title, userId } = arg;
@@ -104,6 +118,7 @@ const albumSlice = createSlice({
   name: "album",
   initialState: {
     list: [],
+    selectedAlbum: {},
     selectedImages: [],
     selectedPageId: "",
     meta: { page: 1, pages: 1, total: 1 },
@@ -120,6 +135,10 @@ const albumSlice = createSlice({
     resetSelectedImages: (state) => {
       state.selectedImages = [];
     },
+    resetSelectedAlbum: (state) => {
+      state.selectedAlbum = {};
+    },
+
     addSelected: (state, action) => {
       const currentSelectedList = current(state).selectedImages;
       state.selectedImages = currentSelectedList.concat(
@@ -156,6 +175,17 @@ const albumSlice = createSlice({
         state.isLoading = false;
         state.msg = action.payload?.message;
       })
+      .addCase(getDetail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getDetail.fulfilled, (state, action) => {
+        state.selectedAlbum = action.payload?.data;
+      })
+      .addCase(getDetail.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.msg = action.payload?.message;
+      })
       .addCase(getAlbumPage.pending, (state) => {
         state.isLoading = true;
       })
@@ -178,8 +208,7 @@ const albumSlice = createSlice({
       })
       .addCase(createAlbum.fulfilled, (state, action) => {
         state.isLoading = false;
-        const currentList = current(state).list;
-        state.list = currentList.concat(action.payload?.data);
+        state.selectedAlbum = action.payload?.data;
       })
       .addCase(createAlbum.rejected, (state, action) => {
         state.isError = true;
@@ -224,5 +253,12 @@ const albumSlice = createSlice({
   },
 });
 const { reducer, actions } = albumSlice;
-export const { resetList, addSelected, removeSelected, updateSelected, resetSelectedImages } = actions;
+export const {
+  resetList,
+  addSelected,
+  removeSelected,
+  updateSelected,
+  resetSelectedImages,
+  resetSelectedAlbum,
+} = actions;
 export default reducer;

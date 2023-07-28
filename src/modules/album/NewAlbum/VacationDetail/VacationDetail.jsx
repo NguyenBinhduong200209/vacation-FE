@@ -27,7 +27,7 @@ const VacationDetail = ({ vacationId }) => {
   const endDate = getDate(endingTime);
 
   useEffect(() => {
-    dispatch(getDetailVacation(vacationId));
+    vacationId && dispatch(getDetailVacation(vacationId));
   }, [dispatch, vacationId]);
 
   return (

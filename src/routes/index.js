@@ -78,6 +78,7 @@ export const publicRoutes = [
     ],
   },
   { path: "/newAlbum", component: NewAlbum, layout: DefaultLayout },
+  { path: "/album/:id", component: NewAlbum, layout: DefaultLayout },
   { path: "/pre", component: Preloader, layout: DefaultLayout },
 
   {

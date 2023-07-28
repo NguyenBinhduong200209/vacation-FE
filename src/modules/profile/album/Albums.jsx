@@ -18,6 +18,7 @@ const Albums = () => {
   } = useSelector((state) => state.album);
   const { info } = useSelector((state) => state.auth);
   const { userId } = useOutletContext();
+  const isAuthor = userId === info._id || !userId;
   const currentUserId = userId ? userId : info._id;
 
   useEffect(() => {
@@ -45,11 +46,9 @@ const Albums = () => {
           className={cx("album-grid")}
           grid={{ gutter: 35, xs: 1, sm: 2, md: 2, lg: 3, xl: 3, xxl: 3 }}
           dataSource={list}
-          renderItem={(item, index) => (
+          renderItem={(item) => (
             <List.Item className={cx("album-item")}>
-              <NavLink
-                to={`/newAlbum?id=${item.vacationId}&title=${item.title}&albumId=${item._id}&userId=${currentUserId}`}
-              >
+              <NavLink to={`/album/${item._id}`}>
                 <Card
                   bordered={false}
                   className={cx("album-card")}
@@ -73,25 +72,28 @@ const Albums = () => {
                   </Typography.Paragraph>
                 </Card>
               </NavLink>
-              <Popover
-                className={cx("pop-over")}
-                arrow
-                placement="bottomRight"
-                trigger={"click"}
-                color="#282828"
-                content={
-                  <div className={cx("pop-content")}>
-                    <NavLink
-                      to={`/newAlbum?id=${item.vacationId}&title=${item.title}&albumId=${item._id}&userId=${currentUserId}`}
-                    >
-                      Edit
-                    </NavLink>
-                    <Button onClick={() => handleDelete(item._id)}>Delete</Button>
-                  </div>
-                }
-              >
-                <MoreOutlined className={cx("more")} />
-              </Popover>
+
+              {isAuthor && (
+                <Popover
+                  className={cx("pop-over")}
+                  arrow
+                  placement="bottomRight"
+                  trigger={"click"}
+                  color="#282828"
+                  content={
+                    <div className={cx("pop-content")}>
+                      <NavLink
+                        to={`/newAlbum?id=${item.vacationId}&title=${item.title}&albumId=${item._id}&userId=${currentUserId}`}
+                      >
+                        Edit
+                      </NavLink>
+                      <Button onClick={() => handleDelete(item._id)}>Delete</Button>
+                    </div>
+                  }
+                >
+                  <MoreOutlined className={cx("more")} />
+                </Popover>
+              )}
             </List.Item>
           )}
         />

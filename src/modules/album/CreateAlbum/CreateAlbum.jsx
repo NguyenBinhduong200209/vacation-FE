@@ -13,7 +13,6 @@ const cx = classNames.bind(styles);
 const CreateAlbum = ({ open, setOpen }) => {
   const dispatch = useDispatch();
   const { info } = useSelector((state) => state.auth);
-  const { list } = useSelector((state) => state.album);
   const [selected, setSelected] = useState({
     title: "Choose Your Vacation",
     id: "",
@@ -27,7 +26,7 @@ const CreateAlbum = ({ open, setOpen }) => {
   const handleRoute = async (e) => {
     dispatch(resetList());
     dispatch(createAlbum({ vacationId: selected._id, title: inputValue, userId: info._id })).then(() =>
-      navigate(`/newAlbum?id=${selected._id}&title=${inputValue}&albumId=${list[0]._id}&userId=${info._id}`)
+      navigate(`/newAlbum`)
     );
   };
 

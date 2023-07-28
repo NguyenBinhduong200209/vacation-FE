@@ -32,7 +32,7 @@ const Interaction = (props) => {
   });
   const { list: commentList, page, pages, total } = cmtList;
   const [value, setValue] = useState(""); // state for input value
-  // const [totalCmt, setTotalCmt] = useState(comments);
+
   // state for react fnc
   const [likedList, setLikedList] = useState({
     list: [],
@@ -66,13 +66,14 @@ const Interaction = (props) => {
           type: "posts",
           page: 1,
         });
-        setCmtList({
-          list: res.data.data,
-          page: res.data.meta?.page,
-          pages: res.data.meta?.pages,
-          total: res.data.meta?.total,
-        });
-        // setTotalCmt(res.data.meta?.total || 0);
+        if (res.data) {
+          setCmtList({
+            list: res.data.data,
+            page: res.data.meta?.page,
+            pages: res.data.meta?.pages,
+            total: res.data.meta?.total,
+          });
+        }
         isFirstReq.current = false;
         setLoading(false);
       };
@@ -133,7 +134,7 @@ const Interaction = (props) => {
         setCmtList((prev) => {
           return {
             ...prev,
-            list: [...prev.list, newCmt],
+            list: prev.list.concat(newCmt),
             total: prev.total + 1,
           };
         });
@@ -460,12 +461,14 @@ const Interaction = (props) => {
           )}
         </div>
       )}
-      <Notification
-        openNoti={openNoti}
-        setOpenNoti={setOpenNoti}
-        msg={msg}
-        isError={isError}
-      />
+      {isError && (
+        <Notification
+          openNoti={openNoti}
+          setOpenNoti={setOpenNoti}
+          msg={msg}
+          isError={isError}
+        />
+      )}
     </div>
   );
 };

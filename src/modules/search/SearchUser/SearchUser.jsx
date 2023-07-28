@@ -9,6 +9,7 @@ import { useEffect, useRef } from "react";
 import Loading from "~/components/Loading/Loading";
 
 import EmptyRes from "../Empty/EmptyRes";
+import { addFriend } from "~/store/slices/friendSlice";
 
 const cx = classNames.bind(styles);
 
@@ -16,7 +17,9 @@ const SearchUser = () => {
   const [searchParams] = useSearchParams();
   const searchVal = searchParams.get("f");
   const dispatch = useDispatch();
+  const { info } = useSelector((state) => state.auth);
   const { result } = useSelector((state) => state.search);
+
   const { users } = result;
   const { isLoading } = users;
   const currentPage = useRef(1);
@@ -60,23 +63,40 @@ const SearchUser = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [dispatch, users.page]);
+  const handleAddFr = (id) => {
+    dispatch(addFriend({ id: id }));
+  };
   return (
     <>
       <div className={cx("title")}>People</div>
       <div id="result" className={cx("result")}>
         {users.data?.map((item) => {
           return (
-            <Link className={cx("item")} key={item._id} to={`/profile?id=${item._id}`}>
-              <Avatar size={64} src={item.avatar} />
-              <div className={cx("user-info")}>
-                <div className={cx("username")} style={{ color: "white" }}>
-                  {item.username}
-                </div>
-                <div className={cx("fullname")} style={{ color: "white" }}>
-                  {`${item.firstname} ${item.lastname}`}
-                </div>
+            info._id !== item._id && (
+              <div className={cx("result-item")} key={item._id}>
+                <Link className={cx("item-info")} to={`/profile/${item._id}`}>
+                  <Avatar size={64} src={item.avatar} />
+                  <div className={cx("user-info")}>
+                    <div className={cx("username")} style={{ color: "white" }}>
+                      {item.username}
+                    </div>
+                    <div className={cx("fullname")} style={{ color: "white" }}>
+                      {`${item.firstname} ${item.lastname}`}
+                    </div>
+                  </div>
+                </Link>
+                {!item.isFriend ? (
+                  <button
+                    className={cx("btn-add-fr")}
+                    onClick={() => handleAddFr(item._id)}
+                  >
+                    Add Friend
+                  </button>
+                ) : (
+                  <button className={cx("btn-fr")}>Friend</button>
+                )}
               </div>
-            </Link>
+            )
           );
         })}
       </div>

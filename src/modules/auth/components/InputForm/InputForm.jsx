@@ -9,7 +9,6 @@ import { handleAuth } from "~/store/slices/authSlice";
 import { Validate, initValues } from "../config/validateConfig";
 import { LOGIN, UPDATE_PERSONAL, UPDATE_SECURITY } from "~/utils/constants";
 import Loading from "~/components/Loading/Loading";
-// import Notification from "~/components/Notifications/Notification";
 import Notification from "~/components/Notification/Notification";
 import InputField from "~/components/CustomField/InputField/InputField";
 import SelectField from "~/components/CustomField/SelectField/SelectField";
@@ -158,17 +157,18 @@ const InputForm = (props) => {
           );
         }}
       </Formik>
-
-      <Notification
-        url={url}
-        type={type}
-        handleRoute={handleRoute}
-        msg={msg}
-        isError={isError}
-        isSuccess={isSuccess}
-        openNoti={openNoti}
-        setOpenNoti={setOpenNoti}
-      />
+      {(isError || isSuccess) && (
+        <Notification
+          url={url}
+          type={type}
+          handleRoute={handleRoute}
+          msg={msg}
+          isError={isError}
+          isSuccess={isSuccess}
+          openNoti={openNoti}
+          setOpenNoti={setOpenNoti}
+        />
+      )}
     </>
   );
 };

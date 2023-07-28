@@ -33,12 +33,16 @@ const SearchLocation = () => {
       <div id="result" className={cx("result")}>
         {locations.data?.map((item) => {
           return (
-            <div className={cx("item")} key={item._id}>
+            <Link
+              className={cx("item")}
+              key={item._id}
+              to={`/post/location?k=${item.title}&id=${item._id}`}
+            >
               <span className={cx("detail")}> {item.title}</span>
               <div className={cx("des")}>
                 {`${item.district} - ${item.city}`}
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>

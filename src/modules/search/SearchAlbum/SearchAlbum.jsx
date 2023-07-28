@@ -19,6 +19,7 @@ const SearchAlbum = () => {
   const { albums } = result;
   const { isLoading, page, pages, data } = albums;
   const currentPage = useRef(1);
+  console.log(albums);
 
   useEffect(() => {
     dispatch(
@@ -77,7 +78,11 @@ const SearchAlbum = () => {
                   <Avatar src={item.authorInfo?.avatar.path} />
                   <div>{item.authorInfo?.username}</div>
                 </div>
-                <ImageField src={item.cover?.path} rootClassName={cx("cover")} preview={false} />
+                <ImageField
+                  src={item.cover}
+                  rootClassName={cx("cover")}
+                  preview={false}
+                />
                 <div className={cx("item-name")}>
                   <span>{item.title}</span>
                 </div>

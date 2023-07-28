@@ -20,7 +20,6 @@ const SelectFriend = ({
   type,
   title,
 }) => {
-  console.log(type);
   const dispatch = useDispatch();
   const isFirstReq = useRef(true);
   const resultRef = useRef();
@@ -31,6 +30,7 @@ const SelectFriend = ({
   const [inputValue, setInputValue] = useState("");
   const [openResult, setOpenResult] = useState(false);
   const debouncedValue = useDebounce(inputValue, 500);
+  console.log(list);
   //  call API get friendList and search user
   useEffect(() => {
     if (isFirstReq.current) {
@@ -138,10 +138,13 @@ const SelectFriend = ({
                       key={item._id}
                       onClick={() => handleSelectedUser(item)}
                     >
-                      <div className={cx("user-info")}>
-                        <Avatar src={item.avatar} />
-                        <span>{item.username}</span>
-                      </div>
+                      <Avatar src={item.avatar} />
+                      <span>
+                        <div className={cx("username")}>{item.username}</div>
+                        <div
+                          className={cx("fullname")}
+                        >{`${item.firstname} ${item.lastname}`}</div>
+                      </span>
                     </div>
                   );
                 })
@@ -162,10 +165,15 @@ const SelectFriend = ({
                   key={item._id}
                   onClick={() => handleSelectedUser(item)}
                 >
-                  <div className={cx("user-info")} key={item._id}>
-                    <Avatar src={item.avatar} />
-                    <span>{item.username}</span>
-                  </div>
+                  <Avatar src={item.userInfo?.avatar.path} size={36} />
+                  <span>
+                    <div className={cx("username")}>
+                      {item.userInfo?.username}
+                    </div>
+                    <div
+                      className={cx("fullname")}
+                    >{`${item.userInfo?.firstname} ${item.userInfo?.lastname}`}</div>
+                  </span>
                 </div>
               );
             })

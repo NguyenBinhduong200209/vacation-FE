@@ -178,10 +178,15 @@ const Vacation = () => {
                 className={cx("img-BG")}
                 preview={true}
               />
-              <div className={cx("bg-icon-container")} onClick={handleImgClick}>
-                <span>Edit cover photo</span>
-                <FontAwesomeIcon icon={faCamera} className={cx("bg-icon")} />
-              </div>
+              {isAuthor && (
+                <div
+                  className={cx("bg-icon-container")}
+                  onClick={handleImgClick}
+                >
+                  <span>Edit cover photo</span>
+                  <FontAwesomeIcon icon={faCamera} className={cx("bg-icon")} />
+                </div>
+              )}
             </div>
             <div className={cx("sidebar-content")}>
               <div className={cx("user-info")}>
@@ -312,14 +317,15 @@ const Vacation = () => {
           <div className={cx("content")}>
             {urlType === null || urlType === "post" ? <Posts /> : <Album />}
           </div>
-
-          <Notification
-            isError={isError}
-            isSuccess={isSuccess}
-            msg={msg}
-            openNoti={openNoti}
-            setOpenNoti={setOpenNoti}
-          />
+          {(isSuccess || isError) && (
+            <Notification
+              isError={isError}
+              isSuccess={isSuccess}
+              msg={msg}
+              openNoti={openNoti}
+              setOpenNoti={setOpenNoti}
+            />
+          )}
         </div>
       )}
     </>

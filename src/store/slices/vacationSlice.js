@@ -36,13 +36,12 @@ export const getDetailVacation = createAsyncThunk(
   }
 );
 
-
 export const getManyPosts = createAsyncThunk(
   "vacation/getManyPosts",
   async (arg, thunkAPI) => {
     try {
       const res = await vacationAPI.getManyPosts(arg);
-      // console.log(res);
+      console.log(res);
       return res.data;
     } catch (error) {
       if (!error.response) {
@@ -130,10 +129,12 @@ const vacationSlice = createSlice({
         if (data && Array.isArray(data)) {
           const { page } = action.meta.arg;
           state.posts.list = page === 1 ? data : state.posts.list.concat(data);
-          state.posts.page = meta?.page;
-          state.posts.pages = meta?.pages;
-          state.posts.timeline = meta?.timeline;
-          state.posts.totalPost = meta?.total;
+          if (meta) {
+            state.posts.page = meta?.page;
+            state.posts.pages = meta?.pages;
+            state.posts.timeline = meta?.timeline;
+            state.posts.totalPost = meta?.total;
+          }
         }
 
         state.isLoading = false;

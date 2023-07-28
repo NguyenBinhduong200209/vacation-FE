@@ -67,6 +67,10 @@
     color: rgb(75, 74, 156);
   }
 }
+
+.loading {
+  margin: 4rem 0;
+}
 // add new location
 
 .add-location {
@@ -106,6 +110,10 @@
   }
 }
 .btn-create-location {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
   padding: 1.5rem 1rem;
   border-radius: var(--border-radius);
   width: 100%;

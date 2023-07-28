@@ -22,7 +22,9 @@ const vacationAPI = {
     return axiosClient.put(url, data.body);
   },
   getManyPosts: (data) => {
-    const url = `${URL.POST_URL}/${data.type}/${data.id}?page=${data.page}`;
+    const url = `${URL.POST_URL}/${data.type}/${data.id}?page=${data.page}${
+      data.timeline ? `&timeline=${data.timeline}` : ""
+    }`;
     return axiosClient.get(url);
   },
 

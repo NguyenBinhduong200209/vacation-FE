@@ -17,7 +17,7 @@ const Profile = () => {
   const { info, otherUserInfo } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    info._id === id && navigate("/profile");
+    info._id === id && navigate("/profile/vacation");
   }, [info, id, navigate]);
 
   useEffect(() => {

@@ -11,10 +11,6 @@
 }
 
 .navigation {
-  display: flex;
-  align-items: center;
-  width: 100%;
-
   & > * {
     margin-right: 4rem;
     cursor: pointer;
@@ -36,7 +32,6 @@
 .dropdown {
   width: fit-content !important;
   height: 42px;
-  margin: auto;
 
   & > * {
     background-color: #1a1a1a;
@@ -63,14 +58,16 @@
   .navigation {
     & > * {
       font-size: 1.7rem;
-      margin-right: 3rem;
+      margin-right: 2vw;
     }
   }
 
   .dropdown {
     height: 35px;
     & > * {
-      font-size: 1.4rem !important;
+      font-size: 1.3rem !important;
+      padding: 4px 8px;
+      width: unset !important;
     }
   }
 }
@@ -78,5 +75,19 @@
 @media only screen and (max-width: 576px) {
   .header {
     padding-left: 1%;
+  }
+
+  .navigation {
+    & > * {
+      font-size: 1.4rem;
+      margin-right: 3vw;
+    }
+  }
+
+  .dropdown {
+    height: 30px;
+    & > * {
+      font-size: 1.2rem !important;
+    }
   }
 }

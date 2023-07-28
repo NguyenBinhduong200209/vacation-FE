@@ -16,7 +16,6 @@ const Albums = () => {
 		meta: { page, pages },
 	} = useSelector((state) => state.album);
 
-
 	const { info } = useSelector((state) => state.auth);
 
 	const { userId } = useOutletContext();
@@ -26,8 +25,6 @@ const Albums = () => {
 		dispatch(resetList());
 		dispatch(getList({ userId: currentUserId, page: 1 }));
 	}, [dispatch, currentUserId]);
-
-
 
 	const loadMoreData = () => {
 		dispatch(getList({ userId: currentUserId, page: page + 1 }));

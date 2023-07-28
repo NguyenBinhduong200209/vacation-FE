@@ -155,7 +155,7 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
       setMsg(error.message);
       setIsLoading(false);
     }
-
+    
     setOpen(false);
     setOpenNoti(true);
   };

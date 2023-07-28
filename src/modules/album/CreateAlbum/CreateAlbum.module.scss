@@ -18,6 +18,39 @@
   }
 }
 
+.status {
+  position: relative;
+  font-size: 1.2rem;
+  font-style: normal;
+  color: #b9babb;
+  cursor: pointer;
+
+  .icon {
+    margin-left: 0.5rem;
+  }
+  span {
+    text-transform: capitalize;
+  }
+}
+
+.dropdown-status {
+  position: absolute;
+  border-radius: 8px;
+  background-color: #b9babb;
+  z-index: 100;
+  color: black;
+  font-weight: 500;
+
+  div {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+
+    &:hover {
+      background: rgba(59, 55, 55, 0.35);
+    }
+  }
+}
+
 .user-info {
   width: 100%;
   display: flex;

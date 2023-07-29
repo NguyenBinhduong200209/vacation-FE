@@ -18,7 +18,7 @@ const Slider = () => {
     selectedAlbum: { vacationId, authorInfo },
   } = useSelector((state) => state.album);
   const { info } = useSelector((state) => state.auth);
-  const isAuthor = authorInfo._id === info._id;
+  const isAuthor = authorInfo?._id === info?._id;
 
   useEffect(() => {
     (async () => {

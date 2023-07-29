@@ -20,6 +20,22 @@
   position: relative;
   overflow: hidden;
 }
+
+.wrap.not-author {
+  z-index: 3;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  min-width: 115vmin;
+  height: 70vmin;
+  margin: 3% auto;
+  border: 8px solid;
+  border-image: linear-gradient(-50deg, #83a4d4, #b6fbff, rgb(180, 182, 223), rgb(35, 216, 204)) 1;
+  transition: 0.3s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
 .overlay {
   position: relative;
   display: flex;

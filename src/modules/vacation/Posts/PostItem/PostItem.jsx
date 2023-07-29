@@ -14,6 +14,7 @@ import Modal from "~/components/Modal/Modal";
 import ImageField from "~/components/ImageField/ImageField";
 import HandlePost from "../HandlePost/HandlePost";
 import Notification from "~/components/Notification/Notification";
+import { useClickOutside } from "~/helpers/customHook";
 
 const cx = classNames.bind(styles);
 
@@ -31,9 +32,10 @@ const PostItem = ({ postDetail, vacationId, setHandlePost, handlePost }) => {
     location,
   } = postDetail;
 
-  const { info } = useSelector((state) => state.auth);
   const postItemRef = useRef(null);
+  const popupRef = useRef();
   const dispatch = useDispatch();
+  const { info } = useSelector((state) => state.auth);
   const [showModal, setShowModal] = useState(false);
   const [open, setOpen] = useState(false);
   const [openImg, setOpenImg] = useState(false);
@@ -75,6 +77,16 @@ const PostItem = ({ postDetail, vacationId, setHandlePost, handlePost }) => {
 
     setOpenNoti(true);
   };
+
+  const HandleNotiAfterClose = () => {
+    setIsError(false);
+    setIsSuccess(false);
+    setMsg("");
+  };
+
+  useClickOutside(popupRef, () => {
+    setOpen(false);
+  });
   return (
     <div
       className={cx("wrapper")}
@@ -99,7 +111,7 @@ const PostItem = ({ postDetail, vacationId, setHandlePost, handlePost }) => {
         {authorInfo._id === info._id && (
           <Popover
             content={
-              <div className={cx("pop-over")}>
+              <div className={cx("pop-over")} ref={popupRef}>
                 <p
                   className={cx("options")}
                   onClick={() => {
@@ -182,6 +194,8 @@ const PostItem = ({ postDetail, vacationId, setHandlePost, handlePost }) => {
           msg={msg}
           openNoti={openNoti}
           setOpenNoti={setOpenNoti}
+          handleSuccess={HandleNotiAfterClose}
+          handleError={HandleNotiAfterClose}
         />
       )}
     </div>

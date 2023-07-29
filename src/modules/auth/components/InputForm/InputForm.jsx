@@ -5,17 +5,26 @@ import classNames from "classnames/bind";
 import styles from "./InputForm.module.scss";
 
 import { useDispatch, useSelector } from "react-redux";
-import { handleAuth } from "~/store/slices/authSlice";
+import { handleAuth, resetNoti } from "~/store/slices/authSlice";
 import { Validate, initValues } from "../config/validateConfig";
-import { LOGIN, UPDATE_PERSONAL, UPDATE_SECURITY } from "~/utils/constants";
+import {
+  FORGOT,
+  LOGIN,
+  REGISTER,
+  RESET,
+  UPDATE_PERSONAL,
+  UPDATE_SECURITY,
+} from "~/utils/constants";
 import Loading from "~/components/Loading/Loading";
 import Notification from "~/components/Notification/Notification";
 import InputField from "~/components/CustomField/InputField/InputField";
 import SelectField from "~/components/CustomField/SelectField/SelectField";
+import { useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 const InputForm = (props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [openNoti, setOpenNoti] = useState(false);
   const [isChanged, setIsChanged] = useState(false);
   const { list, type, className, url, handleRoute } = props;
@@ -25,7 +34,6 @@ const InputForm = (props) => {
   );
   const { firstname, lastname, dateOfBirth, phoneNumber, gender, nationality } =
     info;
-  console.log(info);
   // Check index of time
   const timeIndex = dateOfBirth && dateOfBirth.indexOf("T");
   // InitialValues variable
@@ -86,6 +94,30 @@ const InputForm = (props) => {
 
   const handleFocus = () => {
     setIsChanged(true);
+  };
+
+  const handleSuccessNoti = () => {
+    switch (type) {
+      case FORGOT:
+        handleRoute();
+        break;
+      case LOGIN:
+      case REGISTER:
+        navigate(url);
+        window.location.reload();
+        break;
+      case RESET:
+      case UPDATE_PERSONAL:
+      case UPDATE_SECURITY:
+        window.location.reload();
+        break;
+      default:
+        break;
+    }
+    dispatch(resetNoti());
+  };
+  const handleErrorNoti = () => {
+    dispatch(resetNoti());
   };
   return (
     <>
@@ -159,14 +191,13 @@ const InputForm = (props) => {
       </Formik>
       {(isError || isSuccess) && (
         <Notification
-          url={url}
-          type={type}
-          handleRoute={handleRoute}
           msg={msg}
           isError={isError}
           isSuccess={isSuccess}
           openNoti={openNoti}
           setOpenNoti={setOpenNoti}
+          handleSuccess={handleSuccessNoti}
+          handleError={handleErrorNoti}
         />
       )}
     </>

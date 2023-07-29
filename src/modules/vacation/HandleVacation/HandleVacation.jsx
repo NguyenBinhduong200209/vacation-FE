@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./HandleVacation.module.scss";
 import classNames from "classnames/bind";
@@ -22,10 +22,12 @@ import ImageField from "~/components/ImageField/ImageField";
 import { getDate } from "~/helpers/function";
 import { useClickOutside } from "~/helpers/customHook";
 import Loading from "~/components/Loading/Loading";
+import { getDetailVacation } from "~/store/slices/vacationSlice";
 const { RangePicker } = DatePicker;
 const cx = classNames.bind(styles);
 const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
   const statusRef = useRef();
+  const dispatch = useDispatch();
   // Get the current user information from the state.
   const { info } = useSelector((state) => state.auth);
   const { resources } = useSelector((state) => state.resource);
@@ -144,6 +146,7 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
           id: vacationId,
           body: params,
         });
+        dispatch(getDetailVacation(vacationId));
       }
       setIsSuccess(true);
       setMsg(res.data?.message);
@@ -153,7 +156,7 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
       setMsg(error.message);
       setIsLoading(false);
     }
-    
+
     setOpen(false);
     setOpenNoti(true);
   };
@@ -165,14 +168,8 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
   //   * The dates are not set.
   //   * The member list is empty.
   const isDisabledCreate = useMemo(
-    () =>
-      !(
-        title !== "" &&
-        des !== "" &&
-        dates?.length === 2 &&
-        memberList?.length > 0
-      ),
-    [title, des, dates, memberList]
+    () => !(title !== "" && des !== "" && dates?.length === 2),
+    [title, des, dates]
   );
   // The `isDisabledUpdate` function is used to determine whether the update button should be disabled.
   // The function returns true if the vacation information has not been changed.
@@ -199,6 +196,11 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
   // The hook takes a ref as an argument, and the ref is used to track the element that the modal is attached to.
   useClickOutside(statusRef, () => setOpenStatus(false));
 
+  const HandleNotiAfterClose = () => {
+    setIsError(false);
+    setIsSuccess(false);
+    setMsg("");
+  };
   return (
     <>
       <Modal
@@ -363,9 +365,10 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
           openNoti={openNoti}
           setOpenNoti={setOpenNoti}
           msg={msg}
-          type="handleVacation"
           isError={isError}
           isSuccess={isSuccess}
+          handleSuccess={HandleNotiAfterClose}
+          handleError={HandleNotiAfterClose}
         />
       )}
     </>

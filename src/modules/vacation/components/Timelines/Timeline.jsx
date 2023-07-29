@@ -14,6 +14,10 @@ const Timeline = () => {
   return (
     <>
       <div className={cx("wrapper")}>
+        <div className={cx("active")}>
+          <span>Date</span>
+          <span className={cx("date")}>{activeTimeline}</span>
+        </div>
         <div className={cx("container")}>
           <header># Timeline</header>
           <main>
@@ -33,11 +37,6 @@ const Timeline = () => {
               );
             })}
           </main>
-        </div>
-
-        <div className={cx("active")}>
-          <span>Date</span>
-          <span className={cx("date")}>{activeTimeline}</span>
         </div>
       </div>
     </>

@@ -136,7 +136,8 @@ const HandlePost = ({
     setShowModal(false);
     setOpenNoti(true);
     setPostId && setPostId("");
-    navigate(`/vacation?vacationID=${selectedVacation._id}`);
+    type === "newfeed" &&
+      navigate(`/vacation?vacationID=${selectedVacation._id}`);
   };
 
   // This function handles the click event.
@@ -162,7 +163,12 @@ const HandlePost = ({
   // This function checks if the create button is disabled.
   const isDisabledCreate =
     !vacationId || !selectedLocation.detail?.id || !content;
-
+  // function call after the noti close
+  const HandleNotiAfterClose = () => {
+    setIsError(false);
+    setIsSuccess(false);
+    setMsg("");
+  };
   return (
     <>
       <Modal
@@ -286,6 +292,8 @@ const HandlePost = ({
           msg={msg}
           openNoti={openNoti}
           setOpenNoti={setOpenNoti}
+          handleSuccess={HandleNotiAfterClose}
+          handleError={HandleNotiAfterClose}
         />
       )}
     </>

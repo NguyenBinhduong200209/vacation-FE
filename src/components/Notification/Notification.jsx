@@ -1,58 +1,22 @@
-import React from "react";
 import ReactModal from "react-modal";
 import styles from "./Notification.module.scss";
 import classNames from "classnames/bind";
-import { useNavigate } from "react-router-dom";
-import {
-  FORGOT,
-  LOGIN,
-  REGISTER,
-  RESET,
-  UPDATE_OVERVIEW,
-  UPDATE_PERSONAL,
-  UPDATE_SECURITY,
-} from "~/utils/constants";
 
 const cx = classNames.bind(styles);
 const Notification = (props) => {
   const {
     openNoti,
     setOpenNoti,
-    url,
-    type,
     msg,
     isSuccess,
     isError,
-    handleRoute,
+    handleSuccess,
+    handleError,
   } = props;
-  console.log(isSuccess);
-  const navigate = useNavigate();
-  function handleSucces() {
-    switch (type) {
-      case FORGOT:
-        handleRoute();
-        break;
-      case RESET:
-        window.location.reload();
-        break;
-      case LOGIN:
-      case REGISTER:
-        navigate(url);
-        window.location.reload();
-        break;
-      case UPDATE_PERSONAL:
-      case UPDATE_SECURITY:
-      case UPDATE_OVERVIEW:
-        window.location.reload();
-
-      default:
-        // window.location.reload();
-        break;
-    }
-  }
 
   const handleClose = () => {
-    isSuccess && handleSucces();
+    isSuccess && handleSuccess();
+    isError && handleError();
     setOpenNoti(false);
   };
   const Success = () => {

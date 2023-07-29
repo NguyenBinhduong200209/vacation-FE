@@ -4,40 +4,46 @@ import { LOGIN } from "~/utils/constants";
 
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
-export const handleAuth = createAsyncThunk("auth/handleAuth", async (arg, thunkAPI) => {
-  try {
-    let res = await authAPI[arg.type](arg.data);
-    return {
-      result: res.data,
-      type: arg.type,
-      message: res.data.message,
-    };
-  } catch (error) {
-    if (!error.response) {
-      return thunkAPI.rejectWithValue({ message: error.message });
-    }
-    return thunkAPI.rejectWithValue({
-      message: error.response.data.message,
-    });
-  }
-});
-
-export const getInfoUser = createAsyncThunk("auth/getInfoUser", async (arg, thunkAPI) => {
-  try {
-    const res = await authAPI.getInfoUser(arg);
-    return res.data.data;
-  } catch (error) {
-    console.log(error);
-    if (!error.response) {
-      return thunkAPI.rejectWithValue({ message: error.message });
-    } else {
+export const handleAuth = createAsyncThunk(
+  "auth/handleAuth",
+  async (arg, thunkAPI) => {
+    try {
+      let res = await authAPI[arg.type](arg.data);
+      return {
+        result: res.data,
+        type: arg.type,
+        message: res.data.message,
+      };
+    } catch (error) {
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
       return thunkAPI.rejectWithValue({
-        status: error.response.status,
         message: error.response.data.message,
       });
     }
   }
-});
+);
+
+export const getInfoUser = createAsyncThunk(
+  "auth/getInfoUser",
+  async (arg, thunkAPI) => {
+    try {
+      const res = await authAPI.getInfoUser(arg);
+      return res.data.data;
+    } catch (error) {
+      console.log(error);
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      } else {
+        return thunkAPI.rejectWithValue({
+          status: error.response.status,
+          message: error.response.data.message,
+        });
+      }
+    }
+  }
+);
 
 const authSlice = createSlice({
   name: "auth",
@@ -63,6 +69,11 @@ const authSlice = createSlice({
         };
       }
     },
+    resetNoti: (state) => {
+      state.isSuccess = false;
+      state.isError = false;
+      state.msg = "";
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -75,8 +86,14 @@ const authSlice = createSlice({
         state.msg = action.payload?.message;
         if (action.payload && action.payload.type === LOGIN) {
           state.isLogin = true;
-          localStorage.setItem("token", `Bearer ${action.payload.result.data.accessToken}`);
-          localStorage.setItem("rfToken", `Bearer ${action.payload.result.data.refreshToken}`);
+          localStorage.setItem(
+            "token",
+            `Bearer ${action.payload.result.data.accessToken}`
+          );
+          localStorage.setItem(
+            "rfToken",
+            `Bearer ${action.payload.result.data.refreshToken}`
+          );
         }
       })
       .addCase(handleAuth.rejected, (state, action) => {
@@ -92,5 +109,5 @@ const authSlice = createSlice({
 });
 
 const { reducer, actions } = authSlice;
-export const { changeRenderList } = actions;
+export const { changeRenderList, resetNoti } = actions;
 export default reducer;

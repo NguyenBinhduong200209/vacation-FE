@@ -25,7 +25,7 @@ const Slider = () => {
     (async () => {
       if (vacationId) {
         try {
-          const fetchImg = await albumAPI.getAllImage(vacationId);
+          const fetchImg = await albumAPI.getAllImage({ id: vacationId });
           setImg(fetchImg.data.data || []);
         } catch (error) {
           console.log(error);

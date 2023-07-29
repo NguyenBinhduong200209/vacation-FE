@@ -25,7 +25,6 @@ const NewAlbum = () => {
   const {
     selectedImages,
     selectedPageId,
-    selectedAlbum,
     selectedAlbum: { _id, title, vacationId, authorInfo },
   } = useSelector((state) => state.album);
   const { info } = useSelector((state) => state.auth);
@@ -35,8 +34,6 @@ const NewAlbum = () => {
   });
   const [isOpen, setIsOpen] = useState(false);
   const isAuthor = authorInfo?._id === info._id;
-
-  console.log(selectedAlbum);
 
   useEffect(() => {
     setContainerSize({

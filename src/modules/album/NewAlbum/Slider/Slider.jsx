@@ -15,9 +15,10 @@ const Slider = () => {
   const cardCount = img.length;
   const {
     selectedImages,
-    selectedAlbum: { vacationId, userId },
+    selectedAlbum: { vacationId, authorInfo },
   } = useSelector((state) => state.album);
   const { info } = useSelector((state) => state.auth);
+  const isAuthor = authorInfo._id === info._id;
 
   useEffect(() => {
     (async () => {
@@ -64,7 +65,7 @@ const Slider = () => {
 
   return (
     <div className={cx("carousel-container")}>
-      {cardCount !== 0 && userId === info._id ? (
+      {cardCount !== 0 && isAuthor ? (
         <div className={cx("carousel")}>
           {img.map((item, index) => {
             const isSelected = selectedImages.some((image) => image._id === item._id);

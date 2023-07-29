@@ -102,3 +102,60 @@ $sidebar-left: 3rem;
     background-color: var(--background-500);
   }
 }
+
+@media only screen and (max-width: 992px) {
+  .wrapper {
+    justify-content: space-around;
+  }
+
+  .sidebar-container {
+    position: sticky;
+    width: 32%;
+    left: 2.5%;
+    height: fit-content;
+  }
+
+  .result-container {
+    margin-left: 0;
+    width: 62%;
+    padding: 0;
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .wrapper {
+    display: block;
+
+    & > * {
+      width: 100%;
+    }
+  }
+
+  .sidebar-container {
+    z-index: 10;
+    padding: 1%;
+
+    .filter-container {
+      display: flex;
+      overflow: auto;
+      justify-content: space-around;
+
+      .fil-field {
+        display: block;
+        text-align: center;
+        width: 22%;
+      }
+    }
+  }
+
+  .result-container {
+    .result {
+      padding: 5% 2% 0;
+      border-radius: 0;
+    }
+  }
+
+  .title {
+    display: none;
+  }
+}

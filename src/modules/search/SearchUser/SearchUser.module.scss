@@ -66,3 +66,30 @@
 .btn-fr {
   background-color: rgb(10, 10, 12);
 }
+
+@media only screen and (max-width: 992px) {
+  .result-item {
+    gap: 0;
+    padding: 0 !important;
+  }
+
+  .item-info {
+    width: 70%;
+    flex: none;
+  }
+
+  .btn-add-fr,
+  .btn-fr {
+    width: 25%;
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .item-info {
+    padding-left: 0 !important;
+  }
+
+  .title {
+    display: none;
+  }
+}

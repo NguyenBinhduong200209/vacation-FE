@@ -24,8 +24,6 @@ const FriendList = ({ type, userId }) => {
   const currentUserId = info?._id;
   const dispatch = useDispatch();
 
-  console.log(userId);
-
   useEffect(() => {
     dispatch(resetList());
     dispatch(type === "request" ? getRequestList({ page: 1 }) : getFriendList({ page: 1, userId }));
@@ -54,7 +52,7 @@ const FriendList = ({ type, userId }) => {
             <List.Item className={cx("item")}>
               <NavLink
                 className={cx("nav")}
-                to={`/profile/${userInfo?._id === currentUserId ? "" : userInfo?._id}`}
+                to={`/profile/${userInfo?._id === currentUserId ? "" : userInfo?._id + "/"}vacation`}
               >
                 <List.Item.Meta
                   className={cx("item-meta")}

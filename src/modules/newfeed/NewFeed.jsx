@@ -23,11 +23,9 @@ const NewFeed = () => {
   useEffect(() => {
     setPreLoader(true);
     dispatch(resetList());
-    Promise.all([
-      dispatch(getTrendingPlace({ type: "trending", number: 7 })),
-      dispatch(getListVacation({ page: 1, type: "newFeed" })),
-      dispatch(getInfoUser()),
-    ]).then(() => setPreLoader(false));
+    Promise.all([dispatch(getListVacation({ page: 1, type: "newFeed" })), dispatch(getInfoUser())]).then(() =>
+      setPreLoader(false)
+    );
   }, [dispatch]);
 
   return preLoader ? (
@@ -36,7 +34,7 @@ const NewFeed = () => {
     <div className={cx("container")}>
       {!isMediumSize && <UserInfo />}
       <div className={cx("feed")}>
-        {isSmallSize ? <Trending /> : <Create />}
+        {!isSmallSize && <Create />}
         <List />
       </div>
       {!isSmallSize && <Trending />}

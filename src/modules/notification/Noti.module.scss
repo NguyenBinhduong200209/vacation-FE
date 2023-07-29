@@ -109,8 +109,14 @@
 @media (max-width: 576px) {
   .notification {
     right: 0;
-    height: 90vh;
+    height: unset;
+    max-height: 90vh;
     width: 100%;
     background-color: #1a1a1a;
+    overflow: auto;
+  }
+
+  .header {
+    position: relative;
   }
 }

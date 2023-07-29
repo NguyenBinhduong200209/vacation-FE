@@ -16,11 +16,11 @@
   margin-bottom: 2rem;
   background-color: rgb(231, 229, 229);
   box-shadow: 3pt 3pt rgb(155, 153, 153);
+  transition: all 0.5s ease;
   cursor: pointer;
 
   &:hover {
     transform: scale(1.03);
-    transition: all 0.5s ease;
   }
   .user-info {
     display: flex;
@@ -51,5 +51,21 @@
       height: 100% !important;
       object-fit: cover !important;
     }
+  }
+}
+
+@media only screen and (max-width: 992px) {
+  .result {
+    padding: 0;
+  }
+
+  .title {
+    margin-bottom: 2rem;
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .title {
+    display: none;
   }
 }

@@ -25,8 +25,8 @@ const NewAlbum = () => {
   const {
     selectedImages,
     selectedPageId,
-    userInfo,
-    selectedAlbum: { _id, title, vacationId, userId },
+    selectedAlbum,
+    selectedAlbum: { _id, title, vacationId, authorInfo },
   } = useSelector((state) => state.album);
   const { info } = useSelector((state) => state.auth);
   const [containerSize, setContainerSize] = useState({
@@ -34,6 +34,9 @@ const NewAlbum = () => {
     outerHeight: 0,
   });
   const [isOpen, setIsOpen] = useState(false);
+  const isAuthor = authorInfo?._id === info._id;
+
+  console.log(selectedAlbum);
 
   useEffect(() => {
     setContainerSize({
@@ -97,7 +100,7 @@ const NewAlbum = () => {
           <div className="overlay-content animate slide-left delay-2">
             <h1 className="animate slide-left pop delay-4 line">{title}</h1>
             <p className="animate slide-left pop delay-5" style={{ color: "white", marginBottom: "2.5rem" }}>
-              Sign: <em>{userInfo?.username}</em>
+              Sign: <em>{authorInfo?.username}</em>
             </p>
           </div>
           <div className="image-content animate slide delay-5"></div>
@@ -108,14 +111,14 @@ const NewAlbum = () => {
           </div>
         </div>
         <div className="text">
-          <div className={cx(userId === info._id ? "mother" : "mother-banned-you")} ref={ref}>
+          <div className={cx(isAuthor ? "mother" : "mother-banned-you")} ref={ref}>
             {selectedImages.map((item) => (
               <Image key={item._id} imgData={item} containerSize={containerSize} />
             ))}
           </div>
         </div>
       </div>
-      {userId === info._id && (
+      {isAuthor && (
         <>
           <Slider />
           <div className={cx("btn-group")}>

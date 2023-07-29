@@ -28,10 +28,7 @@ const SearchVacation = () => {
   }, [dispatch, searchVal]);
 
   const loadMoreData = () => {
-    if (
-      vacations.page < vacations.pages &&
-      currentPage.current === vacations.page
-    ) {
+    if (vacations.page < vacations.pages && currentPage.current === vacations.page) {
       dispatch(
         searchOneModel({
           body: {
@@ -67,10 +64,7 @@ const SearchVacation = () => {
       <div className={cx("title")}>Vacation</div>
       <div id="result" className={cx("result")}>
         <List
-          grid={{
-            gutter: 16,
-            column: 3,
-          }}
+          grid={{ gutter: 16, xs: 1, sm: 2, md: 2, lg: 3, xl: 3, xxl: 3 }}
           dataSource={vacations.data}
           renderItem={(item) => (
             <Link to={`/vacation?vacationID=${item._id}`}>
@@ -80,11 +74,7 @@ const SearchVacation = () => {
                     <Avatar src={item.authorInfo?.avatar.path} />
                     <div>{item.authorInfo?.username}</div>
                   </div>
-                  <ImageField
-                    rootClassName={cx("cover")}
-                    src={item.cover?.path}
-                    preview={false}
-                  />
+                  <ImageField rootClassName={cx("cover")} src={item.cover?.path} preview={false} />
                   <div className={cx("item-name")}>
                     <span>{item.title}</span>
                   </div>

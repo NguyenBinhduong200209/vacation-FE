@@ -54,3 +54,19 @@
     }
   }
 }
+
+@media only screen and (max-width: 992px) {
+  .title {
+    margin-bottom: 2rem;
+  }
+
+  .result {
+    padding: 0;
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .title {
+    display: none;
+  }
+}

@@ -4,6 +4,7 @@ import { LOGIN } from "~/utils/constants";
 
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
+
 export const handleAuth = createAsyncThunk(
   "auth/handleAuth",
   async (arg, thunkAPI) => {
@@ -49,7 +50,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     info: [],
-    otherUserInfo: [],
+    otherUserInfo: {},
     renderList: [{ list: LoginData }],
     isLogin: !!localStorage.getItem("token"),
     isLoading: false,
@@ -69,6 +70,9 @@ const authSlice = createSlice({
         };
       }
     },
+
+    resetOtherUser: (state, action) => {
+      state.otherUserInfo = {};
     resetNoti: (state) => {
       state.isSuccess = false;
       state.isError = false;
@@ -109,5 +113,5 @@ const authSlice = createSlice({
 });
 
 const { reducer, actions } = authSlice;
-export const { changeRenderList, resetNoti } = actions;
+export const { changeRenderList, resetOtherUser, resetNoti } = actions;
 export default reducer;

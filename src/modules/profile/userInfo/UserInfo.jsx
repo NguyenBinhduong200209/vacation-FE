@@ -6,6 +6,7 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAvatar, resetList } from "~/store/slices/resourceSlice";
 import images from "~/images";
+import { resetOtherUser } from "~/store/slices/authSlice";
 const cx = classNames.bind(styles);
 
 const UserInfo = ({ info }) => {
@@ -23,6 +24,10 @@ const UserInfo = ({ info }) => {
     dispatch(resetList());
     dispatch(getAvatar(Object.assign({ page: 1 }, isLoginUser ? {} : { userId: otherUserId })));
   }, [dispatch, isLoginUser, otherUserId]);
+
+  useEffect(() => {
+    return () => dispatch(resetOtherUser());
+  }, [dispatch]);
 
   return (
     <div className={cx("user-info")}>

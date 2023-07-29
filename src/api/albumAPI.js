@@ -12,8 +12,7 @@ const albumAPI = {
 
   getDetail: (id) => axiosClient.get(`${URL.ALBUM_ROUTE}/${id}`),
 
-  getAllImage: (id) => axiosClient.get(`vacation/${id}/images`),
-
+  getAllImage: ({ id, page }) => axiosClient.get(`vacation/${id}/images?${page ? `page=${page}` : ""}`),
   createAlbum: (data) => axiosClient.post(URL.ALBUM_ROUTE, data),
 
   getAlbumPage: (data) => {

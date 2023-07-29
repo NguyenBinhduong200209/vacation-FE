@@ -1,53 +1,68 @@
 import React, { useState, useEffect } from "react";
-import axiosClient from "~/api/axiosClient";
 import styles from "./Album.module.scss";
 import classNames from "classnames/bind";
 import { useSearchParams } from "react-router-dom";
-import { Image } from "antd";
+import { Image, Skeleton, List, message } from "antd";
+import InfiniteScroll from "react-infinite-scroll-component";
+import albumAPI from "~/api/albumAPI";
 
 const cx = classNames.bind(styles);
 
 const Album = () => {
   const [img, setImg] = useState([]);
+  const [meta, setMeta] = useState({ page: 1, pages: 1, total: 1 });
   const [searchParams] = useSearchParams();
-  const dataId = Object.fromEntries([...searchParams]);
+  const vacationId = searchParams.get("vacationID");
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const fetchImg = await axiosClient.get(`vacation/${dataId.vacationID}/images`);
-        setImg(fetchImg.data.data || []);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    albumAPI
+      .getAllImage({ id: vacationId, page: meta.page })
+      .then((res) => {
+        const { data, meta } = res.data;
+        setImg((prevImg) => (res.data ? prevImg.concat(data) : []));
+        setMeta(res.data ? meta : { page: 1, pages: 1, total: 1 });
+      })
+      .catch((err) => {
+        message.error(err.response.data.message, 3);
+      });
+  }, [vacationId, meta.page]);
 
-    fetchData();
-  }, [dataId.vacationID]);
+  const loadMoreData = () => {
+    setMeta((prevMeta) => Object.assign(prevMeta, { page: prevMeta.page + 1 }));
+  };
 
   return (
     <div className={cx("album-wrap")}>
-      <div className={cx("album-title")}>Vacation's Album</div>
-      {img.length === 0 ? (
-        <div className={cx("no-images")}>Không có ảnh</div>
-      ) : (
-        <div className={cx("album-container")}>
-          {img.map((item, index) => (
-            <div className={cx("stack")} key={index}>
-              <div className={cx("card-album-container")} >
-                <div className={cx("image")}>
-                  <Image
-                    preview={{ toolbarRender: () => null }}
-                    src={item?.path}
-                    alt="?"
-                    rootClassName={cx("images")}
-                  />
+      <h1 className={cx("album-title")}>Vacation's Album</h1>
+
+      <InfiniteScroll
+        dataLength={img.length}
+        next={loadMoreData}
+        hasMore={meta.page < meta.pages}
+        loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
+      >
+        <List
+          className={cx("album-container")}
+          grid={{ xs: 2, sm: 2, md: 2, lg: 3, xl: 4, xxl: 4 }}
+          dataSource={img}
+          renderItem={(item) => (
+            <List.Item className={cx("album-item")}>
+              <div className={cx("stack")}>
+                <div className={cx("card-album-container")}>
+                  <div className={cx("image")}>
+                    <Image
+                      preview={{ toolbarRender: () => null }}
+                      src={item?.path}
+                      alt="?"
+                      rootClassName={cx("images")}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            </List.Item>
+          )}
+        />
+      </InfiniteScroll>
     </div>
   );
 };

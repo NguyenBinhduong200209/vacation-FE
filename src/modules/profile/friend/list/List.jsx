@@ -24,6 +24,8 @@ const FriendList = ({ type, userId }) => {
   const currentUserId = info?._id;
   const dispatch = useDispatch();
 
+  console.log(userId);
+
   useEffect(() => {
     dispatch(resetList());
     dispatch(type === "request" ? getRequestList({ page: 1 }) : getFriendList({ page: 1, userId }));
@@ -79,7 +81,8 @@ const FriendList = ({ type, userId }) => {
                 />
               </NavLink>
               <div className={cx("button-container")}>
-                {type === "request" ? <ButtonGroup id={_id} /> : <DropdownMore id={userInfo?._id} />}
+                {!userId &&
+                  (type === "request" ? <ButtonGroup id={_id} /> : <DropdownMore id={userInfo?._id} />)}
               </div>
             </List.Item>
           );

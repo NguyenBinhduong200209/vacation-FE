@@ -5,6 +5,7 @@ import { Image, Col, Row, Typography } from "antd";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAvatar, resetList } from "~/store/slices/resourceSlice";
+import images from "~/images";
 const cx = classNames.bind(styles);
 
 const UserInfo = ({ info }) => {
@@ -45,6 +46,7 @@ const UserInfo = ({ info }) => {
             height={140}
             width={140}
             preview={{ maskClassName: cx("avatar") }}
+            fallback={images.noImage}
             src={avatar?.path}
           />
         </Image.PreviewGroup>

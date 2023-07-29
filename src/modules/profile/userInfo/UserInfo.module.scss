@@ -78,6 +78,16 @@
 @media only screen and (max-width: 992px) {
   .user-info {
     width: 33%;
+
+    .user-info-des {
+      margin-top: 1rem !important;
+      margin-bottom: 2rem !important;
+      // padding: 0 1rem 0 1rem;
+      font-size: 1.5rem;
+    }
+    .user-info-fullname {
+      letter-spacing: unset;
+    }
   }
 }
 

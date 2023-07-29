@@ -74,7 +74,7 @@ const SearchUser = () => {
           return (
             info._id !== item._id && (
               <div className={cx("result-item")} key={item._id}>
-                <Link className={cx("item-info")} to={`/profile/${item._id}`}>
+                <Link className={cx("item-info")} to={`/profile/${item._id}/vacation`}>
                   <Avatar size={64} src={item.avatar} />
                   <div className={cx("user-info")}>
                     <div className={cx("username")} style={{ color: "white" }}>
@@ -86,10 +86,7 @@ const SearchUser = () => {
                   </div>
                 </Link>
                 {!item.isFriend ? (
-                  <button
-                    className={cx("btn-add-fr")}
-                    onClick={() => handleAddFr(item._id)}
-                  >
+                  <button className={cx("btn-add-fr")} onClick={() => handleAddFr(item._id)}>
                     Add Friend
                   </button>
                 ) : (

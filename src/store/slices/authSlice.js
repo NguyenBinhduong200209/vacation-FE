@@ -27,7 +27,6 @@ export const getInfoUser = createAsyncThunk("auth/getInfoUser", async (arg, thun
     const res = await authAPI.getInfoUser(arg);
     return res.data.data;
   } catch (error) {
-    console.log(error);
     if (!error.response) {
       return thunkAPI.rejectWithValue({ message: error.message });
     } else {
@@ -43,7 +42,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     info: [],
-    otherUserInfo: [],
+    otherUserInfo: {},
     renderList: [{ list: LoginData }],
     isLogin: !!localStorage.getItem("token"),
     isLoading: false,
@@ -62,6 +61,9 @@ const authSlice = createSlice({
           renderList: newList,
         };
       }
+    },
+    resetOtherUser: (state, action) => {
+      state.otherUserInfo = {};
     },
   },
   extraReducers: (builder) => {
@@ -92,5 +94,5 @@ const authSlice = createSlice({
 });
 
 const { reducer, actions } = authSlice;
-export const { changeRenderList } = actions;
+export const { changeRenderList, resetOtherUser } = actions;
 export default reducer;

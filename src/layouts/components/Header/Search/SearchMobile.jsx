@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import styles from "./Search.module.scss";
 import classNames from "classnames/bind";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { updateSearchMobileVisible } from "~/store/slices/generalSlice";
 const cx = classNames.bind(styles);
 
 const SearchMobile = () => {
+  const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const searchVal = searchParams.get("f");
@@ -14,6 +16,7 @@ const SearchMobile = () => {
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && value !== "") {
+      dispatch(updateSearchMobileVisible());
       navigate(`/search/user?f=${value}`);
     }
   };

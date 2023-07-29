@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getInfoUser } from "~/store/slices/authSlice";
+import Trending from "~/modules/newfeed/trending/Trending";
 
 const cx = classNames.bind(styles);
 
@@ -34,7 +35,12 @@ const DefaultLayout = ({ children }) => {
       <>
         <Header />
         <div className={cx("container")}>{children}</div>
-        {isSmallSize && <Footer />}
+        {isSmallSize && (
+          <>
+            <Trending />
+            <Footer />
+          </>
+        )}
       </>
     </div>
   );

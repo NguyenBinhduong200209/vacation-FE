@@ -94,6 +94,7 @@
   flex-wrap: wrap;
   justify-content: space-evenly;
   gap: 30px;
+  // border: 1px solid red;
 
   button {
     display: flex;
@@ -165,13 +166,13 @@
 
   .btn-container {
     justify-content: center;
-    gap: unset;
+    // gap: unset;
 
     button {
-      font-size: 1.2rem;
-      width: 25%;
+      font-size: 1.3rem;
+      width: 45%;
       height: 45px;
-      margin: 0 5px;
+      // margin: 0 5px;
     }
   }
 }

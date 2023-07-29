@@ -16,7 +16,6 @@ const DefaultLayout = ({ children }) => {
   const { isLogin } = useSelector((state) => state.auth);
   const { size } = useSelector((state) => state.general);
   const isSmallSize = size.width <= 576;
-  const [pre, setPre] = useState(true);
   useEffect(() => {
     if (isLogin) {
       dispatch(getInfoUser());

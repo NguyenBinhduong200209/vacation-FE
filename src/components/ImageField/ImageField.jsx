@@ -6,7 +6,6 @@ import styles from "./ImageField.module.scss";
 
 const cx = classNames.bind(styles);
 const ImageField = ({
-  alt,
   src,
   className,
   fallback: customFallback = images.noImage,

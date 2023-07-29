@@ -10,8 +10,8 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Avatar, Tooltip } from "antd";
-import React, { useRef, useState } from "react";
+import { Avatar, Image, Tooltip } from "antd";
+import React, { useEffect, useRef, useState } from "react";
 import ImageField from "~/components/ImageField/ImageField";
 import UpLoad from "~/components/UpLoad/UpLoad";
 import HandleVacation from "../../HandleVacation/HandleVacation";
@@ -35,6 +35,7 @@ const Sidebar = () => {
 
   // Get User's info
   const { info } = useSelector((state) => state.auth);
+  const { isLoading } = useSelector((state) => state.resource);
   // Get detail of vacation
   const { detail, posts, memberList, shareList } = useSelector(
     (state) => state.vacation
@@ -54,6 +55,7 @@ const Sidebar = () => {
   const [openNoti, setOpenNoti] = useState(false);
   const [openUserList, setOpenUserList] = useState(false);
   const [open, setOpen] = useState(false);
+  const [isUpdateImg, setIsUpdateImg] = useState(false);
   // create state for listType is memberList or shareList
   const [listType, setListType] = useState("memberList");
 
@@ -64,6 +66,11 @@ const Sidebar = () => {
   // check user is author or not
   const isAuthor = info?._id === authorInfo?._id;
 
+  // for responsive
+  const { size } = useSelector((state) => state.general);
+  const isLargeSize = size.width <= 1200;
+  const isMediumSize = size.width <= 992;
+
   // navigate when user select watch post or album
   const handleRoute = (type) => {
     navigate(`${VACATION_ROUTE}?vacationID=${vacationID}&type=${type}`);
@@ -71,10 +78,16 @@ const Sidebar = () => {
   const handleImgClick = () => {
     isAuthor && imgRef.current.click();
   };
+  useEffect(() => {
+    if (isUpdateImg)
+      dispatch(getDetailVacation(vacationID)).then(() => setIsUpdateImg(false));
+  }, [isUpdateImg]);
 
   const handleAfterClose = () => {
-    dispatch(getDetailVacation(vacationID));
+    setIsUpdateImg(true);
   };
+
+  const avatarSize = isLargeSize ? 80 : isMediumSize ? 60 : 100;
   return (
     <div className={cx("sidebar")}>
       <div className={cx("bg-container")}>
@@ -85,7 +98,19 @@ const Sidebar = () => {
             handleAfterClose={handleAfterClose}
           />
         )}
-        <ImageField src={cover?.path} className={cx("img-BG")} preview={true} />
+        <ImageField
+          src={cover?.path}
+          className={cx("img-BG")}
+          preview={{
+            maskClassName: cx("mask-img"),
+          }}
+          placeholder={
+            <Image
+              preview={false}
+              src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png?x-oss-process=image/blur,r_50,s_50/quality,q_1/resize,m_mfit,h_200,w_200"
+            />
+          }
+        />
         {isAuthor && (
           <div className={cx("bg-icon-container")} onClick={handleImgClick}>
             <span>Edit cover photo</span>
@@ -103,7 +128,7 @@ const Sidebar = () => {
             <Avatar
               src={authorInfo?.avatar.path}
               shape="square"
-              size={100}
+              size={avatarSize}
               className={cx("avatar")}
             />
 

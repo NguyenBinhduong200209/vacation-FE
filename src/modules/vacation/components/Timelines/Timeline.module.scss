@@ -7,8 +7,8 @@ $header-size: 1.4em;
   display: flex;
   position: fixed;
   top: calc(10vh + 2rem);
-  right: 8rem;
-  width: 20em;
+  right: var(--side-left);
+  width: var(--side-width);
   height: 65vh;
 
   .container {

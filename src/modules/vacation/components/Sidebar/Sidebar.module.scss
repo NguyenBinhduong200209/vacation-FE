@@ -1,7 +1,7 @@
 .sidebar {
   position: fixed;
-  left: 8rem;
-  width: 20em;
+  left: var(--side-left);
+  width: var(--side-width);
   display: flex;
   flex-direction: column;
   border-radius: 30px;
@@ -14,7 +14,7 @@
 
   .bg-container {
     position: relative;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     height: 11em;
     border-radius: 3rem 3rem 0 0;
     .img-BG {
@@ -39,7 +39,9 @@
       }
     }
   }
-
+  .mask-img {
+    border-radius: 3rem 3rem 0 0;
+  }
   .sidebar-content {
     display: flex;
     flex-direction: column;

@@ -105,7 +105,7 @@ const PostResult = () => {
           <main className={cx("main")}>
             <div className={cx("container")}>
               <InfiniteScroll
-                scrollThreshold="20%"
+                scrollThreshold="50%"
                 dataLength={list?.length}
                 next={loadMoreData}
                 hasMore={page < pages}

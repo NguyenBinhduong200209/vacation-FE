@@ -19,10 +19,10 @@ const Create = () => {
   const [openAlbum, setOpenAlbum] = useState(false);
   const { info } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    const isOpenModal = showModal || open || openAlbum;
-    document.body.style.overflow = isOpenModal ? "hidden" : "unset";
-  }, [showModal, open, openAlbum]);
+  // useEffect(() => {
+  //   const isOpenModal = showModal || open || openAlbum;
+  //   document.body.style.overflow = isOpenModal ? "hidden" : "unset";
+  // }, [showModal, open, openAlbum]);
 
   return (
     <div className={cx("create")}>

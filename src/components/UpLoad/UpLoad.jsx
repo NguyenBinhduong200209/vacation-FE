@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { uploadResource } from "~/store/slices/resourceSlice";
 
-const UpLoad = ({ imgRef, body, disabled }) => {
+const UpLoad = ({ imgRef, body, disabled, handleAfterClose }) => {
   const [files, setFiles] = useState(null);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -11,6 +11,7 @@ const UpLoad = ({ imgRef, body, disabled }) => {
       formData.append("files", files);
       dispatch(uploadResource({ files: formData.get("files"), ...body }));
       setFiles(null);
+      handleAfterClose && handleAfterClose();
     }
   }, [files]);
 

@@ -23,6 +23,7 @@ const SelectFriend = ({
   const dispatch = useDispatch();
   const isFirstReq = useRef(true);
   const resultRef = useRef();
+  const { info } = useSelector((state) => state.auth);
   const { list } = useSelector((state) => state.friend);
   const { result } = useSelector((state) => state.search);
   const { suggestions } = result;
@@ -30,7 +31,7 @@ const SelectFriend = ({
   const [inputValue, setInputValue] = useState("");
   const [openResult, setOpenResult] = useState(false);
   const debouncedValue = useDebounce(inputValue, 500);
-  console.log(list);
+
   //  call API get friendList and search user
   useEffect(() => {
     if (isFirstReq.current) {
@@ -77,8 +78,24 @@ const SelectFriend = ({
   };
 
   // handle friend selected
-  const handleSelectedUser = (friend) => {
-    setUserList((prev) => [...prev, friend]);
+  const handleSelectedUser = (user, type) => {
+    if (type === "searchList") {
+      setUserList((prev) => [
+        ...prev,
+        {
+          username: user.username,
+          _id: user._id,
+        },
+      ]);
+    } else {
+      setUserList((prev) => [
+        ...prev,
+        {
+          username: user.userInfo.username,
+          _id: user.userInfo._id,
+        },
+      ]);
+    }
   };
 
   const handleClear = (id) => {
@@ -87,6 +104,10 @@ const SelectFriend = ({
 
   const handleSubmit = () => {
     setOpen(false);
+  };
+
+  const checkUserId = (id) => {
+    return userList?.some((user) => user._id === id) || id === info._id;
   };
 
   return (
@@ -98,7 +119,7 @@ const SelectFriend = ({
             {userList?.map((friend) => {
               return (
                 <span key={friend._id}>
-                  {friend.username}
+                  {friend?.username}
                   <FontAwesomeIcon
                     icon={faXmarkCircle}
                     className={cx("close")}
@@ -129,14 +150,14 @@ const SelectFriend = ({
                 <div className={cx("result-empty")}>Not Found</div>
               ) : (
                 data?.map((item) => {
-                  if (userList?.some((friend) => friend._id === item._id)) {
+                  if (checkUserId(item._id)) {
                     return;
                   }
                   return (
                     <div
                       className={cx("result-item")}
                       key={item._id}
-                      onClick={() => handleSelectedUser(item)}
+                      onClick={() => handleSelectedUser(item, "searchList")}
                     >
                       <Avatar src={item.avatar} />
                       <span>
@@ -159,11 +180,12 @@ const SelectFriend = ({
             <div className={cx("empty")}>You have 0 Friend</div>
           ) : (
             list?.map((item) => {
+              if (checkUserId(item.userInfo._id)) return;
               return (
                 <div
                   className={cx("result-item")}
                   key={item._id}
-                  onClick={() => handleSelectedUser(item)}
+                  onClick={() => handleSelectedUser(item, "friendList")}
                 >
                   <Avatar src={item.userInfo?.avatar.path} size={36} />
                   <span>

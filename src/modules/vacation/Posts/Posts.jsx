@@ -18,6 +18,10 @@ const Posts = () => {
   const { posts, detail, isLoading } = useSelector((state) => state.vacation);
   const { list } = posts;
   const [handlePost, setHandlePost] = useState("create");
+  console.log(info);
+  // for responsive
+  const { size } = useSelector((state) => state.general);
+  const isMediumSize = size.width <= 992;
 
   return (
     <>
@@ -60,7 +64,7 @@ const Posts = () => {
 
           <>{isLoading && <Loading />}</>
         </div>
-        <Timeline />
+        {!isMediumSize && <Timeline />}
       </div>
     </>
   );

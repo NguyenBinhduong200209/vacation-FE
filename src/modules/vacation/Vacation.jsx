@@ -27,6 +27,10 @@ const Vacation = () => {
   const { page, pages, timeline, isUpdatePost } = posts;
   const [preload, setPreload] = useState(true);
 
+  // for responsive
+  const { size } = useSelector((state) => state.general);
+  const isSmallSize = size.width <= 576;
+
   // Get vacation detail & set activeTimeline
   useEffect(() => {
     setPreload(true);
@@ -117,7 +121,8 @@ const Vacation = () => {
         <Preloader />
       ) : (
         <div className={cx("wrapper")}>
-          <Sidebar />
+          {!isSmallSize && <Sidebar />}
+
           <div className={cx("content")}>
             {urlType === null || urlType === "post" ? <Posts /> : <Album />}
           </div>

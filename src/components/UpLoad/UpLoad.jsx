@@ -9,9 +9,12 @@ const UpLoad = ({ imgRef, body, disabled, handleAfterClose }) => {
     if (files !== null) {
       const formData = new FormData();
       formData.append("files", files);
-      dispatch(uploadResource({ files: formData.get("files"), ...body }));
+      dispatch(uploadResource({ files: formData.get("files"), ...body })).then(
+        () => {
+          handleAfterClose && handleAfterClose();
+        }
+      );
       setFiles(null);
-      handleAfterClose && handleAfterClose();
     }
   }, [files]);
 

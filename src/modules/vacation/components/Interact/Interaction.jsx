@@ -268,6 +268,10 @@ const Interaction = (props) => {
       setMsg(error.message);
     }
   };
+  const handleErrorNoti = () => {
+    setIsError(false);
+    setMsg("");
+  };
   return (
     <div className={cx("wrapper")}>
       <div className={cx("container")}>
@@ -467,6 +471,7 @@ const Interaction = (props) => {
           setOpenNoti={setOpenNoti}
           msg={msg}
           isError={isError}
+          handleError={handleErrorNoti}
         />
       )}
     </div>

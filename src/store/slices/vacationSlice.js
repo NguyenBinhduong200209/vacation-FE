@@ -135,8 +135,13 @@ const vacationSlice = createSlice({
             state.posts.timeline = meta?.timeline;
             state.posts.totalPost = meta?.total;
           }
+        } else {
+          state.posts.list = [];
+          state.posts.page = 0;
+          state.posts.pages = 0;
+          state.posts.timeline = [];
+          state.posts.totalPost = 0;
         }
-
         state.isLoading = false;
       })
       .addCase(getListVacation.pending, (state) => {

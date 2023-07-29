@@ -5,6 +5,7 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getListVacation } from "~/store/slices/vacationSlice";
+import { Tooltip } from "antd";
 
 const cx = classNames.bind(styles);
 
@@ -39,16 +40,25 @@ const Dropdown = ({ selected, setSelected, className }) => {
         <div className={cx("dropdown-content")} onScroll={handleScroll}>
           {list.map((option) => {
             return (
-              <div
-                className={cx("dropdown-item")}
-                key={option._id}
-                onClick={() => {
-                  setSelected(option);
-                  setOpen((prev) => !prev);
+              <Tooltip
+                title={option.title}
+                color="grey"
+                placement="right"
+                overlayInnerStyle={{
+                  textAlign: "center",
                 }}
+                key={option._id}
               >
-                {option.title}
-              </div>
+                <div
+                  className={cx("dropdown-item")}
+                  onClick={() => {
+                    setSelected(option);
+                    setOpen((prev) => !prev);
+                  }}
+                >
+                  {option.title}
+                </div>
+              </Tooltip>
             );
           })}
         </div>

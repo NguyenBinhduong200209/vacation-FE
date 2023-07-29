@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import axiosClient from "~/api/axiosClient";
-import "./Slider.css";
+// import "./Slider.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addSelected } from "~/store/slices/albumSlice";
 import styles from "./Slider.module.scss";
 import classNames from "classnames/bind";
 import { LeftCircleFilled, RightCircleFilled } from "@ant-design/icons";
 import albumAPI from "~/api/albumAPI";
-
 const cx = classNames.bind(styles);
 
 const Slider = () => {
@@ -19,7 +17,7 @@ const Slider = () => {
     selectedImages,
     selectedAlbum: { vacationId, userId },
   } = useSelector((state) => state.album);
-  const info = useSelector((state) => state.auth);
+  const { info } = useSelector((state) => state.auth);
 
   useEffect(() => {
     (async () => {
@@ -66,7 +64,7 @@ const Slider = () => {
 
   return (
     <div className={cx("carousel-container")}>
-      {cardCount !== 0 && userId === info.info._id ? (
+      {cardCount !== 0 && userId === info._id ? (
         <div className={cx("carousel")}>
           {img.map((item, index) => {
             const isSelected = selectedImages.some((image) => image._id === item._id);

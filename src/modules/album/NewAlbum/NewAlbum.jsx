@@ -12,7 +12,9 @@ import {
   updateAlbumPage,
   resetSelectedImages,
   getDetail,
+  deleteAlbum,
 } from "~/store/slices/albumSlice";
+import { Button } from "antd";
 const cx = classNames.bind(styles);
 
 const NewAlbum = () => {
@@ -41,15 +43,15 @@ const NewAlbum = () => {
   }, [ref]);
 
   useEffect(() => {
+    dispatch(resetSelectedImages());
     if (albumId) {
       dispatch(getDetail({ id: albumId }));
       dispatch(getAlbumPage({ page: 1, albumId: albumId }));
     }
-    dispatch(resetSelectedImages());
   }, [dispatch, albumId]);
 
   const saveAlbum = () => {
-    (albumId
+    (albumId && selectedPageId
       ? dispatch(
           updateAlbumPage({
             albumpageId: selectedPageId,
@@ -76,6 +78,12 @@ const NewAlbum = () => {
           })
         )
     ).then(() => navigate("/profile/album"));
+  };
+
+  const handleDelete = (id) => {
+    dispatch(deleteAlbum({ id })).then(() => {
+      navigate("/profile/album");
+    });
   };
 
   const handleWrapClick = () => {
@@ -107,16 +115,26 @@ const NewAlbum = () => {
           </div>
         </div>
       </div>
-      <Slider />
       {userId === info._id && (
-        <button
-          disabled={selectedImages.length === 0}
-          type="button"
-          className={cx("save-btn")}
-          onClick={saveAlbum}
-        >
-          Save
-        </button>
+        <>
+          <Slider />
+          <div className={cx("btn-group")}>
+            <Button type="primary" disabled={selectedImages.length === 0} onClick={saveAlbum}>
+              Save
+            </Button>
+            {albumId && (
+              <Button
+                danger
+                type="primary"
+                onClick={() => {
+                  handleDelete(albumId);
+                }}
+              >
+                Delete
+              </Button>
+            )}
+          </div>
+        </>
       )}
     </>
   );

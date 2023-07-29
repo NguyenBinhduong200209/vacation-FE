@@ -199,6 +199,7 @@ const albumSlice = createSlice({
         state.userInfo = userInfo;
       })
       .addCase(getAlbumPage.rejected, (state, action) => {
+        state.selectedPageId = undefined;
         state.isError = true;
         state.isLoading = false;
         state.msg = action.payload?.message;

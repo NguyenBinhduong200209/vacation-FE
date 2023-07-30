@@ -52,10 +52,16 @@ const Navigation = () => {
           <SearchOutlined
             style={{ cursor: "pointer" }}
             className={isSearchMobileVisible ? cx("active") : ""}
-            onClick={() => dispatch(updateSearchMobileVisible())}
+            onClick={() => {
+              dispatch(changeVisible(false));
+              dispatch(updateSearchMobileVisible());
+            }}
           />
           <RiseOutlined
-            onClick={() => dispatch(changeVisible())}
+            onClick={() => {
+              dispatch(changeVisible());
+              dispatch(updateSearchMobileVisible(false));
+            }}
             style={{ cursor: "pointer" }}
             className={isTrendingVisible ? cx("active") : ""}
           />

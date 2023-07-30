@@ -105,12 +105,12 @@
     position: sticky;
     top: 0;
     transition: all 200ms linear;
+    z-index: 12;
   }
 
   .show {
     height: 7vh;
     top: 10vh;
-    z-index: 10;
   }
   .hide {
     height: 0;

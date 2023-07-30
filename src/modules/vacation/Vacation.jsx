@@ -14,6 +14,10 @@ import Posts from "./Posts/Posts";
 import Album from "./Album/Album";
 import Preloader from "~/components/Preloader/Preloader";
 import Sidebar from "./components/Sidebar/Sidebar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBarsStaggered } from "@fortawesome/free-solid-svg-icons";
+import DrawerRes from "./Posts/Drawer/DrawerRes";
+
 const cx = classNames.bind(styles);
 const Vacation = () => {
   const dispatch = useDispatch();
@@ -28,8 +32,10 @@ const Vacation = () => {
   const [preload, setPreload] = useState(true);
 
   // for responsive
+  const [resModal, setResModal] = useState(false);
   const { size } = useSelector((state) => state.general);
-  const isSmallSize = size.width <= 576;
+  const isSmallSize = size.width <= 768;
+  const isMediumSize = size.width <= 992;
 
   // Get vacation detail & set activeTimeline
   useEffect(() => {
@@ -126,6 +132,18 @@ const Vacation = () => {
           <div className={cx("content")}>
             {urlType === null || urlType === "post" ? <Posts /> : <Album />}
           </div>
+
+          {isMediumSize && (
+            <>
+              <div
+                className={cx("timeline-res")}
+                onClick={() => setResModal(true)}
+              >
+                <FontAwesomeIcon icon={faBarsStaggered} />
+              </div>
+              <DrawerRes setResModal={setResModal} resModal={resModal} />
+            </>
+          )}
         </div>
       )}
     </>

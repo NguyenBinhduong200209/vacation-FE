@@ -4,7 +4,7 @@ import styles from "./DefaultLayout.module.scss";
 import classNames from "classnames/bind";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getInfoUser } from "~/store/slices/authSlice";
 import Trending from "~/modules/newfeed/trending/Trending";
 

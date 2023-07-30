@@ -1,4 +1,4 @@
-import { useState, forwardRef } from "react";
+import { useState } from "react";
 import images from "~/images";
 import classNames from "classnames/bind";
 import { Image } from "antd";

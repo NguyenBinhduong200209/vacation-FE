@@ -53,6 +53,7 @@ const NewAlbum = () => {
           className: cx("message"),
         })
       : api.destroy("noti");
+    !isLargeSize && setIsOpen(false);
   }, [isLargeSize, navigate, api]);
 
   useEffect(() => {

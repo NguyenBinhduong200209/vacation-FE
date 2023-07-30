@@ -2,26 +2,25 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import React, { Fragment, useEffect } from "react";
 import { createBrowserHistory } from "history";
 import { publicRoutes } from "./routes";
-import { useDispatch } from "react-redux";
-
-import { updateSize } from "./store/slices/generalSlice";
+// import { useDispatch } from "react-redux";
+// import { updateSize } from "./store/slices/generalSlice";
 
 function App() {
   const history = createBrowserHistory();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    function handleWindowResize() {
-      dispatch(
-        updateSize({ height: window.innerHeight, width: window.innerWidth })
-      );
-    }
-    window.addEventListener("resize", handleWindowResize);
+  // useEffect(() => {
+  //   function handleWindowResize() {
+  //     dispatch(
+  //       updateSize({ height: window.innerHeight, width: window.innerWidth })
+  //     );
+  //   }
+  //   window.addEventListener("resize", handleWindowResize);
 
-    return () => {
-      window.removeEventListener("resize", handleWindowResize);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("resize", handleWindowResize);
+  //   };
+  // }, []);
 
   return (
     <Router history={history}>

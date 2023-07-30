@@ -12,10 +12,9 @@ const cx = classNames.bind(styles);
 
 const Albums = () => {
   const dispatch = useDispatch();
-  const {
-    list,
-    meta: { page, pages },
-  } = useSelector((state) => state.album);
+  const { list, meta } = useSelector((state) => state.album);
+  const page = meta?.page || 1,
+    pages = meta?.pages || 1;
   const { info } = useSelector((state) => state.auth);
   const { userId } = useOutletContext();
   const isAuthor = userId === info._id || !userId;

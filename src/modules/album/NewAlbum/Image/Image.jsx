@@ -16,6 +16,7 @@ const Image = ({ imgData, containerSize }) => {
     path,
   } = imgData;
   const dispatch = useDispatch();
+
   const handleResize = (event, { size }) => {
     dispatch(
       updateSelected({
@@ -28,6 +29,7 @@ const Image = ({ imgData, containerSize }) => {
 
   const handleDragStop = (event, data) => {
     const { lastX, lastY } = data;
+    console.log(event.target.parentElement);
     event.target.parentElement &&
       dispatch(
         updateSelected({

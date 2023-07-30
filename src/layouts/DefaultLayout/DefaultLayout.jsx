@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getInfoUser } from "~/store/slices/authSlice";
+import Trending from "~/modules/newfeed/trending/Trending";
 
 const cx = classNames.bind(styles);
 
@@ -15,7 +16,6 @@ const DefaultLayout = ({ children }) => {
   const { isLogin } = useSelector((state) => state.auth);
   const { size } = useSelector((state) => state.general);
   const isSmallSize = size.width <= 576;
-  const [pre, setPre] = useState(true);
   useEffect(() => {
     if (isLogin) {
       dispatch(getInfoUser());
@@ -34,7 +34,12 @@ const DefaultLayout = ({ children }) => {
       <>
         <Header />
         <div className={cx("container")}>{children}</div>
-        {isSmallSize && <Footer />}
+        {isSmallSize && (
+          <>
+            <Trending />
+            <Footer />
+          </>
+        )}
       </>
     </div>
   );

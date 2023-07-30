@@ -62,14 +62,29 @@
   }
 }
 
+.btn-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  min-height: 7vh;
+  margin: 0 auto;
+
+  & > * {
+    min-height: 4vh;
+    min-width: 90px;
+    margin: 0 10px;
+    color: white !important;
+  }
+}
+
 .save-btn {
-  width: 10%;
-  min-width: 90px;
-  margin: auto;
-  padding: 12px;
-  cursor: pointer;
-  border-radius: 20px;
-  font-size: 20px;
+  background-color: #d2ae68;
+  // width: 10%;
+  // padding: 12px;
+  // cursor: pointer;
+  // border-radius: 20px;
+  // font-size: 20px;
 }
 
 // Css sidebar

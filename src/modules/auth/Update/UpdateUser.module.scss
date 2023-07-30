@@ -78,6 +78,7 @@
 @media (max-width: 576px) {
   .wrapper {
     padding: 1rem;
+    margin-bottom: 10vh;
   }
 
   .content {
@@ -107,6 +108,7 @@
   }
 
   .info {
-    height: 55vh;
+    // height: 55vh;
+    background-color: transparent;
   }
 }

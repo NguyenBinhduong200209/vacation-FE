@@ -19,7 +19,6 @@ const SearchAlbum = () => {
   const { albums } = result;
   const { isLoading, page, pages, data } = albums;
   const currentPage = useRef(1);
-  console.log(albums);
 
   useEffect(() => {
     dispatch(
@@ -66,10 +65,7 @@ const SearchAlbum = () => {
       <div className={cx("title")}>Album</div>
       <div id="result" className={cx("result")}>
         <List
-          grid={{
-            gutter: 16,
-            column: 3,
-          }}
+          grid={{ gutter: 16, xs: 1, sm: 2, md: 2, lg: 3, xl: 3, xxl: 3 }}
           dataSource={data}
           renderItem={(item) => (
             <List.Item>
@@ -78,11 +74,7 @@ const SearchAlbum = () => {
                   <Avatar src={item.authorInfo?.avatar.path} />
                   <div>{item.authorInfo?.username}</div>
                 </div>
-                <ImageField
-                  src={item.cover}
-                  rootClassName={cx("cover")}
-                  preview={false}
-                />
+                <ImageField src={item.cover} rootClassName={cx("cover")} preview={false} />
                 <div className={cx("item-name")}>
                   <span>{item.title}</span>
                 </div>

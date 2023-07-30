@@ -4,7 +4,7 @@ import { Avatar } from "antd";
 import classNames from "classnames/bind";
 import styles from "./Overview.module.scss";
 
-import { handleAuth } from "~/store/slices/authSlice";
+import { handleAuth, resetNoti } from "~/store/slices/authSlice";
 import Loading from "~/components/Loading/Loading";
 import Notification from "~/components/Notification/Notification";
 import UpLoad from "~/components/UpLoad/UpLoad";
@@ -66,6 +66,14 @@ const Overview = () => {
     imgRef.current.click();
   };
 
+  const handleSuccessNoti = () => {
+    window.location.reload();
+    dispatch(resetNoti());
+  };
+  const handleErrorNoti = () => {
+    dispatch(resetNoti());
+  };
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("userName-container")}>
@@ -104,12 +112,13 @@ const Overview = () => {
       )}
       {(isError || isSuccess) && (
         <Notification
-          isSuccess={isSuccess}
-          isError={isError}
-          msg={msg}
           openNoti={openNoti}
           setOpenNoti={setOpenNoti}
-          type={UPDATE_OVERVIEW}
+          isSuccess={isSuccess}
+          isError={isError}
+          handleSuccess={handleSuccessNoti}
+          handleError={handleErrorNoti}
+          msg={msg}
         />
       )}
     </div>

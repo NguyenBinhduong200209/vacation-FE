@@ -52,7 +52,7 @@ const FriendList = ({ type, userId }) => {
             <List.Item className={cx("item")}>
               <NavLink
                 className={cx("nav")}
-                to={`/profile/${userInfo?._id === currentUserId ? "" : userInfo?._id}`}
+                to={`/profile/${userInfo?._id === currentUserId ? "" : userInfo?._id + "/"}vacation`}
               >
                 <List.Item.Meta
                   className={cx("item-meta")}
@@ -79,7 +79,8 @@ const FriendList = ({ type, userId }) => {
                 />
               </NavLink>
               <div className={cx("button-container")}>
-                {type === "request" ? <ButtonGroup id={_id} /> : <DropdownMore id={userInfo?._id} />}
+                {!userId &&
+                  (type === "request" ? <ButtonGroup id={_id} /> : <DropdownMore id={userInfo?._id} />)}
               </div>
             </List.Item>
           );

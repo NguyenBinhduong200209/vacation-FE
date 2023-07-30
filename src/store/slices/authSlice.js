@@ -43,7 +43,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     info: [],
-    otherUserInfo: [],
+    otherUserInfo: {},
     renderList: [{ list: LoginData }],
     isLogin: !!localStorage.getItem("token"),
     isLoading: false,
@@ -62,6 +62,15 @@ const authSlice = createSlice({
           renderList: newList,
         };
       }
+    },
+
+    resetOtherUser: (state, action) => {
+      state.otherUserInfo = {};
+    },
+    resetNoti: (state) => {
+      state.isSuccess = false;
+      state.isError = false;
+      state.msg = "";
     },
   },
   extraReducers: (builder) => {
@@ -92,5 +101,5 @@ const authSlice = createSlice({
 });
 
 const { reducer, actions } = authSlice;
-export const { changeRenderList } = actions;
+export const { changeRenderList, resetOtherUser, resetNoti } = actions;
 export default reducer;

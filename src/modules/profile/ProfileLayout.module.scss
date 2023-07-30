@@ -4,7 +4,7 @@
 .user-info-bgimg,
 .info {
   position: relative;
-  width: 95%;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -26,10 +26,11 @@
   display: flex;
   justify-content: space-between;
   top: -10vh;
+  padding-right: 2.5%;
 }
 
 .container {
-  width: 70%;
+  width: 73.5%;
   position: relative;
   margin-top: 10vh;
 }
@@ -53,6 +54,7 @@
   .info {
     display: block;
     top: 0;
+    padding: 0;
   }
 
   .container {

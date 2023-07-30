@@ -66,6 +66,12 @@
 .btn-fr {
   background-color: rgb(10, 10, 12);
 }
+@media only screen and (max-width: 1200px) {
+  .result-item {
+    gap: 0;
+    padding: 0 !important;
+  }
+}
 
 @media only screen and (max-width: 992px) {
   .result-item {

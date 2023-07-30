@@ -35,6 +35,33 @@
     color: white;
     .container {
       min-height: 90vh;
+      .empty {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 60vh;
+        background-color: var(--background-500);
+        font-size: 3rem;
+
+        .user-icon {
+          font-size: 10rem;
+          margin-bottom: 1rem;
+        }
+
+        .glass-icon {
+          position: relative;
+          bottom: 0;
+          margin-left: -1rem;
+          color: rgb(132, 132, 230);
+          font-size: 4rem;
+        }
+
+        .fail-msg {
+          color: rgb(177, 175, 175);
+        }
+      }
     }
     div {
       color: white;

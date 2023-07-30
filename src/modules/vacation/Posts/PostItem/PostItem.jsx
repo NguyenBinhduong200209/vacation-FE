@@ -16,6 +16,7 @@ import HandlePost from "../HandlePost/HandlePost";
 import Notification from "~/components/Notification/Notification";
 import { useClickOutside } from "~/helpers/customHook";
 import { Link } from "react-router-dom";
+import Loading from "~/components/Loading/Loading";
 
 const cx = classNames.bind(styles);
 
@@ -39,7 +40,12 @@ const PostItem = ({ postDetail, vacationId, setHandlePost, handlePost }) => {
   const { info } = useSelector((state) => state.auth);
   const [showModal, setShowModal] = useState(false);
   const [open, setOpen] = useState(false);
+  // open modal img
   const [openImg, setOpenImg] = useState(false);
+  // open modal delete post
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [loadingDel, setLoadingDel] = useState(false);
+  // state for msg when success or error
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
   const [msg, setMsg] = useState("");
@@ -66,16 +72,19 @@ const PostItem = ({ postDetail, vacationId, setHandlePost, handlePost }) => {
 
   const handleDeletePost = async () => {
     try {
+      setLoadingDel(true);
       setOpen(false);
       const res = await vacationAPI.deletePost(_id);
       setMsg(res.data?.message);
       dispatch(isPostListChanged(true));
       setIsSuccess(true);
+      setLoadingDel(false);
     } catch (error) {
       setMsg(error.message);
       setIsError(true);
+      setLoadingDel(false);
     }
-
+    setOpenDeleteModal(false);
     setOpenNoti(true);
   };
   const handleSuccess = () => {
@@ -91,7 +100,6 @@ const PostItem = ({ postDetail, vacationId, setHandlePost, handlePost }) => {
     setOpen(false);
   });
 
-  console.log(authorInfo);
   return (
     <div
       className={cx("wrapper")}
@@ -116,46 +124,73 @@ const PostItem = ({ postDetail, vacationId, setHandlePost, handlePost }) => {
           </div>
         </div>
         {authorInfo._id === info._id && (
-          <Popover
-            content={
-              <div className={cx("pop-over")} ref={popupRef}>
-                <p
-                  className={cx("options")}
-                  onClick={() => {
-                    setShowModal(true);
-                    setOpen(false);
-                    setHandlePost("update");
-                    setPostId(_id);
-                  }}
-                >
-                  Edit
-                </p>
+          <>
+            <Popover
+              content={
+                <div className={cx("pop-over")} ref={popupRef}>
+                  <p
+                    className={cx("options")}
+                    onClick={() => {
+                      setShowModal(true);
+                      setOpen(false);
+                      setHandlePost("update");
+                      setPostId(_id);
+                    }}
+                  >
+                    Edit
+                  </p>
 
-                <p className={cx("options")} onClick={handleDeletePost}>
-                  Delete
-                </p>
-              </div>
-            }
-            open={open}
-            trigger="click"
-            placement="bottom"
-          >
-            {handlePost === "update" && (
-              <HandlePost
-                showModal={showModal}
-                setShowModal={setShowModal}
-                setPostId={setPostId}
-                postId={postId}
-                vacationId={vacationId}
-                type={handlePost}
+                  <p
+                    className={cx("options")}
+                    onClick={() => {
+                      setOpenDeleteModal(true);
+                      setOpen(false);
+                    }}
+                  >
+                    Delete
+                  </p>
+                </div>
+              }
+              open={open}
+              trigger="click"
+              placement="bottom"
+            >
+              {handlePost === "update" && (
+                <HandlePost
+                  showModal={showModal}
+                  setShowModal={setShowModal}
+                  setPostId={setPostId}
+                  postId={postId}
+                  vacationId={vacationId}
+                  type={handlePost}
+                />
+              )}
+              <FontAwesomeIcon
+                icon={faEllipsisVertical}
+                className={cx("options")}
+                onClick={() => setOpen(!open)}
               />
-            )}
-            <FontAwesomeIcon
-              icon={faEllipsisVertical}
-              className={cx("options")}
-              onClick={() => setOpen(!open)}
-            />
-          </Popover>
+              <Modal
+                open={openDeleteModal}
+                setOpen={setOpenDeleteModal}
+                title="Delete Post?"
+                className={cx("delete-modal")}
+              >
+                <div className={cx("modal-content")}>
+                  Are you sure you want to delete this post?
+                </div>
+                <div className={cx("btn-container")}>
+                  <button onClick={handleDeletePost} disabled={loadingDel}>
+                    Delete{" "}
+                    {loadingDel && <Loading className={cx("loading-del")} />}
+                  </button>
+                  <button onClick={() => setOpenDeleteModal(false)}>
+                    Cancel
+                  </button>
+                </div>
+              </Modal>
+            </Popover>
+          </>
         )}
       </header>
 

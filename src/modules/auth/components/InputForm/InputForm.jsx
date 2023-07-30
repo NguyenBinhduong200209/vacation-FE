@@ -84,7 +84,7 @@ const InputForm = (props) => {
   // when API called and done, change noti status to render message
   useEffect(() => {
     if (isSuccess || isError) {
-      setOpenNoti(!openNoti);
+      setOpenNoti(true);
     }
   }, [isSuccess, isError]);
 
@@ -101,10 +101,8 @@ const InputForm = (props) => {
       case FORGOT:
         handleRoute();
         break;
-      case LOGIN:
       case REGISTER:
         navigate(url);
-        window.location.reload();
         break;
       case RESET:
       case UPDATE_PERSONAL:
@@ -119,6 +117,7 @@ const InputForm = (props) => {
   const handleErrorNoti = () => {
     dispatch(resetNoti());
   };
+
   return (
     <>
       <Formik

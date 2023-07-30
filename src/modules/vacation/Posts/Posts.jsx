@@ -6,7 +6,6 @@ import { Avatar } from "antd";
 
 import Timeline from "../components/Timelines/Timeline";
 import PostItem from "./PostItem/PostItem";
-// import CreatePost from "./CreatePost/CreatePost";
 import Loading from "~/components/Loading/Loading";
 import HandlePost from "./HandlePost/HandlePost";
 
@@ -18,7 +17,6 @@ const Posts = () => {
   const { posts, detail, isLoading } = useSelector((state) => state.vacation);
   const { list } = posts;
   const [handlePost, setHandlePost] = useState("create");
-  console.log(info);
   // for responsive
   const { size } = useSelector((state) => state.general);
   const isMediumSize = size.width <= 992;

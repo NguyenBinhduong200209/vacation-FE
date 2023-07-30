@@ -25,7 +25,7 @@ const Modal = ({
       className={cx("modal", className)}
       overlayClassName={cx("overlay")}
     >
-      <h2 className={cx("title")}>{title}</h2>
+      {title && <h2 className={cx("title")}>{title}</h2>}
       <FontAwesomeIcon
         icon={faCircleXmark}
         className={cx("close-icon")}

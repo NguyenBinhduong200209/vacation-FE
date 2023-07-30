@@ -35,7 +35,6 @@ const Sidebar = () => {
 
   // Get User's info
   const { info } = useSelector((state) => state.auth);
-  const { isLoading } = useSelector((state) => state.resource);
   // Get detail of vacation
   const { detail, posts, memberList, shareList } = useSelector(
     (state) => state.vacation

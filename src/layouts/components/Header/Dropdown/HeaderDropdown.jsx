@@ -58,7 +58,7 @@ const HeaderDropdown = () => {
           {/* Dropdown menu content goes here */}
           <ul>
             <li>
-              <NavLink to="/profile">See Profile</NavLink>
+              <NavLink to="/profile/vacation">See Profile</NavLink>
             </li>
 
             <li>

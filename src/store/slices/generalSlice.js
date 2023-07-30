@@ -15,7 +15,7 @@ const generalSlice = createSlice({
     },
     updateSearchMobileVisible: (state, action) => {
       const currentStatus = current(state).isSearchMobileVisible;
-      state.isSearchMobileVisible = !currentStatus;
+      state.isSearchMobileVisible = action.payload === false ? false : !currentStatus;
     },
   },
 });

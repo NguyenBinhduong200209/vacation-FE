@@ -10,6 +10,7 @@ import classNames from "classnames/bind";
 const cx = classNames.bind(styles);
 
 const Image = ({ imgData, containerSize }) => {
+
 	const {
 		style: { width, height, left, top },
 		_id,
@@ -37,6 +38,7 @@ const Image = ({ imgData, containerSize }) => {
 				})
 			);
 	};
+
 
 	const handleImageRemove = () => {
 		dispatch(removeSelected(_id));

@@ -15,6 +15,7 @@ import ImageField from "~/components/ImageField/ImageField";
 import HandlePost from "../HandlePost/HandlePost";
 import Notification from "~/components/Notification/Notification";
 import { useClickOutside } from "~/helpers/customHook";
+import { Link } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 
@@ -77,16 +78,20 @@ const PostItem = ({ postDetail, vacationId, setHandlePost, handlePost }) => {
 
     setOpenNoti(true);
   };
-
-  const HandleNotiAfterClose = () => {
-    setIsError(false);
+  const handleSuccess = () => {
     setIsSuccess(false);
+    setMsg("");
+  };
+  const handleError = () => {
+    setIsError(false);
     setMsg("");
   };
 
   useClickOutside(popupRef, () => {
     setOpen(false);
   });
+
+  console.log(authorInfo);
   return (
     <div
       className={cx("wrapper")}
@@ -98,7 +103,9 @@ const PostItem = ({ postDetail, vacationId, setHandlePost, handlePost }) => {
           <Avatar src={authorInfo?.avatar?.path} size={45} />
           <div className={cx("username-container")}>
             <div className={cx("username")}>
-              {authorInfo.username}
+              <Link to={`/profile/${authorInfo._id}`}>
+                {authorInfo.username}
+              </Link>
 
               <span>at</span>
               <span className={cx("location")}>
@@ -194,8 +201,8 @@ const PostItem = ({ postDetail, vacationId, setHandlePost, handlePost }) => {
           msg={msg}
           openNoti={openNoti}
           setOpenNoti={setOpenNoti}
-          handleSuccess={HandleNotiAfterClose}
-          handleError={HandleNotiAfterClose}
+          handleSuccess={handleSuccess}
+          handleError={handleError}
         />
       )}
     </div>

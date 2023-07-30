@@ -164,9 +164,12 @@ const HandlePost = ({
   const isDisabledCreate =
     !vacationId || !selectedLocation.detail?.id || !content;
   // function call after the noti close
-  const HandleNotiAfterClose = () => {
-    setIsError(false);
+  const handleSuccess = () => {
     setIsSuccess(false);
+    setMsg("");
+  };
+  const handleError = () => {
+    setIsError(false);
     setMsg("");
   };
   return (
@@ -292,8 +295,8 @@ const HandlePost = ({
           msg={msg}
           openNoti={openNoti}
           setOpenNoti={setOpenNoti}
-          handleSuccess={HandleNotiAfterClose}
-          handleError={HandleNotiAfterClose}
+          handleSuccess={handleSuccess}
+          handleError={handleError}
         />
       )}
     </>

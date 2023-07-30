@@ -5,6 +5,8 @@ import { useSearchParams } from "react-router-dom";
 import { Image, Skeleton, List, message } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import albumAPI from "~/api/albumAPI";
+import Preloader from "~/components/Preloader/Preloader";
+import Loading from "~/components/Loading/Loading";
 
 const cx = classNames.bind(styles);
 
@@ -13,6 +15,7 @@ const Album = () => {
   const [meta, setMeta] = useState({ page: 1, pages: 1, total: 1 });
   const [searchParams] = useSearchParams();
   const vacationId = searchParams.get("vacationID");
+  const [preload, setPreload] = useState(true);
 
   useEffect(() => {
     albumAPI
@@ -21,6 +24,7 @@ const Album = () => {
         const { data, meta } = res.data;
         setImg((prevImg) => (res.data ? prevImg.concat(data) : []));
         setMeta(res.data ? meta : { page: 1, pages: 1, total: 1 });
+        setPreload(false);
       })
       .catch((err) => {
         message.error(err.response.data.message, 3);

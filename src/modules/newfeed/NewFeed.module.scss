@@ -71,7 +71,7 @@ ul {
   }
 }
 
-@media (max-width: 576px) {
+@media only screen and (max-width: 576px) {
   .container {
     flex-direction: column-reverse;
     margin-top: 0;

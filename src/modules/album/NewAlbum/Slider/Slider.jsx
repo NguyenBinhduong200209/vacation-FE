@@ -21,16 +21,12 @@ const Slider = () => {
   const isAuthor = authorInfo?._id === info?._id;
 
   useEffect(() => {
-    (async () => {
-      if (vacationId) {
-        try {
-          const fetchImg = await albumAPI.getAllImage({ id: vacationId });
-          setImg(fetchImg.data.data || []);
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    })();
+    if (vacationId) {
+      albumAPI
+        .getAllImage({ id: vacationId })
+        .then((res) => setImg(res.data.data || []))
+        .catch((err) => console.log(err));
+    }
   }, [vacationId]);
 
   const prevSlide = () => {
@@ -88,7 +84,7 @@ const Slider = () => {
           </button>
         </div>
       ) : (
-        <div className={cx("no-picture")}>No pictures available.</div>
+        <div className={cx("no-picture")}>No pictures available</div>
       )}
     </div>
   );

@@ -26,7 +26,7 @@
   }
 }
 
-@media (max-width: 992px) {
+@media only screen and (max-width: 992px) {
   .wrapper {
     width: calc(100vw - var(--side-width) - (var(--side-left) * 3));
     margin-left: auto;
@@ -36,6 +36,7 @@
     width: 100%;
   }
 }
+
 
 @media (max-width: 768px) {
   .wrapper {

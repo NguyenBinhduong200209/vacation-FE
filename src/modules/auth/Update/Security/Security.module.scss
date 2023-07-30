@@ -23,7 +23,7 @@
   }
 }
 
-@media (max-width: 576px) {
+@media only screen and (max-width: 576px) {
   .title {
     font-size: 2rem;
     margin: 1.5rem 0;

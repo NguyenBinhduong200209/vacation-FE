@@ -46,3 +46,19 @@
   width: 7px;
   background-color: #d2ae68;
 }
+
+.pop-over {
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  font-size: 2rem;
+
+  & > * {
+    margin: 10px 0;
+  }
+
+  & > *:focus {
+    color: #d2ae68;
+    text-decoration: underline;
+  }
+}

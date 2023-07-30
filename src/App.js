@@ -3,7 +3,6 @@ import React, { Fragment, useEffect } from "react";
 import { createBrowserHistory } from "history";
 import { publicRoutes } from "./routes";
 import { useDispatch } from "react-redux";
-
 import { updateSize } from "./store/slices/generalSlice";
 
 function App() {
@@ -12,9 +11,7 @@ function App() {
 
   useEffect(() => {
     function handleWindowResize() {
-      dispatch(
-        updateSize({ height: window.innerHeight, width: window.innerWidth })
-      );
+      dispatch(updateSize({ height: window.innerHeight, width: window.innerWidth }));
     }
     window.addEventListener("resize", handleWindowResize);
 

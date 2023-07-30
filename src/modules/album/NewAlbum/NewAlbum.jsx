@@ -41,16 +41,18 @@ const NewAlbum = () => {
   const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
-    !isLargeSize &&
-      api.warning({
-        message: `Notification`,
-        duration: 0,
-        closeIcon: <ArrowLeftOutlined />,
-        description: "Album detail view screen only support screen from 1440 and above",
-        placement: "top",
-        onClose: () => navigate(-1),
-        className: cx("message"),
-      });
+    !isLargeSize
+      ? api.warning({
+          key: "noti",
+          message: `Notification`,
+          duration: 0,
+          closeIcon: <ArrowLeftOutlined />,
+          description: "Album detail view screen only support screen from 1440 and above",
+          placement: "top",
+          onClick: () => navigate(-1),
+          className: cx("message"),
+        })
+      : api.destroy("noti");
   }, [isLargeSize, navigate, api]);
 
   useEffect(() => {

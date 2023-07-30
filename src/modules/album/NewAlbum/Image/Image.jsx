@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import "react-resizable/css/styles.css";
 import Draggable from "react-draggable";
 import { useDispatch } from "react-redux";
@@ -10,7 +10,6 @@ import classNames from "classnames/bind";
 const cx = classNames.bind(styles);
 
 const Image = ({ imgData, containerSize }) => {
-  const ref = useRef(null);
   const {
     style: { width, height, left, top },
     _id,
@@ -45,7 +44,6 @@ const Image = ({ imgData, containerSize }) => {
 
   return (
     <Draggable
-      nodeRef={ref}
       handle={`.${cx("handle")}`}
       defaultPosition={{ x: left, y: top }}
       onStop={handleDragStop}
@@ -60,7 +58,6 @@ const Image = ({ imgData, containerSize }) => {
         maxConstraints={[containerSize.outerWidth - left, containerSize.outerHeight - top]}
       >
         <div
-          ref={ref}
           className={cx("handle")}
           style={{
             backgroundImage: `url(${path})`,

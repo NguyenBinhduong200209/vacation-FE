@@ -75,7 +75,7 @@
     padding-left: 0;
   }
 }
-@media (max-width: 576px) {
+@media only screen and (max-width: 576px) {
   .wrapper {
     padding: 1rem;
     margin-bottom: 10vh;

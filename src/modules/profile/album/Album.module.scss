@@ -112,7 +112,7 @@
   }
 }
 
-@media (max-width: 576px) {
+@media only screen and (max-width: 576px) {
   .albums {
     min-height: 90vh;
     padding-bottom: 10vh;

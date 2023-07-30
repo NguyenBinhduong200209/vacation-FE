@@ -108,7 +108,7 @@
   }
 }
 
-@media (max-width: 576px) {
+@media only screen and (max-width: 576px) {
   .friend-nav {
     width: 98%;
     margin: 0 auto;

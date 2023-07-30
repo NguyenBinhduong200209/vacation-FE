@@ -1,10 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "./NewAlbum.module.scss";
 import classNames from "classnames/bind";
 import Slider from "./Slider/Slider";
 import "./Preloader.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import UserList from "~/modules/vacation/components/UserList/UserList";
+import { useSearchParams } from "react-router-dom";
+import { VACATION_ROUTE } from "~/utils/constants";
+import HandleVacation from "~/modules/vacation/HandleVacation/HandleVacation";
 import Image from "./Image/Image";
 import {
 	createAlbumPage,
@@ -141,6 +146,7 @@ const NewAlbum = () => {
 			)}
 		</>
 	);
+
 };
 
 export default NewAlbum;

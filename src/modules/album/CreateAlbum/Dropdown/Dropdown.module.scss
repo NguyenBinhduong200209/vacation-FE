@@ -24,6 +24,12 @@
   & + .dropdown-content {
     box-shadow: 3px 3px 10px 6px rgb(31, 31, 31);
   }
+
+  span {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
 }
 // dropdown content
 .dropdown-content {

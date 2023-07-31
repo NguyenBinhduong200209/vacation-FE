@@ -4,7 +4,7 @@ import styles from "./Trending.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { getTrendingPlace } from "~/store/slices/locationSlice";
 import GlowingButton from "../glowing/GlowingButton";
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(styles);
 
 const Trending = () => {
@@ -12,6 +12,7 @@ const Trending = () => {
   const { trendingList, isVisible } = useSelector((state) => state.location);
   const { size } = useSelector((state) => state.general);
   const isSmallSize = size.width <= 576;
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getTrendingPlace({ type: "trending", number: 7 }));
@@ -26,9 +27,15 @@ const Trending = () => {
         <ul>
           {trendingList?.map((location) => (
             <li key={location._id} className={cx("underline")}>
-              <NavLink to={`/post/location?k=${location.title}&id=${location._id}`}>
+              <span
+                onClick={() =>
+                  navigate(
+                    `/post/location?k=${location.title}&id=${location._id}`
+                  )
+                }
+              >
                 # {location.title}
-              </NavLink>
+              </span>
             </li>
           ))}
           <div className={cx("trending-more")}>...</div>

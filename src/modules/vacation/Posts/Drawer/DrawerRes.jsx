@@ -10,7 +10,6 @@ import { faClose } from "@fortawesome/free-solid-svg-icons";
 const DrawerRes = ({ resModal, setResModal }) => {
   const [show, setShow] = useState("sidebar");
   const { size } = useSelector((state) => state.general);
-  const isMediumSize = size.width <= 992;
   const isSmallSize = size.width <= 768;
 
   return (

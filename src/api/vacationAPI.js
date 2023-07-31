@@ -21,6 +21,9 @@ const vacationAPI = {
     const url = `${URL.VACATION_URL}/${data.id}`;
     return axiosClient.put(url, data.body);
   },
+  deleteVacation: (id) => {
+    return axiosClient.delete(`${URL.VACATION_URL}/${id}`);
+  },
   getManyPosts: (data) => {
     const url = `${URL.POST_URL}/${data.type}/${data.id}?page=${data.page}${
       data.timeline ? `&timeline=${data.timeline}` : ""

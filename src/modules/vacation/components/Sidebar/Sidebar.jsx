@@ -21,7 +21,13 @@ import Notification from "~/components/Notification/Notification";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { VACATION_ROUTE } from "~/utils/constants";
-import { getDetailVacation } from "~/store/slices/vacationSlice";
+import {
+  getDetailVacation,
+  isVacationListChanged,
+} from "~/store/slices/vacationSlice";
+import vacationAPI from "~/api/vacationAPI";
+import Modal from "~/components/Modal/Modal";
+import Loading from "~/components/Loading/Loading";
 
 const cx = classNames.bind(styles);
 const Sidebar = () => {
@@ -57,7 +63,9 @@ const Sidebar = () => {
   const [isUpdateImg, setIsUpdateImg] = useState(false);
   // create state for listType is memberList or shareList
   const [listType, setListType] = useState("memberList");
-
+  // create state for delete vacation modal
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [loadingDel, setLoadingDel] = useState(false);
   // state and end timeline of the vacation
   const startDate = getDate(startingTime);
   const endDate = getDate(endingTime);
@@ -87,6 +95,15 @@ const Sidebar = () => {
   };
 
   const avatarSize = isLargeSize ? 80 : isMediumSize ? 60 : 100;
+  const handleDeleteVacation = async () => {
+    setLoadingDel(true);
+    await vacationAPI.deleteVacation(vacationID);
+    setOpenDeleteModal(false);
+    setLoadingDel(false);
+    navigate("/");
+    dispatch(isVacationListChanged(true));
+  };
+
   return (
     <div className={cx("sidebar")}>
       <div className={cx("bg-container")}>
@@ -232,6 +249,23 @@ const Sidebar = () => {
           >
             See Album
           </div>
+          <div onClick={() => setOpenDeleteModal(true)}>Delete Vacation</div>
+          <Modal
+            open={openDeleteModal}
+            setOpen={setOpenDeleteModal}
+            title="Delete Post?"
+            className={cx("delete-modal")}
+          >
+            <div className={cx("modal-content")}>
+              Are you sure you want to delete this vacation?
+            </div>
+            <div className={cx("btn-container")}>
+              <button onClick={handleDeleteVacation} disabled={loadingDel}>
+                Delete {loadingDel && <Loading className={cx("loading-del")} />}
+              </button>
+              <button onClick={() => setOpenDeleteModal(false)}>Cancel</button>
+            </div>
+          </Modal>
         </div>
       </div>
       {(isSuccess || isError) && (

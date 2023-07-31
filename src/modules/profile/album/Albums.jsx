@@ -13,8 +13,8 @@ const cx = classNames.bind(styles);
 const Albums = () => {
   const dispatch = useDispatch();
   const { list, meta } = useSelector((state) => state.album);
-  const page = meta?.page || 1,
-    pages = meta?.pages || 1;
+  const page = meta?.page,
+    pages = meta?.pages;
   const { info } = useSelector((state) => state.auth);
   const { userId } = useOutletContext();
   const isAuthor = userId === info._id || !userId;
@@ -24,6 +24,8 @@ const Albums = () => {
     dispatch(resetList());
     dispatch(getList({ userId: currentUserId, page: 1 }));
   }, [dispatch, currentUserId]);
+
+  console.log(list);
 
   const loadMoreData = () => {
     dispatch(getList({ userId: currentUserId, page: page + 1 }));
@@ -82,7 +84,9 @@ const Albums = () => {
                   content={
                     <div className={cx("pop-content")}>
                       <NavLink to={`/album/${item._id}`}>Edit</NavLink>
-                      <Button onClick={() => handleDelete(item._id)}>Delete</Button>
+                      <Button onClick={() => handleDelete(item._id)}>
+                        Delete
+                      </Button>
                     </div>
                   }
                 >

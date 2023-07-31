@@ -22,7 +22,10 @@ import ImageField from "~/components/ImageField/ImageField";
 import { getDate } from "~/helpers/function";
 import { useClickOutside } from "~/helpers/customHook";
 import Loading from "~/components/Loading/Loading";
-import { getDetailVacation } from "~/store/slices/vacationSlice";
+import {
+  getDetailVacation,
+  isVacationListChanged,
+} from "~/store/slices/vacationSlice";
 const { RangePicker } = DatePicker;
 const cx = classNames.bind(styles);
 const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
@@ -147,6 +150,7 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
           body: params,
         });
         dispatch(getDetailVacation(vacationId));
+        dispatch(isVacationListChanged(true));
       }
       setIsSuccess(true);
       setMsg(res.data?.message);
@@ -331,7 +335,11 @@ const HandleVacation = ({ showModal, setOpen, type, vacationId }) => {
             </div>
             <button
               className={cx("btn-submit")}
-              disabled={type === "create" ? isDisabledCreate : isDisabledUpdate}
+              disabled={
+                type === "create"
+                  ? isLoading && isDisabledCreate
+                  : isLoading && isDisabledUpdate
+              }
               onClick={handleVacation}
             >
               {type === "create" ? "Create Vacation" : "Update"}

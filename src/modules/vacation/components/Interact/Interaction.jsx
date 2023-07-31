@@ -176,6 +176,10 @@ const Interaction = (props) => {
     setIsCallingReq(true);
     if (!isCallingReq) {
       try {
+        await interactionAPI.updateLike({
+          id: postID,
+          type: "posts",
+        });
         setIsLiked((prev) => !prev); // set Like status
         // update total like
         if (isLiked) {
@@ -184,10 +188,6 @@ const Interaction = (props) => {
           setTotalLike((prev) => prev + 1);
         }
         setAction(true); // set like action
-        await interactionAPI.updateLike({
-          id: postID,
-          type: "posts",
-        });
         setIsCallingReq(false);
       } catch (error) {
         setIsError(true);

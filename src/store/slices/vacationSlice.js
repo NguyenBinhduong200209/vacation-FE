@@ -77,6 +77,7 @@ const vacationSlice = createSlice({
       list: [],
       page: 0,
       pages: 0,
+      isUpdateVacation: false,
     },
     listVacationProf: {
       list: [],
@@ -109,6 +110,9 @@ const vacationSlice = createSlice({
     },
     isPostListChanged: (state, action) => {
       state.posts.isUpdatePost = action.payload;
+    },
+    isVacationListChanged: (state, action) => {
+      state.listVacation.isUpdateVacation = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -187,5 +191,10 @@ const vacationSlice = createSlice({
   },
 });
 const { reducer, actions } = vacationSlice;
-export const { setTimeline, resetList, isPostListChanged } = actions;
+export const {
+  setTimeline,
+  resetList,
+  isPostListChanged,
+  isVacationListChanged,
+} = actions;
 export default reducer;

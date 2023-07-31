@@ -2,7 +2,11 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames/bind";
 import styles from "./NewFeed.module.scss";
-import { getListVacation, resetList } from "~/store/slices/vacationSlice";
+import {
+  getListVacation,
+  isVacationListChanged,
+  resetList,
+} from "~/store/slices/vacationSlice";
 import { getTrendingPlace } from "~/store/slices/locationSlice";
 import Preloader from "~/components/Preloader/Preloader";
 import { getInfoUser } from "~/store/slices/authSlice";
@@ -15,6 +19,9 @@ const cx = classNames.bind(styles);
 const NewFeed = () => {
   const dispatch = useDispatch();
   const { size } = useSelector((state) => state.general);
+  const { isUpdateVacation } = useSelector(
+    (state) => state.vacation.listVacation
+  );
   const isMediumSize = size.width <= 992;
   const isSmallSize = size.width <= 576;
   const [preLoader, setPreLoader] = useState(true);
@@ -23,10 +30,18 @@ const NewFeed = () => {
   useEffect(() => {
     setPreLoader(true);
     dispatch(resetList());
-    Promise.all([dispatch(getListVacation({ page: 1, type: "newFeed" })), dispatch(getInfoUser())]).then(() =>
-      setPreLoader(false)
-    );
+    Promise.all([
+      dispatch(getListVacation({ page: 1, type: "newFeed" })),
+      dispatch(getInfoUser()),
+    ]).then(() => setPreLoader(false));
   }, [dispatch]);
+
+  useEffect(() => {
+    if (isUpdateVacation) {
+      dispatch(getListVacation({ page: 1, type: "newFeed" }));
+      dispatch(isVacationListChanged(false));
+    }
+  }, [isUpdateVacation]);
 
   return preLoader ? (
     <Preloader />

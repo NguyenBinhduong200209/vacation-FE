@@ -35,7 +35,7 @@ axiosClient.interceptors.response.use(
       const rfToken = localStorage.getItem("rfToken");
       try {
         const res = await axios.post(
-          " https://vacation-social-network.onrender.com/auth/refresh",
+          " https://vacation-zeta.vercel.app/auth/refresh",
           {},
           {
             headers: {
